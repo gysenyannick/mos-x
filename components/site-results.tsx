@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, Shield, Star } from "lucide-react";
+import { Calendar, CheckCircle, Shield, Star } from "lucide-react";
 import BeforeAfterSlider from "@/components/before-after-slider";
 
 

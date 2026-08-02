@@ -86,10 +86,10 @@ export default function ContactPage() {
       {/* ── Main content ── */}
       <section className="site-pad" style={{ background: "#F7F8F6", paddingTop: "24px", paddingBottom: "30px" }}>
         <div className="site-wrap">
-          <div className="grid lg:grid-cols-[1fr_380px] gap-10 items-start">
+          <div className="contact-grid grid lg:grid-cols-[1fr_380px] gap-10 items-start">
 
             {/* ── Formulier ── */}
-            <div className="rounded-2xl p-8"
+            <div className="contact-form-card rounded-2xl p-8"
               style={{ background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", boxShadow: "0 2px 16px rgba(155,203,108,0.12)" }}>
               <p className="font-black text-lg mb-6"
                 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
@@ -160,7 +160,7 @@ export default function ContactPage() {
                 </button>
 
                 {/* 3 trust-chips onder de knop */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "4px" }}>
+                <div className="contact-trust-chips" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "4px" }}>
                   {includes.map((item, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "8px 6px" }}>
                       <CheckCircle size={13} color="#9BCB6C" style={{ flexShrink: 0 }} />
@@ -175,7 +175,7 @@ export default function ContactPage() {
             <div className="space-y-5">
 
               {/* Direct contact */}
-              <div className="rounded-xl p-6" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}>
+              <div className="contact-direct-card rounded-xl p-6" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}>
                 <p className="font-black mb-5"
                   style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
                   Liever direct contact?
@@ -237,12 +237,12 @@ export default function ContactPage() {
       {/* ── Reviews ── */}
       <section style={{ background: "#F7F8F6", padding: "4px 0 30px" }}>
         <div className="site-wrap">
-          <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", padding: "16px 24px" }}>
+          <div className="contact-reviews-card" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", padding: "16px 24px" }}>
             <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", color: "#1A1A1A", marginBottom: "8px", textAlign: "center" }}>
               Wat klanten over ons <span style={{ color: "#9BCB6C" }}>zeggen.</span>
             </h2>
             {/* Trustindex widget — negatieve marge compenseert kaart-padding zodat widget breed genoeg is voor 3 cards */}
-            <div id="trustindex-widget" style={{ margin: "0 -24px -16px" }} />
+            <div id="trustindex-widget" className="contact-reviews-widget" style={{ margin: "0 -24px -16px" }} />
           </div>
         </div>
       </section>
@@ -250,7 +250,7 @@ export default function ContactPage() {
       {/* ── Werkgebied kaart ── */}
       <section style={{ background: "#F7F8F6", padding: "0 0 48px" }}>
         <div className="site-wrap">
-          <div style={{
+          <div className="werkgebied-card" style={{
             position: "relative",
             background: "#FFFFFF",
             border: "1px solid #E5E7EB",
@@ -260,15 +260,15 @@ export default function ContactPage() {
             minHeight: "250px",
           }}>
 
-            {/* Links: tekst — neemt linkerhelft */}
-            <div style={{ width: "50%", padding: "32px 64px 32px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            {/* Links: tekst — neemt linkerhelft (op mobiel: bovenaan, volle breedte) */}
+            <div className="werkgebied-text" style={{ width: "50%", padding: "32px 64px 32px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", lineHeight: 1.1, color: "#1A1A1A", marginBottom: "10px" }}>
                 Actief in <span style={{ color: "#9BCB6C" }}>jouw regio.</span>
               </h2>
               <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.6, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 We komen dagelijks langs in jouw regio om snel en efficiënt te helpen waar het er écht toe doet.
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              <div className="werkgebied-regions" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                 {["Antwerpen", "Limburg", "Vlaams-Brabant"].map(r => (
                   <div key={r} style={{ display: "flex", alignItems: "center", gap: "8px", background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "10px", padding: "9px 14px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
                     <MapPin size={14} color="#9BCB6C" style={{ flexShrink: 0 }} />
@@ -278,20 +278,35 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Rechts: kaart — absoluut gepositioneerd, start vroeg genoeg voor de pijl */}
-            <div style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
+            {/* Rechts: kaart — absoluut gepositioneerd, start vroeg genoeg voor de pijl.
+                Op mobiel: gewoon in de flow, onder de tekst. */}
+            <div className="werkgebied-media" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
               <img
                 src="/images/Werkgebied foto 3 plaatsen.png"
                 alt="Werkgebied MOS-X — Antwerpen, Vlaams-Brabant, Limburg"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transform: "translateX(8%)" }}
               />
+
+              {/* Mobiel: chevron loopt van de linker- naar de rechterrand en komt samen
+                  in één punt exact in het midden — overgang van tekst naar kaart */}
+              <svg
+                className="werkgebied-arrow-mobile"
+                preserveAspectRatio="none"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+              >
+                <polygon points="0,0 100,0 100,10 50,50 0,10" fill="white" />
+                <polyline points="0,10 50,50 100,10" fill="none" stroke="#9BCB6C" strokeWidth="1.4" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+              </svg>
             </div>
 
-            {/* Pijl/chevron SVG overgang */}
+            {/* Desktop: pijl/chevron SVG overgang naar rechts */}
             <svg
+              className="werkgebied-arrow-desktop"
               style={{ position: "absolute", top: 0, left: "calc(50% - 60px)", width: "120px", height: "100%", zIndex: 10, pointerEvents: "none" }}
               preserveAspectRatio="none"
               viewBox="0 0 100 100"
+              aria-hidden="true"
             >
               {/* Wit vlak met ">"-vorm rechtsrand */}
               <polygon points="0,0 40,0 70,50 40,100 0,100" fill="white" />

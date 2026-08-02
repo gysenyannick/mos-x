@@ -800,6 +800,98 @@
 }
 
 
+/* -----------------------------------------------
+   CONTACTPAGINA — mobiel (desktop blijft ongewijzigd)
+----------------------------------------------- */
+
+/* De pijl-naar-beneden bestaat alleen op mobiel */
+.werkgebied-arrow-mobile { display: none; }
+
+@media (max-width: 767px) {
+  /* Grid-items mogen nooit breder worden dan de kolom.
+     Zonder min-width:0 duwt de breedste inhoud de hele kolom (en dus beide
+     kaarten) buiten beeld — dat veroorzaakte het afgesneden formulier. */
+  .contact-grid > * { min-width: 0 !important; }
+
+  .contact-form-card   { padding: 24px 20px !important; }
+  .contact-direct-card { padding: 20px 18px !important; }
+
+  /* Trust-chips onder de verzendknop: twee naast elkaar, de langste eronder
+     over de volle breedte. white-space:normal + min-width:0 zorgen dat de tekst
+     op smalle schermen afbreekt i.p.v. de kolom op te blazen. */
+  .contact-trust-chips {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+  .contact-trust-chips > div {
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    padding: 8px 7px !important;
+    min-width: 0 !important;
+  }
+  .contact-trust-chips > div:nth-child(3) {
+    grid-column: 1 / -1 !important;
+  }
+  .contact-trust-chips span {
+    white-space: normal !important;
+  }
+
+  /* Reviews: widget binnen de kaartranden houden, incl. ruimte voor de slider-navigatie */
+  .contact-reviews-card   { padding: 16px 14px 20px !important; }
+  .contact-reviews-widget { margin: 0 !important; }
+  /* Trustindex lijnt zijn wrapper links uit als die smaller is dan de container;
+     auto-marges trekken de reviewkaart terug naar het midden. */
+  .contact-reviews-widget > * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100% !important;
+  }
+  .contact-reviews-widget [class^="ti-"] { max-width: 100% !important; }
+
+  /* Werkgebied: tekst boven, pijl omlaag, foto onder */
+  .werkgebied-card { min-height: 0 !important; }
+
+  .werkgebied-text {
+    width: 100% !important;
+    padding: 28px 22px 14px !important;
+  }
+
+  /* Regio-chips op contentbreedte i.p.v. een krappe 2-koloms grid */
+  .werkgebied-regions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .werkgebied-media {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    /* korter dan de foto zelf (300px) zodat de lege onderrand van de kaart
+       wordt weggesneden en de witruimte boven/onder in balans is */
+    height: 281px !important;
+  }
+  .werkgebied-media img {
+    transform: none !important;
+    height: 300px !important;
+    object-position: center top !important;
+  }
+
+  .werkgebied-arrow-desktop { display: none !important; }
+
+  /* Volle breedte witte band met pijl omlaag: scheiding tussen tekst en kaart */
+  .werkgebied-arrow-mobile {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 10;
+    pointer-events: none;
+  }
+}
+
 /* Hide Trustindex expired trial bottom banner (direct body child only, not the inline widgets) */
 body > div:has(img[src*="trustindex.io/assets/platform/Trustindex/logo.svg"]) {
   display: none !important;
