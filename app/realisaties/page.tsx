@@ -268,6 +268,7 @@ export default function RealisatiesPage() {
           .realisaties-large-slider { order: 2; height: 280px !important; }
           .realisaties-text-body { order: 3; }
           .realisaties-stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .realisaties-location-badges { justify-content: center; width: 100%; }
           .realisaties-carousel { order: 3; }
           .realisaties-velux { order: 4; }
           .realisaties-dakgoot { order: 5; }
@@ -379,7 +380,7 @@ export default function RealisatiesPage() {
               </h2>
               </div>
               <div className="realisaties-text-body">
-              <div style={{ display: "flex", flexDirection: "row", gap: "6px", marginBottom: "18px", flexWrap: "nowrap", justifyContent: "center", width: "100%" }}>
+              <div className="realisaties-location-badges" style={{ display: "flex", flexDirection: "row", gap: "6px", marginBottom: "18px", flexWrap: "nowrap" }}>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", background: "rgba(155,203,108,0.1)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "50px", padding: "3px 9px" }}>
                   <MapPin size={11} color="#9BCB6C" style={{ flexShrink: 0 }} />
                   <span style={{ fontSize: "11px", fontWeight: 600, color: "#555555", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Schilde, Antwerpen</span>
