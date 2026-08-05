@@ -12,7 +12,7 @@ const stats: Stat[] = [
 
 function UspStat({ title, label, icon }: Stat) {
   return (
-    <div className="usp-stat-inner" style={{ padding: "0 24px" }}>
+    <div className="usp-stat-inner" style={{ padding: "0 20px" }}>
       <div className="usp-stat-icon" style={{ marginBottom: "12px" }}>
         {icon}
       </div>
@@ -29,7 +29,6 @@ function UspStat({ title, label, icon }: Stat) {
         fontSize: "13px",
         fontWeight: 500,
         fontFamily: "var(--font-inter), system-ui, sans-serif",
-        whiteSpace: "nowrap",
       }}>{label}</p>
     </div>
   );
@@ -38,6 +37,21 @@ function UspStat({ title, label, icon }: Stat) {
 export default function SiteStatsBar() {
   return (
     <section style={{ background: "transparent", padding: "0 0 48px", position: "relative", zIndex: 5 }}>
+      <style>{`
+        @media (max-width: 640px) {
+          .usp-stats-wrap {
+            padding: 24px 20px !important;
+          }
+          .usp-stat-inner {
+            padding: 0 8px !important;
+            text-align: center;
+          }
+          .usp-stat-icon {
+            display: flex;
+            justify-content: center;
+          }
+        }
+      `}</style>
       <div className="site-wrap">
         <div
           className="usp-stats-wrap"
@@ -48,7 +62,7 @@ export default function SiteStatsBar() {
             background: "#FFFFFF",
             border: "1px solid #9BCB6C",
             borderRadius: "16px",
-            padding: "20px 48px",
+            padding: "20px 40px",
             flexWrap: "wrap",
             overflow: "hidden",
             boxShadow: "0 2px 16px rgba(155,203,108,0.12)",

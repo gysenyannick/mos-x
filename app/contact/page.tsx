@@ -280,11 +280,11 @@ export default function ContactPage() {
 
             {/* Rechts: kaart — absoluut gepositioneerd, start vroeg genoeg voor de pijl.
                 Op mobiel: gewoon in de flow, onder de tekst. */}
-            <div className="werkgebied-media" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
+            <div className="werkgebied-media hidden lg:block" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
               <img
                 src="/images/Werkgebied foto 3 plaatsen.png"
                 alt="Werkgebied MOS-X — Antwerpen, Vlaams-Brabant, Limburg"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transform: "translateX(8%)" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", transform: "translateX(8%)", display: "block" }}
               />
 
               {/* Mobiel: chevron loopt van de linker- naar de rechterrand en komt samen
@@ -313,6 +313,26 @@ export default function ContactPage() {
               {/* Groene pijllijn */}
               <polyline points="40,0 70,50 40,100" fill="none" stroke="#9BCB6C" strokeWidth="1.2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
             </svg>
+
+            {/* Mobiel: volle-breedte chevron boven kaart, gelijke gekleurde ruimte */}
+            <div className="block lg:hidden" style={{ paddingTop: "10px" }}>
+              <svg
+                style={{ display: "block", width: "100%", height: "42px" }}
+                preserveAspectRatio="none"
+                viewBox="0 0 100 42"
+                aria-hidden="true"
+              >
+                <polygon points="0,4 50,40 100,4 100,42 0,42" fill="#FAF8F6" />
+                <polyline points="0,4 50,40 100,4" fill="none" stroke="#9BCB6C" strokeWidth="1.4" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
+              </svg>
+              <div style={{ background: "#FAF8F6", padding: "20px 0" }}>
+                <img
+                  src="/images/Werkgebied donkere achtergrond 2.0.png"
+                  alt="Werkgebied MOS-X - Antwerpen, Vlaams-Brabant, Limburg"
+                  style={{ width: "100%", height: "250px", objectFit: "cover", objectPosition: "center", display: "block" }}
+                />
+              </div>
+            </div>
 
           </div>
         </div>

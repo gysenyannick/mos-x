@@ -239,18 +239,89 @@ export default function RealisatiesPage() {
 
   return (
     <PageLayout>
+      <style>{`
+        @media (max-width: 1023px) {
+          /* Hero */
+          .realisaties-hero { min-height: 420px !important; padding-bottom: 80px !important; }
+          .realisaties-hero-imgwrap { left: 0 !important; }
+          .realisaties-hero-gradient {
+            background: linear-gradient(to bottom, rgba(247,248,246,0.82) 0%, rgba(247,248,246,0.82) 55%, rgba(247,248,246,0.82) 100%) !important;
+          }
+          .realisaties-stats-card {
+            min-width: 0 !important;
+            width: 100% !important;
+            display: flex !important;
+          }
+
+          /* Uitgelicht project */
+          .realisaties-featured-card {
+            padding: 24px 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px !important;
+          }
+          .realisaties-main-grid { display: contents !important; }
+          .realisaties-sub-grid { display: contents !important; }
+          .realisaties-velux-goot { display: contents !important; }
+          .realisaties-text-info { display: contents !important; }
+          .realisaties-text-header { order: 1; }
+          .realisaties-large-slider { order: 2; height: 280px !important; }
+          .realisaties-text-body { order: 3; }
+          .realisaties-stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .realisaties-carousel { order: 3; }
+          .realisaties-velux { order: 4; }
+          .realisaties-dakgoot { order: 5; }
+
+          /* Bekijk meer */
+          .realisaties-project-grid {
+            grid-template-columns: 1fr !important;
+          }
+
+          /* Werkgebied */
+          .werkgebied-card { min-height: 0 !important; }
+          .werkgebied-text {
+            width: 100% !important;
+            padding: 28px 22px 14px !important;
+          }
+          .werkgebied-regions {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+          }
+          .werkgebied-media {
+            position: relative !important;
+            inset: auto !important;
+            width: 100% !important;
+            height: 281px !important;
+          }
+          .werkgebied-media img {
+            transform: none !important;
+            height: 300px !important;
+            object-fit: contain !important;
+            object-position: center center !important;
+          }
+          .werkgebied-arrow-desktop { display: none !important; }
+          .werkgebied-arrow-mobile {
+            display: block !important;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 60px;
+            z-index: 10;
+            pointer-events: none;
+          }
+        }
+      `}</style>
 
       {/* â"€â"€ Hero â"€â"€ */}
-      <section style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "50px", position: "relative", overflow: "hidden" }}>
+      <section className="realisaties-hero" style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "50px", position: "relative", overflow: "hidden" }}>
 
         {/* Foto rechterhelft */}
-        <div style={{ position: "absolute", top: 0, left: "52%", right: 0, bottom: 0, zIndex: 0, overflow: "hidden" }}>
+        <div className="realisaties-hero-imgwrap" style={{ position: "absolute", top: 0, left: "52%", right: 0, bottom: 0, zIndex: 0, overflow: "hidden" }}>
           <img
             src="/images/Lichtaart - After.png"
             alt="Dakreiniging resultaat"
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }}
           />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #F7F8F6 0%, #F7F8F6 5%, transparent 55%)" }} />
+          <div className="realisaties-hero-gradient" style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #F7F8F6 0%, #F7F8F6 5%, transparent 55%)" }} />
         </div>
 
         <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
@@ -274,16 +345,16 @@ export default function RealisatiesPage() {
           </p>
 
           {/* Stats inline card */}
-          <div style={{ display: "inline-flex", alignItems: "center", background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", padding: "16px 0", boxShadow: "0 4px 24px rgba(155,203,108,0.18)", minWidth: "560px" }}>
+          <div className="realisaties-stats-card" style={{ display: "inline-flex", alignItems: "center", background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", padding: "6px 0", boxShadow: "0 4px 24px rgba(155,203,108,0.18)" }}>
             {/* Stat: daken */}
-            <div style={{ flex: "0 0 38%", padding: "0 28px", textAlign: "center" }}>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#9BCB6C", fontSize: "1.6rem", fontWeight: 800, marginBottom: "4px", lineHeight: 1 }}>55+</p>
-              <p style={{ color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "12px", margin: 0 }}>Afgewerkte daken</p>
+            <div style={{ flex: "0 0 38%", padding: "0 16px", textAlign: "center" }}>
+              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#9BCB6C", fontSize: "1.1rem", fontWeight: 800, marginBottom: "2px", lineHeight: 1 }}>55+</p>
+              <p style={{ color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "10px", margin: 0, whiteSpace: "nowrap" }}>Afgewerkte daken</p>
             </div>
             {/* Divider */}
             <div style={{ width: "1px", alignSelf: "stretch", background: "#E5E7EB" }} />
             {/* Trustindex widget — script wordt via useEffect binnenin dit element geladen */}
-            <div ref={trustindexRef} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 28px", zoom: 0.65 }} />
+            <div ref={trustindexRef} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 28px", zoom: 0.82 }} />
           </div>
 
         </div>
@@ -294,22 +365,28 @@ export default function RealisatiesPage() {
       {/* â"€â"€ Uitgelicht project â"€â"€ */}
       <section style={{ background: "#FFFFFF", paddingTop: "48px" }}>
         <div className="site-wrap">
-          <div style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", padding: "40px 48px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "48px", alignItems: "stretch" }}>
+          <div className="realisaties-featured-card" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", padding: "40px 48px" }}>
+          <div className="realisaties-main-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "48px", alignItems: "stretch" }}>
 
             {/* Links: project info */}
-            <div>
+            <div className="realisaties-text-info">
+              <div className="realisaties-text-header">
               <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "10px" }}>
                 Uitgelicht project
               </p>
-              <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", color: "#1A1A1A", marginBottom: "14px" }}>
+              <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", color: "#1A1A1A", marginBottom: "2px" }}>
                 Dakreiniging in Schilde
               </h2>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(155,203,108,0.1)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "50px", padding: "5px 12px", marginBottom: "18px" }}>
-                <MapPin size={12} color="#9BCB6C" />
-                <span style={{ fontSize: "12px", fontWeight: 600, color: "#555555", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Schilde, Antwerpen</span>
-                <span style={{ fontSize: "12px", color: "#9BCB6C", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: "0 4px" }}>·</span>
-                <span style={{ fontSize: "12px", color: "#888888", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>met hoogwerker uitgevoerd</span>
+              </div>
+              <div className="realisaties-text-body">
+              <div style={{ display: "flex", flexDirection: "row", gap: "6px", marginBottom: "18px", flexWrap: "nowrap", justifyContent: "center", width: "100%" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "5px", background: "rgba(155,203,108,0.1)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "50px", padding: "3px 9px" }}>
+                  <MapPin size={11} color="#9BCB6C" style={{ flexShrink: 0 }} />
+                  <span style={{ fontSize: "11px", fontWeight: 600, color: "#555555", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Schilde, Antwerpen</span>
+                </div>
+                <div style={{ display: "inline-flex", alignItems: "center", background: "rgba(155,203,108,0.1)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "50px", padding: "3px 9px" }}>
+                  <span style={{ fontSize: "11px", color: "#888888", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Met hoogwerker uitgevoerd</span>
+                </div>
               </div>
               <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.7, marginBottom: "20px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 Dit dak was zwaar vervuild door mos en algen. Na de reiniging kregen de dakpannen opnieuw hun oorspronkelijke kleur terug. Ook de dakgoten en velux werden grondig gereinigd voor een volledig verzorgd resultaat.
@@ -322,7 +399,7 @@ export default function RealisatiesPage() {
                   </div>
                 ))}
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: "10px", paddingTop: "20px" }}>
+              <div className="realisaties-stats-grid" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: "10px", paddingTop: "20px" }}>
                 {[
                   { label: "Type dakpannen", value: "Betonpannen" },
                   { label: "Oppervlakte", value: "325 m²" },
@@ -335,21 +412,22 @@ export default function RealisatiesPage() {
                   </div>
                 ))}
               </div>
+              </div>
             </div>
 
             {/* Rechts: voor/na slider */}
-            <LargeSlider />
+            <div className="realisaties-large-slider" style={{ height: "100%" }}><LargeSlider /></div>
           </div>
 
           {/* Foto carrousel + gestapelde Velux/Dakgoot sliders */}
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px", marginTop: "32px", paddingTop: "32px", alignItems: "stretch" }}>
+          <div className="realisaties-sub-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px", marginTop: "32px", paddingTop: "32px", alignItems: "stretch" }}>
             {/* Links: foto carrousel */}
-            <ProjectCarousel />
+            <div className="realisaties-carousel"><ProjectCarousel /></div>
 
             {/* Rechts: Velux boven, Dakgoot onder */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              <SmallSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" beforePosition="center center" afterPosition="center center" height="210px" title="Velux" />
-              <SmallSlider beforeSrc="/images/Goot%20voor.JPEG" afterSrc="/images/Goot%20na.JPEG" height="210px" title="Dakgoot" />
+            <div className="realisaties-velux-goot" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div className="realisaties-velux"><SmallSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" beforePosition="center center" afterPosition="center center" height="210px" title="Velux" /></div>
+              <div className="realisaties-dakgoot"><SmallSlider beforeSrc="/images/Goot%20voor.JPEG" afterSrc="/images/Goot%20na.JPEG" height="210px" title="Dakgoot" /></div>
             </div>
           </div>
           </div>
@@ -392,7 +470,7 @@ export default function RealisatiesPage() {
           </div>
 
           {/* Project cards grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+          <div className="realisaties-project-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
             {projecten
               .filter(p => filterTab === "alle" || p.category === filterTab)
               .map((p, i) => (
@@ -434,7 +512,7 @@ export default function RealisatiesPage() {
       {/* â"€â"€ Werkgebied kaart â"€â"€ */}
       <section style={{ background: "#FFFFFF", padding: "0 0 48px" }}>
         <div className="site-wrap">
-          <div style={{
+          <div className="werkgebied-card" style={{
             position: "relative",
             background: "#FFFFFF",
             border: "1px solid #E5E7EB",
@@ -443,14 +521,14 @@ export default function RealisatiesPage() {
             overflow: "hidden",
             minHeight: "250px",
           }}>
-            <div style={{ width: "50%", padding: "32px 64px 32px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div className="werkgebied-text" style={{ width: "50%", padding: "32px 64px 32px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
               <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", lineHeight: 1.1, color: "#1A1A1A", marginBottom: "10px" }}>
                 Actief in <span style={{ color: "#9BCB6C" }}>jouw regio.</span>
               </h2>
               <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.6, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 We komen dagelijks langs in jouw regio om snel en efficiënt te helpen waar het er écht toe doet.
               </p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              <div className="werkgebied-regions" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                 {["Antwerpen", "Limburg", "Vlaams-Brabant"].map(r => (
                   <div key={r} style={{ display: "flex", alignItems: "center", gap: "8px", background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "10px", padding: "9px 14px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
                     <MapPin size={14} color="#9BCB6C" style={{ flexShrink: 0 }} />
@@ -459,14 +537,25 @@ export default function RealisatiesPage() {
                 ))}
               </div>
             </div>
-            <div style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
+            <div className="werkgebied-media hidden lg:block" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
               <img
-                src="/images/Werkgebied foto 3 plaatsen.png"
+                src="/images/Regio kaart witte achtergrond.png"
                 alt="Werkgebied MOS-X - Antwerpen, Vlaams-Brabant, Limburg"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transform: "translateX(8%)" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block" }}
               />
+              <svg
+                className="werkgebied-arrow-mobile"
+                preserveAspectRatio="none"
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+                style={{ display: "none" }}
+              >
+                <polygon points="0,0 100,0 100,10 50,50 0,10" fill="white" />
+                <polyline points="0,10 50,50 100,10" fill="none" stroke="#9BCB6C" strokeWidth="1.4" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+              </svg>
             </div>
             <svg
+              className="werkgebied-arrow-desktop"
               style={{ position: "absolute", top: 0, left: "calc(50% - 60px)", width: "120px", height: "100%", zIndex: 10, pointerEvents: "none" }}
               preserveAspectRatio="none"
               viewBox="0 0 100 100"
@@ -474,6 +563,16 @@ export default function RealisatiesPage() {
               <polygon points="0,0 40,0 70,50 40,100 0,100" fill="white" />
               <polyline points="40,0 70,50 40,100" fill="none" stroke="#9BCB6C" strokeWidth="1.2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
             </svg>
+            {/* Mobiel: chevron + afbeelding */}
+            <div className="block lg:hidden" style={{ paddingTop: "10px" }}>
+              <svg style={{ display: "block", width: "100%", height: "42px" }} preserveAspectRatio="none" viewBox="0 0 100 42" aria-hidden="true">
+                <polygon points="0,4 50,40 100,4 100,42 0,42" fill="#FAF8F6" />
+                <polyline points="0,4 50,40 100,4" fill="none" stroke="#9BCB6C" strokeWidth="1.4" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
+              </svg>
+              <div style={{ background: "#FAF8F6", padding: "20px 0" }}>
+                <img src="/images/Werkgebied donkere achtergrond 2.0.png" alt="Werkgebied MOS-X - Antwerpen, Vlaams-Brabant, Limburg" style={{ width: "100%", height: "250px", objectFit: "cover", objectPosition: "center", display: "block" }} />
+              </div>
+            </div>
           </div>
         </div>
       </section>

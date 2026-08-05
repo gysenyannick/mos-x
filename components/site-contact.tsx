@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Phone, CheckCircle } from "lucide-react";
+import { Phone, CheckCircle, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 const GREEN = "#9ACA63";
@@ -13,6 +13,21 @@ export default function SiteContact() {
   const [phoneHovered, setPhoneHovered] = useState(false);
 
   return (
+    <>
+    <style>{`
+      @media (max-width: 1023px) {
+        .site-contact-grid {
+          grid-template-columns: 1fr !important;
+          padding: 28px 24px 24px !important;
+          gap: 28px !important;
+        }
+        .contact-col-divider {
+          padding-left: 0 !important;
+          border-left: none !important;
+          margin-top: 0 !important;
+        }
+      }
+    `}</style>
     <section style={{
       background: "#F7F8F6",
       padding: "60px 24px 80px",
@@ -109,6 +124,7 @@ export default function SiteContact() {
               }}
             >
               BEREKEN JE RICHTPRIJS
+              <ChevronRight size={16} strokeWidth={2.5} />
             </a>
           </div>
 
@@ -197,8 +213,25 @@ export default function SiteContact() {
             </a>
           </div>
 
+          {/* Mobile only: chevron + regio kaart */}
+          <div className="block lg:hidden">
+            <div style={{ display: "flex", justifyContent: "center", lineHeight: 0 }}>
+              <svg width="32" height="17" viewBox="0 0 32 17" fill="none">
+                <path d="M1 1L16 16L31 1" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div style={{ marginTop: "24px" }}>
+              <img
+                src="/images/Regio kaart witte achtergrond.png"
+                alt="Werkgebied Mos-X"
+                style={{ width: "100%", display: "block", borderRadius: "12px" }}
+              />
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
+    </>
   );
 }

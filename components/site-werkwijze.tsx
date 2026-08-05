@@ -121,26 +121,28 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
 
 
       {showButton && (
-        <a
-          href="/#calculator"
-          style={{
-            marginTop: "24px",
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "#9BCB6C", color: "#FFFFFF",
-            fontWeight: 700, fontSize: "13px",
-            borderRadius: "8px", padding: "10px 20px",
-            textDecoration: "none",
-            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            border: "2px solid #9BCB6C",
-            transition: "background 200ms ease, color 200ms ease",
-            whiteSpace: "nowrap",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
-          onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
-        >
-          Bereken je richtprijs
-          <ChevronRight size={14} strokeWidth={2.5} />
-        </a>
+        <div className="werkwijze-cta-wrap" style={{ marginTop: "24px" }}>
+          <a
+            href="/#calculator"
+            className="werkwijze-cta-btn"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              background: "#9BCB6C", color: "#FFFFFF",
+              fontWeight: 700, fontSize: "13px",
+              borderRadius: "8px", padding: "10px 20px",
+              textDecoration: "none",
+              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+              border: "2px solid #9BCB6C",
+              transition: "background 200ms ease, color 200ms ease",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
+            onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
+          >
+            Bereken je richtprijs
+            <ChevronRight size={14} strokeWidth={2.5} />
+          </a>
+        </div>
       )}
     </div>
   );
@@ -173,6 +175,13 @@ export default function SiteWerkwijze() {
 
   return (
     <section style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(155,203,108,0.06) 0%, transparent 65%), #F7F8F6", padding: "100px 0", width: "100%" }}>
+      <style>{`
+        @media (max-width: 1024px) {
+          .werkwijze-cta-wrap {
+            margin-top: 6px !important;
+          }
+        }
+      `}</style>
       <div className="site-wrap">
 
         {/* Header */}

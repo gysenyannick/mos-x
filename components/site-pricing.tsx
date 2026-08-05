@@ -78,10 +78,11 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
   );
 }
 
-function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190 }: { label: string; onClick: () => void; selected: boolean; imgSrc?: string; imgHeight?: number }) {
+function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardClass = "" }: { label: string; onClick: () => void; selected: boolean; imgSrc?: string; imgHeight?: number; cardClass?: string }) {
   return (
     <button
       onClick={onClick}
+      className={`choice-card ${cardClass}`}
       style={{
         display: "flex", flexDirection: "column", alignItems: "stretch",
         padding: 0, borderRadius: "14px", cursor: "pointer", overflow: "hidden",
@@ -92,14 +93,32 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190 }: { lab
         position: "relative", textAlign: "left",
       }}
     >
-      {imgSrc ? (
-        <img src={imgSrc} alt={label} style={{ width: "100%", height: `${imgHeight}px`, objectFit: "cover", display: "block" }} />
-      ) : (
-        <div style={{ width: "100%", height: `${imgHeight}px`, background: "#F0F0F0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", color: "#AAA" }}>
-          Geen foto
+      <div className="cc-img-wrap" style={{ position: "relative", flexShrink: 0 }}>
+        {imgSrc ? (
+          <img src={imgSrc} alt={label} className="cc-img" style={{ width: "100%", height: `${imgHeight}px`, objectFit: "cover", display: "block" }} />
+        ) : (
+          <div style={{ width: "100%", height: `${imgHeight}px`, background: "#F0F0F0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", color: "#AAA" }}>
+            Geen foto
+          </div>
+        )}
+        {/* Gradient overlay + label — alleen zichtbaar op mobile via CSS */}
+        <div className="cc-overlay" style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)", display: "none", pointerEvents: "none" }} />
+        <div className="cc-overlay-label" style={{ position: "absolute", bottom: "10px", left: "12px", right: "12px", display: "none", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ color: "#fff", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", lineHeight: 1.3 }}>
+            {label}
+          </span>
+          <div style={{
+            width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
+            border: selected ? "none" : "2px solid rgba(255,255,255,0.5)",
+            background: selected ? GREEN : "transparent",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            {selected && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+          </div>
         </div>
-      )}
-      <div style={{ padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+      </div>
+      {/* Desktop footer label */}
+      <div className="cc-footer" style={{ padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
         <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#111", lineHeight: 1.3 }}>
           {label}
         </span>
@@ -206,11 +225,13 @@ export default function SitePricing() {
     { label: "Vrijstaande woning", img: "/images/vrijstaand.png" },
   ];
   const dakTypes = [
-    { label: "Dakpannen (keramisch of beton)", img: "/images/Betonpannen.jpg" },
-    { label: "Natuurleien",                    img: "/images/Natuurleien.jpg" },
-    { label: "Kunstleien (asbest vrij)",       img: "/images/Kunstleien.jfif" },
-    { label: "Overzetdak",                     img: "/images/Overzetdak.png" },
-    { label: "Ik weet het niet",               img: undefined },
+    { label: "Betonpannen",       img: "/images/Betonpannen.jpg" },
+    { label: "Keramische pannen", img: "/images/Keramische pannen.jpg" },
+    { label: "Tegelpannen",       img: "/images/Tegelpannen.jpg" },
+    { label: "Kunstleien",        img: "/images/Kunstleien.png" },
+    { label: "Natuurleien",       img: "/images/Leien dak.jpeg" },
+    { label: "Metalen daken",     img: "/images/Metalen daken.jpg" },
+    { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
     { id: "hydrofuge", title: "Hydrofuge", bullets: ["Waterafstotende bescherming", "Mos en vuil hechten minder snel", "Dak blijft ademend"] },
@@ -220,6 +241,38 @@ export default function SitePricing() {
 
   return (
     <section id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
+      <style>{`
+        @media (max-width: 640px) {
+          .woning-grid {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+          }
+          .choice-card-woning {
+            height: 144px !important;
+            flex-direction: row !important;
+          }
+          .choice-card-woning .cc-img-wrap {
+            flex: 1;
+          }
+          .choice-card-woning .cc-img {
+            height: 144px !important;
+            width: 100% !important;
+          }
+          .choice-card-woning .cc-overlay {
+            display: block !important;
+          }
+          .choice-card-woning .cc-overlay-label {
+            display: flex !important;
+          }
+          .choice-card-woning .cc-footer {
+            display: none !important;
+          }
+          /* Stap 2 daktype: 2 kolommen op mobile */
+          .dak-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+      `}</style>
       <div style={{ maxWidth: "1300px", margin: "0 auto" }}>
 
         {/* Witte zweefkaart */}
@@ -361,9 +414,9 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
                     Wat voor type woning is het?
                   </h3>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px" }}>
+                  <div className="woning-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px" }}>
                     {woningTypes.map(w => (
-                      <ChoiceCard key={w.label} label={w.label} imgSrc={w.img} selected={woning === w.label} onClick={() => { setWoning(w.label); setTimeout(next, 220); }} />
+                      <ChoiceCard key={w.label} label={w.label} imgSrc={w.img} selected={woning === w.label} onClick={() => { setWoning(w.label); setTimeout(next, 220); }} cardClass="choice-card-woning" />
                     ))}
                   </div>
                 </div>
@@ -374,9 +427,9 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
                     Wat voor dakpannen liggen op je dak?
                   </h3>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginBottom: "8px" }}>
+                  <div className="dak-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "10px" }}>
                     {dakTypes.filter(d => d.label !== "Ik weet het niet").map(d => (
-                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={120} selected={dak === d.label} onClick={() => { setDak(d.label); setTimeout(next, 220); }} />
+                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={130} selected={dak === d.label} onClick={() => { setDak(d.label); setTimeout(next, 220); }} />
                     ))}
                   </div>
                   <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => { setDak("Ik weet het niet"); setTimeout(next, 220); }} />
@@ -398,12 +451,12 @@ export default function SitePricing() {
                       {opp} m²
                     </span>
                   </div>
-                  <input type="range" min={50} max={300} step={5} value={opp}
+                  <input type="range" min={50} max={500} step={5} value={opp}
                     onChange={e => setOpp(Number(e.target.value))}
                     style={{ width: "100%", accentColor: GREEN, marginBottom: "8px" }}
                   />
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#AAA", marginBottom: "28px" }}>
-                    <span>50 m²</span><span>300 m²</span>
+                    <span>50 m²</span><span>500 m²</span>
                   </div>
                   <NextBtn onClick={next} />
                 </div>
