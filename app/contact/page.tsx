@@ -93,7 +93,7 @@ export default function ContactPage() {
               style={{ background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", boxShadow: "0 2px 16px rgba(155,203,108,0.12)" }}>
               <p className="font-black text-lg mb-6"
                 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
-                Stel je vraag
+                Stel je vraag of vraag een offerte aan.
               </p>
               <form className="space-y-5" action="#" method="POST">
                 <div className="grid sm:grid-cols-2 gap-5">

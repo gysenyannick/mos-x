@@ -108,7 +108,7 @@ function SmallSlider({ beforeSrc, afterSrc, beforePosition = "50% 70%", afterPos
 
 export default function SiteRealisatiesPreview() {
   return (
-    <section style={{ background: "#F7F8F6", padding: "40px 0 72px", position: "relative" }}>
+    <section style={{ background: "#FFFFFF", padding: "40px 0 72px", position: "relative" }}>
       <div className="site-wrap" style={{ position: "relative", zIndex: 2 }}>
 
         {/* Heading */}

@@ -215,13 +215,13 @@ export default function DakcoatingPage() {
                 Meer dan alleen een nieuwe kleur.
               </p>
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Na tientallen jaren krijgen dakpannen heel wat te verduren. Regen, vorst, UV-straling en vervuiling zorgen ervoor dat de originele beschermlaag langzaam kan verdwijnen.
+                Na tientallen jaren krijgen dakpannen heel wat te verduren. Regen, vorst, UV-straling en vervuiling zorgen ervoor dat de oorspronkelijke beschermlaag langzaam verdwijnt.
               </p>
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Wanneer de dakpan poreuzer wordt, blijft vocht makkelijker hangen en krijgen mos en algen sneller opnieuw kans.
+                Wanneer een dakreiniging alleen niet meer volstaat, biedt een dakcoating de ideale oplossing. Na een grondige reiniging brengen we een nieuwe beschermlaag aan die je dak opnieuw beschermt tegen vocht, UV-straling en nieuwe mosgroei.
               </p>
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, marginBottom: "40px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Een professionele dakcoating brengt opnieuw een beschermende laag aan over je bestaande dak.
+                Zo krijgt je dak niet alleen zijn frisse uitstraling terug, maar verleng je ook de levensduur van je bestaande dak.
               </p>
               <div>
                 <Link
@@ -404,7 +404,7 @@ export default function DakcoatingPage() {
         <div className="site-wrap">
 
           {/* Heading + intro */}
-          <div style={{ textAlign: "center", maxWidth: "680px", margin: "0 auto 56px" }}>
+          <div style={{ textAlign: "center", maxWidth: "750px", margin: "0 auto 56px" }}>
             <p className="site-eyebrow mb-4">Dak vervangen of dak coaten?</p>
             <h2 style={{
               fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
@@ -414,15 +414,13 @@ export default function DakcoatingPage() {
               Geef je dak een tweede leven<br /><span style={{ color: "#9BCB6C" }}>zonder een volledige renovatie.</span>
             </h2>
             <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>
-              Een verouderde uitstraling betekent niet altijd dat je dak versleten is.
-            </p>
-            <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>
-              Wanneer de basis nog goed is, kan een professionele dakcoating je dak opnieuw beschermen voor een fractie van de investering.
+              Een verouderde uitstraling betekent niet altijd dat je dak versleten is.<br />
+              Een professionele dakcoating kan je dak opnieuw beschermen voor een fractie van de investering.
             </p>
           </div>
 
           {/* Vergelijking: 2 kaarten met absolute VS badge */}
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative", maxWidth: "960px", margin: "0 auto" }}>
 
             {/* VS badge — alleen desktop */}
             <div className="hidden lg:flex" style={{
@@ -443,7 +441,7 @@ export default function DakcoatingPage() {
               background: "#FFF8F8",
               border: "1.5px solid rgba(239,68,68,0.2)",
               borderRadius: "16px",
-              padding: "36px 40px",
+              padding: "36px 28px",
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px", paddingBottom: "20px", borderBottom: "1px solid rgba(239,68,68,0.12)" }}>
                 <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -478,7 +476,7 @@ export default function DakcoatingPage() {
               background: "rgba(155,203,108,0.05)",
               border: "1.5px solid rgba(155,203,108,0.3)",
               borderRadius: "16px",
-              padding: "36px 40px",
+              padding: "36px 28px",
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px", paddingBottom: "20px", borderBottom: "1px solid rgba(155,203,108,0.18)" }}>
                 <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -535,13 +533,33 @@ export default function DakcoatingPage() {
                 Onze dakcoating is ontwikkeld om je dak opnieuw te beschermen tegen dagelijkse invloeden zoals regen, zon, vorst en vervuiling. Na het uitharden vormt de coating een duurzame beschermlaag over de dakbedekking.
               </p>
 
-              {/* Doorsnede afbeelding */}
-              <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.10)" }}>
-                <img
-                  src="/images/Dakpan foto doorsnede.png"
-                  alt="Dakpan doorsnede — beschermlaag zichtbaar"
-                  style={{ width: "100%", height: "auto", display: "block" }}
-                />
+              {/* Foto + voordelen naast elkaar */}
+              <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
+                <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.10)", flexShrink: 0, width: "180px" }}>
+                  <img
+                    src="/images/Dakcoating verfpot.png"
+                    alt="Dakcoating verfpot"
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                </div>
+
+                {/* Voordelen lijst */}
+                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+                  {[
+                    "Hoge dampdoorlaatbaarheid",
+                    "UV-bestendig",
+                    "Bestand tegen regen, vorst en weersinvloeden",
+                    "Helpt nieuwe mos- en algengroei te beperken",
+                    "Vormt een vocht- en vuilafstotende beschermlaag",
+                  ].map((item) => (
+                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(155,203,108,0.15)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                        <Check size={11} color="#9BCB6C" strokeWidth={3} />
+                      </div>
+                      <span style={{ fontSize: "14px", color: "#1A1A1A", fontWeight: 600, lineHeight: 1.5, fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 

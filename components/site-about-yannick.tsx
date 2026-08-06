@@ -1,12 +1,12 @@
 "use client";
 
-import { ShieldCheck, Diamond, MessageCircle, Handshake, User, Calculator, ChevronRight } from "lucide-react";
+import { CalendarCheck, Home, MessageSquareDot, Headphones, User, Calculator, ChevronRight } from "lucide-react";
 
 const usps = [
-  { Icon: ShieldCheck,    title: "Afspraken die je kunt vertrouwen",       sub: "We doen wat we beloven, van start tot afwerking." },
-  { Icon: Diamond,        title: "Premium kwaliteit zonder compromissen",   sub: "We werken enkel met de beste producten en technieken." },
-  { Icon: MessageCircle,  title: "Snelle en heldere communicatie",          sub: "Je krijgt altijd snel antwoord en weet waar je aan toe bent." },
-  { Icon: Handshake,      title: "Een partner waarop je kunt blijven rekenen", sub: "Ook na de werken staan we voor je klaar." },
+  { Icon: CalendarCheck,     title: "We komen onze afspraken na." },
+  { Icon: Home,              title: "We behandelen je dak met de grootste zorg." },
+  { Icon: MessageSquareDot,  title: "We communiceren helder en snel." },
+  { Icon: Headphones,        title: "We blijven ook na de werken bereikbaar." },
 ];
 
 export default function SiteAboutYannick() {
@@ -25,7 +25,7 @@ export default function SiteAboutYannick() {
               minHeight: "460px",
             }}>
               <img
-                src="/images/Yannick_foto_3_0.png"
+                src="/images/Yannick foto op dak.JPEG"
                 alt="Yannick - oprichter MOS-X"
                 className="about-yannick-photo"
                 style={{
@@ -34,7 +34,7 @@ export default function SiteAboutYannick() {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  objectPosition: "center 20%",
+                  objectPosition: "center 70%",
                   borderRadius: "16px",
                 }}
               />
@@ -81,10 +81,10 @@ export default function SiteAboutYannick() {
             </p>
             <h2 style={{
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              fontWeight: 800, fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", lineHeight: 1.15,
+              fontWeight: 800, fontSize: "clamp(1.5rem, 2.6vw, 2rem)", lineHeight: 1.15,
               color: "#1A1A1A", marginBottom: "16px", letterSpacing: "-0.028em",
             }}>
-              Dakontmossing<br /><span style={{ color: "#9BCB6C" }}>zonder zorgen.</span>
+              Kiezen voor MOS-X<br />is kiezen voor <span style={{ color: "#9BCB6C" }}>gemoedsrust.</span>
             </h2>
 
             {/* Green accent line */}
@@ -96,13 +96,22 @@ export default function SiteAboutYannick() {
               fontFamily: "var(--font-inter), system-ui, sans-serif",
               marginBottom: "40px",
             }}>
-              Kiezen voor MOS-X is kiezen voor zekerheid. Niet alleen in het eindresultaat, maar tijdens het volledige traject. Van duidelijke communicatie en professionele uitvoering tot hoogwaardige producten en blijvende ondersteuning. Zo hoef jij je nergens zorgen over te maken.
+              Een dak reinigen is één ding. Er een bedrijf voor kiezen waarop je kunt vertrouwen, is minstens even belangrijk. Daarom draait het bij MOS-X niet alleen om het eindresultaat, maar ook om duidelijke afspraken, heldere communicatie en een service waarop je kunt blijven rekenen.
             </p>
 
             {/* USPs */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-              {usps.map(({ Icon, title, sub }) => (
-                <div key={title} style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
+            <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", marginBottom: "12px" }}>
+              Vier beloftes die we aan elke klant maken.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {usps.map(({ Icon, title }) => (
+                <div key={title} style={{
+                  display: "flex", alignItems: "center", gap: "14px",
+                  background: "#F7F8F6",
+                  border: "1px solid #E5E7EB",
+                  borderRadius: "10px",
+                  padding: "8px 16px",
+                }}>
                   <div style={{
                     flexShrink: 0,
                     width: "36px", height: "36px",
@@ -110,21 +119,14 @@ export default function SiteAboutYannick() {
                     border: "1px solid rgba(155,203,108,0.25)",
                     borderRadius: "50%",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    marginTop: "1px",
                   }}>
                     <Icon size={17} color="#9BCB6C" strokeWidth={2} />
                   </div>
-                  <div>
-                    <p style={{
-                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                      fontWeight: 700, fontSize: "14px", color: "#1A1A1A",
-                      marginBottom: "3px",
-                    }}>{title}</p>
-                    <p style={{
-                      fontFamily: "var(--font-inter), system-ui, sans-serif",
-                      fontSize: "13px", color: "#888888", lineHeight: 1.5,
-                    }}>{sub}</p>
-                  </div>
+                  <p style={{
+                    fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                    fontWeight: 700, fontSize: "14px", color: "#1A1A1A",
+                    margin: 0,
+                  }}>{title}</p>
                 </div>
               ))}
             </div>

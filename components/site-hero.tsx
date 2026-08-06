@@ -132,8 +132,7 @@ export default function SiteHero() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
               >
-                <Phone className="w-4 h-4" />
-                Bel Yannick rechtstreeks
+                Plan een plaatsbezoek
               </a>
             </div>
 
@@ -151,6 +150,7 @@ export default function SiteHero() {
                 borderRadius: "8px", padding: "6px 12px",
                 whiteSpace: "nowrap",
               }}>
+                <span style={{ fontSize: "11px", fontWeight: 400, fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#FFFFFF" }}>Bekend van</span>
                 <Tv style={{ width: "11px", height: "11px", flexShrink: 0, color: "#FFFFFF" }} />
                 <span style={{ fontSize: "12px", fontWeight: 900, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textTransform: "uppercase", letterSpacing: "0.05em", color: "#FFFFFF" }}>VTM Lifestyle</span>
                 <span style={{ fontSize: "13px", fontStyle: "italic", fontWeight: 700, fontFamily: "Georgia, serif", color: "#FFFFFF" }}>&amp;</span>

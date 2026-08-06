@@ -162,7 +162,10 @@ export default function OverOnsPage() {
         <div className="site-wrap">
           <div className="over-ons-mission-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
 
-            {/* Links: tekst */}
+            {/* Links: interactieve voor/na slider */}
+            <BeforeAfterSlider />
+
+            {/* Rechts: tekst */}
             <div>
               <p style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "20px" }}>
                 Waarom MOS-X bestaat
@@ -194,9 +197,6 @@ export default function OverOnsPage() {
                 </p>
               </div>
             </div>
-
-            {/* Rechts: interactieve voor/na slider */}
-            <BeforeAfterSlider />
 
           </div>
         </div>
@@ -343,43 +343,6 @@ export default function OverOnsPage() {
                 ))}
               </div>
 
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── Beter vandaag ── */}
-      <section style={{ background: "#F7F8F6", padding: "80px 0" }}>
-        <div className="site-wrap">
-          <div className="over-ons-invest-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "56px", alignItems: "center" }}>
-
-            {/* Links: 2 foto's naast elkaar */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              <div style={{ borderRadius: "14px", overflow: "hidden", aspectRatio: "3/4" }}>
-                <img src="/images/yannick-werk.png" alt="Yannick aan het werk" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
-              </div>
-              <div style={{ borderRadius: "14px", overflow: "hidden", aspectRatio: "3/4" }}>
-                <video autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }}>
-                  <source src="/videos/Dakcoating.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </div>
-
-            {/* Rechts: tekst */}
-            <div>
-              <p style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9BCB6C", marginBottom: "12px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
-                We blijven investeren
-              </p>
-              <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", letterSpacing: "-0.028em", lineHeight: 1.1, color: "#1A1A1A", marginBottom: "24px" }}>
-                Vandaag goed.<br /><span style={{ color: "#9BCB6C" }}>Morgen nog beter.</span>
-              </h2>
-              <p style={{ fontSize: "15px", color: "#555555", lineHeight: 1.75, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                De daksector evolueert voortdurend. Nieuwe producten, betere coatings en veiligere technieken zorgen ervoor dat daken vandaag duurzamer behandeld kunnen worden dan enkele jaren geleden.
-              </p>
-              <p style={{ fontSize: "15px", color: "#555555", lineHeight: 1.75, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Daarom blijven we investeren in opleidingen, nieuwe technologieën en hoogwaardige materialen zodat onze klanten altijd kunnen rekenen op de beste oplossing van vandaag.
-              </p>
             </div>
 
           </div>

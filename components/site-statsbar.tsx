@@ -6,7 +6,7 @@ type Stat = { title: string; label: React.ReactNode; icon: React.ReactNode };
 
 const stats: Stat[] = [
   { title: "Tot 10 jaar garantie",  label: "Bescherming op onze premium coatings.",  icon: <ShieldCheck size={28} color="#9BCB6C" /> },
-  { title: "55+ daken gereinigd",   label: "Van reiniging tot complete bescherming.", icon: <Home        size={28} color="#9BCB6C" /> },
+  { title: "150+ daken gereinigd",  label: "Van reiniging tot complete bescherming.", icon: <Home        size={28} color="#9BCB6C" /> },
   { title: "Actief in de regio's",  label: "Antwerpen, Limburg, Vlaams-Brabant",      icon: <MapPin      size={28} color="#9BCB6C" /> },
 ];
 
@@ -59,13 +59,12 @@ export default function SiteStatsBar() {
             position: "relative",
             zIndex: 2,
             display: "flex",
-            background: "#FFFFFF",
-            border: "1px solid #9BCB6C",
+            background: "transparent",
+            border: "none",
             borderRadius: "16px",
             padding: "20px 40px",
             flexWrap: "wrap",
             overflow: "hidden",
-            boxShadow: "0 2px 16px rgba(155,203,108,0.12)",
           }}
         >
           {stats.map((s, i) => (
