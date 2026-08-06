@@ -240,6 +240,25 @@ export default function RealisatiesPage() {
   return (
     <PageLayout>
       <style>{`
+        @media (min-width: 1024px) {
+          .realisaties-stats-card {
+            padding: 8px 0 !important;
+            border-radius: 18px !important;
+          }
+          .realisaties-stats-card .stat-number {
+            font-size: 1.3rem !important;
+          }
+          .realisaties-stats-card .stat-label {
+            font-size: 11px !important;
+          }
+          .realisaties-stats-card .stat-col {
+            padding: 0 22px !important;
+          }
+          .realisaties-stats-card .trustindex-col {
+            padding: 0 32px !important;
+            zoom: 0.92 !important;
+          }
+        }
         @media (max-width: 1023px) {
           /* Hero */
           .realisaties-hero { min-height: 420px !important; padding-bottom: 80px !important; }
@@ -348,14 +367,14 @@ export default function RealisatiesPage() {
           {/* Stats inline card */}
           <div className="realisaties-stats-card" style={{ display: "inline-flex", alignItems: "center", background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", padding: "6px 0", boxShadow: "0 4px 24px rgba(155,203,108,0.18)" }}>
             {/* Stat: daken */}
-            <div style={{ flex: "0 0 38%", padding: "0 16px", textAlign: "center" }}>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#9BCB6C", fontSize: "1.1rem", fontWeight: 800, marginBottom: "2px", lineHeight: 1 }}>55+</p>
-              <p style={{ color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "10px", margin: 0, whiteSpace: "nowrap" }}>Afgewerkte daken</p>
+            <div className="stat-col" style={{ flex: "0 0 38%", padding: "0 16px", textAlign: "center" }}>
+              <p className="stat-number" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#9BCB6C", fontSize: "1.1rem", fontWeight: 800, marginBottom: "2px", lineHeight: 1 }}>55+</p>
+              <p className="stat-label" style={{ color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "10px", margin: 0, whiteSpace: "nowrap" }}>Afgewerkte daken</p>
             </div>
             {/* Divider */}
             <div style={{ width: "1px", alignSelf: "stretch", background: "#E5E7EB" }} />
             {/* Trustindex widget — script wordt via useEffect binnenin dit element geladen */}
-            <div ref={trustindexRef} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 28px", zoom: 0.82 }} />
+            <div ref={trustindexRef} className="trustindex-col" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 28px", zoom: 0.82 }} />
           </div>
 
         </div>
@@ -540,9 +559,9 @@ export default function RealisatiesPage() {
             </div>
             <div className="werkgebied-media hidden lg:block" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
               <img
-                src="/images/Regio kaart witte achtergrond.png"
+                src="/images/Regiokaart pc.png"
                 alt="Werkgebied MOS-X - Antwerpen, Vlaams-Brabant, Limburg"
-                style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center", display: "block" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transform: "scale(1.3) translateX(3%)", display: "block" }}
               />
               <svg
                 className="werkgebied-arrow-mobile"

@@ -18,7 +18,7 @@ export default function SiteAboutYannick() {
         <div className="flex flex-col lg:flex-row" style={{ gap: "32px", alignItems: "stretch" }}>
 
           {/* ── LINKS: foto ── */}
-          <div className="about-yannick-photo-wrap" style={{ flex: "0 0 55%", position: "relative" }}>
+          <div className="about-yannick-photo-wrap" style={{ flex: "0 0 45%", position: "relative" }}>
             <div className="about-yannick-photo-inner" style={{
               position: "relative",
               height: "100%",
@@ -103,7 +103,7 @@ export default function SiteAboutYannick() {
             <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", marginBottom: "12px" }}>
               Vier beloftes die we aan elke klant maken.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
               {usps.map(({ Icon, title }) => (
                 <div key={title} style={{
                   display: "flex", alignItems: "center", gap: "14px",

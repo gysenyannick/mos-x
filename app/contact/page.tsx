@@ -282,9 +282,9 @@ export default function ContactPage() {
                 Op mobiel: gewoon in de flow, onder de tekst. */}
             <div className="werkgebied-media hidden lg:block" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
               <img
-                src="/images/Werkgebied foto 3 plaatsen.png"
+                src="/images/Regiokaart pc.png"
                 alt="Werkgebied MOS-X — Antwerpen, Vlaams-Brabant, Limburg"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", transform: "translateX(8%)", display: "block" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transform: "scale(1.3) translateX(3%)", display: "block" }}
               />
 
               {/* Mobiel: chevron loopt van de linker- naar de rechterrand en komt samen
