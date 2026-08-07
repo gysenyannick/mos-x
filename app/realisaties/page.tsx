@@ -615,7 +615,7 @@ export default function RealisatiesPage() {
                 }}
               >
                 <img
-                  src="/images/Instagram Profiel foto.png"
+                  src="/images/instagram-profiel.png"
                   alt="MOS-X Instagram profiel"
                   style={{ width: "100%", display: "block" }}
                 />
