@@ -583,7 +583,7 @@ export default function MosXDakzorgPage() {
                 }}
               >
                 <Calendar size={16} strokeWidth={2} />
-                Vraag MOS-X Dakzorg aan
+                MOS-X Dakzorg aanvragen
                 <ChevronRight size={16} strokeWidth={2.5} />
               </a>
 
