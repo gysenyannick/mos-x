@@ -537,7 +537,7 @@ export default function MosXDakzorgPage() {
                   <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "6px" }}>Vanaf</p>
                   <p style={{ fontSize: "52px", fontWeight: 800, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "0", lineHeight: 1, marginBottom: "8px" }}>€<span style={{ marginLeft: "5px" }}>249</span></p>
                   <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "20px" }}>per onderhoudsbeurt</p>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "10px 12px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB", maxWidth: "175px" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "10px 12px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB" }}>
                     <Calendar size={13} color="#9BCB6C" strokeWidth={2} style={{ flexShrink: 0, marginTop: "2px" }} />
                     <p style={{ fontSize: "12px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                       Onderhoud jaarlijks of om de 2 jaar, afhankelijk van je dak.
