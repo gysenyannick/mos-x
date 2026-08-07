@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Phone, MapPin, CheckCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, Phone, MapPin } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 
