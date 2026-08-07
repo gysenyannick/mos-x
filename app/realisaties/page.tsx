@@ -23,7 +23,7 @@ const projecten = [
     category: "dakreiniging" as const,
     voorImg: "/images/olen-voor.png",
     naImg: "/images/olen-na.png",
-    type: "Keramische betonpannen",
+    type: "Keramische pannen",
     opp: "200 m²",
     duur: "2 dagen",
   },
@@ -33,7 +33,7 @@ const projecten = [
     category: "dakcoating" as const,
     voorImg: "/images/Before bevel.jpg",
     naImg: "/images/Na bevel.jpg",
-    type: "Keramische pannen",
+    type: "Betonpannen",
     opp: "200 m²",
     duur: "2 dagen",
   },
@@ -43,8 +43,8 @@ const projecten = [
     category: "dakreiniging" as const,
     voorImg: "/images/koningshooikt-voor.jpg",
     naImg: "/images/koningshooikt-na.jpg",
-    type: "Betonnen pannen",
-    opp: "140 m²",
+    type: "Betonpannen",
+    opp: "80 m²",
     duur: "2 dagen",
   },
 ];
@@ -644,10 +644,10 @@ export default function RealisatiesPage() {
               {/* Profiel */}
               <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px", background: "#F7F8F6", borderRadius: "14px", border: "1px solid #E5E7EB" }}>
                 <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#1A1A1A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
-                  <img src="/images/logo.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
+                  <img src="/images/logo-footer.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>Mos-X.be</p>
+                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>Mos-X</p>
                   <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>@mosx.be</p>
                 </div>
                 <a
