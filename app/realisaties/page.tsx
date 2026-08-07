@@ -84,7 +84,7 @@ function LargeSlider() {
     el.addEventListener("touchmove", onTouchMove, { passive: false });
     el.addEventListener("touchend", onTouchEnd);
     return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
-  }, []);
+  }, [updatePos]);
 
   return (
     <div
@@ -216,14 +216,15 @@ function ProjectCarousel() {
     return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
   }, [lightboxOpen]);
 
-  // Auto-advance elke 4 seconden (6s bij video's)
+  // Auto-advance enkel als lightbox gesloten is
   useEffect(() => {
+    if (lightboxOpen) return;
     const delay = isVideo ? 6000 : 4000;
     const timer = setInterval(() => {
       setIdx(i => (i + 1) % projectCarouselPhotos.length);
     }, delay);
     return () => clearInterval(timer);
-  }, [idx, isVideo]);
+  }, [idx, isVideo, lightboxOpen]);
 
   return (
     <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", height: "100%", minHeight: "380px", boxShadow: "0 4px 24px rgba(0,0,0,0.10)", background: "#000" }}>
