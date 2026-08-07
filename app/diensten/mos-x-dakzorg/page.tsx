@@ -218,7 +218,7 @@ export default function MosXDakzorgPage() {
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "20px",
             }}>
-              Langer genieten van <span style={{ color: "#9BCB6C" }}>een verzorgd dak.</span>
+              Langer genieten van<br /><span style={{ color: "#9BCB6C" }}>een verzorgd dak.</span>
             </h2>
             <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
               Na een dakreiniging ziet je dak er weer proper en verzorgd uit.<br />
