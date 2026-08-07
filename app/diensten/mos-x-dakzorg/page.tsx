@@ -582,7 +582,6 @@ export default function MosXDakzorgPage() {
                   boxSizing: "border-box",
                 }}
               >
-                <Calendar size={16} strokeWidth={2} />
                 MOS-X Dakzorg aanvragen
                 <ChevronRight size={16} strokeWidth={2.5} />
               </a>
