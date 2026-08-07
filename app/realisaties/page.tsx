@@ -320,7 +320,7 @@ export default function RealisatiesPage() {
           .realisaties-text-header { order: 1; }
           .realisaties-large-slider { order: 2; height: 280px !important; }
           .realisaties-text-body { order: 3; }
-          .realisaties-stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .realisaties-stats-grid { grid-template-columns: 1fr 1fr 1fr !important; }
           .realisaties-location-badges { justify-content: center; width: 100%; }
           .realisaties-carousel { order: 3; }
           .realisaties-velux { order: 4; }
