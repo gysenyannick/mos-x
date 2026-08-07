@@ -656,7 +656,7 @@ export default function RealisatiesPage() {
                   rel="noopener noreferrer"
                   onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#9BCB6C"; el.style.color = "#9BCB6C"; }}
                   onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#E5E7EB"; el.style.color = "#1A1A1A"; }}
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "8px 14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: "#1A1A1A", textDecoration: "none", transition: "border-color 200ms ease, color 200ms ease", whiteSpace: "nowrap" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", border: "1.5px solid #9BCB6C", borderRadius: "8px", padding: "8px 14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: "#1A1A1A", textDecoration: "none", transition: "border-color 200ms ease, color 200ms ease", whiteSpace: "nowrap" }}
                 >
                   Naar Instagram
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
