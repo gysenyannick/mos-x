@@ -289,7 +289,7 @@ export default function MosXDakzorgPage() {
             <h2 style={{
               fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              letterSpacing: "-0.028em", lineHeight: 1.12, whiteSpace: "nowrap",
+              letterSpacing: "-0.028em", lineHeight: 1.12,
             }}>
               Wat zit er in jouw <span style={{ color: "#9BCB6C" }}>Dakzorg plan?</span>
             </h2>
