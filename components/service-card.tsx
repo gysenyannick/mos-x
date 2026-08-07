@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { Droplets, Shield, CalendarCheck } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, ChevronRight } from "lucide-react";
 
 export interface ServiceCardData {
   id: string;
@@ -33,7 +33,7 @@ export const serviceCards: ServiceCardData[] = [
       "Meer uitstraling voor je woning",
       "Langere levensduur van je dak",
     ],
-    link: "Meer over dakreiniging →",
+    link: "Meer over dakreiniging",
   },
   {
     id: "dak-coaten",
@@ -47,10 +47,10 @@ export const serviceCards: ServiceCardData[] = [
     desc: "Geef je dak een tweede leven zonder een dure renovatie.",
     checks: [
       "Dak oogt opnieuw als nieuw",
-      "Bescherming tegen regen, vorst en UV",
+      "Bescherming tegen regen, vorst, UV en mos",
       "Uitstel van een dure renovatie",
     ],
-    link: "Meer over dakcoating →",
+    link: "Meer over dakcoating",
   },
   {
     id: "dakabonnement",
@@ -67,7 +67,7 @@ export const serviceCards: ServiceCardData[] = [
       "Jaarlijkse controle door een specialist",
       "Problemen oplossen vóór ze duur worden",
     ],
-    link: "Ontdek MOS-X Dakzorg →",
+    link: "Ontdek MOS-X Dakzorg",
   },
 ];
 
@@ -179,39 +179,26 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
             ))}
           </div>
           <div style={{ marginTop: "auto" }}>
-            <span style={{ color: "#9BCB6C", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{s.link}</span>
+            <span style={{ color: "#9BCB6C", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-montserrat), system-ui, sans-serif", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+              {s.link}
+              <ChevronRight size={15} strokeWidth={2.5} />
+            </span>
           </div>
         </div>
       </Link>
 
       {s.badge === "10 jaar garantie" && (
-        <div style={{
-          position: "absolute", top: "-18px", right: "-18px",
-          width: "80px", height: "80px",
-          borderRadius: "50%",
-          background: "linear-gradient(145deg, #FFE566 0%, #F5A623 55%, #D4820A 100%)",
-          boxShadow: "0 4px 20px rgba(212,130,10,0.45), 0 2px 6px rgba(0,0,0,0.2)",
-          display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          zIndex: 20,
-          outline: "2px solid rgba(255,255,255,0.4)",
-          outlineOffset: "-7px",
-          pointerEvents: "none",
-        }}>
-          <span style={{ fontSize: "16px", lineHeight: 1, marginBottom: "2px" }}>★</span>
-          <span style={{
-            fontSize: "11px", fontWeight: 800, color: "#FFFFFF",
-            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            lineHeight: 1.1, textAlign: "center",
-            textShadow: "0 1px 3px rgba(0,0,0,0.25)",
-          }}>10 jaar</span>
-          <span style={{
-            fontSize: "8px", fontWeight: 700, color: "rgba(255,255,255,0.92)",
-            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            lineHeight: 1.2, textAlign: "center", letterSpacing: "0.04em",
-            textShadow: "0 1px 2px rgba(0,0,0,0.2)",
-          }}>garantie</span>
-        </div>
+        <img
+          src="/images/10 jaar garantie badge.png"
+          alt="10 jaar garantie"
+          style={{
+            position: "absolute", top: "-28px", right: "-28px",
+            width: "110px", height: "110px",
+            objectFit: "contain",
+            zIndex: 20,
+            pointerEvents: "none",
+          }}
+        />
       )}
     </div>
   );

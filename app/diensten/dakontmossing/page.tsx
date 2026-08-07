@@ -257,7 +257,7 @@ export default function DakontmossingPage() {
       `}</style>
 
       {/* Hero — dark two-col */}
-      <section style={{ background: "#111111", position: "relative", overflow: "hidden", height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <section style={{ background: "#111111", position: "relative", overflow: "hidden", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
 
         {/* Video desktop — absoluut, vult de volledige rechterhelft van de sectie */}
         <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "44%", zIndex: 1 }}>
@@ -283,7 +283,7 @@ export default function DakontmossingPage() {
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(17,17,17,0.93) 0%, rgba(17,17,17,0.80) 50%, rgba(17,17,17,0.90) 100%)", pointerEvents: "none" }} />
         </div>
 
-        <div className="site-wrap lg:pt-[120px]" style={{ position: "relative", zIndex: 2, paddingTop: "50px", paddingBottom: "60px", width: "100%" }}>
+        <div className="site-wrap pt-[115px] lg:pt-[120px] pb-[100px] lg:pb-[60px]" style={{ position: "relative", zIndex: 2, width: "100%" }}>
 
           <BackLink href="/diensten" dark />
 

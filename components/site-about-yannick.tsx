@@ -103,28 +103,24 @@ export default function SiteAboutYannick() {
             <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", marginBottom: "12px" }}>
               Vier beloftes die we aan elke klant maken.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
               {usps.map(({ Icon, title }) => (
-                <div key={title} style={{
-                  display: "flex", alignItems: "center", gap: "14px",
+                <div key={title} className="flex items-center gap-2 sm:gap-3.5 p-2 sm:p-[8px_16px]" style={{
                   background: "#F7F8F6",
                   border: "1px solid #E5E7EB",
                   borderRadius: "10px",
-                  padding: "8px 16px",
                 }}>
-                  <div style={{
-                    flexShrink: 0,
-                    width: "36px", height: "36px",
+                  <div className="w-7 h-7 sm:w-9 sm:h-9 flex-shrink-0 flex items-center justify-center" style={{
                     background: "rgba(155,203,108,0.12)",
                     border: "1px solid rgba(155,203,108,0.25)",
                     borderRadius: "50%",
-                    display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <Icon size={17} color="#9BCB6C" strokeWidth={2} />
+                    <Icon size={14} color="#9BCB6C" strokeWidth={2} className="sm:hidden" />
+                    <Icon size={17} color="#9BCB6C" strokeWidth={2} className="hidden sm:block" />
                   </div>
-                  <p style={{
+                  <p className="text-[11px] sm:text-[14px]" style={{
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                    fontWeight: 700, fontSize: "14px", color: "#1A1A1A",
+                    fontWeight: 700, color: "#1A1A1A",
                     margin: 0,
                   }}>{title}</p>
                 </div>

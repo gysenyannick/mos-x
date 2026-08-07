@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 
 interface BeforeAfterSliderProps {
@@ -29,16 +29,24 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, beforeFilter }:
     window.addEventListener("mouseup", onUp);
   };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    updatePosition(e.touches[0].clientX);
-  };
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const handleTouchMove = (e: TouchEvent) => {
+      if (dragging.current) {
+        e.preventDefault();
+        updatePosition(e.touches[0].clientX);
+      }
+    };
+    el.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", handleTouchMove);
+  }, [updatePosition]);
 
   return (
     <div
       ref={containerRef}
       className="relative select-none"
       style={{ borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3", cursor: "ew-resize" }}
-      onTouchMove={onTouchMove}
     >
       {/* BEFORE */}
       <div className="absolute inset-0">

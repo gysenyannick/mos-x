@@ -197,33 +197,17 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
 
     {/* Golden guarantee badge — overlaps top-right corner */}
     {s.badge === "10 jaar garantie" && (
-      <div style={{
-        position: "absolute", top: "-18px", right: "-18px",
-        width: "80px", height: "80px",
-        borderRadius: "50%",
-        background: "linear-gradient(145deg, #FFE566 0%, #F5A623 55%, #D4820A 100%)",
-        boxShadow: "0 4px 20px rgba(212,130,10,0.45), 0 2px 6px rgba(0,0,0,0.2)",
-        display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center",
-        zIndex: 20,
-        outline: "2px solid rgba(255,255,255,0.4)",
-        outlineOffset: "-7px",
-        pointerEvents: "none",
-      }}>
-        <span style={{ fontSize: "16px", lineHeight: 1, marginBottom: "2px" }}>★</span>
-        <span style={{
-          fontSize: "11px", fontWeight: 800, color: "#FFFFFF",
-          fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-          lineHeight: 1.1, textAlign: "center",
-          textShadow: "0 1px 3px rgba(0,0,0,0.25)",
-        }}>10 jaar</span>
-        <span style={{
-          fontSize: "8px", fontWeight: 700, color: "rgba(255,255,255,0.92)",
-          fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-          lineHeight: 1.2, textAlign: "center", letterSpacing: "0.04em",
-          textShadow: "0 1px 2px rgba(0,0,0,0.2)",
-        }}>garantie</span>
-      </div>
+      <img
+        src="/images/10 jaar garantie badge.png"
+        alt="10 jaar garantie"
+        style={{
+          position: "absolute", top: "-28px", right: "-28px",
+          width: "110px", height: "110px",
+          objectFit: "contain",
+          zIndex: 20,
+          pointerEvents: "none",
+        }}
+      />
     )}
     </div>
   );

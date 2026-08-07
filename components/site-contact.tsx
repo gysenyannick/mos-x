@@ -239,21 +239,6 @@ export default function SiteContact() {
             </div>
           </div>
 
-          {/* Mobile only: chevron + regio kaart */}
-          <div className="block lg:hidden">
-            <div style={{ display: "flex", justifyContent: "center", lineHeight: 0 }}>
-              <svg width="32" height="17" viewBox="0 0 32 17" fill="none">
-                <path d="M1 1L16 16L31 1" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div style={{ marginTop: "24px" }}>
-              <img
-                src="/images/Regio kaart witte achtergrond.png"
-                alt="Werkgebied Mos-X"
-                style={{ width: "100%", display: "block", borderRadius: "12px" }}
-              />
-            </div>
-          </div>
 
         </div>
       </div>

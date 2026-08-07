@@ -110,7 +110,7 @@ export default function SiteFaq() {
     <section style={{ background: "#F7F8F6", padding: "100px 24px" }}>
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
 
-        <div style={{ marginBottom: "48px" }}>
+        <div style={{ marginBottom: "24px" }}>
           <p style={{
             fontSize: "12px", fontWeight: 700, textTransform: "uppercase",
             letterSpacing: "0.12em", color: "#9BCB6C", marginBottom: "12px",

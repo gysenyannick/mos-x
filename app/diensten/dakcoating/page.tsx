@@ -98,7 +98,7 @@ export default function DakcoatingPage() {
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(17,17,17,0.93) 0%, rgba(17,17,17,0.80) 50%, rgba(17,17,17,0.90) 100%)", pointerEvents: "none" }} />
         </div>
 
-        <div className="site-wrap lg:pt-[140px]" style={{ position: "relative", zIndex: 2, paddingTop: "80px", paddingBottom: "60px", width: "100%" }}>
+        <div className="site-wrap pt-[100px] lg:pt-[140px]" style={{ position: "relative", zIndex: 2, paddingBottom: "60px", width: "100%" }}>
 
           <BackLink href="/diensten" dark />
 
