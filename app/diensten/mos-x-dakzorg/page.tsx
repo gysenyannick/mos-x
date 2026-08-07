@@ -163,7 +163,7 @@ export default function MosXDakzorgPage() {
                   transition: "background 200ms ease",
                 }}
               >
-                Dakzorg aanvragen
+                MOS-X Dakzorg aanvragen
                 <ChevronRight size={15} strokeWidth={2.5} />
               </a>
               <a
