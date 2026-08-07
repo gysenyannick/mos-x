@@ -214,10 +214,9 @@ export default function MosXDakzorgPage() {
           <div style={{ textAlign: "center", marginBottom: "56px" }}>
             <p className="site-eyebrow mb-4">Waarom MOS-X Dakzorg?</p>
             <h2 style={{
-              fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
+              fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "20px",
-              whiteSpace: "nowrap",
             }}>
               Langer genieten van <span style={{ color: "#9BCB6C" }}>een verzorgd dak.</span>
             </h2>
