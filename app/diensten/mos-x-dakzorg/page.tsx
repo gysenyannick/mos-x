@@ -594,7 +594,7 @@ export default function MosXDakzorgPage() {
                   <path d="M10 9v5M10 6.5v.5" stroke="#9BCB6C" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
                 <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                  Grotere herstellingen? Die bespreken we altijd vooraf.
+                  Grotere herstellingen?<br />Die bespreken we altijd vooraf.
                 </p>
               </div>
 
