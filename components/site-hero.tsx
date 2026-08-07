@@ -56,13 +56,12 @@ export default function SiteHero() {
           {/* ── Left column ── */}
           <div>
             <p
-              className="mb-5"
+              className="mb-5 text-[10px] md:text-[12px]"
               style={{
                 fontFamily: "var(--font-inter), system-ui, sans-serif",
                 fontWeight: 600,
-                fontSize: "12px",
                 textTransform: "uppercase",
-                letterSpacing: "0.14em",
+                letterSpacing: "0.12em",
                 color: "#9BCB6C",
                 display: "flex",
                 alignItems: "flex-start",
