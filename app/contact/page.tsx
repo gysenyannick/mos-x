@@ -134,7 +134,7 @@ export default function ContactPage() {
                     <option value="" disabled style={{ color: "#AAAAAA" }}>Selecteer een dienst...</option>
                     <option value="dakreiniging" style={{ color: "#1A1A1A" }}>Dakreiniging</option>
                     <option value="dakcoating" style={{ color: "#1A1A1A" }}>Dakcoating</option>
-                    <option value="dakabonnement" style={{ color: "#1A1A1A" }}>Dakabonnement</option>
+                    <option value="dakabonnement" style={{ color: "#1A1A1A" }}>MOS-X Dakzorg</option>
                     <option value="andere" style={{ color: "#1A1A1A" }}>Andere</option>
                   </select>
                 </div>

@@ -219,9 +219,6 @@ export default function OverOnsPage() {
               <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.8, marginBottom: "28px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 Voor mij stopt een project niet wanneer de werken klaar zijn. Het stopt wanneer jij met een goed gevoel terugkijkt op je keuze voor MOS-X.
               </p>
-              <p style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontStyle: "italic", fontSize: "22px", color: "#1A1A1A", letterSpacing: "0.02em" }}>
-                Yannick
-              </p>
             </div>
 
             {/* Rechts: foto met quote overlay */}
@@ -280,14 +277,6 @@ export default function OverOnsPage() {
                 Wij helpen huiseigenaars hun dak professioneel te reinigen, beschermen en onderhouden, zodat het zo lang mogelijk in topconditie blijft. Zo bieden we een slimme, duurzame én betaalbare oplossing voor de toekomst van je woning.
               </p>
 
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "10px" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", border: "1.5px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Leaf size={16} color="#9BCB6C" strokeWidth={1.75} />
-                </div>
-                <p style={{ fontSize: "14px", color: "#4a8a20", fontWeight: 600, lineHeight: 1, fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap", margin: 0 }}>
-                  Een dak dat je kunt behouden, hoef je niet te vervangen.
-                </p>
-              </div>
             </div>
 
           </div>

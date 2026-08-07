@@ -135,7 +135,7 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
   );
 }
 
-function ExtraCard({ title, bullets, selected, onClick }: { title: string; bullets: string[]; selected: boolean; onClick: () => void }) {
+function ExtraCard({ title, subtitle, bullets, selected, onClick }: { title: string; subtitle?: string; bullets: string[]; selected: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
@@ -156,9 +156,14 @@ function ExtraCard({ title, bullets, selected, onClick }: { title: string; bulle
         {selected && <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
       </div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#111", marginBottom: bullets.length ? "8px" : "0" }}>
+        <div style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#111", marginBottom: subtitle || bullets.length ? "4px" : "0" }}>
           {title}
         </div>
+        {subtitle && (
+          <div style={{ fontSize: "13px", color: "#777", marginBottom: bullets.length ? "8px" : "0", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+            {subtitle}
+          </div>
+        )}
         {bullets.map((b, i) => (
           <div key={i} style={{ display: "flex", gap: "6px", fontSize: "13px", color: "#555", marginBottom: "3px" }}>
             <span style={{ color: GREEN, fontWeight: 700, flexShrink: 0 }}>✓</span> {b}
@@ -234,9 +239,9 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "hydrofuge", title: "Hydrofuge", bullets: ["Waterafstotende bescherming", "Mos en vuil hechten minder snel", "Dak blijft ademend"] },
-    { id: "coating", title: "Dakcoating — tot 10 jaar garantie", bullets: ["Nieuwe kleur en uitstraling", "Beschermt tegen mos en algen", "Verlengt de levensduur van het dak"] },
-    { id: "geen", title: "Geen extra behandeling", bullets: [] },
+    { id: "coating", title: "Ja, ik wil graag dakcoating", subtitle: "Voor een vernieuwde uitstraling en een extra beschermende afwerking.", bullets: ["Je dak ziet er opnieuw als nieuw uit", "Beschermt tegen vocht en weersinvloeden", "Minder snelle mos- en algengroei"] },
+    { id: "geen", title: "Nee, alleen dakreiniging", subtitle: "Inclusief standaard anti-mosbehandeling.", bullets: [] },
+    { id: "advies", title: "Ik weet het niet", subtitle: "Adviseer mij wat het beste past bij mijn dak.", bullets: [] },
   ];
 
   return (
@@ -464,12 +469,11 @@ export default function SitePricing() {
 
               {step === 4 && (
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "4px" }}>
-                    Wil je jouw dak extra laten beschermen?
+                  <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
+                    Wil je je dak ook laten coaten?
                   </h3>
-                  <p style={{ fontSize: "13px", color: "#999", marginBottom: "20px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>(optioneel)</p>
                   {extraOpties.map(o => (
-                    <ExtraCard key={o.id} title={o.title} bullets={o.bullets} selected={extra === o.id} onClick={() => setExtra(o.id)} />
+                    <ExtraCard key={o.id} title={o.title} subtitle={o.subtitle} bullets={o.bullets} selected={extra === o.id} onClick={() => setExtra(o.id)} />
                   ))}
                   <div style={{ marginTop: "8px" }}>
                     <NextBtn onClick={next} disabled={!extra} />

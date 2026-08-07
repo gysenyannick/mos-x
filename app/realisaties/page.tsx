@@ -402,7 +402,7 @@ export default function RealisatiesPage() {
           <div className="realisaties-stats-card" style={{ display: "inline-flex", alignItems: "center", background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", padding: "6px 0", boxShadow: "0 4px 24px rgba(155,203,108,0.18)" }}>
             {/* Stat: daken */}
             <div className="stat-col" style={{ flex: "0 0 38%", padding: "0 16px", textAlign: "center" }}>
-              <p className="stat-number" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#9BCB6C", fontSize: "1.1rem", fontWeight: 800, marginBottom: "2px", lineHeight: 1 }}>55+</p>
+              <p className="stat-number" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#9BCB6C", fontSize: "1.1rem", fontWeight: 800, marginBottom: "2px", lineHeight: 1 }}>150+</p>
               <p className="stat-label" style={{ color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "10px", margin: 0, whiteSpace: "nowrap" }}>Afgewerkte daken</p>
             </div>
             {/* Divider */}
