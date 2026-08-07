@@ -214,11 +214,11 @@ export default function MosXDakzorgPage() {
           <div style={{ textAlign: "center", marginBottom: "56px" }}>
             <p className="site-eyebrow mb-4">Waarom MOS-X Dakzorg?</p>
             <h2 style={{
-              fontSize: "clamp(2rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
+              fontSize: "clamp(1.6rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "20px",
             }}>
-              Langer genieten van<br /><span style={{ color: "#9BCB6C" }}>een verzorgd dak.</span>
+              <span style={{ whiteSpace: "nowrap" }}>Langer genieten van</span><br /><span style={{ color: "#9BCB6C", whiteSpace: "nowrap" }}>een verzorgd dak.</span>
             </h2>
             <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
               Na een dakreiniging ziet je dak er weer proper en verzorgd uit.<br />
