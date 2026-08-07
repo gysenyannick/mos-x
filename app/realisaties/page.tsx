@@ -623,10 +623,10 @@ export default function RealisatiesPage() {
             </div>
 
             {/* Rechts: features + profiel */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "28px", alignItems: "center" }} className="lg:items-start">
 
               {/* 3 features */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%", maxWidth: "320px" }} className="lg:max-w-none">
                 {[
                   { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>, label: "Dagelijkse updates" },
                   { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>, label: "Voor & na transformaties" },
@@ -642,7 +642,7 @@ export default function RealisatiesPage() {
               </div>
 
               {/* Profiel */}
-              <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px", background: "rgba(155,203,108,0.10)", borderRadius: "14px", border: "1px solid rgba(155,203,108,0.35)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px", background: "rgba(155,203,108,0.10)", borderRadius: "14px", border: "1px solid rgba(155,203,108,0.35)", width: "100%", maxWidth: "320px" }} className="lg:max-w-none">
                 <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden", border: "1px solid #E5E7EB" }}>
                   <img src="/images/logo.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
                 </div>
