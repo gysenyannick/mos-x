@@ -103,20 +103,19 @@ export default function SiteAboutYannick() {
             <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", marginBottom: "12px" }}>
               Vier beloftes die we aan elke klant maken.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
+            <div className="sm:w-fit" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
               {usps.map(({ Icon, title }) => (
-                <div key={title} className="flex items-center gap-2 sm:gap-3.5 p-2 sm:p-[8px_16px]" style={{
+                <div key={title} className="flex items-center gap-2 sm:gap-3 p-[6px_10px] sm:p-[6px_14px]" style={{
                   background: "#F7F8F6",
                   border: "1px solid #E5E7EB",
                   borderRadius: "10px",
                 }}>
-                  <div className="w-7 h-7 sm:w-9 sm:h-9 flex-shrink-0 flex items-center justify-center" style={{
+                  <div className="w-7 h-7 flex-shrink-0 flex items-center justify-center" style={{
                     background: "rgba(155,203,108,0.12)",
                     border: "1px solid rgba(155,203,108,0.25)",
                     borderRadius: "50%",
                   }}>
-                    <Icon size={14} color="#9BCB6C" strokeWidth={2} className="sm:hidden" />
-                    <Icon size={17} color="#9BCB6C" strokeWidth={2} className="hidden sm:block" />
+                    <Icon size={14} color="#9BCB6C" strokeWidth={2} />
                   </div>
                   <p className="text-[11px] sm:text-[14px]" style={{
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
