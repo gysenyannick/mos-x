@@ -560,7 +560,116 @@ export default function RealisatiesPage() {
         </div>
       </section>
 
-      {/* â"€â"€ Werkgebied kaart â"€â"€ */}
+      {/* ── Instagram banner ── */}
+      <section style={{ background: "#FFFFFF", padding: "20px 0 96px" }}>
+        <div className="site-wrap">
+          <div className="grid grid-cols-1 lg:grid-cols-[4fr_3fr_4fr]" style={{ gap: "56px", alignItems: "center" }}>
+
+            {/* Links: tekst + CTA */}
+            <div>
+              <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9BCB6C", marginBottom: "14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", display: "flex", alignItems: "center", gap: "8px" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+                Volg ons op Instagram
+              </p>
+              <h2 style={{ fontSize: "clamp(1.6rem, 2.5vw, 2.1rem)", fontWeight: 800, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "-0.028em", lineHeight: 1.15, marginBottom: "14px" }}>
+                Meer realisaties<br />op <span style={{ color: "#9BCB6C" }}>Instagram.</span>
+              </h2>
+              <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.65, marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Ontdek dagelijks nieuwe projecten, voor & na transformaties en handige tips voor een verzorgd en duurzaam dak.
+              </p>
+              <a
+                href="https://www.instagram.com/mosx.be/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
+                style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "10px", padding: "13px 22px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", textDecoration: "none", transition: "background 200ms ease" }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+                Bekijk ons op Instagram
+                <ChevronRight size={15} strokeWidth={2.5} />
+              </a>
+            </div>
+
+            {/* Midden: schuin telefoon */}
+            <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", paddingLeft: "16px" }}>
+              <a
+                href="https://www.instagram.com/mosx.be/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  maxWidth: "190px",
+                  borderRadius: "28px",
+                  overflow: "hidden",
+                  border: "6px solid #1a1a1a",
+                  outline: "1px solid rgba(255,255,255,0.08)",
+                  transform: "perspective(900px) rotateY(-10deg) rotateX(3deg)",
+                  boxShadow: "20px 28px 64px rgba(0,0,0,0.22), -4px -4px 16px rgba(0,0,0,0.06)",
+                  cursor: "pointer",
+                }}
+              >
+                <img
+                  src="/images/Instagram Profiel foto.png"
+                  alt="MOS-X Instagram profiel"
+                  style={{ width: "100%", display: "block" }}
+                />
+              </a>
+            </div>
+
+            {/* Rechts: features + profiel */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+
+              {/* 3 features */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                {[
+                  { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>, label: "Dagelijkse updates" },
+                  { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>, label: "Voor & na transformaties" },
+                  { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>, label: "Tips & advies" },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(155,203,108,0.1)", border: "1px solid rgba(155,203,108,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      {item.icon}
+                    </div>
+                    <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{item.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Profiel */}
+              <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px", background: "#F7F8F6", borderRadius: "14px", border: "1px solid #E5E7EB" }}>
+                <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#1A1A1A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
+                  <img src="/images/logo.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>Mos-X.be</p>
+                  <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>@mosx.be</p>
+                </div>
+                <a
+                  href="https://www.instagram.com/mosx.be/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#9BCB6C"; el.style.color = "#9BCB6C"; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#E5E7EB"; el.style.color = "#1A1A1A"; }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "8px 14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: "#1A1A1A", textDecoration: "none", transition: "border-color 200ms ease, color 200ms ease", whiteSpace: "nowrap" }}
+                >
+                  Naar Instagram
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── Werkgebied kaart ── */}
       <section style={{ background: "#FFFFFF", padding: "0 0 48px" }}>
         <div className="site-wrap">
           <div className="werkgebied-card" style={{
