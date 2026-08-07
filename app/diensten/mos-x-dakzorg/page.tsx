@@ -575,7 +575,7 @@ export default function MosXDakzorgPage() {
                   display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
                   width: "100%", padding: "16px 24px", borderRadius: "12px",
                   background: "#9BCB6C", color: "#FFFFFF",
-                  fontSize: "15px", fontWeight: 700,
+                  fontSize: "14px", fontWeight: 700, whiteSpace: "nowrap",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   textDecoration: "none", marginBottom: "12px",
                   transition: "background 200ms ease",
