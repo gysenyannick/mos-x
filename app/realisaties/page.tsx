@@ -644,7 +644,7 @@ export default function RealisatiesPage() {
               {/* Profiel */}
               <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px", background: "#F7F8F6", borderRadius: "14px", border: "1px solid #E5E7EB" }}>
                 <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#1A1A1A", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden" }}>
-                  <img src="/images/logo-footer.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
+                  <img src="/images/mos-x-avatar.jpg" alt="MOS-X" style={{ width: "48px", height: "48px", objectFit: "cover" }} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>Mos-X</p>
