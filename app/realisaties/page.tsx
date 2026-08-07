@@ -563,11 +563,11 @@ export default function RealisatiesPage() {
       {/* ── Instagram banner ── */}
       <section style={{ background: "#FFFFFF", padding: "20px 0 96px" }}>
         <div className="site-wrap">
-          <div className="grid grid-cols-1 lg:grid-cols-[4fr_3fr_4fr]" style={{ gap: "56px", alignItems: "center" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[4fr_3fr_4fr] text-center lg:text-left" style={{ gap: "56px", alignItems: "center" }}>
 
             {/* Links: tekst + CTA */}
             <div>
-              <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9BCB6C", marginBottom: "14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", display: "flex", alignItems: "center", gap: "8px" }}>
+              <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9BCB6C", marginBottom: "14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }} className="lg:justify-start">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
                 </svg>
@@ -596,7 +596,7 @@ export default function RealisatiesPage() {
             </div>
 
             {/* Midden: schuin telefoon */}
-            <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", paddingLeft: "16px" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", paddingLeft: "0" }}>
               <a
                 href="https://www.instagram.com/mosx.be/"
                 target="_blank"
