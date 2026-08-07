@@ -518,7 +518,6 @@ export default function MosXDakzorgPage() {
                 fontSize: "clamp(1.6rem, 2.5vw, 2.1rem)", fontWeight: 800, color: "#1A1A1A",
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                 letterSpacing: "-0.028em", lineHeight: 1.15, marginBottom: "12px",
-                whiteSpace: "nowrap",
               }}>
                 Je dak verzorgd. <span style={{ color: "#9BCB6C" }}>Jaar na jaar.</span>
               </h2>
