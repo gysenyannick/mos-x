@@ -519,7 +519,7 @@ export default function MosXDakzorgPage() {
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                 letterSpacing: "-0.028em", lineHeight: 1.15, marginBottom: "12px",
               }}>
-                Je dak verzorgd. <span style={{ color: "#9BCB6C" }}>Jaar na jaar.</span>
+                Je dak verzorgd.<br /><span style={{ color: "#9BCB6C" }}>Jaar na jaar.</span>
               </h2>
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.65, marginBottom: "28px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 Periodieke opvolging na je dakreiniging,<br />
