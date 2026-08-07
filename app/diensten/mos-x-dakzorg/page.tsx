@@ -7,10 +7,10 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 
 const benefits = [
-  { Icon: Banknote, title: "Voorkom onverwachte kosten",          desc: "Kleine problemen worden sneller ontdekt voordat ze groter worden." },
-  { Icon: Leaf,     title: "Hou mosvorming onder controle",        desc: "Met periodiek onderhoud en preventieve behandelingen blijft je dak langer verzorgd." },
-  { Icon: Droplets, title: "Bescherm je dakconstructie",           desc: "We controleren dakbedekking, afwatering en gevoelige punten." },
-  { Icon: Home,     title: "Behoud de uitstraling van je woning",  desc: "Een verzorgd dak zorgt jaar lang voor een frisse uitstraling." },
+  { Icon: Home,     title: "Resultaat langer behouden",         desc: "Je dak blijft langer proper en verzorgd." },
+  { Icon: Leaf,     title: "Mosgroei tijdig aanpakken",          desc: "Beginnende mos- en algengroei krijgt minder kans om zich opnieuw op te bouwen." },
+  { Icon: Eye,      title: "Kleine gebreken sneller opmerken",   desc: "We controleren je dak en signaleren aandachtspunten voordat ze groter worden." },
+  { Icon: Banknote, title: "Geen grote achterstand meer",        desc: "Door regelmatig onderhoud voorkom je dat je dak opnieuw jarenlang vervuilt." },
 ];
 
 const includesItems = [
@@ -129,7 +129,7 @@ export default function MosXDakzorgPage() {
 
           {/* Tekst — linkerhelft op desktop */}
           <div className="lg:w-1/2">
-            <p className="site-eyebrow mb-4">MOS-X Dakzorg Plan</p>
+            <p className="site-eyebrow mb-4">MOS-X DAKZORG PLAN</p>
             <h1 style={{
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               fontWeight: 800,
@@ -139,12 +139,13 @@ export default function MosXDakzorgPage() {
               lineHeight: 1.12,
               marginBottom: "20px",
             }}>
-              Jaar na jaar een gezond dak,<br />
-              <span style={{ color: "#9BCB6C" }}>zonder zorgen.</span>
+              Je dak is weer proper.<br />
+              <span style={{ color: "#9BCB6C" }}>Wij houden het zo.</span>
             </h1>
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "56px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-              De meeste dakschade ontstaat niet plots, ze bouwt op over jaren. Mos, verstopte goten, kleine scheurtjes: allemaal te vermijden met een jaarlijkse inspectie door Yannick.<br /><br />
-              Met MOS-X Dakzorg betaalt u een vaste jaarprijs en krijgt u de zekerheid dat uw dak in goede handen is.
+              Na een professionele dakreiniging wil je natuurlijk dat je dak zo lang mogelijk proper en verzorgd blijft.<br /><br />
+              Met MOS-X Dakzorg volgen we je dak jaarlijks op. We controleren de staat van het dak, reinigen waar nodig en pakken beginnende mosgroei en kleine aandachtspunten tijdig aan.<br /><br />
+              Zo haal je meer uit je dakreiniging en voorkom je dat je dak na enkele jaren opnieuw volledig aangepakt moet worden.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
               <a
@@ -216,18 +217,20 @@ export default function MosXDakzorgPage() {
               fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "20px",
+              whiteSpace: "nowrap",
             }}>
-              Geen verrassingen meer.<br />
-              <span style={{ color: "#9BCB6C" }}>Gewoon een gezond dak.</span>
+              Langer genieten van <span style={{ color: "#9BCB6C" }}>een verzorgd dak.</span>
             </h2>
             <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-              Een dak wordt vaak pas nagekeken wanneer er een probleem zichtbaar wordt. Maar kleine gebreken ontstaan meestal veel vroeger.<br />
-              Met ons onderhoudsplan houden we je dak actief in de gaten en blijft je woning beter beschermd.
+              Na een dakreiniging ziet je dak er weer proper en verzorgd uit.<br />
+              Maar door regen, vocht en vervuiling begint de opbouw van mos en vuil na verloop van tijd opnieuw.<br /><br />
+              Met periodieke opvolging houden we die vervuiling onder controle, controleren we je dak en pakken we kleine aandachtspunten tijdig aan.<br />
+              Zo blijft je dak langer verzorgd en haal je meer uit je dakreiniging.
             </p>
           </div>
 
           {/* 4 benefit cards in één rij */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "16px", maxWidth: "900px", margin: "0 auto" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "16px" }}>
             {benefits.map((b, i) => {
               const Icon = b.Icon;
               return (
@@ -255,8 +258,10 @@ export default function MosXDakzorgPage() {
                     </div>
                     <div style={{ width: "1px", alignSelf: "stretch", background: "rgba(155,203,108,0.5)", flexShrink: 0 }} />
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
-                      <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
+                      <div>
+                        <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
+                        <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
+                      </div>
                     </div>
                   </div>
                   {/* Desktop: icon bovenaan, gecentreerd */}
@@ -278,48 +283,62 @@ export default function MosXDakzorgPage() {
       {/* ── SECTIE 2: Wat zit er in jouw Dakzorg plan? ── */}
       <section style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
         <div className="site-wrap">
-          <div className="grid gap-10 lg:gap-16 items-center grid-cols-1 lg:grid-cols-[4fr_7fr]">
+
+          {/* Kop boven het grid — volledige breedte */}
+          <div style={{ marginBottom: "40px" }}>
+            <p className="site-eyebrow mb-4">Wat is inbegrepen?</p>
+            <h2 style={{
+              fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
+              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+              letterSpacing: "-0.028em", lineHeight: 1.12, whiteSpace: "nowrap",
+            }}>
+              Wat zit er in jouw <span style={{ color: "#9BCB6C" }}>Dakzorg plan?</span>
+            </h2>
+          </div>
+
+          <div className="grid gap-10 lg:gap-16 items-start grid-cols-1 lg:grid-cols-[5fr_5fr]">
 
             {/* Links: checklist */}
             <div>
-              <p className="site-eyebrow mb-4">Wat is inbegrepen?</p>
-              <h2 style={{
-                fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
-                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "12px",
-              }}>
-                Wat zit er in jouw<br />
-                <span style={{ color: "#9BCB6C" }}>Dakzorg plan?</span>
-              </h2>
-              <p style={{ fontSize: "14px", color: "#545454", lineHeight: 1.6, marginBottom: "28px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Wij zorgen voor je dak alsof het ons eigen dak is.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 {[
-                  { title: "Periodieke dakcontrole",              desc: "Controle van dakpannen, nokken en algemene staat." },
-                  { title: "Onderhoud van dakgoten & afvoer",     desc: "Vrije afwatering en minder kans op verstoppingen." },
-                  { title: "Preventieve anti-mosbehandeling",     desc: "Nieuwe mos- en algengroei wordt afgeremd." },
-                  { title: "Nazicht van zinkwerk & aansluitingen",desc: "Controle van gevoelige zones waar problemen ontstaan." },
-                  { title: "Kleine herstellingen mogelijk",       desc: "Losse pannen of kleine gebreken worden tijdig opgemerkt." },
+                  { title: "Periodieke dakcontrole",                desc: "Controle van dakpannen, nokken en algemene staat." },
+                  { title: "Onderhoud van dakgoten & afvoer",       desc: "Vrije afwatering en minder kans op verstoppingen." },
+                  { title: "Preventieve anti-mosbehandeling",       desc: "Nieuwe mos- en algengroei wordt afgeremd." },
+                  { title: "Controle van zinkwerk & aansluitingen", desc: "Controle van gevoelige zones waar problemen ontstaan." },
+                  { title: "Kleine herstellingen inbegrepen",         desc: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
                 ].map((item, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-                    <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
-                      <Check size={13} color="#FFFFFF" strokeWidth={2.5} />
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "12px 14px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB" }}>
+                    <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Check size={18} color="#FFFFFF" strokeWidth={2.5} />
                     </div>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>{item.title}</p>
                       <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item.desc}</p>
                     </div>
+                    <span style={{ fontSize: "13px", fontWeight: 700, color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</span>
                   </div>
                 ))}
               </div>
+
+              {/* Highlight box onder de lijst */}
+              <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "14px 16px", background: "#FFFFFF", borderRadius: "12px", border: "1px solid rgba(155,203,108,0.4)", marginTop: "16px" }}>
+                <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <ShieldCheck size={20} color="#9BCB6C" strokeWidth={2} />
+                </div>
+                <div>
+                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "4px" }}>Rust en zekerheid, jaar na jaar.</p>
+                  <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Een regelmatig onderhouden dak blijft langer mooi en in topconditie.</p>
+                </div>
+              </div>
             </div>
 
+
             {/* Rechts: foto grid — 2 sliders bovenaan, 2 foto's onderaan */}
-            <div className="lg:translate-y-[30px]" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", width: "100%" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", width: "100%", transform: "translateY(20px)" }}>
 
               {/* Gootreiniging — voor/na slider */}
-              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
+              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
                 <img src="/images/Goot na.JPEG" alt="Na gootreiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <img src="/images/Goot voor.JPEG" alt="Voor gootreiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", clipPath: `polygon(0 0, ${gootSlider}% 0, ${gootSlider}% 100%, 0 100%)` }} />
                 <div style={{ position: "absolute", top: 0, bottom: 0, left: `${gootSlider}%`, width: "2px", background: "rgba(255,255,255,0.9)", transform: "translateX(-50%)", zIndex: 2, pointerEvents: "none" }} />
@@ -337,7 +356,7 @@ export default function MosXDakzorgPage() {
               </div>
 
               {/* Velux reiniging — voor/na slider */}
-              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
+              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
                 <img src="/images/Velux na 1.0.png" alt="Na velux reiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <img src="/images/Velux voor 1.0.png" alt="Voor velux reiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", clipPath: `polygon(0 0, ${veluxSlider}% 0, ${veluxSlider}% 100%, 0 100%)` }} />
                 <div style={{ position: "absolute", top: 0, bottom: 0, left: `${veluxSlider}%`, width: "2px", background: "rgba(255,255,255,0.9)", transform: "translateX(-50%)", zIndex: 2, pointerEvents: "none" }} />
@@ -355,7 +374,7 @@ export default function MosXDakzorgPage() {
               </div>
 
               {/* Anti-mosbehandeling */}
-              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
+              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
                 <img src="/images/Antimos op dak.jpg" alt="Anti-mosbehandeling op dak" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
                 <div style={{ position: "absolute", bottom: "8px", left: "10px" }}>
@@ -364,7 +383,7 @@ export default function MosXDakzorgPage() {
               </div>
 
               {/* Dakpan herstelling */}
-              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
+              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
                 <img src="/images/Dakpan herstelling.png" alt="Dakpan herstelling" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <span className="absolute top-[7px] left-[7px] lg:top-3 lg:left-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#FFFFFF", fontWeight: 700, background: "rgba(0,0,0,0.65)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</span>
                 <span className="absolute top-[7px] right-[7px] lg:top-3 lg:right-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#1A1A1A", fontWeight: 700, background: "rgba(155,203,108,0.9)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>NA</span>
@@ -460,63 +479,128 @@ export default function MosXDakzorgPage() {
         </div>
       </section>
 
-      {/* ── SECTIE 4: Bescherm je investering ── */}
-      <section style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
+      {/* ── SECTIE 4: Dakzorg prijskaart ── */}
+      <section style={{ background: "#F7F8F6", padding: "80px 0 100px" }}>
         <div className="site-wrap">
-          <div className="grid gap-14 lg:gap-20 items-center grid-cols-1 lg:grid-cols-[5fr_7fr]">
+          <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr]" style={{ gap: "56px", alignItems: "center" }}>
 
             {/* Links: foto + badge */}
-            <div style={{ position: "relative" }}>
-              <div style={{ borderRadius: "20px", overflow: "hidden", aspectRatio: "4/5", position: "relative" }}>
-                <img
-                  src="/images/Foto realisatie.jpg"
-                  alt="MOS-X Dakzorg realisatie"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 55%)" }} />
-              </div>
-              {/* Accent badge */}
+            <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", aspectRatio: "4/5" }}>
+              <img
+                src="/images/Foto realisatie.jpg"
+                alt="MOS-X Dakzorg realisatie"
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%)" }} />
               <div style={{
-                position: "absolute", bottom: "-20px", right: "-16px",
-                background: "#9BCB6C", borderRadius: "16px", padding: "20px 24px",
-                boxShadow: "0 8px 32px rgba(155,203,108,0.4)",
+                position: "absolute", bottom: "24px", left: "20px", right: "20px",
+                background: "rgba(10,20,10,0.80)",
+                backdropFilter: "blur(8px)",
+                borderRadius: "14px", padding: "14px 18px",
+                display: "flex", alignItems: "flex-start", gap: "12px",
+                border: "1px solid rgba(155,203,108,0.25)",
               }}>
-                <p style={{ fontWeight: 800, fontSize: "28px", color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1, marginBottom: "6px" }}>1×/jaar</p>
-                <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.9)", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>Yannick controleert uw dak</p>
+                <ShieldCheck size={20} color="#9BCB6C" strokeWidth={2} style={{ flexShrink: 0, marginTop: "2px" }} />
+                <div>
+                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1.3, marginBottom: "4px" }}>
+                    Regelmatige zorg, een dak dat langer meegaat.
+                  </p>
+                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>
+                    Wij houden uw dak in topconditie.
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Rechts: tekst + 3 features */}
+            {/* Rechts: inhoud */}
             <div>
-              <p className="site-eyebrow mb-4">Bescherm je investering</p>
+              <p className="site-eyebrow mb-3">MOS-X DAKZORG</p>
               <h2 style={{
-                fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
+                fontSize: "clamp(1.6rem, 2.5vw, 2.1rem)", fontWeight: 800, color: "#1A1A1A",
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "20px",
+                letterSpacing: "-0.028em", lineHeight: 1.15, marginBottom: "12px",
+                whiteSpace: "nowrap",
               }}>
-                Een dak is meer dan pannen.<br />
-                <span style={{ color: "#9BCB6C" }}>Het is uw grootste bezit.</span>
+                Je dak verzorgd. <span style={{ color: "#9BCB6C" }}>Jaar na jaar.</span>
               </h2>
-              <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, marginBottom: "36px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Yannick heeft één regel: beter voorkomen dan genezen. Met een jaarlijks bezoek houdt hij uw dak in optimale conditie — en bespaart u op de lange termijn een veelvoud aan reparatiekosten.
+              <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.65, marginBottom: "28px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Periodieke opvolging na je dakreiniging,<br />
+                zodat je dak langer proper en in goede staat blijft.
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                {investFeatures.map((f, i) => {
-                  const Icon = f.Icon;
-                  return (
-                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
-                      <div style={{ width: "48px", height: "48px", borderRadius: "12px", background: "#F0FBE4", border: "1px solid rgba(155,203,108,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <Icon size={22} color="#9BCB6C" strokeWidth={1.8} />
+              {/* Card: prijs + checklist + CTA */}
+              <div style={{ background: "#FFFFFF", borderRadius: "16px", border: "1px solid #E5E7EB", padding: "28px", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", marginBottom: "0" }}>
+
+              {/* Prijs + checklist */}
+              <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr]" style={{ gap: "24px", marginBottom: "28px" }}>
+
+                {/* Prijs */}
+                <div>
+                  <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "6px" }}>Vanaf</p>
+                  <p style={{ fontSize: "52px", fontWeight: 800, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "0", lineHeight: 1, marginBottom: "8px" }}>€<span style={{ marginLeft: "5px" }}>249</span></p>
+                  <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "20px" }}>per onderhoudsbeurt</p>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", padding: "10px 12px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB", maxWidth: "175px" }}>
+                    <Calendar size={13} color="#9BCB6C" strokeWidth={2} style={{ flexShrink: 0, marginTop: "2px" }} />
+                    <p style={{ fontSize: "12px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Onderhoud jaarlijks of om de 2 jaar, afhankelijk van je dak.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Checklist */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "12px" }}>
+                  {[
+                    "Volledige controle van je dak",
+                    "Dakgoten & afvoer gereinigd",
+                    "Behandeling tegen nieuwe mosgroei",
+                    "Veluxen, aansluitingen & loodwerk nagekeken",
+                    "Kleine gebreken aangepakt waar mogelijk",
+                    "Je ontvangt een duidelijk onderhoudsrapport",
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Check size={11} color="#FFFFFF" strokeWidth={2.5} />
                       </div>
-                      <div>
-                        <p style={{ fontWeight: 700, fontSize: "15px", color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "4px" }}>{f.title}</p>
-                        <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{f.desc}</p>
-                      </div>
+                      <span style={{ fontSize: "13px", color: "#1A1A1A", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>{item}</span>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+
               </div>
+
+              {/* CTA knop */}
+              <a
+                href="/contact"
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
+                style={{
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+                  width: "100%", padding: "16px 24px", borderRadius: "12px",
+                  background: "#9BCB6C", color: "#FFFFFF",
+                  fontSize: "15px", fontWeight: 700,
+                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                  textDecoration: "none", marginBottom: "12px",
+                  transition: "background 200ms ease",
+                  boxSizing: "border-box",
+                }}
+              >
+                <Calendar size={16} strokeWidth={2} />
+                Vraag MOS-X Dakzorg aan
+                <ChevronRight size={16} strokeWidth={2.5} />
+              </a>
+
+              {/* Info noot */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 14px", background: "#F7F8F6", borderRadius: "8px", border: "1px solid #E5E7EB" }}>
+                <svg width="14" height="14" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
+                  <circle cx="10" cy="10" r="9" stroke="#9BCB6C" strokeWidth="1.5"/>
+                  <path d="M10 9v5M10 6.5v.5" stroke="#9BCB6C" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+                <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                  Grotere herstellingen? Die bespreken we altijd vooraf.
+                </p>
+              </div>
+
+              </div>{/* einde card */}
             </div>
 
           </div>

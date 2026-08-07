@@ -13,18 +13,18 @@ const projecten = [
     category: "dakcoating" as const,
     voorImg: "/images/herentals-voor.png",
     naImg: "/images/herentals-na.png",
-    type: "Keramische pannen",
-    opp: "210 m²",
+    type: "Betonpannen",
+    opp: "120 m²",
     duur: "2 dagen",
   },
   {
-    title: "Dakreiniging",
+    title: "Dakreiniging + Anti-mosbehandeling",
     location: "Olen",
     category: "dakreiniging" as const,
     voorImg: "/images/olen-voor.png",
     naImg: "/images/olen-na.png",
-    type: "Betonnen pannen",
-    opp: "165 m²",
+    type: "Keramische betonpannen",
+    opp: "200 m²",
     duur: "2 dagen",
   },
   {
@@ -34,7 +34,7 @@ const projecten = [
     voorImg: "/images/Before bevel.jpg",
     naImg: "/images/Na bevel.jpg",
     type: "Keramische pannen",
-    opp: "180 m²",
+    opp: "200 m²",
     duur: "2 dagen",
   },
   {
@@ -442,23 +442,20 @@ export default function RealisatiesPage() {
                   <span style={{ fontSize: "11px", color: "#888888", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Met hoogwerker uitgevoerd</span>
                 </div>
               </div>
-              <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.7, marginBottom: "20px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Dit dak was zwaar vervuild door mos en algen. Na de reiniging kregen de dakpannen opnieuw hun oorspronkelijke kleur terug. Ook de dakgoten en velux werden grondig gereinigd voor een volledig verzorgd resultaat.
+              <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.7, marginBottom: "12px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Dit dak met terracotta betonpannen was doorheen de jaren sterk vervuild en verweerd. We startten met een grondige reiniging, met extra aandacht voor de Velux-ramen, aansluitingen en zones waar mos en vuil zich hadden opgehoopt.
               </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "9px", marginBottom: "24px" }}>
-                {["Professionele dakreiniging", "Dakgoten gereinigd", "Controle en vervanging van enkele dakpannen"].map((item, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <CheckCircle size={16} color="#9BCB6C" style={{ flexShrink: 0 }} />
-                    <span style={{ fontSize: "14px", color: "#333333", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="realisaties-stats-grid" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: "10px", paddingTop: "20px" }}>
+              <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.7, marginBottom: "12px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Vervolgens werd het dak volledig gecontroleerd, werden kleine technische aandachtspunten waar nodig aangepakt en maakten we ook de dakgoten grondig schoon.
+              </p>
+              <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.7, marginBottom: "20px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Na de volledige voorbereiding brachten we een primer en twee lagen antraciet dakcoating aan voor een egale, duurzame afwerking. Het resultaat: een compleet vernieuwde uitstraling, langdurige bescherming én 10 jaar garantie op de coating.
+              </p>
+              <div className="realisaties-stats-grid" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr", gap: "10px", paddingTop: "20px" }}>
                 {[
                   { label: "Type dakpannen", value: "Betonpannen" },
                   { label: "Oppervlakte", value: "325 m²" },
                   { label: "Duur",        value: "2d" },
-                  { label: "Jaar",        value: "2026" },
                 ].map((s, i) => (
                   <div key={i} style={{ background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "10px", padding: "12px 14px" }}>
                     <p style={{ fontSize: "11px", color: "#9E9E9E", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "4px" }}>{s.label}</p>

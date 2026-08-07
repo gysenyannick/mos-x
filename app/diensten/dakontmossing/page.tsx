@@ -8,11 +8,11 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 
 const steps = [
-  { step: "STAP 01", Icon: Search,        title: "Dakcontrole & voorbereiding",      desc: "Voor we starten bekijken we de algemene staat van je dak. Zo bepalen we de juiste aanpak voor jouw dak." },
-  { step: "STAP 02", Icon: Droplets,      title: "Professionele dakreiniging",       desc: "Mos, algen en vervuiling worden grondig verwijderd met professionele apparatuur." },
-  { step: "STAP 03", Icon: ShieldCheck,   title: "Dakcontrole na reiniging",         desc: "Na het reinigen controleren we het volledige dak opnieuw. Zo worden eventuele verborgen aandachtspunten beter zichtbaar." },
-  { step: "STAP 04", Icon: Home,          title: "Bescherming van je dak",           desc: "Afhankelijk van het type dak en jouw wensen voorzien we een extra beschermlaag om je dak langer in goede staat te houden." },
-  { step: "STAP 05", Icon: CloudRain,     title: "Omgeving netjes achtergelaten",    desc: "Een dakreiniging stopt voor ons niet boven op het dak. We zorgen dat ook rondom je woning alles verzorgd wordt." },
+  { step: "STAP 01", Icon: Search,        title: "Dakcontrole & voorbereiding",      desc: "We starten met een grondige controle van je dak en vervangen meteen eventuele gebroken pannen of leien." },
+  { step: "STAP 02", Icon: Droplets,      title: "Professionele dakreiniging",       desc: "Mos, algen en vervuiling verwijderen we met een hogedruk (stoom)unit, aangevuld met een vuilfrees die ook de moeilijkste hoekjes bereikt. Zo blijft de druk laag en je dakbedekking veilig." },
+  { step: "STAP 03", Icon: ShieldCheck,   title: "Dakcontrole na reiniging",         desc: "Na het reinigen controleren we het volledige dak nog eens grondig, zodat eventuele verborgen aandachtspunten beter zichtbaar worden." },
+  { step: "STAP 04", Icon: Home,          title: "Bescherming van je dak",           desc: "We behandelen je dak met een preventief, biologisch afbreekbaar anti-mosproduct, zodat mos minder snel terugkomt." },
+  { step: "STAP 05", Icon: CloudRain,     title: "Omgeving netjes achtergelaten",    desc: "Een dakreiniging stopt voor ons niet boven op het dak. We maken muren, terras en dakgoten netjes op, zodat je kan genieten van een volledig verzorgd resultaat." },
 ];
 
 
