@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { Phone, User, Calendar, MessageCircle, Home, ShieldCheck, Headphones, Handshake, TrendingUp, Leaf, BarChart2, Settings, ChevronRight } from "lucide-react";
 import BackLink from "@/components/back-link";
@@ -10,6 +10,9 @@ function BeforeAfterSlider() {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const updatePos = useCallback((clientX: number) => {
     const el = containerRef.current;
@@ -22,8 +25,24 @@ function BeforeAfterSlider() {
   const onMouseDown = (e: React.MouseEvent) => { dragging.current = true; updatePos(e.clientX); };
   const onMouseMove = (e: React.MouseEvent) => { if (dragging.current) updatePos(e.clientX); };
   const onMouseUp = () => { dragging.current = false; };
-  const onTouchStart = (e: React.TouchEvent) => { dragging.current = true; updatePos(e.touches[0].clientX); };
-  const onTouchMove = (e: React.TouchEvent) => { if (dragging.current) updatePos(e.touches[0].clientX); };
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); updatePos(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div
@@ -32,9 +51,6 @@ function BeforeAfterSlider() {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onMouseUp}
       style={{ position: "relative", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", aspectRatio: "4/3", cursor: "ew-resize", userSelect: "none" }}
     >
       {/* Voor */}
@@ -49,7 +65,7 @@ function BeforeAfterSlider() {
       <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pos}%`, width: "2px", background: "#FFFFFF", transform: "translateX(-50%)", pointerEvents: "none" }} />
 
       {/* Handle */}
-      <div style={{ position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)", width: "40px", height: "40px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", pointerEvents: "none" }}>
+      <div style={{ position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)", width: "34px", height: "34px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", pointerEvents: "none" }}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l-6-6 6-6"/><path d="M15 6l6 6-6 6"/></svg>
       </div>
 
@@ -67,19 +83,95 @@ export default function OverOnsPage() {
 
   return (
     <PageLayout>
+      <style>{`
+        @media (max-width: 1023px) {
+          .over-ons-hero { min-height: 420px !important; padding-bottom: 80px !important; }
+          .over-ons-hero-imgwrap { left: 0 !important; }
+          .over-ons-hero-gradient {
+            background: linear-gradient(to bottom, rgba(247,248,246,0.82) 0%, rgba(247,248,246,0.82) 55%, rgba(247,248,246,0.82) 100%) !important;
+          }
+          .over-ons-yannick-grid {
+            grid-template-columns: 1fr !important;
+            gap: 32px !important;
+          }
+          .over-ons-yannick-grid .over-ons-yannick-photo {
+            order: -1;
+          }
+          .over-ons-mission-grid {
+            grid-template-columns: 1fr !important;
+            gap: 32px !important;
+          }
+          .over-ons-mission-grid > *:first-child { order: 1; }
+          .over-ons-mission-grid > *:last-child  { order: 2; }
+          .over-ons-mission-grid h2 { white-space: normal !important; }
+          .over-ons-mission-grid p  { white-space: normal !important; }
+          .gemoedsrust-cards {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+          .gemoedsrust-cards > div {
+            flex-direction: row !important;
+            align-items: center !important;
+            text-align: left !important;
+            padding: 10px 12px !important;
+            gap: 10px !important;
+          }
+          .gemoedsrust-cards > div > div:first-child {
+            width: 36px !important;
+            height: 36px !important;
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+          }
+          .gemoedsrust-cards > div > div:nth-child(2) {
+            display: none !important;
+          }
+          .gemoedsrust-cards p {
+            font-size: 11px !important;
+            margin: 0 !important;
+          }
+          .gemoedsrust-quote {
+            padding: 20px 20px !important;
+            gap: 8px 16px !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            text-align: center !important;
+          }
+          .gemoedsrust-quote > span { order: 1; font-size: 28px !important; line-height: 1 !important; }
+          .gemoedsrust-quote > svg  { order: 1; width: 22px !important; height: 22px !important; }
+          .gemoedsrust-quote > p    { order: 2; width: 100% !important; font-size: 13px !important; }
+          .gemoedsrust-glow { display: none !important; }
+          .gemoedsrust-mos-texture {
+            transform: translateX(80px) !important;
+            opacity: 0.45 !important;
+          }
+          .over-ons-ambitie-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .over-ons-ambitie-tekst {
+            padding-top: 48px !important;
+            padding-right: 0 !important;
+          }
+          .over-ons-ambitie-right {
+            padding-left: 0 !important;
+            padding-top: 32px !important;
+            padding-bottom: 48px !important;
+          }
+        }
+      `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "80px", position: "relative", overflow: "hidden" }}>
+      <section className="over-ons-hero" style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "80px", position: "relative", overflow: "hidden" }}>
 
         {/* Foto rechterhelft */}
-        <div style={{ position: "absolute", top: 0, left: "52%", right: 0, bottom: 0, zIndex: 0, overflow: "hidden" }}>
+        <div className="over-ons-hero-imgwrap" style={{ position: "absolute", top: 0, left: "52%", right: 0, bottom: 0, zIndex: 0, overflow: "hidden" }}>
           <img
             src="/images/Weer een dak ontmost.jpg"
             alt="Dak ontmossing"
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "left center" }}
           />
           {/* Gradient fade vanuit links */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #F7F8F6 0%, #F7F8F6 5%, transparent 55%)" }} />
+          <div className="over-ons-hero-gradient" style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #F7F8F6 0%, #F7F8F6 5%, transparent 55%)" }} />
         </div>
 
         {/* Tekst */}
@@ -133,7 +225,7 @@ export default function OverOnsPage() {
             </div>
 
             {/* Rechts: foto met quote overlay */}
-            <div style={{ borderRadius: "16px", overflow: "hidden", height: "400px", position: "relative" }}>
+            <div className="over-ons-yannick-photo" style={{ borderRadius: "16px", overflow: "hidden", height: "400px", position: "relative" }}>
               <img
                 src="/images/Yannick foto op dak.JPEG"
                 alt="Yannick - oprichter MOS-X"
@@ -206,9 +298,9 @@ export default function OverOnsPage() {
       <section style={{ background: "#0B0F0C", padding: "80px 0", position: "relative", overflow: "hidden" }}>
 
         {/* Groene radial glow */}
-        <div style={{ position: "absolute", width: "700px", height: "700px", background: "radial-gradient(circle, rgba(155,203,108,0.08) 0%, transparent 70%)", left: "-150px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} />
+        <div className="gemoedsrust-glow" style={{ position: "absolute", width: "700px", height: "700px", background: "radial-gradient(circle, rgba(155,203,108,0.08) 0%, transparent 70%)", left: "-150px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", zIndex: 0 }} />
         {/* Mos texture rechts */}
-        <div style={{ position: "absolute", right: 0, top: 0, width: "520px", height: "100%", pointerEvents: "none", zIndex: 0 }}>
+        <div className="gemoedsrust-mos-texture" style={{ position: "absolute", right: 0, top: 0, width: "520px", height: "100%", pointerEvents: "none", zIndex: 0 }}>
           <img src="/images/mos-texture.png" alt="" aria-hidden="true" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "right center", opacity: 0.50, display: "block", mixBlendMode: "screen" }} />
           {/* Fade links + boven + onder */}
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #0B0F0C 0%, #0B0F0C 15%, transparent 65%)", pointerEvents: "none" }} />
@@ -254,7 +346,7 @@ export default function OverOnsPage() {
           </div>
 
           {/* Quote blok */}
-          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "14px 52px", display: "flex", alignItems: "center", justifyContent: "center", gap: "48px", maxWidth: "780px", margin: "0 auto" }}>
+          <div className="gemoedsrust-quote" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "14px 52px", display: "flex", alignItems: "center", justifyContent: "center", gap: "48px", maxWidth: "780px", margin: "0 auto" }}>
             <span style={{ fontSize: "56px", color: "#9BCB6C", fontFamily: "Georgia, serif", lineHeight: 0.7, flexShrink: 0 }}>"</span>
             <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "15px", color: "rgba(255,255,255,0.80)", lineHeight: 1.8, textAlign: "center" }}>
               Wij willen niet dat je klant bent tot de factuur betaald is.<br />
@@ -269,13 +361,13 @@ export default function OverOnsPage() {
       {/* ── Onze Ambitie ── */}
       <section style={{ background: "#F7F8F6", padding: "0 0 56px 0" }}>
         <div className="site-wrap" style={{ paddingTop: 0, paddingBottom: 0 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
+          <div className="over-ons-ambitie-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0" }}>
 
             {/* ── Links: tekst boven, foto onder ── */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="over-ons-ambitie-left" style={{ display: "flex", flexDirection: "column" }}>
 
               {/* Tekst */}
-              <div style={{ paddingTop: "80px", paddingRight: "56px", paddingBottom: "28px" }}>
+              <div className="over-ons-ambitie-tekst" style={{ paddingTop: "80px", paddingRight: "56px", paddingBottom: "28px" }}>
                 <p style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "12px" }}>
                   Onze ambitie
                 </p>
@@ -314,7 +406,7 @@ export default function OverOnsPage() {
             </div>
 
             {/* ── Rechts: genummerde items ── */}
-            <div style={{ paddingTop: "80px", paddingLeft: "56px", paddingBottom: "80px" }}>
+            <div className="over-ons-ambitie-right" style={{ paddingTop: "80px", paddingLeft: "56px", paddingBottom: "80px" }}>
               {/* Label */}
               <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.13em", marginBottom: "28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
                 <span style={{ color: "#9BCB6C" }}>Waarom wij </span>

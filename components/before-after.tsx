@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const projects = [
@@ -55,6 +55,9 @@ function BeforeAfterCard({ project }: { project: typeof projects[0] }) {
   const [split, setSplit] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const handleMove = (clientX: number) => {
     if (!containerRef.current) return;
@@ -67,9 +70,23 @@ function BeforeAfterCard({ project }: { project: typeof projects[0] }) {
   const onMouseMove = (e: React.MouseEvent) => { if (dragging.current) handleMove(e.clientX); };
   const onMouseUp = () => { dragging.current = false; };
 
-  const onTouchMove = (e: React.TouchEvent) => {
-    handleMove(e.touches[0].clientX);
-  };
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); handleMove(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div className="group relative rounded-2xl overflow-hidden bg-[#1B3A26]">
@@ -81,7 +98,6 @@ function BeforeAfterCard({ project }: { project: typeof projects[0] }) {
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseUp}
-        onTouchMove={onTouchMove}
       >
         {/* AFTER (full) */}
         <div

@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -51,12 +51,33 @@ function SliderCard({ p }: { p: typeof projects[0] }) {
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(92, Math.max(8, ((cx - r.left) / r.width) * 100)));
   };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div className="group bg-white rounded-3xl overflow-hidden border card-shadow hover:card-shadow-lg transition-all hover:-translate-y-1 flex flex-col"
@@ -70,7 +91,6 @@ function SliderCard({ p }: { p: typeof projects[0] }) {
         onMouseMove={e => { if (dragging.current) move(e.clientX); }}
         onMouseUp={() => (dragging.current = false)}
         onMouseLeave={() => (dragging.current = false)}
-        onTouchMove={e => move(e.touches[0].clientX)}
       >
         {/* AFTER */}
         <div className={`absolute inset-0 ${p.afterBg}`}>

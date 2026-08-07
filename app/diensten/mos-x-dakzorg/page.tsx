@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Phone, ChevronRight, ArrowRight, ShieldCheck, Calendar, Eye, Bell, X, Check, Droplets, Leaf, ChevronDown, Banknote, Home } from "lucide-react";
+import { Phone, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck, Calendar, Eye, Bell, X, Check, Droplets, Leaf, ChevronDown, Banknote, Home } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 
@@ -75,6 +75,7 @@ export default function MosXDakzorgPage() {
   const [phoneHovered, setPhoneHovered]       = useState(false);
   const [ctaPhoneHovered, setCtaPhoneHovered] = useState(false);
   const [openFaq, setOpenFaq]                 = useState<number | null>(null);
+  const [hoveredBenefit, setHoveredBenefit]   = useState<number | null>(null);
   const [gootSlider, setGootSlider]           = useState(50);
   const [veluxSlider, setVeluxSlider]         = useState(50);
 
@@ -82,20 +83,30 @@ export default function MosXDakzorgPage() {
     <PageLayout>
 
       {/* ── HERO ── */}
-      <section style={{ background: "#111111", paddingTop: "140px", paddingBottom: "240px", position: "relative", overflow: "hidden", minHeight: "86vh" }}>
+      <section style={{ background: "#111111", position: "relative", overflow: "hidden", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
 
-        {/* Foto desktop — absoluut, vult rechterhelft */}
-        <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "44%", zIndex: 1 }}>
+        {/* Foto mobile — volledige achtergrond */}
+        <div className="block lg:hidden" style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           <img
             src="/images/Foto_dakzorg.png"
             alt="MOS-X Dakzorg — jaarlijkse dakinspectie door Yannick"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }}
           />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(17,17,17,0.55) 0%, rgba(17,17,17,0.2) 18%, transparent 38%)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #111111 0%, rgba(17,17,17,0.9) 10%, rgba(17,17,17,0.3) 28%, transparent 52%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", inset: 0, background: "rgba(17,17,17,0.80)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(17,17,17,0.5) 0%, rgba(17,17,17,0.2) 50%, transparent 100%)", pointerEvents: "none" }} />
         </div>
 
-        <div className="site-wrap" style={{ position: "relative", zIndex: 2 }}>
+        {/* Foto desktop — rechterhelft zichtbaar, links donker */}
+        <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "48%", zIndex: 1 }}>
+          <img
+            src="/images/Foto_dakzorg.png"
+            alt="MOS-X Dakzorg — jaarlijkse dakinspectie door Yannick"
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }}
+          />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #111111 0%, rgba(17,17,17,0.5) 30%, rgba(17,17,17,0.1) 55%, transparent 75%)", pointerEvents: "none" }} />
+        </div>
+
+        <div className="site-wrap pt-[115px] lg:pt-[120px] pb-[100px] lg:pb-[60px]" style={{ position: "relative", zIndex: 2, width: "100%" }}>
 
           <BackLink href="/diensten" dark />
 
@@ -132,7 +143,7 @@ export default function MosXDakzorgPage() {
               <span style={{ color: "#9BCB6C" }}>zonder zorgen.</span>
             </h1>
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "56px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-              De meeste dakschade ontstaat niet plots — ze bouwt op over jaren. Mos, verstopte goten, kleine scheurtjes: allemaal te vermijden met een jaarlijkse inspectie door Yannick.<br /><br />
+              De meeste dakschade ontstaat niet plots, ze bouwt op over jaren. Mos, verstopte goten, kleine scheurtjes: allemaal te vermijden met een jaarlijkse inspectie door Yannick.<br /><br />
               Met MOS-X Dakzorg betaalt u een vaste jaarprijs en krijgt u de zekerheid dat uw dak in goede handen is.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
@@ -157,11 +168,11 @@ export default function MosXDakzorgPage() {
               <a
                 href="tel:+32468352869"
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "transparent", color: "rgba(255,255,255,0.85)",
-                  border: "1.5px solid rgba(255,255,255,0.25)", borderRadius: "10px",
+                  border: "1.5px solid rgba(155,203,108,0.5)", borderRadius: "10px",
                   padding: "14px 24px", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px", textDecoration: "none",
                   transition: "border-color 200ms ease, color 200ms ease",
@@ -176,15 +187,6 @@ export default function MosXDakzorgPage() {
             <div style={{ marginTop: "20px" }}>
               <div ref={trustindexRef} style={{ display: "inline-block" }} />
             </div>
-          </div>
-
-          {/* Foto — mobile */}
-          <div className="block lg:hidden" style={{ marginTop: "36px", borderRadius: "16px", overflow: "hidden", aspectRatio: "4/3" }}>
-            <img
-              src="/images/Foto_dakzorg.png"
-              alt="MOS-X Dakzorg — jaarlijkse dakinspectie door Yannick"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-            />
           </div>
 
         </div>
@@ -225,27 +227,47 @@ export default function MosXDakzorgPage() {
           </div>
 
           {/* 4 benefit cards in één rij */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", maxWidth: "900px", margin: "0 auto" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "16px", maxWidth: "900px", margin: "0 auto" }}>
             {benefits.map((b, i) => {
               const Icon = b.Icon;
               return (
-                <div key={i} style={{
-                  background: "#FFFFFF",
-                  border: "1px solid #E5E7EB",
-                  borderRadius: "14px",
-                  padding: "20px 14px",
-                  boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                }}>
-                  <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
-                    <Icon size={21} color="#FFFFFF" strokeWidth={1.8} />
+                <div key={i}
+                  onMouseEnter={() => setHoveredBenefit(i)}
+                  onMouseLeave={() => setHoveredBenefit(null)}
+                  style={{
+                    background: "#FFFFFF",
+                    border: "1px solid #E5E7EB",
+                    borderRadius: "16px",
+                    padding: "24px 20px",
+                    boxShadow: hoveredBenefit === i ? "0 4px 24px rgba(155,203,108,0.18)" : "0 2px 12px rgba(0,0,0,0.06)",
+                    transform: hoveredBenefit === i ? "translateY(-4px)" : "translateY(0)",
+                    transition: "box-shadow 250ms ease, transform 250ms ease, border-color 250ms ease",
+                    display: "flex",
+                    flexDirection: "column",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* Mobiel: icon | lijn | tekst naast elkaar */}
+                  <div className="flex lg:hidden" style={{ alignItems: "center", gap: "14px" }}>
+                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Icon size={22} color="#9BCB6C" strokeWidth={2} />
+                    </div>
+                    <div style={{ width: "1px", alignSelf: "stretch", background: "rgba(155,203,108,0.5)", flexShrink: 0 }} />
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
+                      <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
+                    </div>
                   </div>
-                  <p style={{ fontWeight: 700, fontSize: "13px", color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
-                  <div style={{ width: "20px", height: "2px", background: "#9BCB6C", borderRadius: "2px", marginBottom: "8px" }} />
-                  <p style={{ fontSize: "12px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
+                  {/* Desktop: icon bovenaan, gecentreerd */}
+                  <div className="hidden lg:flex lg:flex-col lg:items-center" style={{ textAlign: "center" }}>
+                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
+                      <Icon size={22} color="#9BCB6C" strokeWidth={2} />
+                    </div>
+                    <p style={{ fontWeight: 700, fontSize: "13px", color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
+                    <div style={{ width: "20px", height: "2px", background: "#9BCB6C", borderRadius: "2px", marginBottom: "8px" }} />
+                    <p style={{ fontSize: "12px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
+                  </div>
                 </div>
               );
             })}
@@ -294,18 +316,19 @@ export default function MosXDakzorgPage() {
             </div>
 
             {/* Rechts: foto grid — 2 sliders bovenaan, 2 foto's onderaan */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            <div className="lg:translate-y-[30px]" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", width: "100%" }}>
 
               {/* Gootreiniging — voor/na slider */}
-              <div style={{ borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
+              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
                 <img src="/images/Goot na.JPEG" alt="Na gootreiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <img src="/images/Goot voor.JPEG" alt="Voor gootreiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", clipPath: `polygon(0 0, ${gootSlider}% 0, ${gootSlider}% 100%, 0 100%)` }} />
-                <div style={{ position: "absolute", top: 0, bottom: 0, left: `${gootSlider}%`, width: "2px", background: "#FFFFFF", transform: "translateX(-50%)", zIndex: 2, pointerEvents: "none" }} />
-                <div style={{ position: "absolute", top: "50%", left: `${gootSlider}%`, transform: "translate(-50%, -50%)", width: "26px", height: "26px", borderRadius: "50%", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.35)", pointerEvents: "none" }}>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 5l-5 7 5 7M16 5l5 7-5 7" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <div style={{ position: "absolute", top: 0, bottom: 0, left: `${gootSlider}%`, width: "2px", background: "rgba(255,255,255,0.9)", transform: "translateX(-50%)", zIndex: 2, pointerEvents: "none" }} />
+                <div style={{ position: "absolute", top: "50%", left: `${gootSlider}%`, transform: "translate(-50%, -50%)", width: "34px", height: "34px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", gap: "1px", zIndex: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.18)", pointerEvents: "none" }}>
+                  <ChevronLeft style={{ width: "13px", height: "13px", color: "#9BCB6C" }} />
+                  <ChevronRight style={{ width: "13px", height: "13px", color: "#9BCB6C" }} />
                 </div>
-                <span style={{ position: "absolute", top: "7px", left: "7px", zIndex: 2, color: "#FFFFFF", fontSize: "9px", fontWeight: 700, background: "rgba(0,0,0,0.6)", padding: "2px 5px", borderRadius: "3px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>VOOR</span>
-                <span style={{ position: "absolute", top: "7px", right: "7px", zIndex: 2, color: "#FFFFFF", fontSize: "9px", fontWeight: 700, background: "rgba(155,203,108,0.9)", padding: "2px 5px", borderRadius: "3px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>NA</span>
+                <span className="absolute top-[7px] left-[7px] lg:top-3 lg:left-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#FFFFFF", fontWeight: 700, background: "rgba(0,0,0,0.65)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>VOOR</span>
+                <span className="absolute top-[7px] right-[7px] lg:top-3 lg:right-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#1A1A1A", fontWeight: 700, background: "rgba(155,203,108,0.9)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>NA</span>
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 40%)", pointerEvents: "none" }} />
                 <div style={{ position: "absolute", bottom: "8px", left: "10px", zIndex: 2, pointerEvents: "none" }}>
                   <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "11px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>Gootreiniging</span>
@@ -314,15 +337,16 @@ export default function MosXDakzorgPage() {
               </div>
 
               {/* Velux reiniging — voor/na slider */}
-              <div style={{ borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
+              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative", userSelect: "none", cursor: "ew-resize" }}>
                 <img src="/images/Velux na 1.0.png" alt="Na velux reiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <img src="/images/Velux voor 1.0.png" alt="Voor velux reiniging" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block", clipPath: `polygon(0 0, ${veluxSlider}% 0, ${veluxSlider}% 100%, 0 100%)` }} />
-                <div style={{ position: "absolute", top: 0, bottom: 0, left: `${veluxSlider}%`, width: "2px", background: "#FFFFFF", transform: "translateX(-50%)", zIndex: 2, pointerEvents: "none" }} />
-                <div style={{ position: "absolute", top: "50%", left: `${veluxSlider}%`, transform: "translate(-50%, -50%)", width: "26px", height: "26px", borderRadius: "50%", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.35)", pointerEvents: "none" }}>
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M8 5l-5 7 5 7M16 5l5 7-5 7" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <div style={{ position: "absolute", top: 0, bottom: 0, left: `${veluxSlider}%`, width: "2px", background: "rgba(255,255,255,0.9)", transform: "translateX(-50%)", zIndex: 2, pointerEvents: "none" }} />
+                <div style={{ position: "absolute", top: "50%", left: `${veluxSlider}%`, transform: "translate(-50%, -50%)", width: "34px", height: "34px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", gap: "1px", zIndex: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.18)", pointerEvents: "none" }}>
+                  <ChevronLeft style={{ width: "13px", height: "13px", color: "#9BCB6C" }} />
+                  <ChevronRight style={{ width: "13px", height: "13px", color: "#9BCB6C" }} />
                 </div>
-                <span style={{ position: "absolute", top: "7px", left: "7px", zIndex: 2, color: "#FFFFFF", fontSize: "9px", fontWeight: 700, background: "rgba(0,0,0,0.6)", padding: "2px 5px", borderRadius: "3px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>VOOR</span>
-                <span style={{ position: "absolute", top: "7px", right: "7px", zIndex: 2, color: "#FFFFFF", fontSize: "9px", fontWeight: 700, background: "rgba(155,203,108,0.9)", padding: "2px 5px", borderRadius: "3px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>NA</span>
+                <span className="absolute top-[7px] left-[7px] lg:top-3 lg:left-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#FFFFFF", fontWeight: 700, background: "rgba(0,0,0,0.65)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>VOOR</span>
+                <span className="absolute top-[7px] right-[7px] lg:top-3 lg:right-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#1A1A1A", fontWeight: 700, background: "rgba(155,203,108,0.9)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>NA</span>
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 40%)", pointerEvents: "none" }} />
                 <div style={{ position: "absolute", bottom: "8px", left: "10px", zIndex: 2, pointerEvents: "none" }}>
                   <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "11px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>Velux reiniging</span>
@@ -331,7 +355,7 @@ export default function MosXDakzorgPage() {
               </div>
 
               {/* Anti-mosbehandeling */}
-              <div style={{ borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
+              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
                 <img src="/images/Antimos op dak.jpg" alt="Anti-mosbehandeling op dak" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
                 <div style={{ position: "absolute", bottom: "8px", left: "10px" }}>
@@ -340,10 +364,10 @@ export default function MosXDakzorgPage() {
               </div>
 
               {/* Dakpan herstelling */}
-              <div style={{ borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", position: "relative" }}>
+              <div className="aspect-square lg:aspect-[16/9]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
                 <img src="/images/Dakpan herstelling.png" alt="Dakpan herstelling" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                <span style={{ position: "absolute", top: "7px", left: "7px", zIndex: 2, color: "#FFFFFF", fontSize: "9px", fontWeight: 700, background: "rgba(0,0,0,0.6)", padding: "2px 5px", borderRadius: "3px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</span>
-                <span style={{ position: "absolute", top: "7px", right: "7px", zIndex: 2, color: "#FFFFFF", fontSize: "9px", fontWeight: 700, background: "rgba(155,203,108,0.9)", padding: "2px 5px", borderRadius: "3px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>NA</span>
+                <span className="absolute top-[7px] left-[7px] lg:top-3 lg:left-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#FFFFFF", fontWeight: 700, background: "rgba(0,0,0,0.65)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</span>
+                <span className="absolute top-[7px] right-[7px] lg:top-3 lg:right-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#1A1A1A", fontWeight: 700, background: "rgba(155,203,108,0.9)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>NA</span>
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
                 <div style={{ position: "absolute", bottom: "8px", left: "10px" }}>
                   <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "11px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>Dakpan herstelling</span>
@@ -365,7 +389,7 @@ export default function MosXDakzorgPage() {
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               letterSpacing: "-0.028em", lineHeight: 1.12,
             }}>
-              Zonder opvolging of<br />
+              Zonder of<br />
               <span style={{ color: "#9BCB6C" }}>met MOS-X Dakzorg?</span>
             </h2>
           </div>
@@ -373,18 +397,15 @@ export default function MosXDakzorgPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-stretch" style={{ gap: "32px" }}>
 
             {/* Zonder */}
-            <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "20px", overflow: "hidden" }}>
+            <div style={{ background: "rgba(239,68,68,0.08)", border: "1.5px solid rgba(239,68,68,0.4)", borderRadius: "20px", overflow: "hidden", boxShadow: "0 4px 24px rgba(239,68,68,0.10)" }}>
               {/* Foto bovenaan */}
               <div style={{ height: "200px", overflow: "hidden" }}>
                 <img src="/images/olen-voor.png" alt="Voor - Olen" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }} />
               </div>
               {/* Content */}
               <div style={{ padding: "28px 32px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
-                  <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <X size={18} color="#EF4444" strokeWidth={2.5} />
-                  </div>
-                  <h3 style={{ fontWeight: 800, fontSize: "18px", color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "-0.02em" }}>Zonder opvolging</h3>
+                <div style={{ marginBottom: "24px" }}>
+                  <h3 style={{ fontWeight: 800, fontSize: "18px", color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "-0.02em" }}>Zonder MOS-X Dakzorg</h3>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                   {withoutItems.map((item, i) => (
@@ -392,7 +413,7 @@ export default function MosXDakzorgPage() {
                       <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
                         <X size={11} color="#EF4444" strokeWidth={2.5} />
                       </div>
-                      <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item}</span>
+                      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -419,10 +440,7 @@ export default function MosXDakzorgPage() {
               </div>
               {/* Content */}
               <div style={{ padding: "28px 32px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
-                  <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(155,203,108,0.2)", border: "1px solid rgba(155,203,108,0.5)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Check size={18} color="#9BCB6C" strokeWidth={2.5} />
-                  </div>
+                <div style={{ marginBottom: "24px" }}>
                   <h3 style={{ fontWeight: 800, fontSize: "18px", color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "-0.02em" }}>Met MOS-X Dakzorg</h3>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
@@ -431,7 +449,7 @@ export default function MosXDakzorgPage() {
                       <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(155,203,108,0.2)", border: "1px solid rgba(155,203,108,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
                         <Check size={11} color="#9BCB6C" strokeWidth={2.5} />
                       </div>
-                      <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.85)", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 500 }}>{item}</span>
+                      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.85)", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 500 }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -584,18 +602,13 @@ export default function MosXDakzorgPage() {
       {/* ── SECTIE 5: CTA card ── */}
       <section style={{ background: "#F7F8F6", paddingBottom: "80px" }}>
         <div className="site-wrap">
-          <div style={{
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-8 lg:px-12" style={{
             background: "#0B0F0C",
             border: "1px solid rgba(155,203,108,0.25)",
             borderRadius: "16px",
-            padding: "32px 48px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "32px",
-            flexWrap: "wrap",
+            gap: "24px",
           }}>
-            <div style={{ flex: 1, minWidth: "260px" }}>
+            <div className="text-center lg:text-left" style={{ flex: 1 }}>
               <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 2vw, 1.25rem)", color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.25 }}>
                 Geef je dak de zorg <span style={{ color: "#9BCB6C" }}>die het verdient.</span>
               </p>
@@ -603,7 +616,7 @@ export default function MosXDakzorgPage() {
                 Jaar na jaar een gezond dak zonder verrassingen. Yannick zorgt voor de rest.
               </p>
             </div>
-            <div style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
+            <div className="flex flex-col lg:flex-row w-full lg:w-auto" style={{ gap: "10px" }}>
               <a
                 href="https://wa.me/32468352869"
                 target="_blank"
@@ -611,7 +624,8 @@ export default function MosXDakzorgPage() {
                 onMouseEnter={() => setCtaWaHovered(true)}
                 onMouseLeave={() => setCtaWaHovered(false)}
                 style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  flex: 1,
                   background: ctaWaHovered ? "#7AB54E" : "#9BCB6C",
                   color: "#FFFFFF", border: "none",
                   borderRadius: "8px", padding: "12px 20px",
@@ -630,7 +644,8 @@ export default function MosXDakzorgPage() {
                 onMouseEnter={() => setCtaPhoneHovered(true)}
                 onMouseLeave={() => setCtaPhoneHovered(false)}
                 style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  flex: 1,
                   background: "transparent",
                   color: ctaPhoneHovered ? "#9BCB6C" : "#FFFFFF",
                   border: ctaPhoneHovered ? "1px solid #9BCB6C" : "1px solid rgba(155,203,108,0.5)",

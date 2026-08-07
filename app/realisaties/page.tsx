@@ -53,6 +53,9 @@ function LargeSlider() {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const updatePos = useCallback((clientX: number) => {
     const el = containerRef.current;
@@ -64,8 +67,24 @@ function LargeSlider() {
   const onMouseDown = (e: React.MouseEvent) => { dragging.current = true; updatePos(e.clientX); };
   const onMouseMove = (e: React.MouseEvent) => { if (dragging.current) updatePos(e.clientX); };
   const onMouseUp = () => { dragging.current = false; };
-  const onTouchStart = (e: React.TouchEvent) => { dragging.current = true; updatePos(e.touches[0].clientX); };
-  const onTouchMove = (e: React.TouchEvent) => { if (dragging.current) updatePos(e.touches[0].clientX); };
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); updatePos(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div
@@ -74,9 +93,6 @@ function LargeSlider() {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onMouseUp}
       style={{ position: "relative", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", height: "100%", cursor: "ew-resize", userSelect: "none" }}
     >
       {/* Voor */}
@@ -91,7 +107,7 @@ function LargeSlider() {
       <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pos}%`, width: "2px", background: "#FFFFFF", transform: "translateX(-50%)", pointerEvents: "none" }} />
 
       {/* Handle */}
-      <div style={{ position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)", width: "40px", height: "40px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", pointerEvents: "none" }}>
+      <div style={{ position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)", width: "34px", height: "34px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", pointerEvents: "none" }}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l-6-6 6-6"/><path d="M15 6l6 6-6 6"/></svg>
       </div>
 
@@ -106,12 +122,33 @@ function SmallSlider({ beforeSrc, afterSrc, beforePosition = "50% 70%", afterPos
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(95, Math.max(5, ((cx - r.left) / r.width) * 100)));
   };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div
@@ -121,9 +158,6 @@ function SmallSlider({ beforeSrc, afterSrc, beforePosition = "50% 70%", afterPos
       onMouseMove={e => { if (dragging.current) move(e.clientX); }}
       onMouseUp={() => (dragging.current = false)}
       onMouseLeave={() => (dragging.current = false)}
-      onTouchStart={() => (dragging.current = true)}
-      onTouchMove={e => move(e.touches[0].clientX)}
-      onTouchEnd={() => (dragging.current = false)}
     >
       <img src={beforeSrc} alt="Voor" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: beforePosition }} draggable={false} />
       <div style={{ position: "absolute", top: "12px", left: "12px", zIndex: 5, background: "rgba(0,0,0,0.65)", color: "#FFFFFF", padding: "5px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</div>

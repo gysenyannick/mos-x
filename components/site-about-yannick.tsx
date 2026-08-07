@@ -103,7 +103,7 @@ export default function SiteAboutYannick() {
             <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", marginBottom: "12px" }}>
               Vier beloftes die we aan elke klant maken.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
               {usps.map(({ Icon, title }) => (
                 <div key={title} className="flex items-center gap-2 sm:gap-3.5 p-2 sm:p-[8px_16px]" style={{
                   background: "#F7F8F6",

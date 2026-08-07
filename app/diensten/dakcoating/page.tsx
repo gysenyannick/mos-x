@@ -73,7 +73,7 @@ export default function DakcoatingPage() {
     <PageLayout>
 
       {/* Hero — dark */}
-      <section style={{ background: "#111111", position: "relative", overflow: "hidden", height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <section style={{ background: "#111111", position: "relative", overflow: "hidden", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
 
         {/* Video desktop — absoluut, vult de volledige rechterhelft */}
         <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "44%", zIndex: 1 }}>
@@ -98,7 +98,7 @@ export default function DakcoatingPage() {
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(17,17,17,0.93) 0%, rgba(17,17,17,0.80) 50%, rgba(17,17,17,0.90) 100%)", pointerEvents: "none" }} />
         </div>
 
-        <div className="site-wrap pt-[100px] lg:pt-[140px]" style={{ position: "relative", zIndex: 2, paddingBottom: "60px", width: "100%" }}>
+        <div className="site-wrap pt-[115px] lg:pt-[140px] pb-[100px] lg:pb-[60px]" style={{ position: "relative", zIndex: 2, width: "100%" }}>
 
           <BackLink href="/diensten" dark />
 
@@ -533,33 +533,39 @@ export default function DakcoatingPage() {
                 Onze dakcoating is ontwikkeld om je dak opnieuw te beschermen tegen dagelijkse invloeden zoals regen, zon, vorst en vervuiling. Na het uitharden vormt de coating een duurzame beschermlaag over de dakbedekking.
               </p>
 
-              {/* Foto + voordelen naast elkaar */}
-              <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
-                <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.10)", flexShrink: 0, width: "180px" }}>
+              {/* Voordelen + foto gestapeld op mobiel, naast elkaar op desktop */}
+              <div className="flex flex-col lg:flex-row lg:items-center" style={{ gap: "28px" }}>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", margin: 0 }}>
+                    Eigenschappen van een dakcoating:
+                  </p>
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+                    {[
+                      "Hoge dampdoorlaatbaarheid",
+                      "UV-bestendig",
+                      "Bestand tegen regen, vorst en weersinvloeden",
+                      "Helpt nieuwe mos- en algengroei te beperken",
+                      "Vormt een vocht- en vuilafstotende beschermlaag",
+                    ].map((item) => (
+                      <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                        <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(155,203,108,0.15)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
+                          <Check size={11} color="#9BCB6C" strokeWidth={3} />
+                        </div>
+                        <span style={{ fontSize: "14px", color: "#1A1A1A", fontWeight: 600, lineHeight: 1.5, fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Foto — onderaan op mobiel, rechts op desktop */}
+                <div className="mx-auto lg:mx-0 lg:flex-shrink-0" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.10)", width: "260px" }}>
                   <img
                     src="/images/Dakcoating verfpot.png"
                     alt="Dakcoating verfpot"
                     style={{ width: "100%", height: "auto", display: "block" }}
                   />
                 </div>
-
-                {/* Voordelen lijst */}
-                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-                  {[
-                    "Hoge dampdoorlaatbaarheid",
-                    "UV-bestendig",
-                    "Bestand tegen regen, vorst en weersinvloeden",
-                    "Helpt nieuwe mos- en algengroei te beperken",
-                    "Vormt een vocht- en vuilafstotende beschermlaag",
-                  ].map((item) => (
-                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(155,203,108,0.15)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "2px" }}>
-                        <Check size={11} color="#9BCB6C" strokeWidth={3} />
-                      </div>
-                      <span style={{ fontSize: "14px", color: "#1A1A1A", fontWeight: 600, lineHeight: 1.5, fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{item}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
 

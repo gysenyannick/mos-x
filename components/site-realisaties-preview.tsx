@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -9,12 +9,33 @@ function LargeSlider() {
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(95, Math.max(5, ((cx - r.left) / r.width) * 100)));
   };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div
@@ -29,9 +50,6 @@ function LargeSlider() {
       onMouseMove={e => { if (dragging.current) move(e.clientX); }}
       onMouseUp={() => (dragging.current = false)}
       onMouseLeave={() => (dragging.current = false)}
-      onTouchStart={() => (dragging.current = true)}
-      onTouchMove={e => move(e.touches[0].clientX)}
-      onTouchEnd={() => (dragging.current = false)}
     >
       <img src="/images/Before bevel.jpg" alt="Voor behandeling"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
@@ -66,12 +84,33 @@ function SmallSlider({ beforeSrc, afterSrc, beforePosition = "50% 70%", afterPos
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(95, Math.max(5, ((cx - r.left) / r.width) * 100)));
   };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div style={{ flex: 1 }}>
@@ -82,9 +121,6 @@ function SmallSlider({ beforeSrc, afterSrc, beforePosition = "50% 70%", afterPos
         onMouseMove={e => { if (dragging.current) move(e.clientX); }}
         onMouseUp={() => (dragging.current = false)}
         onMouseLeave={() => (dragging.current = false)}
-        onTouchStart={() => (dragging.current = true)}
-        onTouchMove={e => move(e.touches[0].clientX)}
-        onTouchEnd={() => (dragging.current = false)}
       >
         <img src={beforeSrc} alt="Voor" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: beforePosition }} draggable={false} />
         <div style={{ position: "absolute", top: "12px", left: "12px", zIndex: 5, background: "rgba(0,0,0,0.65)", color: "#FFFFFF", padding: "5px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</div>

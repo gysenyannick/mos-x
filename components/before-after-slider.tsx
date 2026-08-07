@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { CheckCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BeforeAfterSliderProps {
   beforeSrc: string;
@@ -13,6 +13,9 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, beforeFilter }:
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const updatePosition = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -32,14 +35,19 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, beforeFilter }:
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const handleTouchMove = (e: TouchEvent) => {
-      if (dragging.current) {
-        e.preventDefault();
-        updatePosition(e.touches[0].clientX);
-      }
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); updatePosition(e.touches[0].clientX); }
     };
-    el.addEventListener("touchmove", handleTouchMove, { passive: false });
-    return () => el.removeEventListener("touchmove", handleTouchMove);
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
   }, [updatePosition]);
 
   return (
@@ -80,44 +88,41 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, beforeFilter }:
 
       {/* Drag handle */}
       <div
-        className="absolute flex items-center justify-center"
+        className="absolute flex items-center justify-center gap-0.5"
         style={{
           left: `${position}%`,
           top: "50%",
           transform: "translate(-50%, -50%)",
-          width: "40px",
-          height: "40px",
+          width: "34px",
+          height: "34px",
           borderRadius: "50%",
-          background: "#fff",
-          boxShadow: "0 2px 12px rgba(0,0,0,0.35)",
+          background: "#FFFFFF",
+          border: "2px solid #9BCB6C",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
           zIndex: 11,
           cursor: "ew-resize",
           userSelect: "none",
         }}
         onMouseDown={onMouseDown}
-        onTouchStart={() => { dragging.current = true; }}
-        onTouchEnd={() => { dragging.current = false; }}
       >
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M6 4L2 9L6 14" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 4L16 9L12 14" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        <ChevronLeft style={{ width: "13px", height: "13px", color: "#9BCB6C" }} />
+        <ChevronRight style={{ width: "13px", height: "13px", color: "#9BCB6C" }} />
       </div>
 
       {/* VOOR label */}
       <div
-        className="absolute bottom-4 left-4 px-2.5 py-1 rounded-md text-[11px] font-bold text-white"
-        style={{ background: "rgba(0,0,0,0.65)", zIndex: 10, letterSpacing: "0.08em" }}
+        className="absolute top-3 left-3 text-[11px] font-bold text-white"
+        style={{ background: "rgba(0,0,0,0.65)", padding: "5px 12px", borderRadius: "50px", zIndex: 10, letterSpacing: "0.08em" }}
       >
         VOOR
       </div>
 
       {/* NA label */}
       <div
-        className="absolute bottom-4 right-4 flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold text-white"
-        style={{ background: "#9BCB6C", zIndex: 10, letterSpacing: "0.08em" }}
+        className="absolute top-3 right-3 text-[11px] font-bold"
+        style={{ background: "#9BCB6C", color: "#1A1A1A", padding: "5px 12px", borderRadius: "50px", zIndex: 10, letterSpacing: "0.08em" }}
       >
-        <CheckCircle className="w-3 h-3" /> NA
+        NA
       </div>
     </div>
   );

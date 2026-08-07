@@ -33,20 +33,37 @@ function RealisatieLargeSlider() {
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(95, Math.max(5, ((cx - r.left) / r.width) * 100)));
   };
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
   return (
     <div ref={ref} style={{ position: "relative", width: "100%", height: "100%", minHeight: "460px", borderRadius: "16px", overflow: "hidden", cursor: "col-resize", userSelect: "none", boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }}
       onMouseDown={() => (dragging.current = true)}
       onMouseMove={e => { if (dragging.current) move(e.clientX); }}
       onMouseUp={() => (dragging.current = false)}
       onMouseLeave={() => (dragging.current = false)}
-      onTouchStart={() => (dragging.current = true)}
-      onTouchMove={e => move(e.touches[0].clientX)}
-      onTouchEnd={() => (dragging.current = false)}
     >
       <img src="/images/IMG_5414.JPEG" alt="Voor" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center" }} draggable={false} />
       <div style={{ position: "absolute", top: "16px", left: "16px", zIndex: 5, background: "rgba(0,0,0,0.65)", color: "#FFFFFF", padding: "6px 14px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</div>
@@ -68,11 +85,31 @@ function RealisatieSmallSlider({ beforeSrc, afterSrc, label }: { beforeSrc: stri
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(95, Math.max(5, ((cx - r.left) / r.width) * 100)));
   };
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
   return (
     <div style={{ flex: 1 }}>
       <div ref={ref} style={{ position: "relative", width: "100%", height: "100%", minHeight: "200px", borderRadius: "12px", overflow: "hidden", cursor: "col-resize", userSelect: "none", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}
@@ -80,9 +117,6 @@ function RealisatieSmallSlider({ beforeSrc, afterSrc, label }: { beforeSrc: stri
         onMouseMove={e => { if (dragging.current) move(e.clientX); }}
         onMouseUp={() => (dragging.current = false)}
         onMouseLeave={() => (dragging.current = false)}
-        onTouchStart={() => (dragging.current = true)}
-        onTouchMove={e => move(e.touches[0].clientX)}
-        onTouchEnd={() => (dragging.current = false)}
       >
         <img src={beforeSrc} alt="Voor" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} draggable={false} />
         <div style={{ position: "absolute", top: "12px", left: "12px", zIndex: 5, background: "rgba(0,0,0,0.65)", color: "#FFFFFF", padding: "5px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</div>
@@ -108,12 +142,33 @@ function VoorkomSlider() {
   const [split, setSplit] = useState(50);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const axis = useRef<"h" | "v" | null>(null);
 
   const move = (cx: number) => {
     if (!ref.current) return;
     const r = ref.current.getBoundingClientRect();
     setSplit(Math.min(95, Math.max(5, ((cx - r.left) / r.width) * 100)));
   };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragging.current) return;
+      const dx = Math.abs(e.touches[0].clientX - startX.current);
+      const dy = Math.abs(e.touches[0].clientY - startY.current);
+      if (!axis.current) axis.current = dx > dy ? "h" : "v";
+      if (axis.current === "h") { e.preventDefault(); move(e.touches[0].clientX); }
+    };
+    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
+  }, []);
 
   return (
     <div
@@ -123,16 +178,13 @@ function VoorkomSlider() {
       onMouseMove={e => { if (dragging.current) move(e.clientX); }}
       onMouseUp={() => (dragging.current = false)}
       onMouseLeave={() => (dragging.current = false)}
-      onTouchStart={() => (dragging.current = true)}
-      onTouchMove={e => move(e.touches[0].clientX)}
-      onTouchEnd={() => (dragging.current = false)}
     >
       <img src="/images/IMG_5414.JPEG" alt="Voor behandeling" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} draggable={false} />
       <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 0 0 ${split}%)` }}>
         <img src="/images/IMG_5436.JPEG" alt="Na behandeling" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} draggable={false} />
       </div>
       <div style={{ position: "absolute", top: 0, bottom: 0, left: `${split}%`, width: "2px", background: "rgba(255,255,255,0.85)", transform: "translateX(-50%)", pointerEvents: "none", zIndex: 10 }}>
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "40px", height: "40px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", display: "flex", alignItems: "center", justifyContent: "center", gap: "2px" }}>
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "34px", height: "34px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", display: "flex", alignItems: "center", justifyContent: "center", gap: "2px" }}>
           <ChevronLeft style={{ width: "12px", height: "12px", color: "#9BCB6C" }} />
           <ChevronRight style={{ width: "12px", height: "12px", color: "#9BCB6C" }} />
         </div>
@@ -346,11 +398,11 @@ export default function DakontmossingPage() {
               <a
                 href="tel:+32468352869"
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "transparent", color: "rgba(255,255,255,0.85)",
-                  border: "1.5px solid rgba(255,255,255,0.25)", borderRadius: "10px",
+                  border: "1.5px solid rgba(155,203,108,0.5)", borderRadius: "10px",
                   padding: "14px 24px", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px", textDecoration: "none",
                   transition: "border-color 200ms ease, color 200ms ease",
