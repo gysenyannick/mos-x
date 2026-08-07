@@ -537,9 +537,6 @@ export default function DakcoatingPage() {
               <div className="flex flex-col lg:flex-row lg:items-center" style={{ gap: "28px" }}>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", margin: 0 }}>
-                    Eigenschappen van een dakcoating:
-                  </p>
                   <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
                     {[
                       "Hoge dampdoorlaatbaarheid",
