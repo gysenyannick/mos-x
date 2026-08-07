@@ -186,7 +186,7 @@ const projectCarouselPhotos: { src: string; type?: "video"; caption: string }[] 
   { src: "/images/3.JPEG",  caption: "Dakreiniging Schilde" },
   { src: "/images/4.jpg",   caption: "Dakreiniging Schilde" },
   { src: "/images/5.JPEG",  caption: "Dakreiniging Schilde" },
-  { src: "/images/6.1.mp4", type: "video", caption: "Dakreiniging Schilde" },
+  { src: "/images/yannick-dakreinigen.mp4", type: "video", caption: "Dakreiniging Schilde" },
   { src: "/images/7.JPEG",  caption: "Dakreiniging Schilde" },
   { src: "/images/8.JPEG",  caption: "Dakreiniging Schilde" },
   { src: "/images/9.JPEG",  caption: "Dakreiniging Schilde" },
@@ -198,10 +198,23 @@ const projectCarouselPhotos: { src: string; type?: "video"; caption: string }[] 
 
 function ProjectCarousel() {
   const [idx, setIdx] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const item = projectCarouselPhotos[idx];
   const prev = () => setIdx(i => (i - 1 + projectCarouselPhotos.length) % projectCarouselPhotos.length);
   const next = () => setIdx(i => (i + 1) % projectCarouselPhotos.length);
   const isVideo = item.type === "video";
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+      if (e.key === "ArrowLeft") setIdx(i => (i - 1 + projectCarouselPhotos.length) % projectCarouselPhotos.length);
+      if (e.key === "ArrowRight") setIdx(i => (i + 1) % projectCarouselPhotos.length);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [lightboxOpen]);
 
   // Auto-advance elke 4 seconden (6s bij video's)
   useEffect(() => {
@@ -241,6 +254,10 @@ function ProjectCarousel() {
           VIDEO
         </div>
       )}
+      {/* Zoom icoontje */}
+      <button onClick={() => setLightboxOpen(true)} aria-label="Uitvergroten" style={{ position: "absolute", top: "12px", right: "12px", zIndex: 5, background: "rgba(0,0,0,0.50)", border: "none", borderRadius: "6px", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </button>
       <p style={{ position: "absolute", bottom: "44px", left: "16px", color: "#FFFFFF", fontSize: "13px", fontWeight: 600, fontFamily: "var(--font-montserrat), system-ui, sans-serif", margin: 0 }}>{item.caption}</p>
       <p style={{ position: "absolute", bottom: "18px", left: "50%", transform: "translateX(-50%)", color: "rgba(255,255,255,0.65)", fontSize: "12px", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0, whiteSpace: "nowrap" }}>{idx + 1} / {projectCarouselPhotos.length}</p>
       <button onClick={prev} aria-label="Vorige" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.90)", border: "none", borderRadius: "50%", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.18)" }}>
@@ -249,6 +266,90 @@ function ProjectCarousel() {
       <button onClick={next} aria-label="Volgende" style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.90)", border: "none", borderRadius: "50%", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 8px rgba(0,0,0,0.18)" }}>
         <ChevronRight size={18} color="#1A1A1A" />
       </button>
+
+      {/* Lightbox */}
+      {lightboxOpen && (
+        <div onClick={() => setLightboxOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.92)", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+          <div onClick={e => e.stopPropagation()} style={{ position: "relative", width: "100%", maxWidth: "860px" }}>
+            {/* Sluitknop */}
+            <button onClick={() => setLightboxOpen(false)} style={{ position: "absolute", top: "-44px", right: 0, background: "rgba(255,255,255,0.12)", border: "none", borderRadius: "50%", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#FFFFFF" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            {item.type === "video" ? (
+              <video
+                key={item.src}
+                controls
+                autoPlay
+                playsInline
+                style={{ height: "80vh", width: "100%", objectFit: "contain", borderRadius: "12px", display: "block", background: "#000" }}
+              >
+                <source src={item.src} type="video/mp4" />
+              </video>
+            ) : (
+              <img src={item.src} alt={item.caption} style={{ width: "100%", maxHeight: "80vh", objectFit: "contain", borderRadius: "12px", display: "block" }} />
+            )}
+            {/* Navigatie */}
+            <button onClick={e => { e.stopPropagation(); prev(); }} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.90)", border: "none", borderRadius: "50%", width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+              <ChevronLeft size={20} color="#1A1A1A" />
+            </button>
+            <button onClick={e => { e.stopPropagation(); next(); }} style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.90)", border: "none", borderRadius: "50%", width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+              <ChevronRight size={20} color="#1A1A1A" />
+            </button>
+            <p style={{ textAlign: "center", color: "rgba(255,255,255,0.55)", fontSize: "12px", marginTop: "10px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{idx + 1} / {projectCarouselPhotos.length}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProjectLightbox({ project, onClose }: { project: typeof projecten[0]; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.88)", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", overflowY: "auto" }}
+    >
+      <div onClick={e => e.stopPropagation()} style={{ width: "100%", maxWidth: "480px" }}>
+        {/* Sluitknop */}
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>
+          <button onClick={onClose} style={{ background: "rgba(255,255,255,0.12)", border: "none", borderRadius: "50%", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#FFFFFF" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        {/* VOOR */}
+        <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", marginBottom: "6px" }}>
+          <img src={project.voorImg} alt="Voor" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <div style={{ position: "absolute", top: "10px", left: "10px", background: "rgba(0,0,0,0.65)", color: "#FFFFFF", padding: "4px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</div>
+        </div>
+
+        {/* NA */}
+        <div style={{ position: "relative", borderRadius: "12px", overflow: "hidden", aspectRatio: "4/3", marginBottom: "12px" }}>
+          <img src={project.naImg} alt="Na" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <div style={{ position: "absolute", top: "10px", left: "10px", background: "#9BCB6C", color: "#1A1A1A", padding: "4px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>NA</div>
+        </div>
+
+        {/* Info box */}
+        <div style={{ background: "#FFFFFF", borderRadius: "12px", padding: "16px 18px" }}>
+          <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#1A1A1A", marginBottom: "12px" }}>
+            {project.title} - {project.location}
+          </p>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            {[project.type, project.opp, project.duur].map((chip, ci) => (
+              <span key={ci} style={{ background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "5px 10px", fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                {chip}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -258,6 +359,7 @@ export default function RealisatiesPage() {
   const [ctaGreenHovered, setCtaGreenHovered] = useState(false);
   const [ctaPhoneHovered, setCtaPhoneHovered] = useState(false);
   const [filterTab, setFilterTab] = useState("alle");
+  const [lightboxProject, setLightboxProject] = useState<typeof projecten[0] | null>(null);
   const trustindexRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -526,28 +628,36 @@ export default function RealisatiesPage() {
               .filter(p => filterTab === "alle" || p.category === filterTab)
               .map((p, i) => (
                 <div key={i} style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", background: "#FFFFFF", border: "1px solid #E5E7EB" }}>
-                  {/* VOOR - bovenste helft */}
-                  <div style={{ position: "relative", height: "215px" }}>
+                  {/* VOOR & NA - naast elkaar op mobiel, gestapeld op desktop */}
+                  <div className="grid grid-cols-2 lg:grid-cols-1">
+                  {/* VOOR */}
+                  <div className="relative h-[160px] lg:h-[215px]" style={{ cursor: "pointer" }} onClick={() => setLightboxProject(p)}>
                     <img src={p.voorImg} alt={p.title + " " + p.location + " voor"}
                       style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
                       draggable={false} />
                     <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 2, background: "rgba(0,0,0,0.65)", color: "#FFFFFF", padding: "4px 11px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</div>
+                    <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 2, background: "rgba(0,0,0,0.50)", borderRadius: "6px", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
                   </div>
-                  {/* Scheidingslijn */}
-                  <div style={{ height: "2px", background: "#F7F8F6" }} />
-                  {/* NA - onderste helft */}
-                  <div style={{ position: "relative", height: "215px" }}>
+                  {/* NA */}
+                  <div className="relative h-[160px] lg:h-[215px]" style={{ cursor: "pointer" }} onClick={() => setLightboxProject(p)}>
                     <img src={p.naImg} alt={p.title + " " + p.location + " na"}
                       style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
                       draggable={false} />
                     <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 2, background: "#9BCB6C", color: "#1A1A1A", padding: "4px 11px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>NA</div>
+                    <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 2, background: "rgba(0,0,0,0.50)", borderRadius: "6px", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%)", zIndex: 1 }} />
-                    <p style={{ position: "absolute", bottom: "12px", left: "12px", right: "12px", zIndex: 2, color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", margin: 0 }}>
-                      {p.title + " - " + p.location}
-                    </p>
+                  </div>
+                  </div>
+                  {/* Titel */}
+                  <div style={{ padding: "10px 14px 0", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", color: "#1A1A1A" }}>
+                    {p.title + " - " + p.location}
                   </div>
                   {/* Meta chips */}
-                  <div style={{ padding: "12px 14px", display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                  <div style={{ padding: "8px 14px 12px", display: "flex", gap: "6px", flexWrap: "wrap" }}>
                     {[p.type, p.opp, p.duur].map((chip, ci) => (
                       <span key={ci} style={{ background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "6px", padding: "4px 9px", fontSize: "11px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                         {chip}
@@ -567,7 +677,7 @@ export default function RealisatiesPage() {
 
             {/* Links: tekst + CTA */}
             <div>
-              <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9BCB6C", marginBottom: "14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }} className="lg:justify-start">
+              <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#9BCB6C", marginBottom: "14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", display: "flex", alignItems: "center", gap: "8px" }} className="justify-center lg:justify-start">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
                 </svg>
@@ -623,10 +733,10 @@ export default function RealisatiesPage() {
             </div>
 
             {/* Rechts: features + profiel */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "28px", alignItems: "center" }} className="lg:items-start">
+            <div style={{ display: "flex", flexDirection: "column", gap: "28px", paddingLeft: "55px" }} className="items-start lg:pl-0">
 
               {/* 3 features */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%", maxWidth: "320px" }} className="lg:max-w-none">
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 {[
                   { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>, label: "Dagelijkse updates" },
                   { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>, label: "Voor & na transformaties" },
@@ -641,8 +751,8 @@ export default function RealisatiesPage() {
                 ))}
               </div>
 
-              {/* Profiel */}
-              <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px", background: "rgba(155,203,108,0.10)", borderRadius: "14px", border: "1px solid rgba(155,203,108,0.35)", width: "100%", maxWidth: "320px" }} className="lg:max-w-none">
+              {/* Profiel — enkel desktop */}
+              <div className="hidden lg:flex" style={{ alignItems: "center", gap: "14px", padding: "16px", background: "rgba(155,203,108,0.10)", borderRadius: "14px", border: "1px solid rgba(155,203,108,0.35)", width: "100%" }}>
                 <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden", border: "1px solid #E5E7EB" }}>
                   <img src="/images/logo.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
                 </div>
@@ -666,6 +776,29 @@ export default function RealisatiesPage() {
             </div>
 
           </div>
+
+          {/* Profiel — enkel mobiel, volledige breedte */}
+          <div className="flex lg:hidden" style={{ alignItems: "center", gap: "14px", padding: "16px", marginTop: "24px", background: "rgba(155,203,108,0.10)", borderRadius: "14px", border: "1px solid rgba(155,203,108,0.35)", width: "100%" }}>
+            <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, overflow: "hidden", border: "1px solid #E5E7EB" }}>
+              <img src="/images/logo.avif" alt="MOS-X" style={{ width: "34px", height: "34px", objectFit: "contain" }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>Mos-X</p>
+              <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>@mosx.be</p>
+            </div>
+            <a
+              href="https://www.instagram.com/mosx.be/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#9BCB6C"; el.style.color = "#9BCB6C"; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "#E5E7EB"; el.style.color = "#1A1A1A"; }}
+              style={{ display: "inline-flex", alignItems: "center", gap: "6px", border: "1.5px solid #9BCB6C", borderRadius: "8px", padding: "8px 14px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: "#1A1A1A", textDecoration: "none", transition: "border-color 200ms ease, color 200ms ease", whiteSpace: "nowrap" }}
+            >
+              Naar Instagram
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+
         </div>
       </section>
 
@@ -769,6 +902,10 @@ export default function RealisatiesPage() {
           </div>
         </div>
       </section>
+
+      {lightboxProject && (
+        <ProjectLightbox project={lightboxProject} onClose={() => setLightboxProject(null)} />
+      )}
 
     </PageLayout>
   );
