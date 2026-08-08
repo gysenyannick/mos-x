@@ -126,15 +126,15 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
             href="/#calculator"
             className="werkwijze-cta-btn"
             style={{
-              display: "inline-flex", alignItems: "center", gap: "8px",
+              display: "inline-flex", alignItems: "center", gap: "6px",
               background: "#9BCB6C", color: "#FFFFFF",
               fontWeight: 700, fontSize: "13px",
-              borderRadius: "8px", padding: "10px 20px",
+              borderRadius: "8px", padding: "10px 14px",
               textDecoration: "none",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               border: "2px solid #9BCB6C",
               transition: "background 200ms ease, color 200ms ease",
-              whiteSpace: "nowrap",
+              whiteSpace: "nowrap", width: "fit-content",
             }}
             onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
             onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
