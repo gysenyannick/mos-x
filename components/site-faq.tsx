@@ -77,7 +77,7 @@ function ContactCard() {
         padding: "12px 14px", marginBottom: "16px",
       }}>
         <img
-          src="/images/yannick-op-dak-srgb.JPEG"
+          src="/images/Yannick Icon foto.png"
           alt="Yannick"
           style={{
             width: "44px", height: "44px", borderRadius: "50%",
