@@ -149,7 +149,6 @@ export default function SiteReviews() {
           }}>
             Echte ervaringen van huiseigenaars die hun dak lieten reinigen, beschermen of onderhouden.
           </p>
-          <OutlineGoogleBtn text="Review ons op Google" url={GOOGLE_REVIEW_URL} />
         </div>
 
         {/* Trustindex injects here — script tag is appended to this div via useEffect */}
