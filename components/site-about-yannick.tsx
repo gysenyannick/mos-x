@@ -36,6 +36,7 @@ export default function SiteAboutYannick() {
                   objectFit: "cover",
                   objectPosition: "center 70%",
                   borderRadius: "16px",
+                  filter: "saturate(0.82)",
                 }}
               />
 
