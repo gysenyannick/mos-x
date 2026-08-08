@@ -80,7 +80,7 @@ function ContactCard() {
           src="/images/IMG_4678.PNG"
           alt="Yannick"
           style={{
-            width: "44px", height: "44px", borderRadius: "50%",
+            width: "64px", height: "64px", borderRadius: "50%",
             objectFit: "cover", objectPosition: "center 35%",
             flexShrink: 0, border: "2px solid #9BCB6C",
           }}
