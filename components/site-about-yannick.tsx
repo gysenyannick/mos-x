@@ -1,12 +1,12 @@
 "use client";
 
-import { CalendarCheck, Home, MessageSquareDot, Headphones, User, Calculator, ChevronRight } from "lucide-react";
+import { CheckCircle, ChevronRight } from "lucide-react";
 
 const usps = [
-  { Icon: CalendarCheck,     title: "We komen onze afspraken na." },
-  { Icon: Home,              title: "We behandelen je dak met de grootste zorg." },
-  { Icon: MessageSquareDot,  title: "We communiceren helder en snel." },
-  { Icon: Headphones,        title: "We blijven ook na de werken bereikbaar." },
+  "We komen onze afspraken na.",
+  "We behandelen je dak met de grootste zorg.",
+  "We communiceren helder en snel.",
+  "We blijven ook na de werken bereikbaar.",
 ];
 
 export default function SiteAboutYannick() {
@@ -104,18 +104,9 @@ export default function SiteAboutYannick() {
               Vier beloftes die we aan elke klant maken.
             </p>
             <div className="sm:w-fit" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
-              {usps.map(({ Icon, title }) => (
-                <div key={title} className="flex items-center gap-2 sm:gap-3 py-[3px]" style={{
-                  background: "transparent",
-                  borderRadius: "10px",
-                }}>
-                  <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center" style={{
-                    background: "rgba(155,203,108,0.12)",
-                    border: "1px solid rgba(155,203,108,0.25)",
-                    borderRadius: "50%",
-                  }}>
-                    <Icon size={18} color="#9BCB6C" strokeWidth={2} />
-                  </div>
+              {usps.map((title) => (
+                <div key={title} className="flex items-center gap-2 sm:gap-3 py-[3px]" style={{ background: "transparent" }}>
+                  <CheckCircle size={20} className="flex-shrink-0" style={{ color: "#9BCB6C" }} />
                   <p style={{
                     fontFamily: "var(--font-inter), system-ui, sans-serif",
                     fontWeight: 400, fontSize: "16px", lineHeight: 1.7, color: "#666666",
@@ -155,7 +146,7 @@ export default function SiteAboutYannick() {
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
               >
-                Bereken je richtprijs
+                Bereken mijn richtprijs
                 <ChevronRight size={14} strokeWidth={2.5} />
               </a>
             </div>
