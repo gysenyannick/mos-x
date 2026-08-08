@@ -77,11 +77,11 @@ function ContactCard() {
         padding: "12px 14px", marginBottom: "16px",
       }}>
         <img
-          src="/images/IMG_4678.PNG"
+          src="/images/yannick-foto.png"
           alt="Yannick"
           style={{
             width: "64px", height: "64px", borderRadius: "50%",
-            objectFit: "cover", objectPosition: "center 35%",
+            objectFit: "cover", objectPosition: "center center",
             flexShrink: 0, border: "2px solid #9BCB6C",
           }}
         />
