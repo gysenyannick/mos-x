@@ -77,7 +77,7 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
   const { Icon } = s;
 
   return (
-    <div style={{ position: "relative", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
+    <div style={{ position: "relative", cursor: "pointer", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
       <Link
         href={s.href}
         data-service={s.id}
@@ -89,7 +89,8 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
           borderRadius: "16px",
           overflow: "hidden",
           textDecoration: "none",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)",
+          boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)" : "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)",
+          transition: "box-shadow 300ms ease",
           display: "flex", flexDirection: "column",
         }}
       >

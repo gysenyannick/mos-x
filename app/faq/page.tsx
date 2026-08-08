@@ -10,7 +10,7 @@ const faqGroups = [
   {
     category: "Prijs",
     items: [
-      { q: "Wat kost een dakreiniging?", a: "De prijs hangt af van verschillende factoren, zoals de grootte en bereikbaarheid van je dak, de mate van vervuiling en de gekozen behandeling. Daarom ontvang je bij MOS-X altijd een vrijblijvende richtprijs op maat. Binnen één minuut weet je al waar je ongeveer aan toe bent." },
+      { q: "Wat kost een dakreiniging?", a: "De prijs hangt af van verschillende factoren, zoals de grootte en bereikbaarheid van je dak, de mate van vervuiling en de gekozen behandeling. Daarom ontvang je bij MOS-X altijd een vrijblijvende richtprijs op maat. Binnen één minuut weet je al waar je ongeveer aan toe bent.", cta: { label: "Bereken mijn richtprijs", href: "https://v0-dak-calculator.vercel.app/" } },
       { q: "Hoe wordt de prijs van een dakreiniging berekend?", a: "Elk dak is anders. Daarom houden we rekening met verschillende factoren, zoals de oppervlakte, de bereikbaarheid, het type dak, de hellingsgraad, de mate van vervuiling en de gewenste behandeling. Zo betaal je alleen voor de werken die jouw dak écht nodig heeft." },
     ],
   },
@@ -35,7 +35,7 @@ const faqGroups = [
     category: "Praktisch",
     items: [
       { q: "Moet ik thuis zijn tijdens de werken?", a: "Nee, dat is meestal niet nodig. Zolang we toegang hebben tot het dak en gebruik kunnen maken van een wateraansluiting, kunnen de werken in de meeste gevallen zonder jouw aanwezigheid uitgevoerd worden. Uiteraard houden we je steeds op de hoogte." },
-      { q: "Moet mijn dak eerst geïnspecteerd worden?", a: "Ja. Elk dak is anders. Daarom bekijken we eerst de staat van je dak voordat we een behandeling adviseren. Zo ben je zeker van een veilige aanpak én krijg je eerlijk advies dat volledig afgestemd is op jouw dak." },
+      { q: "Moet mijn dak eerst geïnspecteerd worden?", a: "We bekijken altijd eerst de staat van je dak voordat we een behandeling adviseren. Dat kan tijdens een plaatsbezoek of, wanneer mogelijk, op afstand. Zo krijg je eerlijk advies dat afgestemd is op jouw dak." },
     ],
   },
   {
@@ -49,7 +49,7 @@ const faqGroups = [
 const categories = faqGroups.map(g => g.category);
 
 function AccordionItem({ faq, open, onToggle }: {
-  faq: { category: string; q: string; a: string };
+  faq: { category: string; q: string; a: string; cta?: { label: string; href: string } };
   open: boolean;
   onToggle: () => void;
 }) {
@@ -95,6 +95,27 @@ function AccordionItem({ faq, open, onToggle }: {
             <p className="text-sm leading-relaxed" style={{ color: "#545454" }}>
               {faq.a}
             </p>
+            {faq.cta && (
+              <a
+                href={faq.cta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  marginTop: "14px", padding: "8px 16px",
+                  background: "#9BCB6C", color: "#FFFFFF",
+                  borderRadius: "8px", textDecoration: "none",
+                  fontSize: "13px", fontWeight: 700,
+                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                  transition: "background 200ms ease",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
+              >
+                {faq.cta.label}
+                <ChevronRight size={14} strokeWidth={2.5} />
+              </a>
+            )}
           </div>
         </div>
       )}
@@ -194,7 +215,7 @@ export default function FaqPage() {
             <span style={{ color: "#9BCB6C" }}> vragen.</span>
           </h1>
           <p className="text-lg leading-relaxed" style={{ color: "#545454" }}>
-            Antwoorden op de vragen die we het meest krijgen. Staat je vraag er niet bij? Bel of mail ons.
+            Antwoorden op de vragen die we het vaakst krijgen. Staat je vraag er niet tussen? Yannick helpt je graag verder.
           </p>
         </div>
       </section>

@@ -117,7 +117,7 @@ export default function SiteAboutYannick() {
                   </span>
                   <p style={{
                     fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    fontWeight: 400, fontSize: "16px", lineHeight: 1.7, color: "#666666",
+                    fontWeight: 400, fontSize: "14px", lineHeight: 1.7, color: "#666666",
                     margin: 0,
                   }}>{title}</p>
                 </div>

@@ -78,7 +78,7 @@ export default function ContactPage() {
             Neem contact op met <span style={{ color: "#9BCB6C" }}>Yannick.</span>
           </h1>
           <p className="text-base lg:text-lg leading-relaxed" style={{ color: "#545454" }}>
-            Vul het formulier in of bel Yannick direct. Je ontvangt binnen 24 uur een reactie.
+            Heb je een vraag over je dak of wil je een offerte? Yannick helpt je persoonlijk verder. Je ontvangt binnen 24 uur een reactie.
           </p>
         </div>
       </section>
@@ -91,20 +91,17 @@ export default function ContactPage() {
             {/* ── Formulier ── */}
             <div className="contact-form-card rounded-2xl p-8"
               style={{ background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", boxShadow: "0 2px 16px rgba(155,203,108,0.12)" }}>
-              <p className="font-black text-lg mb-6"
+              <p className="font-black text-lg mb-1"
                 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
-                Stel je vraag of vraag een offerte aan.
+                Waar kunnen we je mee helpen?
+              </p>
+              <p style={{ fontSize: "13px", color: "#888888", marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Stel je vraag of vraag vrijblijvend een offerte aan.
               </p>
               <form className="space-y-5" action="#" method="POST">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label style={labelStyle}>Voornaam *</label>
-                    <input type="text" name="voornaam" required placeholder="Jouw voornaam" style={inputStyle} />
-                  </div>
-                  <div>
-                    <label style={labelStyle}>Achternaam *</label>
-                    <input type="text" name="achternaam" required placeholder="Jouw achternaam" style={inputStyle} />
-                  </div>
+                <div>
+                  <label style={labelStyle}>Naam *</label>
+                  <input type="text" name="naam" required placeholder="Jouw naam" style={inputStyle} />
                 </div>
 
                 <div>
@@ -117,15 +114,9 @@ export default function ContactPage() {
                   <input type="tel" name="telefoon" required placeholder="0470 00 00 00" style={inputStyle} />
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label style={labelStyle}>Straat en huisnummer *</label>
-                    <input type="text" name="straat" required placeholder="bv. Kerkstraat 12" style={inputStyle} />
-                  </div>
-                  <div>
-                    <label style={labelStyle}>Gemeente / Postcode *</label>
-                    <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" style={inputStyle} />
-                  </div>
+                <div>
+                  <label style={labelStyle}>Gemeente / Postcode *</label>
+                  <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" style={inputStyle} />
                 </div>
 
                 <div>
@@ -135,14 +126,14 @@ export default function ContactPage() {
                     <option value="dakreiniging" style={{ color: "#1A1A1A" }}>Dakreiniging</option>
                     <option value="dakcoating" style={{ color: "#1A1A1A" }}>Dakcoating</option>
                     <option value="dakabonnement" style={{ color: "#1A1A1A" }}>MOS-X Dakzorg</option>
-                    <option value="andere" style={{ color: "#1A1A1A" }}>Andere</option>
+                    <option value="weet-niet" style={{ color: "#1A1A1A" }}>Ik weet het nog niet</option>
                   </select>
                 </div>
 
                 <div>
-                  <label style={labelStyle}>{dienst === "andere" ? "Bericht *" : "Bericht (optioneel)"}</label>
-                  <textarea name="bericht" required={dienst === "andere"} rows={4}
-                    placeholder={dienst === "andere" ? "Vertel ons waarmee we je kunnen helpen..." : "Extra informatie over je dak of situatie..."}
+                  <label style={labelStyle}>Bericht (optioneel)</label>
+                  <textarea name="bericht" rows={4}
+                    placeholder="Extra informatie over je dak of situatie..."
                     style={{ ...inputStyle, resize: "none" as const }} />
                 </div>
 
@@ -156,7 +147,7 @@ export default function ContactPage() {
                     fontWeight: 700, fontSize: "15px",
                   }}
                 >
-                  Verstuur bericht <ArrowRight className="w-5 h-5" />
+                  Verstuur mijn aanvraag <ArrowRight className="w-5 h-5" />
                 </button>
 
                 {/* 3 trust-chips onder de knop */}
@@ -180,7 +171,7 @@ export default function ContactPage() {
                   style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
                   Liever direct contact?
                 </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+<div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                   {[
                     { href: "tel:+32468352869",   Icon: Phone,  text: "+32 468 35 28 69",      sub: null },
                     { href: "mailto:info@mos-x.be", Icon: Mail, text: "info@mos-x.be",          sub: null },
@@ -239,7 +230,7 @@ export default function ContactPage() {
         <div className="site-wrap">
           <div className="contact-reviews-card" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", padding: "16px 24px" }}>
             <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", color: "#1A1A1A", marginBottom: "8px", textAlign: "center" }}>
-              Wat klanten over ons <span style={{ color: "#9BCB6C" }}>zeggen.</span>
+              Correcte afspraken. Duidelijke communicatie. <span style={{ color: "#9BCB6C" }}>Proper werk.</span>
             </h2>
             {/* Trustindex widget — negatieve marge compenseert kaart-padding zodat widget breed genoeg is voor 3 cards */}
             <div id="trustindex-widget" className="contact-reviews-widget" style={{ margin: "0 -24px -16px" }} />
@@ -266,7 +257,7 @@ export default function ContactPage() {
                 Actief in <span style={{ color: "#9BCB6C" }}>jouw regio.</span>
               </h2>
               <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.6, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                We komen dagelijks langs in jouw regio om snel en efficiënt te helpen waar het er écht toe doet.
+                MOS-X is actief in Antwerpen, Limburg en Vlaams-Brabant.
               </p>
               <div className="werkgebied-regions" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                 {["Antwerpen", "Limburg", "Vlaams-Brabant"].map(r => (
