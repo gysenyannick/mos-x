@@ -239,7 +239,7 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Ja, ik wil graag dakcoating", subtitle: "Voor een vernieuwde uitstraling en een extra beschermende afwerking.", bullets: ["Je dak ziet er opnieuw als nieuw uit", "Beschermt tegen vocht en weersinvloeden", "Minder snelle mos- en algengroei"] },
+    { id: "coating", title: "Ja, ik wil een dakcoating", subtitle: "Voor een vernieuwde uitstraling en een extra beschermende afwerking.", bullets: ["Je dak ziet er opnieuw als nieuw uit", "Beschermt tegen vocht en weersinvloeden", "Minder snelle mos- en algengroei"] },
     { id: "geen", title: "Nee, alleen dakreiniging", subtitle: "Inclusief standaard anti-mosbehandeling.", bullets: [] },
     { id: "advies", title: "Ik weet het niet", subtitle: "Adviseer mij wat het beste past bij mijn dak.", bullets: [] },
   ];
