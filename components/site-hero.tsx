@@ -136,7 +136,7 @@ export default function SiteHero() {
             </div>
 
             {/* Trust indicators */}
-            <div className="flex items-center gap-4 mb-8" style={{ flexWrap: "wrap" }}>
+            <div className="flex flex-col items-start gap-3 mb-8">
               <span style={{
                 display: "inline-flex", alignItems: "center", gap: "5px",
                 background: "transparent",
