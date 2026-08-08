@@ -17,28 +17,26 @@ export default function SiteRealisatiesPreview() {
         </div>
 
         {/* Grid: video links, 2 foto's rechts */}
-        <div className="realisaties-preview-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "24px", alignItems: "stretch" }}>
-          {/* Links: video */}
-          <div style={{ position: "relative", width: "100%", minHeight: "460px", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }}>
+        <div className="realisaties-preview-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "24px", alignItems: "start" }}>
+          {/* Links: video met native controls */}
+          <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", background: "#000" }}>
             <video
               src="/videos/video-dakreiniging.mp4"
-              autoPlay
-              muted
-              loop
+              controls
               playsInline
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+              style={{ width: "100%", display: "block" }}
             />
           </div>
-          {/* Rechts: 2 foto's */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)", minHeight: "200px" }}>
+          {/* Rechts: 2 foto's (half formaat) */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ height: "100px", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
               <img
                 src="/images/IMG_5898.JPEG"
                 alt="Dakreiniging resultaat"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
-            <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)", minHeight: "200px" }}>
+            <div style={{ height: "100px", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
               <img
                 src="/images/IMG_5898.JPEG"
                 alt="Dakreiniging resultaat"
