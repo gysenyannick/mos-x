@@ -39,7 +39,7 @@ export default function SiteRealisatiesPreview() {
             </div>
             <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
               <img
-                src="/images/IMG_5898.JPEG"
+                src="/images/IMG_5942.JPEG"
                 alt="Dakreiniging resultaat"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
