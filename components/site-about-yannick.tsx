@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 const usps = [
   "We komen onze afspraken na.",
@@ -105,8 +105,16 @@ export default function SiteAboutYannick() {
             </p>
             <div className="sm:w-fit" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
               {usps.map((title) => (
-                <div key={title} className="flex items-center gap-2 sm:gap-3 py-[3px]" style={{ background: "transparent" }}>
-                  <CheckCircle size={20} className="flex-shrink-0" style={{ color: "#9BCB6C" }} />
+                <div key={title} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", height: "27px" }}>
+                    <span style={{
+                      width: "18px", height: "18px",
+                      background: "#9BCB6C",
+                      borderRadius: "50%",
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "11px", color: "#FFFFFF", fontWeight: 700,
+                    }}>✓</span>
+                  </span>
                   <p style={{
                     fontFamily: "var(--font-inter), system-ui, sans-serif",
                     fontWeight: 400, fontSize: "16px", lineHeight: 1.7, color: "#666666",
