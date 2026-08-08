@@ -12,7 +12,7 @@ export default function SiteRealisatiesPreview() {
         {/* Heading */}
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
           <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", letterSpacing: "-0.028em", color: "#1A1A1A", margin: 0 }}>
-            Onze <span style={{ color: "#9BCB6C" }}>resultaten.</span>
+Resultaten die je <span style={{ color: "#9BCB6C" }}>ziet.</span>
           </h2>
         </div>
 
