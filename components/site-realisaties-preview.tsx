@@ -23,6 +23,7 @@ export default function SiteRealisatiesPreview() {
             <video
               src="/videos/video-dakreiniging.mp4"
               controls
+              muted
               playsInline
               style={{ width: "100%", height: "600px", objectFit: "cover", display: "block" }}
             />
