@@ -198,7 +198,7 @@ export default function SiteWerkwijze() {
             fontFamily: "var(--font-inter), system-ui, sans-serif",
             maxWidth: "800px", margin: "0 auto",
           }}>
-            Duidelijk, transparant en zonder verrassingen. Van eerste richtprijs tot een verzorgd dak.
+            Duidelijk, transparant en zonder verrassingen. Van eerste richtprijs tot een levenslang verzorgd dak.
           </p>
         </div>
 
