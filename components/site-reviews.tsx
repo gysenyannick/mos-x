@@ -138,7 +138,7 @@ export default function SiteReviews() {
               color: "#FFFFFF",
             }}
           >
-            Mooi resultaat. Duidelijke afspraken. <span style={{ color: "#9BCB6C" }}>Heldere communicatie.</span>
+            Mooi resultaat. Duidelijke afspraken.<br /><span style={{ color: "#9BCB6C" }}>Heldere communicatie.</span>
           </h2>
           <p style={{
             fontFamily: "var(--font-inter), system-ui, sans-serif",
