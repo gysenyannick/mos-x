@@ -490,11 +490,11 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
                     Waar mogen we jouw richtprijs naartoe sturen?
                   </h3>
-                  <Field label="Naam" placeholder="Jouw volledige naam" value={form.naam} onChange={v => setForm(f => ({ ...f, naam: v }))} />
-                  <Field label="Telefoon" placeholder="Jouw telefoonnummer" value={form.tel} onChange={v => setForm(f => ({ ...f, tel: v }))} type="tel" />
-                  <Field label="E-mailadres" placeholder="uw@email.be" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} type="email" />
-                  <Field label="Postcode" placeholder="2000" value={form.postcode} onChange={v => setForm(f => ({ ...f, postcode: v }))} />
-                  <Field label="Adres" placeholder="Straat en huisnummer (bv. Kerkstraat 12, Antwerpen)" value={form.adres} onChange={v => setForm(f => ({ ...f, adres: v }))} />
+                  <Field label="E-mailadres" placeholder="bv. naam@email.be" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} type="email" />
+                  <Field label="Naam" placeholder="Voor- en achternaam" value={form.naam} onChange={v => setForm(f => ({ ...f, naam: v }))} />
+                  <Field label="Telefoon" placeholder="bv. 0470 12 34 56" value={form.tel} onChange={v => setForm(f => ({ ...f, tel: v }))} type="tel" />
+                  <Field label="Postcode" placeholder="bv. 2000" value={form.postcode} onChange={v => setForm(f => ({ ...f, postcode: v }))} />
+                  <Field label="Adres" placeholder="bv. Kerkstraat 12" value={form.adres} onChange={v => setForm(f => ({ ...f, adres: v }))} />
                   <div style={{ marginTop: "8px" }}>
                     <NextBtn onClick={() => setDone(true)} disabled={!form.naam || !form.tel} label="Ontvang mijn richtprijs" />
                   </div>
