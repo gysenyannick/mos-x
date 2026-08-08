@@ -108,11 +108,11 @@ export default function SiteAboutYannick() {
                 <div key={title} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                   <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", height: "27px" }}>
                     <span style={{
-                      width: "18px", height: "18px",
+                      width: "24px", height: "24px",
                       background: "#9BCB6C",
                       borderRadius: "50%",
                       display: "inline-flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "11px", color: "#FFFFFF", fontWeight: 700,
+                      fontSize: "13px", color: "#FFFFFF", fontWeight: 700,
                     }}>✓</span>
                   </span>
                   <p style={{
