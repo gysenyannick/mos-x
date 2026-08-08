@@ -17,7 +17,7 @@ export default function SiteRealisatiesPreview() {
         </div>
 
         {/* Grid: video links, 2 foto's rechts */}
-        <div className="realisaties-preview-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "24px", alignItems: "start" }}>
+        <div className="realisaties-preview-grid" style={{ display: "grid", gridTemplateColumns: "55fr 45fr", gap: "24px", alignItems: "start" }}>
           {/* Links: video met native controls */}
           <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", background: "#000", maxHeight: "600px" }}>
             <video
