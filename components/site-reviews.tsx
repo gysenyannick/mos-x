@@ -138,7 +138,7 @@ export default function SiteReviews() {
               color: "#FFFFFF",
             }}
           >
-            Waarom huiseigenaars <span style={{ color: "#9BCB6C" }}>MOS-X</span> aanbevelen
+            Mooi resultaat. Duidelijke afspraken. <span style={{ color: "#9BCB6C" }}>Heldere communicatie.</span>
           </h2>
           <p style={{
             fontFamily: "var(--font-inter), system-ui, sans-serif",
@@ -147,7 +147,7 @@ export default function SiteReviews() {
             lineHeight: 1.6,
             marginBottom: "24px",
           }}>
-            Echte ervaringen van huiseigenaars die hun dak lieten reinigen, beschermen of onderhouden.
+            Niet onze woorden, maar die van onze klanten. Lees zelf waarom huiseigenaars MOS-X aanbevelen.
           </p>
         </div>
 
