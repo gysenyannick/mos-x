@@ -28,16 +28,16 @@ export default function SiteRealisatiesPreview() {
               style={{ width: "100%", height: "500px", objectFit: "cover", display: "block" }}
             />
           </div>
-          {/* Rechts: 2 foto's (half formaat) */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <div style={{ height: "100px", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
+          {/* Rechts: 2 foto's die de volledige hoogte vullen */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", height: "500px" }}>
+            <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
               <img
                 src="/images/IMG_5898.JPEG"
                 alt="Dakreiniging resultaat"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
-            <div style={{ height: "100px", borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
+            <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
               <img
                 src="/images/IMG_5898.JPEG"
                 alt="Dakreiniging resultaat"
