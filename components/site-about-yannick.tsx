@@ -108,7 +108,7 @@ export default function SiteAboutYannick() {
                 <div key={title} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                   <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", height: "27px" }}>
                     <span style={{
-                      width: "24px", height: "24px",
+                      width: "20px", height: "20px",
                       background: "#9BCB6C",
                       borderRadius: "50%",
                       display: "inline-flex", alignItems: "center", justifyContent: "center",
