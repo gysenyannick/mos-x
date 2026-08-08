@@ -95,7 +95,7 @@ export default function SiteHero() {
               className="leading-relaxed mb-8"
               style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
-              MOS-X reinigt, beschermt en onderhoudt je dak met een slim onderhoudsconcept, zodat het jaar na jaar in topconditie blijft.
+              MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.
             </p>
 
             {/* CTAs */}
@@ -112,7 +112,7 @@ export default function SiteHero() {
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
               >
-                Bereken je richtprijs
+                Bereken mijn richtprijs
                 <ChevronRight size={15} strokeWidth={2.5} />
               </Link>
               <a
@@ -131,7 +131,7 @@ export default function SiteHero() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
               >
-                Plan een plaatsbezoek
+                Plan een gratis plaatsbezoek
               </a>
             </div>
 
