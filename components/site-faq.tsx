@@ -67,7 +67,7 @@ function ContactCard() {
         fontFamily: "var(--font-inter), system-ui, sans-serif",
         fontSize: "14px", color: "#666666", lineHeight: 1.6, marginBottom: "20px",
       }}>
-        Yannick helpt je graag verder met persoonlijk advies op maat.
+        Stel ze gerust rechtstreeks aan Yannick.
       </p>
 
       {/* Profile row */}
@@ -103,7 +103,7 @@ function ContactCard() {
           <p style={{
             fontFamily: "var(--font-inter), system-ui, sans-serif",
             fontSize: "12px", color: "#9BCB6C", margin: 0, fontWeight: 500,
-          }}>Dakexpert bij MOS-X</p>
+          }}>Dakspecialist MOS-X</p>
         </div>
       </div>
 
