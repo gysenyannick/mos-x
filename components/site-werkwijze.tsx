@@ -8,31 +8,31 @@ const steps = [
     Icon: Calculator,
     step: "STAP 01",
     title: "Richtprijs berekenen",
-    desc: "Bereken eenvoudig online een richtprijs en krijg meteen een indicatie.",
+    desc: "Bereken eenvoudig online je richtprijs en weet meteen waar je ongeveer aan toe bent.",
   },
   {
     Icon: MapPin,
     step: "STAP 02",
-    title: "Dakinspectie op locatie",
-    desc: "We komen langs om de staat van je dak te bekijken en jouw situatie te bespreken.",
+    title: "Kies je volgende stap",
+    desc: "Interesse na je richtprijs? Kies voor een plaatsbezoek of laat Yannick je dak op afstand bekijken.",
   },
   {
     Icon: FileText,
     step: "STAP 03",
     title: "Offerte op maat",
-    desc: "Je ontvangt een duidelijke offerte op maat, afgestemd op jouw dak en wensen.",
+    desc: "Yannick bekijkt je dak en maakt een duidelijke offerte afgestemd op jouw situatie.",
   },
   {
     Icon: Home,
     step: "STAP 04",
     title: "Professionele uitvoering",
-    desc: "Ons team voert de werken vakkundig en zorgvuldig uit, op het afgesproken moment.",
+    desc: "We voeren de werken vakkundig en zorgvuldig uit, op het afgesproken moment.",
   },
   {
     Icon: ShieldCheck,
     step: "STAP 05",
     title: "Oplevering & nazorg",
-    desc: "We leveren pas op wanneer alles perfect is en blijven beschikbaar voor advies.",
+    desc: "We leveren pas op wanneer alles netjes is afgewerkt en blijven bereikbaar voor advies.",
   },
 ];
 
@@ -139,7 +139,7 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
             onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
             onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
           >
-            Bereken je richtprijs
+            Bereken mijn richtprijs
             <ChevronRight size={14} strokeWidth={2.5} />
           </a>
         </div>
@@ -198,7 +198,7 @@ export default function SiteWerkwijze() {
             fontFamily: "var(--font-inter), system-ui, sans-serif",
             maxWidth: "800px", margin: "0 auto",
           }}>
-            Duidelijk, transparant en zonder verrassingen. Van eerste aanvraag tot een levenslang verzorgd dak.
+            Duidelijk, transparant en zonder verrassingen. Van eerste richtprijs tot een verzorgd dak.
           </p>
         </div>
 
