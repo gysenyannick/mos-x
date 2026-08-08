@@ -117,7 +117,7 @@ export default function SiteAboutYannick() {
                     <Icon size={18} color="#9BCB6C" strokeWidth={2} />
                   </div>
                   <p className="text-[13px] sm:text-[15px]" style={{
-                    fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                    fontFamily: "var(--font-inter), system-ui, sans-serif",
                     fontWeight: 400, color: "#1A1A1A",
                     margin: 0,
                   }}>{title}</p>
