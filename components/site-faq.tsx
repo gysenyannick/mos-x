@@ -292,7 +292,7 @@ export default function SiteFaq() {
           {/* Left: FAQ accordion */}
           <div className="faq-content">
             {faqs.map((faq, i) => (
-              <FaqItem key={i} faq={faq} defaultOpen={i === 0} />
+              <FaqItem key={i} faq={faq} />
             ))}
           </div>
 
