@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const GREEN = "#9BCB6C";
 const TOTAL_STEPS = 5;
@@ -204,8 +204,9 @@ const NextBtn = ({ onClick, disabled, label }: { onClick: () => void; disabled?:
     fontWeight: 700, fontSize: "15px", cursor: disabled ? "not-allowed" : "pointer",
     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
     boxShadow: disabled ? "none" : "0 4px 16px rgba(90,158,47,0.25)",
+    display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
   }}>
-    {label ?? "Ga verder →"}
+    {label ?? "Ga verder"}<ChevronRight size={16} strokeWidth={2.5} />
   </button>
 );
 
@@ -487,7 +488,7 @@ export default function SitePricing() {
               {step === 5 && (
                 <div>
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
-                    Vul jouw gegevens in voor jouw persoonlijke prijs
+                    Waar mogen we jouw richtprijs naartoe sturen?
                   </h3>
                   <Field label="Naam" placeholder="Jouw volledige naam" value={form.naam} onChange={v => setForm(f => ({ ...f, naam: v }))} />
                   <Field label="Telefoon" placeholder="Jouw telefoonnummer" value={form.tel} onChange={v => setForm(f => ({ ...f, tel: v }))} type="tel" />
@@ -495,7 +496,7 @@ export default function SitePricing() {
                   <Field label="Postcode" placeholder="2000" value={form.postcode} onChange={v => setForm(f => ({ ...f, postcode: v }))} />
                   <Field label="Adres" placeholder="Straat en huisnummer (bv. Kerkstraat 12, Antwerpen)" value={form.adres} onChange={v => setForm(f => ({ ...f, adres: v }))} />
                   <div style={{ marginTop: "8px" }}>
-                    <NextBtn onClick={() => setDone(true)} disabled={!form.naam || !form.tel} label="Ontvang mijn richtprijs →" />
+                    <NextBtn onClick={() => setDone(true)} disabled={!form.naam || !form.tel} label="Ontvang mijn richtprijs" />
                   </div>
                 </div>
               )}
