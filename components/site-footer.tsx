@@ -60,7 +60,7 @@ function SocialBtn({ href, label, children }: { href: string; label: string; chi
       rel="noopener noreferrer"
       aria-label={label}
       style={{
-        width: "38px", height: "38px", borderRadius: "50%",
+        width: "38px", height: "38px", borderRadius: "8px",
         border: "1px solid rgba(154,202,99,0.45)",
         display: "flex", alignItems: "center", justifyContent: "center",
         color: GREEN, transition: "background 150ms ease",
