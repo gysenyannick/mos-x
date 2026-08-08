@@ -430,7 +430,7 @@ export default function SitePricing() {
               {step === 2 && (
                 <div>
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
-                    Wat voor dakpannen liggen op je dak?
+                    Welk type dakbedekking ligt op je dak?
                   </h3>
                   <div className="dak-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "10px" }}>
                     {dakTypes.filter(d => d.label !== "Ik weet het niet").map(d => (
