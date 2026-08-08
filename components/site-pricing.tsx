@@ -443,9 +443,12 @@ export default function SitePricing() {
 
               {step === 3 && (
                 <div>
-                  <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "28px" }}>
+                  <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "8px" }}>
                     Hoe groot is je dak ongeveer?
                   </h3>
+                  <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: "#888", marginBottom: "24px" }}>
+                    Een schatting is voldoende.
+                  </p>
                   <div style={{ textAlign: "center", marginBottom: "24px" }}>
                     <span style={{
                       display: "inline-block",
