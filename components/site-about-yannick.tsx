@@ -105,21 +105,20 @@ export default function SiteAboutYannick() {
             </p>
             <div className="sm:w-fit" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
               {usps.map(({ Icon, title }) => (
-                <div key={title} className="flex items-center gap-2 sm:gap-3 p-[6px_10px] sm:p-[6px_14px]" style={{
-                  background: "#F7F8F6",
-                  border: "1px solid #E5E7EB",
+                <div key={title} className="flex items-center gap-2 sm:gap-3 py-[3px]" style={{
+                  background: "transparent",
                   borderRadius: "10px",
                 }}>
-                  <div className="w-7 h-7 flex-shrink-0 flex items-center justify-center" style={{
+                  <div className="w-9 h-9 flex-shrink-0 flex items-center justify-center" style={{
                     background: "rgba(155,203,108,0.12)",
                     border: "1px solid rgba(155,203,108,0.25)",
                     borderRadius: "50%",
                   }}>
-                    <Icon size={14} color="#9BCB6C" strokeWidth={2} />
+                    <Icon size={18} color="#9BCB6C" strokeWidth={2} />
                   </div>
-                  <p className="text-[11px] sm:text-[14px]" style={{
+                  <p className="text-[13px] sm:text-[15px]" style={{
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                    fontWeight: 700, color: "#1A1A1A",
+                    fontWeight: 400, color: "#1A1A1A",
                     margin: 0,
                   }}>{title}</p>
                 </div>
