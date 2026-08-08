@@ -121,7 +121,7 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
 
 
       {showButton && (
-        <div className="werkwijze-cta-wrap" style={{ marginTop: "24px" }}>
+        <div className="werkwijze-cta-wrap" style={{ marginTop: "24px", alignSelf: "flex-start" }}>
           <a
             href="/#calculator"
             className="werkwijze-cta-btn"
