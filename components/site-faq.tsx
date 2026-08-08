@@ -58,7 +58,7 @@ function ContactCard() {
       {/* Title */}
       <h3 style={{
         fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-        fontWeight: 800, fontSize: "1.15rem", lineHeight: 1.25,
+        fontWeight: 800, fontSize: "1.3rem", lineHeight: 1.25,
         color: "#1A1A1A", marginBottom: "10px", letterSpacing: "-0.02em",
       }}>
         Staat <span style={{ color: "#9BCB6C" }}>jouw vraag</span><br />er niet tussen?
@@ -137,12 +137,12 @@ function ContactCard() {
           fontWeight: 600, fontSize: "14px", borderRadius: "10px", padding: "12px 16px",
           textDecoration: "none", marginBottom: "14px",
           fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-          border: "1px solid #E5E7EB",
+          border: "1px solid #9BCB6C",
           transition: "border-color 200ms ease, color 200ms ease",
           boxSizing: "border-box",
         }}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.color = "#1A1A1A"; }}
+        onMouseEnter={e => { e.currentTarget.style.borderColor = "#7AB54E"; e.currentTarget.style.color = "#7AB54E"; }}
+        onMouseLeave={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#1A1A1A"; }}
       >
         <Phone size={15} strokeWidth={2} style={{ flexShrink: 0 }} />
         +32 468 35 28 69
