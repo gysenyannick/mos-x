@@ -333,9 +333,9 @@ export default function SiteServices() {
           <Link
             href="/diensten"
             className="inline-flex items-center"
-            style={{ border: "1px solid rgba(255,255,255,0.2)", color: "#FFFFFF", background: "rgba(255,255,255,0.08)", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "background 0.2s ease, border-color 0.2s ease", gap: "8px" }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
+            style={{ border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease", gap: "8px" }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
           >
             <LayoutGrid size={16} strokeWidth={2} />
             Alle diensten bekijken
