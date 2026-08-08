@@ -19,12 +19,12 @@ export default function SiteRealisatiesPreview() {
         {/* Grid: video links, 2 foto's rechts */}
         <div className="realisaties-preview-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "24px", alignItems: "start" }}>
           {/* Links: video met native controls */}
-          <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", background: "#000", maxHeight: "700px" }}>
+          <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", background: "#000", maxHeight: "600px" }}>
             <video
               src="/videos/video-dakreiniging.mp4"
               controls
               playsInline
-              style={{ width: "100%", height: "700px", objectFit: "cover", display: "block" }}
+              style={{ width: "100%", height: "600px", objectFit: "cover", display: "block" }}
             />
           </div>
           {/* Rechts: 2 foto's (half formaat) */}
