@@ -94,7 +94,7 @@ export default function SiteContact() {
             </p>
             {/* Checkmarks */}
             <div className="contact-checkmarks" style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "0" }}>
-              {["Vrijblijvend", "Binnen 1 minuut", "Persoonlijk advies"].map((txt) => (
+              {["Binnen 1 minuut", "Persoonlijk dakadvies", "Vrijblijvend en zonder verplichtingen"].map((txt) => (
                 <div key={txt} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <CheckCircle size={18} color="#9BCB6C" strokeWidth={2.5} style={{ flexShrink: 0 }} />
                   <span style={{
@@ -125,7 +125,7 @@ export default function SiteContact() {
                   boxSizing: "border-box",
                 }}
               >
-                Bereken je richtprijs
+                Bereken mijn richtprijs
                 <ChevronRight size={16} strokeWidth={2.5} style={{ marginLeft: "8px" }} />
               </a>
 
@@ -201,7 +201,7 @@ export default function SiteContact() {
                   fontSize: "13px", color: `rgba(255,255,255,0.55)`, lineHeight: 1.5,
                   fontFamily: "var(--font-inter), system-ui, sans-serif",
                 }}>
-                  Alleen wat je dak écht nodig heeft.
+                  Dakspecialist MOS-X
                 </p>
               </div>
             </div>
