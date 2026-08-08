@@ -129,7 +129,7 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
               display: "inline-flex", alignItems: "center", gap: "6px",
               background: "#9BCB6C", color: "#FFFFFF",
               fontWeight: 700, fontSize: "13px",
-              borderRadius: "8px", padding: "10px 10px",
+              borderRadius: "8px", padding: "10px 7.5px",
               textDecoration: "none",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               border: "2px solid #9BCB6C",
