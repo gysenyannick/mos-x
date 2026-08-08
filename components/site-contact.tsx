@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Phone, CheckCircle, ChevronRight } from "lucide-react";
+import { Phone, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 const GREEN = "#9ACA63";
@@ -96,7 +96,15 @@ export default function SiteContact() {
             <div className="contact-checkmarks" style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "0" }}>
               {["Binnen 1 minuut", "Persoonlijk dakadvies", "Vrijblijvend en zonder verplichtingen"].map((txt) => (
                 <div key={txt} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <CheckCircle size={18} color="#9BCB6C" strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                  <span style={{
+                    width: "20px", height: "20px", borderRadius: "50%",
+                    background: "#9BCB6C", flexShrink: 0,
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+                      <path d="M1 4.5L4 7.5L10 1.5" stroke="#0B0F0C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
                   <span style={{
                     fontSize: "15px", color: "rgba(255,255,255,0.75)",
                     fontFamily: "var(--font-inter), system-ui, sans-serif",
