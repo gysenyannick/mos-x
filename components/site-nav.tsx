@@ -166,7 +166,7 @@ export default function SiteNav() {
               onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
               onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
             >
-              Bereken je richtprijs
+              Bereken mijn richtprijs
               <ChevronRight size={13} strokeWidth={2.5} />
             </Link>
           </div>
@@ -248,7 +248,7 @@ export default function SiteNav() {
                   fontFamily: "var(--font-montserrat)",
                 }}
               >
-                Bereken je richtprijs
+                Bereken mijn richtprijs
                 <ChevronRight size={13} strokeWidth={2.5} />
               </Link>
             </div>
