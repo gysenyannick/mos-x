@@ -76,15 +76,18 @@ function ContactCard() {
         background: "#F7F8F6", borderRadius: "10px",
         padding: "12px 14px", marginBottom: "16px",
       }}>
-        <img
-          src="/images/yannick-foto.png"
-          alt="Yannick"
-          style={{
-            width: "64px", height: "64px", borderRadius: "50%",
-            objectFit: "cover", objectPosition: "center center",
-            flexShrink: 0, border: "2px solid #9BCB6C",
-          }}
-        />
+        <div style={{ position: "relative", width: "64px", height: "64px", flexShrink: 0, borderRadius: "50%", border: "2px solid #9BCB6C", overflow: "hidden" }}>
+          <img
+            src="/images/IMG_4678.PNG"
+            alt="Yannick"
+            style={{
+              position: "absolute", top: "65%", left: "50%",
+              transform: "translate(-50%, -50%) scale(1.4)",
+              width: "64px", height: "64px",
+              objectFit: "cover",
+            }}
+          />
+        </div>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             <span style={{
