@@ -25,7 +25,7 @@ export default function SiteAboutYannick() {
               minHeight: "460px",
             }}>
               <img
-                src="/images/Yannick foto op dak.JPEG"
+                src="/images/yannick-op-dak-srgb.JPEG"
                 alt="Yannick - oprichter MOS-X"
                 className="about-yannick-photo"
                 style={{
@@ -36,7 +36,6 @@ export default function SiteAboutYannick() {
                   objectFit: "cover",
                   objectPosition: "center 70%",
                   borderRadius: "16px",
-                  filter: "saturate(0.70) contrast(0.92)",
                 }}
               />
 
