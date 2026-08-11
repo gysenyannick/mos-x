@@ -141,7 +141,7 @@ export default function ContactPage() {
                     <option value="dakreiniging" style={{ color: "#1A1A1A" }}>Dakreiniging</option>
                     <option value="dakcoating" style={{ color: "#1A1A1A" }}>Dakcoating</option>
                     <option value="dakabonnement" style={{ color: "#1A1A1A" }}>MOS-X Dakzorg</option>
-                    <option value="weet-niet" style={{ color: "#1A1A1A" }}>Ik weet het nog niet</option>
+                    <option value="weet-niet" style={{ color: "#1A1A1A" }}>Andere</option>
                   </select>
                 </div>
 
