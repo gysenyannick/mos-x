@@ -292,21 +292,8 @@ export default function SitePricing() {
   const fetchPostcodeSuggestions = async (query: string) => {
     if (query.length < 2) { setPostcodeSuggestions([]); setShowPostcodeDrop(false); return; }
     try {
-      const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=8&lang=nl&bbox=2.5,49.5,6.5,51.5';
-      const res = await fetch(url);
-      const data = await res.json();
-      const seen = new Set<string>();
-      const sug: {postcode: string; municipality: string}[] = [];
-      for (const f of (data.features || [])) {
-        const p = f.properties;
-        if (p.country_code !== 'be' || !p.postcode) continue;
-        if (!String(p.postcode).startsWith(query)) continue;
-        const key = p.postcode + '-' + (p.city || p.name || '');
-        if (seen.has(key)) continue;
-        seen.add(key);
-        sug.push({ postcode: String(p.postcode), municipality: p.city || p.name || '' });
-      }
-      const result = sug.slice(0, 5);
+      const res = await fetch('/api/suggest/postcode?q=' + encodeURIComponent(query));
+      const result: {postcode: string; municipality: string}[] = await res.json();
       setPostcodeSuggestions(result);
       setShowPostcodeDrop(result.length > 0);
     } catch { setPostcodeSuggestions([]); setShowPostcodeDrop(false); }
@@ -315,21 +302,10 @@ export default function SitePricing() {
   const fetchAdresSuggestions = async (query: string, postcode: string) => {
     if (query.length < 3) { setAdresSuggestions([]); setShowAdresDrop(false); return; }
     try {
-      const q = postcode ? query + ' ' + postcode + ' Belgium' : query + ' Belgium';
-      const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(q) + '&limit=6&lang=nl&bbox=2.5,49.5,6.5,51.5';
-      const res = await fetch(url);
-      const data = await res.json();
-      const seen = new Set<string>();
-      const sug: string[] = [];
-      for (const f of (data.features || [])) {
-        const p = f.properties;
-        if (p.country_code !== 'be' || !p.street) continue;
-        const addr = p.housenumber ? p.street + ' ' + p.housenumber : p.street;
-        if (seen.has(addr)) continue;
-        seen.add(addr);
-        sug.push(addr);
-      }
-      const result = sug.slice(0, 5);
+      const params = new URLSearchParams({ q: query });
+      if (postcode) params.set('postcode', postcode);
+      const res = await fetch('/api/suggest/adres?' + params.toString());
+      const result: string[] = await res.json();
       setAdresSuggestions(result);
       setShowAdresDrop(result.length > 0);
     } catch { setAdresSuggestions([]); setShowAdresDrop(false); }
@@ -1074,7 +1050,7 @@ export default function SitePricing() {
                     <div style={{ position: "relative" }}>
                       <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Postcode *</label>
                       <input
-                        type="text" placeholder="bv. 2000" value={form.postcode}
+                        type="text" placeholder="bv. 2000" value={form.postcode} autoComplete="off"
                         onChange={e => {
                           const v = e.target.value;
                           setForm(f => ({ ...f, postcode: v }));
@@ -1106,7 +1082,7 @@ export default function SitePricing() {
                     <div style={{ position: "relative" }}>
                       <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Adres *</label>
                       <input
-                        type="text" placeholder="bv. Kerkstraat 12" value={form.adres}
+                        type="text" placeholder="bv. Kerkstraat 12" value={form.adres} autoComplete="off"
                         onChange={e => {
                           const v = e.target.value;
                           setForm(f => ({ ...f, adres: v }));
