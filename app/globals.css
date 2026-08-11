@@ -931,6 +931,11 @@ html {
   }
 }
 
+/* Verberg spin-arrows op oppervlakte input */
+.opp-input::-webkit-outer-spin-button,
+.opp-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.opp-input[type=number] { -moz-appearance: textfield; }
+
 /* Hide Trustindex expired trial bottom banner (direct body child only, not the inline widgets) */
 body > div:has(img[src*="trustindex.io/assets/platform/Trustindex/logo.svg"]) {
   display: none !important;

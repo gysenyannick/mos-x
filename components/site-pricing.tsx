@@ -1,12 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const GREEN = "#9BCB6C";
 const TOTAL_STEPS = 5;
 
-const STEP_NAMES = ["Woningtype", "Daktype", "Oppervlakte", "Extra opties", "Richtprijs"];
+function calcPrice(opp: number, extra: string): { low: number; high: number } {
+  if (extra === "coating") {
+    return {
+      low: Math.max(1200, Math.round(opp * 22 / 50) * 50),
+      high: Math.max(1500, Math.round(opp * 28 / 50) * 50),
+    };
+  }
+  return {
+    low: Math.max(500, Math.round(opp * 10 / 50) * 50),
+    high: Math.max(650, Math.round(opp * 14 / 50) * 50),
+  };
+}
+
+const STEP_NAMES = ["Woningtype", "Daktype", "Oppervlakte", "Behandeling", "Richtprijs"];
 
 function StepIndicator({ step }: { step: number }) {
   return (
@@ -50,10 +63,10 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
       onClick={onClick}
       style={{
         width: "100%", display: "flex", alignItems: "center", gap: "16px",
-        padding: "14px 16px", borderRadius: "12px", cursor: "pointer",
+        padding: "10px 16px", borderRadius: "12px", cursor: "pointer",
         border: selected ? `2px solid ${GREEN}` : "2px solid #E5E7EB",
         background: selected ? "rgba(90,158,47,0.05)" : "#FFFFFF",
-        transition: "all 0.2s ease", textAlign: "left", marginBottom: "10px",
+        transition: "all 0.2s ease", textAlign: "left", marginBottom: "0",
       }}
     >
       {imgSrc && (
@@ -211,20 +224,200 @@ const NextBtn = ({ onClick, disabled, label }: { onClick: () => void; disabled?:
 );
 
 
+function formatBelgianPhone(raw: string): string {
+  if (!raw) return raw;
+  let digits = raw.replace(/\D/g, '');
+  if (!digits) return raw;
+  if (digits.startsWith('32') && digits.length > 9) digits = digits.slice(2);
+  if (digits.startsWith('0')) digits = digits.slice(1);
+  if (!digits) return raw;
+  // Mobile: 04XX → 9 digits after stripping 0, starts with 4
+  if (digits.startsWith('4') && digits.length >= 9) {
+    const d = digits.slice(0, 9);
+    return '+32 ' + d.slice(0,3) + ' ' + d.slice(3,5) + ' ' + d.slice(5,7) + ' ' + d.slice(7,9);
+  }
+  // 1-digit area (02, 03, 09): 8 digits after stripping 0
+  if (['2', '3', '9'].includes(digits[0]) && digits.length >= 8) {
+    const d = digits.slice(0, 8);
+    return '+32 ' + d[0] + ' ' + d.slice(1,4) + ' ' + d.slice(4,6) + ' ' + d.slice(6,8);
+  }
+  // 2-digit area (011, 016 etc.): 8 digits after stripping 0
+  if (digits.length >= 8) {
+    const d = digits.slice(0, 8);
+    return '+32 ' + d.slice(0,2) + ' ' + d.slice(2,4) + ' ' + d.slice(4,6) + ' ' + d.slice(6,8);
+  }
+  return raw;
+}
+
 export default function SitePricing() {
   const [step, setStep] = useState(1);
   const [opp, setOpp] = useState(150);
+  const [oppInput, setOppInput] = useState("150");
   const [oppPreset, setOppPreset] = useState<number | null>(null);
   const [woning, setWoning] = useState("");
   const [dak, setDak] = useState("");
   const [extra, setExtra] = useState("");
-  const [form, setForm] = useState({ naam: "", tel: "", email: "", postcode: "", adres: "" });
-  const [done, setDone] = useState(false);
+  const [form, setForm] = useState({ voornaam: "", achternaam: "", tel: "", email: "", postcode: "", adres: "" });
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const [phase, setPhase] = useState<'form' | 'animating' | 'result'>('form');
+  const [checksDone, setChecksDone] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const postcodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const adresTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [postcodeSuggestions, setPostcodeSuggestions] = useState<{postcode: string; municipality: string}[]>([]);
+  const [showPostcodeDrop, setShowPostcodeDrop] = useState(false);
+  const [adresSuggestions, setAdresSuggestions] = useState<string[]>([]);
+  const [showAdresDrop, setShowAdresDrop] = useState(false);
+  const [plaatsbezoekStatus, setPlaatsbezoekStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const addPhotos = (files: FileList) => {
+    const slots = 3 - photos.length;
+    if (slots <= 0) return;
+    const newFiles = Array.from(files).slice(0, slots);
+    const newPreviews = newFiles.map(f => URL.createObjectURL(f));
+    setPhotos(p => [...p, ...newFiles]);
+    setPhotoPreviews(p => [...p, ...newPreviews]);
+  };
+
+  const removePhoto = (i: number) => {
+    URL.revokeObjectURL(photoPreviews[i]);
+    setPhotos(p => p.filter((_, idx) => idx !== i));
+    setPhotoPreviews(p => p.filter((_, idx) => idx !== i));
+  };
+
+  const fetchPostcodeSuggestions = async (query: string) => {
+    if (query.length < 2) { setPostcodeSuggestions([]); setShowPostcodeDrop(false); return; }
+    try {
+      const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(query) + '&limit=8&lang=nl&bbox=2.5,49.5,6.5,51.5';
+      const res = await fetch(url);
+      const data = await res.json();
+      const seen = new Set<string>();
+      const sug: {postcode: string; municipality: string}[] = [];
+      for (const f of (data.features || [])) {
+        const p = f.properties;
+        if (p.country_code !== 'be' || !p.postcode) continue;
+        if (!String(p.postcode).startsWith(query)) continue;
+        const key = p.postcode + '-' + (p.city || p.name || '');
+        if (seen.has(key)) continue;
+        seen.add(key);
+        sug.push({ postcode: String(p.postcode), municipality: p.city || p.name || '' });
+      }
+      const result = sug.slice(0, 5);
+      setPostcodeSuggestions(result);
+      setShowPostcodeDrop(result.length > 0);
+    } catch { setPostcodeSuggestions([]); setShowPostcodeDrop(false); }
+  };
+
+  const fetchAdresSuggestions = async (query: string, postcode: string) => {
+    if (query.length < 3) { setAdresSuggestions([]); setShowAdresDrop(false); return; }
+    try {
+      const q = postcode ? query + ' ' + postcode + ' Belgium' : query + ' Belgium';
+      const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(q) + '&limit=6&lang=nl&bbox=2.5,49.5,6.5,51.5';
+      const res = await fetch(url);
+      const data = await res.json();
+      const seen = new Set<string>();
+      const sug: string[] = [];
+      for (const f of (data.features || [])) {
+        const p = f.properties;
+        if (p.country_code !== 'be' || !p.street) continue;
+        const addr = p.housenumber ? p.street + ' ' + p.housenumber : p.street;
+        if (seen.has(addr)) continue;
+        seen.add(addr);
+        sug.push(addr);
+      }
+      const result = sug.slice(0, 5);
+      setAdresSuggestions(result);
+      setShowAdresDrop(result.length > 0);
+    } catch { setAdresSuggestions([]); setShowAdresDrop(false); }
+  };
+
+  const handlePlaatsbezoek = async () => {
+    if (plaatsbezoekStatus === 'sending' || plaatsbezoekStatus === 'success') return;
+    setPlaatsbezoekStatus('sending');
+    try {
+      const pr = calcPrice(opp, extra);
+      const fd = new FormData();
+      fd.append("voornaam", form.voornaam);
+      fd.append("achternaam", form.achternaam);
+      fd.append("email", form.email);
+      fd.append("tel", form.tel);
+      fd.append("postcode", form.postcode);
+      fd.append("adres", form.adres);
+      fd.append("woning", woning);
+      fd.append("dak", dak);
+      fd.append("opp", String(opp));
+      fd.append("extra", extra);
+      fd.append("priceLow", String(pr.low));
+      fd.append("priceHigh", String(pr.high));
+      photos.forEach((f, i) => fd.append(`foto_${i}`, f, f.name));
+      const res = await fetch("/api/plaatsbezoek", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("send_failed");
+      setPlaatsbezoekStatus('success');
+    } catch {
+      setPlaatsbezoekStatus('error');
+    }
+  };
+
+  const handleSubmit = () => {
+    setSubmitError(false);
+    setPhase('animating');
+    setChecksDone(0);
+    setProgress(0);
+    const fd = new FormData();
+    fd.append("voornaam", form.voornaam);
+    fd.append("achternaam", form.achternaam);
+    fd.append("email", form.email);
+    fd.append("tel", form.tel);
+    fd.append("postcode", form.postcode);
+    fd.append("adres", form.adres);
+    fd.append("woning", woning);
+    fd.append("dak", dak);
+    fd.append("opp", String(opp));
+    fd.append("extra", extra);
+    photos.forEach((f, i) => fd.append(`foto_${i}`, f, f.name));
+    fetch("/api/richtprijs", { method: "POST", body: fd }).catch(() => {});
+  };
+
+  useEffect(() => {
+    if (phase !== 'animating') return;
+    const duration = 6000;
+    const start = Date.now();
+    const id = setInterval(() => {
+      const pct = Math.min(100, Math.round((Date.now() - start) / duration * 100));
+      setProgress(pct);
+      setChecksDone(Math.min(5, Math.ceil(pct / 20)));
+      if (pct >= 100) {
+        clearInterval(id);
+        setTimeout(() => setPhase('result'), 380);
+      }
+    }, 40);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  const priceRange = calcPrice(opp, extra);
+  const extraLabel = extra === "coating" ? "Dakcoating + reiniging" : extra === "geen" ? "Alleen dakreiniging" : "Advies gewenst";
+  const fmt = (n: number) => "€ " + n.toLocaleString("nl-BE");
+
+  const dienstParam = extra === "coating" ? "Dakcoating" : "Dakontmossen";
+  const berichtParam = "Richtprijsaanvraag via calculator: " + woning + ", " + dak + ", " + opp + " m², " + extraLabel;
+  const params = new URLSearchParams({
+    naam: (form.voornaam + " " + form.achternaam).trim(),
+    email: form.email,
+    telefoon: form.tel,
+    gemeente: form.postcode,
+    dienst: dienstParam,
+    bericht: berichtParam,
+  });
+  const contactUrl = "/contact?" + params.toString();
 
   const next = () => setStep(s => Math.min(s + 1, TOTAL_STEPS));
   const prev = () => setStep(s => Math.max(s - 1, 1));
 
-  const tabLabels = ["Woningtype", "Daktype", "Oppervlakte", "Extra opties", "Richtprijs"];
+  const tabLabels = ["Woningtype", "Daktype", "Oppervlakte", "Behandeling", "Richtprijs"];
 
   const woningTypes = [
     { label: "Rijwoning",          img: "/images/Rijtjes.png" },
@@ -241,9 +434,9 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Ja, ik wil een dakcoating", subtitle: "Voor een vernieuwde uitstraling en een extra beschermende afwerking.", bullets: ["Je dak ziet er opnieuw als nieuw uit", "Beschermt tegen vocht en weersinvloeden", "Minder snelle mos- en algengroei"] },
-    { id: "geen", title: "Nee, alleen dakreiniging", subtitle: "Inclusief standaard anti-mosbehandeling.", bullets: [] },
-    { id: "advies", title: "Ik weet het niet", subtitle: "Adviseer mij wat het beste past bij mijn dak.", bullets: [] },
+    { id: "coating", title: "Ja, met dakcoating", subtitle: "Geschikt voor betonpannen en leien.", badge: "10 jaar garantie", bullets: ["Herstelt kleur en uitstraling", "Vermindert vochtopname", "Beschermt tegen weer, UV & mos"] },
+    { id: "geen", title: "Nee, alleen dakreiniging", subtitle: "Inclusief standaard behandeling tegen mos- en algengroei.", badge: null, bullets: [] },
+    { id: "advies", title: "Ik twijfel nog", subtitle: "Adviseer mij welke behandeling het beste bij mijn dak past.", badge: null, bullets: [] },
   ];
 
   return (
@@ -277,6 +470,18 @@ export default function SitePricing() {
           /* Stap 2 daktype: 2 kolommen op mobile */
           .dak-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+          }
+          /* Stap 4 coating-keuze: 1 kolom op mobile */
+          .extra-grid {
+            grid-template-columns: 1fr !important;
+          }
+          /* Jouw keuzes: 2 kolommen op mobile */
+          .keuzes-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          /* Combined naam-veld focus */
+          .naam-wrapper:focus-within {
+            border-color: #9BCB6C !important;
           }
         }
       `}</style>
@@ -351,7 +556,7 @@ export default function SitePricing() {
             <div style={{ flex: "1 1 0" }}>
 
               {/* Titel — mobile only */}
-              {!done && (
+              {phase === 'form' && (
                 <div className="lg:hidden" style={{ textAlign: "center", marginBottom: "20px" }}>
                   <p style={{
                     fontSize: "20px", fontWeight: 800,
@@ -366,10 +571,10 @@ export default function SitePricing() {
               )}
 
               {/* Stap indicator — mobile only */}
-              {!done && <StepIndicator step={step} />}
+              {phase === 'form' && <StepIndicator step={step} />}
 
               {/* Tab navigatie — desktop only */}
-              {!done && (
+              {phase === 'form' && (
                 <div className="hidden lg:flex" style={{ justifyContent: "center", marginBottom: "28px", gap: "24px", overflowX: "auto", WebkitOverflowScrolling: "touch" as const }}>
                   {tabLabels.map((label, i) => {
                     const tabStep = i + 1;
@@ -403,15 +608,134 @@ export default function SitePricing() {
 
         <div className="site-pricing-steps" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 clamp(0px, 3vw, 40px)", minHeight: "280px" }}>
 
-          {done ? (
-            <div style={{ textAlign: "center", padding: "32px 0" }}>
-              <div style={{ fontSize: "52px", marginBottom: "20px" }}>✅</div>
-              <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "22px", color: "#111", marginBottom: "12px" }}>
-                Bedankt!
-              </h3>
-              <p style={{ fontSize: "16px", color: "#555", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Yannick neemt binnen <strong>1 werkdag</strong> contact met je op met jouw persoonlijke richtprijs.
+          {phase === 'animating' ? (
+            <div style={{ padding: "48px 0 36px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: GREEN, marginBottom: "22px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                Berekening loopt…
               </p>
+              <div style={{ width: "100%", maxWidth: "320px", height: "5px", borderRadius: "3px", background: "#EFEFEF", marginBottom: "28px", overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${progress}%`, background: GREEN, borderRadius: "3px", transition: "width 0.04s linear" }} />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px", width: "100%", maxWidth: "290px" }}>
+                {(["Woningtype gecontroleerd", "Daktype meegenomen", "Dakoppervlakte verwerkt", "Gekozen behandeling berekend", "Richtprijs samengesteld"] as string[]).map((label, i) => {
+                  const active = checksDone > i;
+                  return (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px", opacity: active ? 1 : 0.25, transition: "opacity 0.45s ease" }}>
+                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0, background: active ? GREEN : "#E0E0E0", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.3s ease" }}>
+                        {active && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+                      </div>
+                      <span style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: active ? "#222" : "#CCC", transition: "color 0.3s ease" }}>{label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <p style={{ marginTop: "18px", fontSize: "11px", color: "#CCCCCC", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{progress}%</p>
+            </div>
+          ) : phase === 'result' ? (
+            <div style={{ padding: "16px 0 8px" }}>
+
+              {/* Check + titel */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
+                <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: GREEN, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "19px", color: "#111", margin: 0, letterSpacing: "-0.01em" }}>
+                  Je richtprijs is klaar.
+                </h3>
+              </div>
+
+              {/* Prijskaart */}
+              <div style={{ background: "#F4FBF0", border: "2px solid rgba(155,203,108,0.4)", borderRadius: "14px", padding: "16px 24px 14px", marginBottom: "10px", textAlign: "center" }}>
+                <div style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "34px", color: "#111", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
+                  {fmt(priceRange.low)} - {fmt(priceRange.high)}
+                </div>
+                <div style={{ fontSize: "12px", color: "#666", marginTop: "5px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                  Geschatte richtprijs incl. btw
+                </div>
+              </div>
+
+              {/* Subtekst */}
+              <p style={{ fontSize: "13px", color: "#888", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "10px", textAlign: "center" }}>
+                Op basis van jouw gegevens. De exacte prijs bepalen we na controle van je dak.
+              </p>
+
+              {/* E-mailbevestiging — statusbalk */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "28px" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "6px", padding: "5px 12px" }}>
+                <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#4A8A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+                <span style={{ fontSize: "12px", color: "#4A8A2A", fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 600 }}>
+                  Ook verzonden naar {form.email}
+                </span>
+              </div>
+              </div>
+
+              {/* Jouw keuzes */}
+              <div style={{ marginBottom: "24px" }}>
+                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "10px", color: "#BBBBBB", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                  Jouw keuzes
+                </p>
+                <div className="keuzes-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px" }}>
+                  {([
+                    { label: "Woningtype", value: woning },
+                    { label: "Daktype", value: dak },
+                    { label: "Oppervlakte", value: `${opp} m²` },
+                    { label: "Behandeling", value: extraLabel },
+                  ] as {label: string; value: string}[]).map(item => (
+                    <div key={item.label} style={{ background: "#FFFFFF", borderRadius: "10px", padding: "12px 10px", textAlign: "center", border: "1.5px solid #E8ECE5", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
+                      <div style={{ fontSize: "12px", color: GREEN, fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "4px", letterSpacing: "0.02em", fontWeight: 600 }}>{item.label}</div>
+                      <div style={{ fontSize: "13px", fontWeight: 400, color: "#1A1A1A", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.25 }}>{item.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* CTA — gratis plaatsbezoek */}
+              {plaatsbezoekStatus === 'success' ? (
+                <div style={{ background: "#F4FBF0", border: "1.5px solid rgba(155,203,108,0.4)", borderRadius: "12px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "#9BCB6C", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </div>
+                  <div>
+                    <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "15px", color: "#1A5C36", margin: "0 0 3px" }}>
+                      Yannick is verwittigd!
+                    </p>
+                    <p style={{ fontSize: "13px", color: "#3A7A25", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: "0 0 2px", lineHeight: 1.5 }}>
+                      Hij neemt binnen 1 werkdag contact met je op om het plaatsbezoek in te plannen.
+                    </p>
+                    <p style={{ fontSize: "11px", color: "#6AAA44", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>
+                      Je hoeft verder niets te doen.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ background: "#F7FBF2", border: "1.5px solid rgba(155,203,108,0.3)", borderRadius: "12px", padding: "14px 18px" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+                    <div style={{ flex: 1, minWidth: "160px" }}>
+                      <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "15px", color: "#111", margin: "0 0 3px" }}>
+                        Wil je een exacte prijs?
+                      </p>
+                      <p style={{ fontSize: "12px", color: "#777", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0, lineHeight: 1.5 }}>
+                        Yannick bekijkt je dak ter plaatse en maakt daarna een offerte op maat.
+                      </p>
+                    </div>
+                    <button
+                      onClick={handlePlaatsbezoek}
+                      disabled={plaatsbezoekStatus === 'sending'}
+                      style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: plaatsbezoekStatus === 'sending' ? "#AAA" : "#9BCB6C", color: "#fff", padding: "10px 18px", borderRadius: "8px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", border: "none", cursor: plaatsbezoekStatus === 'sending' ? "not-allowed" : "pointer", boxShadow: plaatsbezoekStatus === 'sending' ? "none" : "0 3px 12px rgba(90,158,47,0.25)", whiteSpace: "nowrap", flexShrink: 0, transition: "background 0.18s ease, box-shadow 0.18s ease" }}
+                      onMouseEnter={e => { if (plaatsbezoekStatus !== 'sending') { e.currentTarget.style.background = "#7AB54E"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(90,158,47,0.38)"; } }}
+                      onMouseLeave={e => { if (plaatsbezoekStatus !== 'sending') { e.currentTarget.style.background = "#9BCB6C"; e.currentTarget.style.boxShadow = "0 3px 12px rgba(90,158,47,0.25)"; } }}
+                    >
+                      {plaatsbezoekStatus === 'sending' ? "Aanvraag versturen…" : (<>Plan een gratis plaatsbezoek <ChevronRight size={13} strokeWidth={2.5} /></>)}
+                    </button>
+                  </div>
+                  {plaatsbezoekStatus === 'error' && (
+                    <p style={{ fontSize: "12px", color: "#C0392B", marginTop: "10px", marginBottom: 0, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Er ging iets mis. Probeer het opnieuw of neem telefonisch contact op.
+                    </p>
+                  )}
+                </div>
+              )}
+
             </div>
           ) : (
             <>
@@ -436,7 +760,7 @@ export default function SitePricing() {
                   </h3>
                   <div className="dak-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "10px" }}>
                     {dakTypes.filter(d => d.label !== "Ik weet het niet").map(d => (
-                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={130} selected={dak === d.label} onClick={() => { setDak(d.label); setTimeout(next, 220); }} />
+                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => { setDak(d.label); setTimeout(next, 220); }} />
                     ))}
                   </div>
                   <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => { setDak("Ik weet het niet"); setTimeout(next, 220); }} />
@@ -452,24 +776,67 @@ export default function SitePricing() {
                     Een schatting is voldoende.
                   </p>
                   <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                    <span style={{
-                      display: "inline-block",
+                    <div style={{
+                      display: "inline-flex", alignItems: "baseline", gap: "6px",
                       background: "#F5F5F5", borderRadius: "8px", padding: "8px 20px",
-                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                      fontWeight: 800, fontSize: "28px", color: "#1A1A1A", lineHeight: 1.4,
-                    }}>
-                      {opp} m²
-                    </span>
+                      cursor: "text",
+                      border: "1.5px dashed #C5DFA8",
+                      transition: "border-color 0.18s ease",
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.borderColor = GREEN)}
+                    onMouseLeave={e => (e.currentTarget.style.borderColor = "#C5DFA8")}
+                    >
+                      <input
+                        className="opp-input"
+                        type="number"
+                        min={50} max={500}
+                        value={oppInput}
+                        onChange={e => {
+                          setOppInput(e.target.value);
+                          const v = parseInt(e.target.value, 10);
+                          if (!isNaN(v) && v >= 50 && v <= 500) {
+                            setOpp(v);
+                            setOppPreset(null);
+                          }
+                        }}
+                        onBlur={() => {
+                          const v = parseInt(oppInput, 10);
+                          const clamped = isNaN(v) ? 150 : Math.min(500, Math.max(50, v));
+                          setOpp(clamped);
+                          setOppInput(String(clamped));
+                          setOppPreset(null);
+                        }}
+                        onKeyDown={e => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
+                        style={{
+                          background: "transparent", border: "none", outline: "none",
+                          fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                          fontWeight: 800, fontSize: "28px", color: "#1A1A1A",
+                          width: "72px", textAlign: "right", padding: 0,
+                          appearance: "textfield",
+                        } as React.CSSProperties}
+                      />
+                      <span style={{
+                        fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                        fontWeight: 800, fontSize: "28px", color: "#1A1A1A",
+                      }}>m²</span>
+                    </div>
+                    <p style={{ fontSize: "11px", color: "#AAA", marginTop: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      klik op het getal om zelf te typen
+                    </p>
                   </div>
                   <input type="range" min={50} max={500} step={5} value={opp}
-                    onChange={e => { setOpp(Number(e.target.value)); setOppPreset(null); }}
+                    onChange={e => { const v = Number(e.target.value); setOpp(v); setOppInput(String(v)); setOppPreset(null); }}
                     style={{ width: "100%", accentColor: GREEN, marginBottom: "8px" }}
                   />
-                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#AAA", marginBottom: "16px" }}>
-                    <span>50 m²</span><span>500 m²</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#AAA", marginBottom: "10px" }}>
+                    <span>50 m²</span>
+                    <span style={{ color: GREEN, fontSize: "12px", fontFamily: "var(--font-inter), system-ui, sans-serif", display: "flex", alignItems: "center", gap: "4px" }}>
+                      <ChevronLeft size={13} strokeWidth={2.5} /> sleep de slider <ChevronRight size={13} strokeWidth={2.5} />
+                    </span>
+                    <span>500 m²</span>
                   </div>
                   {/* Preset size cards — 4 in één rij */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginBottom: "24px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginTop: "36px", marginBottom: "44px" }}>
                     {([
                       { label: "Klein",       sub: "tot 100 m²",  value: 75  },
                       { label: "Gemiddeld",   sub: "100 - 175 m²",  value: 137 },
@@ -480,7 +847,7 @@ export default function SitePricing() {
                       return (
                         <button
                           key={p.label}
-                          onClick={() => { setOpp(p.value); setOppPreset(p.value); }}
+                          onClick={() => { setOpp(p.value); setOppInput(String(p.value)); setOppPreset(p.value); }}
                           style={{
                             border: `2px solid ${active ? GREEN : "#E5E7EB"}`,
                             borderRadius: "10px",
@@ -513,29 +880,30 @@ export default function SitePricing() {
                       );
                     })}
                   </div>
-                  {/* Terug links, Ga verder rechts (compact) */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+                  {/* Terug links, Ga verder rechts */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <button onClick={prev} style={{
+                      padding: "10px 20px", borderRadius: "8px",
                       background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
-                      borderRadius: "24px", cursor: "pointer",
-                      fontSize: "14px", fontWeight: 600, color: GREEN,
+                      cursor: "pointer",
+                      fontSize: "15px", fontWeight: 700, color: GREEN,
                       fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                      display: "inline-flex", alignItems: "center", gap: "6px",
-                      padding: "8px 18px", flexShrink: 0,
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      flexShrink: 0,
                     }}
                     onMouseEnter={e => { e.currentTarget.style.background = "rgba(155,203,108,0.22)"; e.currentTarget.style.borderColor = GREEN; }}
                     onMouseLeave={e => { e.currentTarget.style.background = "rgba(155,203,108,0.12)"; e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; }}
                     >
-                      <ChevronLeft size={15} strokeWidth={2.5} /> Terug
+                      <ChevronLeft size={16} strokeWidth={2.5} /> Terug
                     </button>
                     <button onClick={next}
                       style={{
-                        padding: "10px 22px", borderRadius: "8px", border: "none",
+                        flex: 1, padding: "14px", borderRadius: "8px", border: "none",
                         background: GREEN, color: "#fff",
-                        fontWeight: 700, fontSize: "14px", cursor: "pointer",
+                        fontWeight: 700, fontSize: "15px", cursor: "pointer",
                         fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                         boxShadow: "0 4px 16px rgba(90,158,47,0.25)",
-                        display: "inline-flex", alignItems: "center", gap: "6px",
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                         transition: "background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
                       }}
                       onMouseEnter={e => {
@@ -553,7 +921,7 @@ export default function SitePricing() {
                         if (chevron) (chevron as HTMLElement).style.transform = "translateX(0px)";
                       }}
                     >
-                      Ga verder <ChevronRight size={15} strokeWidth={2.5} style={{ transition: "transform 0.18s ease" }} />
+                      Ga verder <ChevronRight size={16} strokeWidth={2.5} style={{ transition: "transform 0.18s ease" }} />
                     </button>
                   </div>
                 </div>
@@ -562,13 +930,98 @@ export default function SitePricing() {
               {step === 4 && (
                 <div>
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
-                    Wil je je dak ook laten coaten?
+                    Wil je je dak na de reiniging ook laten coaten?
                   </h3>
-                  {extraOpties.map(o => (
-                    <ExtraCard key={o.id} title={o.title} subtitle={o.subtitle} bullets={o.bullets} selected={extra === o.id} onClick={() => setExtra(o.id)} />
-                  ))}
-                  <div style={{ marginTop: "8px" }}>
-                    <NextBtn onClick={next} disabled={!extra} />
+                  <div className="extra-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", alignItems: "stretch", marginTop: "60px", marginBottom: "60px" }}>
+                    {extraOpties.map(o => {
+                      const selected = extra === o.id;
+                      return (
+                        <button
+                          key={o.id}
+                          onClick={() => setExtra(o.id)}
+                          style={{
+                            display: "flex", flexDirection: "column", alignItems: "flex-start",
+                            padding: "28px 16px 16px", borderRadius: "16px", cursor: "pointer",
+                            position: "relative",
+                            border: selected ? `2px solid ${GREEN}` : "2px solid #E5E7EB",
+                            background: selected ? "rgba(155,203,108,0.06)" : "#FFFFFF",
+                            boxShadow: selected ? "0 0 0 3px rgba(155,203,108,0.12)" : "0 1px 4px rgba(0,0,0,0.05)",
+                            transition: "border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease",
+                            textAlign: "left", width: "100%",
+                          }}
+                          onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = "rgba(155,203,108,0.6)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(155,203,108,0.12)"; } }}
+                          onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)"; } }}
+                        >
+                          {/* Badge — zit IN de border */}
+                          {o.badge && (
+                            <span style={{
+                              position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)",
+                              background: "#F4FBF0",
+                              color: "#4A8A2A",
+                              fontWeight: 700, fontSize: "10px",
+                              letterSpacing: "0.04em",
+                              padding: "3px 10px", borderRadius: "20px",
+                              border: "1.5px solid rgba(155,203,108,0.35)",
+                              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                              whiteSpace: "nowrap",
+                            }}>
+                              {o.badge}
+                            </span>
+                          )}
+                          {/* Title */}
+                          <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#111", lineHeight: 1.35, marginBottom: "6px" }}>
+                            {o.title}
+                          </span>
+                          {/* Subtitle */}
+                          <p style={{ fontSize: "12px", color: "#777", lineHeight: 1.5, marginBottom: o.bullets.length ? "10px" : "0", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                            {o.subtitle}
+                          </p>
+                          {/* Bullets */}
+                          {o.bullets.length > 0 && (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                              {o.bullets.map(b => (
+                                <div key={b} style={{ display: "flex", gap: "6px", fontSize: "12px", color: "#555", lineHeight: 1.4 }}>
+                                  <span style={{ color: GREEN, fontWeight: 700, flexShrink: 0, marginTop: "1px" }}>✓</span>
+                                  <span>{b}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {/* Selectie-indicator — onderaan gecentreerd */}
+                          <div style={{ marginTop: "auto", paddingTop: "16px", width: "100%", display: "flex", justifyContent: "center" }}>
+                            <div style={{
+                              width: "22px", height: "22px", borderRadius: "50%",
+                              border: selected ? "none" : "2px solid #D1D5DB",
+                              background: selected ? GREEN : "transparent",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              transition: "all 0.18s ease",
+                            }}>
+                              {selected && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {/* Terug links, Ga verder rechts */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "16px" }}>
+                    <button onClick={prev} style={{
+                      padding: "10px 20px", borderRadius: "8px",
+                      background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
+                      cursor: "pointer",
+                      fontSize: "15px", fontWeight: 700, color: GREEN,
+                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(155,203,108,0.22)"; e.currentTarget.style.borderColor = GREEN; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(155,203,108,0.12)"; e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; }}
+                    >
+                      <ChevronLeft size={16} strokeWidth={2.5} /> Terug
+                    </button>
+                    <div style={{ flex: 1 }}>
+                      <NextBtn onClick={next} disabled={!extra} />
+                    </div>
                   </div>
                 </div>
               )}
@@ -578,34 +1031,249 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
                     Waar mogen we jouw richtprijs naartoe sturen?
                   </h3>
-                  <Field label="E-mailadres" placeholder="bv. naam@email.be" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} type="email" />
-                  <Field label="Naam" placeholder="Voor- en achternaam" value={form.naam} onChange={v => setForm(f => ({ ...f, naam: v }))} />
-                  <Field label="Telefoon" placeholder="bv. 0470 12 34 56" value={form.tel} onChange={v => setForm(f => ({ ...f, tel: v }))} type="tel" />
-                  <Field label="Postcode" placeholder="bv. 2000" value={form.postcode} onChange={v => setForm(f => ({ ...f, postcode: v }))} />
-                  <Field label="Adres" placeholder="bv. Kerkstraat 12" value={form.adres} onChange={v => setForm(f => ({ ...f, adres: v }))} />
-                  <div style={{ marginTop: "8px" }}>
-                    <NextBtn onClick={() => setDone(true)} disabled={!form.naam || !form.tel} label="Ontvang mijn richtprijs" />
+
+                  {/* E-mail — full width */}
+                  <Field label="E-mailadres *" placeholder="bv. naam@email.be" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} type="email" />
+
+                  {/* Naam (samen) + Telefoon */}
+                  <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "12px", marginBottom: "14px" }}>
+                    <div>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                        Voornaam &amp; Achternaam *
+                      </label>
+                      <div className="naam-wrapper" style={{ display: "flex", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", overflow: "hidden", transition: "border-color 0.18s ease" }}>
+                        <input
+                          type="text" placeholder="Voornaam" value={form.voornaam}
+                          onChange={e => setForm(f => ({ ...f, voornaam: e.target.value }))}
+                          style={{ flex: 1, padding: "13px 14px", border: "none", outline: "none", background: "transparent", fontSize: "15px", color: "#111", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+                        />
+                        <div style={{ width: "1px", background: "#E5E7EB", flexShrink: 0 }} />
+                        <input
+                          type="text" placeholder="Achternaam" value={form.achternaam}
+                          onChange={e => setForm(f => ({ ...f, achternaam: e.target.value }))}
+                          style={{ flex: 1, padding: "13px 14px", border: "none", outline: "none", background: "transparent", fontSize: "15px", color: "#111", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                                          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Telefoon *</label>
+                                          <input
+                                            type="tel" placeholder="bv. 0470 12 34 56" value={form.tel}
+                                            onChange={e => setForm(f => ({ ...f, tel: e.target.value }))}
+                                            onBlur={e => { const formatted = formatBelgianPhone(e.target.value); if (formatted !== e.target.value) setForm(f => ({ ...f, tel: formatted })); e.currentTarget.style.borderColor = "#E5E7EB"; }}
+                                            onFocus={e => (e.currentTarget.style.borderColor = "#9BCB6C")}
+                                            style={{ width: "100%", padding: "13px 16px", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", fontSize: "15px", color: "#111", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" }}
+                                          />
+                                        </div>
+                  </div>
+
+                  {/* Postcode + Adres — 2 kolommen */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "12px", marginBottom: "14px" }}>
+
+                    {/* Postcode met dropdown */}
+                    <div style={{ position: "relative" }}>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Postcode *</label>
+                      <input
+                        type="text" placeholder="bv. 2000" value={form.postcode}
+                        onChange={e => {
+                          const v = e.target.value;
+                          setForm(f => ({ ...f, postcode: v }));
+                          if (postcodeTimer.current) clearTimeout(postcodeTimer.current);
+                          postcodeTimer.current = setTimeout(() => fetchPostcodeSuggestions(v), 350);
+                        }}
+                        onFocus={e => { e.currentTarget.style.borderColor = "#9BCB6C"; if (postcodeSuggestions.length > 0) setShowPostcodeDrop(true); }}
+                        onBlur={e => { e.currentTarget.style.borderColor = "#E5E7EB"; setTimeout(() => setShowPostcodeDrop(false), 160); }}
+                        style={{ width: "100%", padding: "13px 16px", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", fontSize: "15px", color: "#111", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as React.CSSProperties["boxSizing"] }}
+                      />
+                      {showPostcodeDrop && postcodeSuggestions.length > 0 && (
+                        <div style={{ position: "absolute" as const, top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50, background: "#fff", border: "1.5px solid #E5E7EB", borderRadius: "10px", boxShadow: "0 4px 16px rgba(0,0,0,0.1)", overflow: "hidden" }}>
+                          {postcodeSuggestions.map((s, i) => (
+                            <button key={i} type="button"
+                              onMouseDown={() => { setForm(f => ({ ...f, postcode: s.postcode })); setShowPostcodeDrop(false); setPostcodeSuggestions([]); }}
+                              style={{ width: "100%", padding: "9px 14px", textAlign: "left" as const, border: "none", background: "transparent", cursor: "pointer", fontSize: "13px", fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#333", display: "block" }}
+                              onMouseEnter={e => (e.currentTarget.style.background = "#F7FBF2")}
+                              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                            >
+                              <span style={{ fontWeight: 700, color: "#111", marginRight: "8px" }}>{s.postcode}</span>
+                              <span style={{ color: "#777" }}>{s.municipality}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Adres met autocomplete */}
+                    <div style={{ position: "relative" }}>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Adres *</label>
+                      <input
+                        type="text" placeholder="bv. Kerkstraat 12" value={form.adres}
+                        onChange={e => {
+                          const v = e.target.value;
+                          setForm(f => ({ ...f, adres: v }));
+                          if (adresTimer.current) clearTimeout(adresTimer.current);
+                          adresTimer.current = setTimeout(() => fetchAdresSuggestions(v, form.postcode), 400);
+                        }}
+                        onFocus={e => { e.currentTarget.style.borderColor = "#9BCB6C"; if (adresSuggestions.length > 0) setShowAdresDrop(true); }}
+                        onBlur={e => { e.currentTarget.style.borderColor = "#E5E7EB"; setTimeout(() => setShowAdresDrop(false), 160); }}
+                        style={{ width: "100%", padding: "13px 16px", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", fontSize: "15px", color: "#111", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as React.CSSProperties["boxSizing"] }}
+                      />
+                      {showAdresDrop && adresSuggestions.length > 0 && (
+                        <div style={{ position: "absolute" as const, top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50, background: "#fff", border: "1.5px solid #E5E7EB", borderRadius: "10px", boxShadow: "0 4px 16px rgba(0,0,0,0.1)", overflow: "hidden" }}>
+                          {adresSuggestions.map((addr, i) => (
+                            <button key={i} type="button"
+                              onMouseDown={() => { setForm(f => ({ ...f, adres: addr })); setShowAdresDrop(false); setAdresSuggestions([]); }}
+                              style={{ width: "100%", padding: "9px 14px", textAlign: "left" as const, border: "none", background: "transparent", cursor: "pointer", fontSize: "13px", fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#333", display: "block" }}
+                              onMouseEnter={e => (e.currentTarget.style.background = "#F7FBF2")}
+                              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                            >
+                              {addr}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+
+                  {/* Foto-upload */}
+                  <div style={{ marginBottom: "16px" }}>
+                    <p style={{ fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Heb je een foto van je dak? <span style={{ fontWeight: 400, color: "#888" }}>(optioneel)</span>
+                    </p>
+                    <p style={{ fontSize: "12px", color: "#999", marginBottom: "10px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Niet verplicht, maar helpt ons om je dak beter in te schatten.
+                    </p>
+
+                    {/* Previews */}
+                    {photoPreviews.length > 0 && (
+                      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
+                        {photoPreviews.map((src, i) => (
+                          <div key={i} style={{ position: "relative", width: "72px", height: "72px", borderRadius: "8px", overflow: "visible" }}>
+                            <img
+                              src={src}
+                              alt={photos[i]?.name}
+                              style={{ width: "72px", height: "72px", objectFit: "cover", borderRadius: "8px", border: "1.5px solid #E5E7EB", display: "block" }}
+                              onError={e => {
+                                // HEIC fallback: toon bestandsnaam
+                                (e.currentTarget as HTMLImageElement).style.display = "none";
+                                const fallback = e.currentTarget.nextSibling as HTMLElement | null;
+                                if (fallback) fallback.style.display = "flex";
+                              }}
+                            />
+                            <div style={{
+                              display: "none", width: "72px", height: "72px", borderRadius: "8px",
+                              border: "1.5px solid #E5E7EB", background: "#F0F0F0",
+                              alignItems: "center", justifyContent: "center",
+                              fontSize: "9px", color: "#777", textAlign: "center", padding: "4px",
+                              wordBreak: "break-all",
+                            }}>
+                              {photos[i]?.name}
+                            </div>
+                            <button
+                              onClick={() => removePhoto(i)}
+                              style={{
+                                position: "absolute", top: "-6px", right: "-6px",
+                                width: "18px", height: "18px", borderRadius: "50%",
+                                background: "#1A1A1A", border: "none", cursor: "pointer",
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                color: "#fff", fontSize: "10px", fontWeight: 700, lineHeight: 1,
+                                zIndex: 1,
+                              }}
+                              aria-label="Foto verwijderen"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Upload zone — alleen zichtbaar als < 3 foto's */}
+                    {photos.length < 3 && (
+                      <>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".jpg,.jpeg,.png,.heic,.heif"
+                          multiple
+                          style={{ display: "none" }}
+                          onChange={e => { if (e.target.files) { addPhotos(e.target.files); e.target.value = ""; } }}
+                        />
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          type="button"
+                          style={{
+                            width: "100%", padding: "14px", borderRadius: "10px",
+                            border: "1.5px dashed #C5DFA8", background: "#F9FCF5",
+                            cursor: "pointer", display: "flex", alignItems: "center",
+                            justifyContent: "center", gap: "8px",
+                            fontSize: "14px", fontWeight: 600, color: "#5A9E3A",
+                            fontFamily: "var(--font-inter), system-ui, sans-serif",
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.borderColor = GREEN; e.currentTarget.style.background = "rgba(155,203,108,0.1)"; }}
+                          onMouseLeave={e => { e.currentTarget.style.borderColor = "#C5DFA8"; e.currentTarget.style.background = "#F9FCF5"; }}
+                        >
+                          <span style={{ fontSize: "18px", lineHeight: 1 }}>+</span>
+                          Foto toevoegen
+                          <span style={{ fontSize: "11px", color: "#AAA", fontWeight: 400 }}>
+                            JPG, PNG of HEIC · max. {3 - photos.length} foto{3 - photos.length !== 1 ? "\'s" : ""}
+                          </span>
+                        </button>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Foutmelding */}
+                  {submitError && (
+                    <p style={{ fontSize: "13px", color: "#C0392B", marginBottom: "8px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Er ging iets mis. Probeer het opnieuw of neem contact op via telefoon.
+                    </p>
+                  )}
+
+                  {/* Terug + Submit */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "8px" }}>
+                    <button onClick={prev} style={{
+                      padding: "10px 20px", borderRadius: "8px",
+                      background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
+                      cursor: "pointer",
+                      fontSize: "15px", fontWeight: 700, color: GREEN,
+                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(155,203,108,0.22)"; e.currentTarget.style.borderColor = GREEN; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(155,203,108,0.12)"; e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; }}
+                    >
+                      <ChevronLeft size={16} strokeWidth={2.5} /> Terug
+                    </button>
+                    <div style={{ flex: 1 }}>
+                      <NextBtn
+                        onClick={handleSubmit}
+                        disabled={!form.voornaam || !form.achternaam || !form.tel || !form.email || !form.postcode || !form.adres || submitting}
+                        label={submitting ? "Versturen…" : "Ontvang mijn richtprijs"}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
 
-              <div style={{ marginTop: "16px", display: "flex", alignItems: "center", justifyContent: step > 1 ? "flex-start" : "center" }}>
-                {step > 1 && step !== 3 && (
+              {step > 1 && step !== 3 && step !== 4 && step !== 5 && (
+                <div style={{ marginTop: "18px", display: "flex", justifyContent: "flex-start" }}>
                   <button onClick={prev} style={{
+                    padding: "10px 20px", borderRadius: "8px",
                     background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
-                    borderRadius: "24px", cursor: "pointer",
-                    fontSize: "14px", fontWeight: 600, color: GREEN,
+                    cursor: "pointer",
+                    fontSize: "15px", fontWeight: 700, color: GREEN,
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                    display: "inline-flex", alignItems: "center", gap: "6px",
-                    padding: "8px 18px",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                   }}
                   onMouseEnter={e => { e.currentTarget.style.background = "rgba(155,203,108,0.22)"; e.currentTarget.style.borderColor = GREEN; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "rgba(155,203,108,0.12)"; e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; }}
                   >
-                    <ChevronLeft size={15} strokeWidth={2.5} /> Terug
+                    <ChevronLeft size={16} strokeWidth={2.5} /> Terug
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </>
           )}
         </div>{/* einde stap content */}

@@ -43,7 +43,22 @@ const labelStyle = {
 
 export default function ContactPage() {
   const [homeHovered, setHomeHovered] = useState(false);
+  const [naam, setNaam] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefoon, setTelefoon] = useState("");
+  const [gemeente, setGemeente] = useState("");
   const [dienst, setDienst] = useState("");
+  const [bericht, setBericht] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("naam")) setNaam(params.get("naam")!);
+    if (params.get("email")) setEmail(params.get("email")!);
+    if (params.get("telefoon")) setTelefoon(params.get("telefoon")!);
+    if (params.get("gemeente")) setGemeente(params.get("gemeente")!);
+    if (params.get("dienst")) setDienst(params.get("dienst")!);
+    if (params.get("bericht")) setBericht(params.get("bericht")!);
+  }, []);
 
   useEffect(() => {
     const el = document.getElementById("trustindex-widget");
@@ -101,22 +116,22 @@ export default function ContactPage() {
               <form className="space-y-5" action="#" method="POST">
                 <div>
                   <label style={labelStyle}>Naam *</label>
-                  <input type="text" name="naam" required placeholder="Jouw naam" style={inputStyle} />
+                  <input type="text" name="naam" required placeholder="Jouw naam" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} />
                 </div>
 
                 <div>
                   <label style={labelStyle}>E-mailadres *</label>
-                  <input type="email" name="email" required placeholder="jouw@email.be" style={inputStyle} />
+                  <input type="email" name="email" required placeholder="jouw@email.be" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} />
                 </div>
 
                 <div>
                   <label style={labelStyle}>Telefoonnummer *</label>
-                  <input type="tel" name="telefoon" required placeholder="0470 00 00 00" style={inputStyle} />
+                  <input type="tel" name="telefoon" required placeholder="0470 00 00 00" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inputStyle} />
                 </div>
 
                 <div>
                   <label style={labelStyle}>Gemeente / Postcode *</label>
-                  <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" style={inputStyle} />
+                  <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" value={gemeente} onChange={e => setGemeente(e.target.value)} style={inputStyle} />
                 </div>
 
                 <div>
@@ -134,6 +149,7 @@ export default function ContactPage() {
                   <label style={labelStyle}>Bericht (optioneel)</label>
                   <textarea name="bericht" rows={4}
                     placeholder="Extra informatie over je dak of situatie..."
+                    value={bericht} onChange={e => setBericht(e.target.value)}
                     style={{ ...inputStyle, resize: "none" as const }} />
                 </div>
 
