@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
     `;
 
     const apiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.CONTACT_EMAIL ?? "joppedeboeck@gmail.com";
+    const toEmail = process.env.CONTACT_EMAIL ?? "info@mos-x.be";
 
     if (!apiKey) {
       console.warn("RESEND_API_KEY not set — email not sent");
