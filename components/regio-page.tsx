@@ -416,7 +416,7 @@ export default function RegioPage({
                       ))}
                     </div>
                     <span className="text-sm" style={{ color: "#545454" }}>
-                      5.0 &middot; 12 Google Reviews
+                      5.0 &middot; 16 Google Reviews
                     </span>
                   </div>
                 )}

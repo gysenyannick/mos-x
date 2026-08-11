@@ -88,7 +88,7 @@ export default function SiteTrustBar() {
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
             fontSize: "40px", fontWeight: 700, color: GREEN, lineHeight: 1,
           }}>
-            12
+            16
           </div>
           <div style={{ display: "flex", gap: "2px" }}>
             {[...Array(5)].map((_, i) => (

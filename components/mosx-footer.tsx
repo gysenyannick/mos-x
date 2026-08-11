@@ -160,7 +160,7 @@ export default function MosxFooter() {
           >
             {[
               { n: "200+", l: "Gereinigde daken" },
-              { n: "12",   l: "⭐ 5.0 Reviews" },
+              { n: "16",   l: "⭐ 5.0 Reviews" },
               { n: "~2j",  l: "Actief in de regio" },
               { n: "100%", l: "Persoonlijk ter plaatse" },
             ].map(s => (
