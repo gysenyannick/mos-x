@@ -887,14 +887,14 @@ export default function SitePricing() {
                         e.currentTarget.style.boxShadow = "0 6px 22px rgba(90,158,47,0.38)";
                         e.currentTarget.style.transform = "translateY(-2px)";
                         const chevron = e.currentTarget.querySelector("svg");
-                        if (chevron) (chevron as HTMLElement).style.transform = "translateX(3px)";
+                        if (chevron) (chevron as unknown as HTMLElement).style.transform = "translateX(3px)";
                       }}
                       onMouseLeave={e => {
                         e.currentTarget.style.background = GREEN;
                         e.currentTarget.style.boxShadow = "0 4px 16px rgba(90,158,47,0.25)";
                         e.currentTarget.style.transform = "translateY(0px)";
                         const chevron = e.currentTarget.querySelector("svg");
-                        if (chevron) (chevron as HTMLElement).style.transform = "translateX(0px)";
+                        if (chevron) (chevron as unknown as HTMLElement).style.transform = "translateX(0px)";
                       }}
                     >
                       Ga verder <ChevronRight size={16} strokeWidth={2.5} style={{ transition: "transform 0.18s ease" }} />
