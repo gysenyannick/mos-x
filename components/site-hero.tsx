@@ -115,8 +115,8 @@ export default function SiteHero() {
                 Bereken mijn richtprijs
                 <ChevronRight size={15} strokeWidth={2.5} />
               </Link>
-              <a
-                href="tel:+32468352869"
+              <Link
+                href="/contact"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "transparent",
@@ -132,7 +132,7 @@ export default function SiteHero() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
               >
                 Plan een gratis plaatsbezoek
-              </a>
+              </Link>
             </div>
 
             {/* Trust indicators */}
