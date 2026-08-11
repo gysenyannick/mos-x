@@ -1,85 +1,20 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Phone, User, Calendar, MessageCircle, Home, ShieldCheck, Headphones, Handshake, TrendingUp, Leaf, BarChart2, Settings, ChevronRight } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
-
-function BeforeAfterSlider() {
-  const [pos, setPos] = useState(50);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
-  const startX = useRef(0);
-  const startY = useRef(0);
-  const axis = useRef<"h" | "v" | null>(null);
-
-  const updatePos = useCallback((clientX: number) => {
-    const el = containerRef.current;
-    if (!el) return;
-    const { left, width } = el.getBoundingClientRect();
-    const pct = Math.min(100, Math.max(0, ((clientX - left) / width) * 100));
-    setPos(pct);
-  }, []);
-
-  const onMouseDown = (e: React.MouseEvent) => { dragging.current = true; updatePos(e.clientX); };
-  const onMouseMove = (e: React.MouseEvent) => { if (dragging.current) updatePos(e.clientX); };
-  const onMouseUp = () => { dragging.current = false; };
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const onTouchStart = (e: TouchEvent) => { startX.current = e.touches[0].clientX; startY.current = e.touches[0].clientY; axis.current = null; dragging.current = true; };
-    const onTouchMove = (e: TouchEvent) => {
-      if (!dragging.current) return;
-      const dx = Math.abs(e.touches[0].clientX - startX.current);
-      const dy = Math.abs(e.touches[0].clientY - startY.current);
-      if (!axis.current) axis.current = dx > dy ? "h" : "v";
-      if (axis.current === "h") { e.preventDefault(); updatePos(e.touches[0].clientX); }
-    };
-    const onTouchEnd = () => { dragging.current = false; axis.current = null; };
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    el.addEventListener("touchend", onTouchEnd);
-    return () => { el.removeEventListener("touchstart", onTouchStart); el.removeEventListener("touchmove", onTouchMove); el.removeEventListener("touchend", onTouchEnd); };
-  }, []);
-
-  return (
-    <div
-      ref={containerRef}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseUp}
-      style={{ position: "relative", borderRadius: "16px", overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.10)", aspectRatio: "4/3", cursor: "ew-resize", userSelect: "none" }}
-    >
-      {/* Voor */}
-      <img src="/images/IMG_5414.JPEG" alt="Dak voor behandeling" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", pointerEvents: "none" }} />
-
-      {/* Na — geclipped */}
-      <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 0 0 ${pos}%)`, pointerEvents: "none" }}>
-        <img src="/images/IMG_5436.JPEG" alt="Dak na behandeling" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
-      </div>
-
-      {/* Lijn */}
-      <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pos}%`, width: "2px", background: "#FFFFFF", transform: "translateX(-50%)", pointerEvents: "none" }} />
-
-      {/* Handle */}
-      <div style={{ position: "absolute", top: "50%", left: `${pos}%`, transform: "translate(-50%, -50%)", width: "34px", height: "34px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 12px rgba(0,0,0,0.20)", pointerEvents: "none" }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9BCB6C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l-6-6 6-6"/><path d="M15 6l6 6-6 6"/></svg>
-      </div>
-
-      {/* Labels */}
-      <div style={{ position: "absolute", bottom: "14px", left: "14px", background: "rgba(0,0,0,0.65)", color: "#fff", padding: "5px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>VOOR</div>
-      <div style={{ position: "absolute", bottom: "14px", right: "14px", background: "#9BCB6C", color: "#1A1A1A", padding: "5px 12px", borderRadius: "50px", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", fontFamily: "var(--font-montserrat), system-ui, sans-serif", pointerEvents: "none" }}>NA</div>
-    </div>
-  );
-}
+import BeforeAfterSlider from "@/components/before-after-slider";
 
 export default function OverOnsPage() {
   const [homeHovered, setHomeHovered] = useState(false);
   const [phoneHovered, setPhoneHovered] = useState(false);
   const [waHovered, setWaHovered] = useState(false);
+  const [heroVisitHovered, setHeroVisitHovered] = useState(false);
+  const [heroPriceHovered, setHeroPriceHovered] = useState(false);
+  const [midVisitHovered, setMidVisitHovered] = useState(false);
+  const [midPhoneHovered, setMidPhoneHovered] = useState(false);
 
   return (
     <PageLayout>
@@ -191,9 +126,49 @@ export default function OverOnsPage() {
             style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.625rem, 5vw, 3.5rem)", letterSpacing: "-0.03em", color: "#1A1A1A" }}>
             Wij zorgen voor daken.<br /><span style={{ color: "#9BCB6C" }}>En voor gemoedsrust.</span>
           </h1>
-          <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "18px", color: "#555555" }}>
+          <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "18px", color: "#555555", marginBottom: "32px" }}>
             Wij helpen huiseigenaars hun dak zo lang mogelijk in topconditie te houden met<br />professioneel onderhoud, eerlijke adviezen en een persoonlijke aanpak.
           </p>
+
+          {/* Hero CTAs */}
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <Link
+              href="/#calculator"
+              onMouseEnter={() => setHeroPriceHovered(true)}
+              onMouseLeave={() => setHeroPriceHovered(false)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                background: heroPriceHovered ? "#7AB54E" : "#9BCB6C",
+                color: "#FFFFFF", borderRadius: "8px",
+                padding: "14px 24px",
+                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                fontWeight: 700, fontSize: "15px", textDecoration: "none",
+                transition: "background 200ms ease", whiteSpace: "nowrap",
+              }}
+            >
+              Bereken mijn richtprijs
+              <ChevronRight size={15} strokeWidth={2.5} />
+            </Link>
+            <Link
+              href="/contact"
+              onMouseEnter={() => setHeroVisitHovered(true)}
+              onMouseLeave={() => setHeroVisitHovered(false)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                background: "transparent",
+                color: heroVisitHovered ? "#7AB54E" : "#1A1A1A",
+                border: heroVisitHovered ? "1px solid #7AB54E" : "1px solid #9BCB6C",
+                borderRadius: "8px",
+                padding: "14px 24px",
+                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                fontWeight: 700, fontSize: "15px", textDecoration: "none",
+                transition: "color 200ms ease, border-color 200ms ease", whiteSpace: "nowrap",
+              }}
+            >
+              Plan een gratis plaatsbezoek
+              <ChevronRight size={15} strokeWidth={2.5} />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -252,7 +227,7 @@ export default function OverOnsPage() {
           <div className="over-ons-mission-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
 
             {/* Links: interactieve voor/na slider */}
-            <BeforeAfterSlider />
+            <BeforeAfterSlider beforeSrc="/images/IMG_5414.JPEG" afterSrc="/images/IMG_5436.JPEG" style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }} />
 
             {/* Rechts: tekst */}
             <div>
@@ -342,6 +317,46 @@ export default function OverOnsPage() {
               Wij willen dat je ook nadien nog <strong style={{ color: "#9BCB6C", fontWeight: 700 }}>met vertrouwen</strong> op ons kunt rekenen.
             </p>
             <Handshake size={40} color="#9BCB6C" strokeWidth={1.5} style={{ flexShrink: 0, opacity: 0.80 }} />
+          </div>
+
+          {/* CTA — geïntegreerd in Gemoedsrust */}
+          <div style={{ textAlign: "center", marginTop: "48px", position: "relative", zIndex: 1 }}>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <Link
+                href="/contact"
+                onMouseEnter={() => setMidVisitHovered(true)}
+                onMouseLeave={() => setMidVisitHovered(false)}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  background: midVisitHovered ? "#7AB54E" : "#9BCB6C",
+                  color: "#FFFFFF", borderRadius: "8px", padding: "13px 22px",
+                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
+                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                }}
+              >
+                Plan een gratis plaatsbezoek
+                <ChevronRight size={14} strokeWidth={2.5} />
+              </Link>
+              <a
+                href="tel:+32468352869"
+                onMouseEnter={() => setMidPhoneHovered(true)}
+                onMouseLeave={() => setMidPhoneHovered(false)}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  background: "transparent",
+                  border: midPhoneHovered ? "1px solid #9BCB6C" : "1px solid rgba(155,203,108,0.5)",
+                  color: midPhoneHovered ? "#9BCB6C" : "#FFFFFF",
+                  borderRadius: "8px", padding: "13px 22px",
+                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
+                  whiteSpace: "nowrap", transition: "border-color 0.2s ease, color 0.2s ease",
+                }}
+              >
+                <Phone size={15} />
+                +32 468 35 28 69
+              </a>
+            </div>
           </div>
 
         </div>
@@ -449,10 +464,10 @@ export default function OverOnsPage() {
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 100% 100%, rgba(155,203,108,0.15) 0%, transparent 60%)", pointerEvents: "none" }} />
             <div className="page-cta-text" style={{ flex: 1, minWidth: "260px", position: "relative", zIndex: 1 }}>
               <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 2vw, 1.2rem)", color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.25 }}>
-                Benieuwd wat <span style={{ color: "#9BCB6C" }}>jouw dak</span> nodig heeft?
+                Nog een vraag voor <span style={{ color: "#9BCB6C" }}>Yannick</span>?
               </p>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Persoonlijk advies van Yannick.
+                Stuur hem gerust een bericht of bel even.
               </p>
             </div>
             <div className="page-cta-buttons" style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap", position: "relative", zIndex: 1 }}>

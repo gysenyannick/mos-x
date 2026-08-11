@@ -6,6 +6,7 @@ import Image from "next/image";
 import { CheckCircle, Phone, ArrowRight, ChevronDown, Search, Droplets, CloudRain, ShieldCheck, Home, ChevronRight, ChevronLeft, Leaf, Sparkles, Euro, AlertTriangle, HelpCircle } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
+import BeforeAfterSlider from "@/components/before-after-slider";
 
 const steps = [
   { step: "STAP 01", Icon: Search,        title: "Dakcontrole & voorbereiding",      desc: "We starten met een grondige controle van je dak en vervangen meteen eventuele gebroken pannen of leien." },
@@ -314,7 +315,7 @@ export default function DakontmossingPage() {
         {/* Video desktop — absoluut, vult de volledige rechterhelft van de sectie */}
         <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "44%", zIndex: 1 }}>
           <video
-            src="/videos/Dakreiniging_yannick.mp4"
+            src="/images/IMG_5894.MOV"
             autoPlay muted loop playsInline
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
@@ -327,7 +328,7 @@ export default function DakontmossingPage() {
         {/* Video mobile — uitlopend boven en onder voor naadloze overgang */}
         <div className="block lg:hidden" style={{ position: "absolute", top: "-200px", right: 0, bottom: "-200px", left: 0, zIndex: 1 }}>
           <video
-            src="/videos/Dakreiniging_yannick.mp4"
+            src="/images/IMG_5894.MOV"
             autoPlay muted loop playsInline
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "40% 70%", display: "block" }}
           />
@@ -441,7 +442,7 @@ export default function DakontmossingPage() {
 
             {/* Left — before/after slider */}
             <div className="voorkom-slider-wrap" style={{ height: "440px" }}>
-              <VoorkomSlider />
+              <BeforeAfterSlider beforeSrc="/images/IMG_5414.JPEG" afterSrc="/images/IMG_5436.JPEG" height="100%" minHeight="400px" borderRadius="20px" style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.12)" }} />
             </div>
 
             {/* Right — text */}
@@ -702,7 +703,7 @@ export default function DakontmossingPage() {
             {/* CTA — onderaan in de donkere sectie */}
             <div style={{ marginTop: "24px" }}>
               <Link
-                href="/#calculator"
+                href="/contact"
                 onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
                 style={{
@@ -714,7 +715,7 @@ export default function DakontmossingPage() {
                   transition: "background-color 0.2s ease",
                 }}
               >
-                Bereken je richtprijs
+                Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
               </Link>
             </div>
@@ -729,15 +730,15 @@ export default function DakontmossingPage() {
             </h2>
           </div>
           <div className="realisaties-preview-grid" style={{ display: "grid", gridTemplateColumns: "3fr 2fr", gap: "24px", alignItems: "stretch" }}>
-            <div className="realisatie-large-wrap"><RealisatieLargeSlider /></div>
+            <div className="realisatie-large-wrap"><BeforeAfterSlider beforeSrc="/images/IMG_5414.JPEG" afterSrc="/images/IMG_5436.JPEG" height="100%" minHeight="460px" borderRadius="16px" style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }} /></div>
             <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-              <RealisatieSmallSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" label="Velux" />
-              <RealisatieSmallSlider beforeSrc="/images/Goot%20voor.JPEG" afterSrc="/images/Goot%20na.JPEG" label="Dakgoot" />
+              <div style={{ flex: 1 }}><BeforeAfterSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" title="Velux" height="100%" minHeight="200px" borderRadius="12px" /></div>
+              <div style={{ flex: 1 }}><BeforeAfterSlider beforeSrc="/images/Goot%20voor.JPEG" afterSrc="/images/Goot%20na.JPEG" title="Dakgoot" height="100%" minHeight="200px" borderRadius="12px" /></div>
             </div>
           </div>
           <div style={{ textAlign: "center", marginTop: "40px" }}>
             <Link
-              href="/realisaties"
+              href="/contact"
               style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "8px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textDecoration: "none", transition: "background 200ms ease" }}
               onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
               onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
@@ -866,17 +867,17 @@ export default function DakontmossingPage() {
             gap: "32px",
             flexWrap: "wrap",
           }}>
-            <div className="page-cta-text" style={{ flex: 1, minWidth: "260px" }}>
+            <div className="page-cta-text" style={{ flex: 1, minWidth: "320px" }}>
               <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 2vw, 1.25rem)", color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.25 }}>
                 Benieuwd wat <span style={{ color: "#9BCB6C" }}>jouw dak</span> nodig heeft?
               </p>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Niet elk dak heeft een coating nodig.<span className="block lg:hidden" />Soms is een reiniging voldoende.
+              <p className="lg:whitespace-nowrap" style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Yannick bekijkt je dak ter plaatse en adviseert welke behandeling écht nodig is.
               </p>
             </div>
             <div className="page-cta-buttons" style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
               <Link
-                href="/#calculator"
+                href="/contact"
                 onMouseEnter={() => setWaHovered(true)}
                 onMouseLeave={() => setWaHovered(false)}
                 style={{
@@ -889,7 +890,7 @@ export default function DakontmossingPage() {
                   whiteSpace: "nowrap", transition: "background-color 0.2s ease",
                 }}
               >
-                Bereken je richtprijs
+                Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
               </Link>
               <a

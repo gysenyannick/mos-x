@@ -68,6 +68,15 @@ export default function DakcoatingPage() {
   const [openFaq, setOpenFaq]                 = useState<number | null>(null);
   const [waHovered, setWaHovered]             = useState(false);
   const [phoneHovered, setPhoneHovered]       = useState(false);
+  const [lightboxImg, setLightboxImg]         = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!lightboxImg) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setLightboxImg(null); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [lightboxImg]);
 
   return (
     <PageLayout>
@@ -243,12 +252,32 @@ export default function DakcoatingPage() {
               </div>
             </div>
 
-            {/* Rechts: voor/na slider */}
-            <div>
+            {/* Rechts: slider + luchtfoto's */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <BeforeAfterSlider
-                beforeSrc="/images/Before bevel.jpg"
-                afterSrc="/images/Na bevel.jpg"
+                beforeSrc="/images/FullSizeRender.JPEG"
+                afterSrc="/images/IMG_4574.JPEG"
+                beforePosition="center 40%"
+                afterPosition="center 40%"
+                aspectRatio="16/10"
               />
+              <div style={{ display: "flex", gap: "10px" }}>
+                {[
+                  { src: "/images/IMG_4581 achteraanzicht coating.JPEG", alt: "Achteraanzicht dakcoating" },
+                  { src: "/images/IMG_4584 Vooraanzicht dakcoating.JPEG", alt: "Vooraanzicht dakcoating" },
+                ].map(photo => (
+                  <div key={photo.src} onClick={() => setLightboxImg(photo.src)}
+                    style={{ flex: 1, height: "175px", borderRadius: "12px", overflow: "hidden", position: "relative", cursor: "zoom-in", minWidth: 0 }}>
+                    <img src={photo.src} alt={photo.alt}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      draggable={false}
+                    />
+                    <div style={{ position: "absolute", top: "8px", right: "8px", background: "rgba(0,0,0,0.50)", borderRadius: "6px", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
           </div>
@@ -323,7 +352,7 @@ export default function DakcoatingPage() {
         {/* Foto: absoluut gepositioneerd links — alleen desktop */}
         <div className="hidden lg:block" style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: "42%" }}>
           <img
-            src="/images/Na bevel.jpg"
+            src="/images/IMG_4468 dakcoating pagina.JPEG"
             alt="Dakcoating resultaat"
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center center", display: "block" }}
           />
@@ -380,7 +409,7 @@ export default function DakcoatingPage() {
           {/* CTA */}
           <div style={{ marginTop: "24px" }}>
             <Link
-              href="/#calculator"
+              href="/contact"
               onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
               style={{
@@ -392,7 +421,7 @@ export default function DakcoatingPage() {
                 transition: "background-color 0.2s ease",
               }}
             >
-              Bereken je richtprijs
+              Plan een gratis plaatsbezoek
               <ChevronRight size={14} strokeWidth={2.5} />
             </Link>
           </div>
@@ -507,6 +536,34 @@ export default function DakcoatingPage() {
             </div>
 
             </div>{/* einde grid */}
+
+            {/* CTA onder vergelijking */}
+            <div style={{ marginTop: "48px", background: "#F7F8F6", borderRadius: "16px", padding: "32px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap", border: "1px solid #E5E7EB" }}>
+              <div style={{ flex: 1, minWidth: "240px" }}>
+                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 1.8vw, 1.15rem)", color: "#1A1A1A", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.3 }}>
+                  Benieuwd of jouw dak nog geschikt is voor coating?
+                </p>
+                <p style={{ fontSize: "14px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>
+                  Yannick bekijkt de staat van je dak en adviseert eerlijk of coating nog zinvol is.
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "8px", flexShrink: 0,
+                  background: "#9BCB6C", color: "#FFFFFF", border: "none",
+                  borderRadius: "8px", padding: "13px 24px",
+                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                  fontWeight: 700, fontSize: "15px", textDecoration: "none",
+                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                }}
+              >
+                Plan een gratis plaatsbezoek
+                <ChevronRight size={14} strokeWidth={2.5} />
+              </Link>
+            </div>
           </div>{/* einde relative wrapper */}
         </div>
       </section>
@@ -725,17 +782,17 @@ export default function DakcoatingPage() {
             gap: "32px",
             flexWrap: "wrap",
           }}>
-            <div className="page-cta-text" style={{ flex: 1, minWidth: "260px" }}>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 2vw, 1.25rem)", color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.25 }}>
-                Benieuwd wat <span style={{ color: "#9BCB6C" }}>jouw dakcoating</span> kost?
+            <div className="page-cta-text" style={{ flex: 1, minWidth: "340px" }}>
+              <p className="lg:whitespace-nowrap" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 2vw, 1.25rem)", color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.25 }}>
+                Benieuwd of dakcoating geschikt is voor <span style={{ color: "#9BCB6C" }}>jouw dak</span>?
               </p>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Benieuwd of dakcoating de juiste oplossing is voor jouw dak? Yannick geeft eerlijk advies op maat.
+              <p className="lg:whitespace-nowrap" style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                Yannick bekijkt je dak ter plaatse en adviseert welke behandeling écht nodig is.
               </p>
             </div>
             <div className="page-cta-buttons" style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
               <Link
-                href="/#calculator"
+                href="/contact"
                 onMouseEnter={() => setWaHovered(true)}
                 onMouseLeave={() => setWaHovered(false)}
                 style={{
@@ -748,7 +805,7 @@ export default function DakcoatingPage() {
                   whiteSpace: "nowrap", transition: "background-color 0.2s ease",
                 }}
               >
-                Bereken je richtprijs
+                Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
               </Link>
               <a
@@ -774,6 +831,22 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
+
+      {/* Lightbox */}
+      {lightboxImg && (
+        <div onClick={() => setLightboxImg(null)}
+          style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.92)", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", cursor: "zoom-out" }}>
+          <img src={lightboxImg} alt="Vergrote foto"
+            style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: "8px" }}
+            draggable={false}
+            onClick={e => e.stopPropagation()}
+          />
+          <button onClick={() => setLightboxImg(null)}
+            style={{ position: "fixed", top: "20px", right: "20px", background: "rgba(255,255,255,0.15)", border: "none", borderRadius: "50%", width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#FFFFFF", fontSize: "20px", lineHeight: 1 }}>
+            ✕
+          </button>
+        </div>
+      )}
     </PageLayout>
   );
 }

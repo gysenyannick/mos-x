@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Phone, MapPin } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
+import BeforeAfterSlider from "@/components/before-after-slider";
 
 const projecten = [
   {
@@ -194,6 +195,11 @@ const projectCarouselPhotos: { src: string; type?: "video"; caption: string }[] 
   { src: "/images/11.jpg",  caption: "Dakreiniging Schilde" },
   { src: "/images/12.jpg",  caption: "Dakreiniging Schilde" },
   { src: "/images/13.jpg",  caption: "Dakreiniging Schilde" },
+  { src: "/images/14.JPEG", caption: "Dakreiniging Schilde" },
+  { src: "/images/15.JPEG", caption: "Dakreiniging Schilde" },
+  { src: "/images/16.JPEG", caption: "Dakreiniging Schilde" },
+  { src: "/images/17.JPEG", caption: "Dakreiniging Schilde" },
+  { src: "/images/18.MOV",  type: "video", caption: "Dakreiniging Schilde" },
 ];
 
 function ProjectCarousel() {
@@ -532,7 +538,7 @@ export default function RealisatiesPage() {
                 Uitgelicht project
               </p>
               <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", color: "#1A1A1A", marginBottom: "2px" }}>
-                Dakreiniging in Schilde
+                Dakreiniging &amp; <span style={{ color: "#9BCB6C" }}>dakcoating</span>
               </h2>
               </div>
               <div className="realisaties-text-body">
@@ -570,18 +576,24 @@ export default function RealisatiesPage() {
             </div>
 
             {/* Rechts: voor/na slider */}
-            <div className="realisaties-large-slider" style={{ height: "100%" }}><LargeSlider /></div>
+            <div className="realisaties-large-slider" style={{ height: "100%" }}><BeforeAfterSlider beforeSrc="/images/FullSizeRender.JPEG" afterSrc="/images/IMG_4574.JPEG" beforePosition="center 40%" afterPosition="center 40%" height="100%" minHeight="460px" borderRadius="16px" style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }} /></div>
           </div>
 
           {/* Foto carrousel + gestapelde Velux/Dakgoot sliders */}
           <div className="realisaties-sub-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px", marginTop: "32px", paddingTop: "32px", alignItems: "stretch" }}>
-            {/* Links: foto carrousel */}
-            <div className="realisaties-carousel"><ProjectCarousel /></div>
+            {/* Links: foto carrousel — flex column zodat carrousel de resterende hoogte vult */}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", color: "#1A1A1A", letterSpacing: "-0.01em", marginBottom: "10px" }}>Dakreiniging &amp; coating in beeld</p>
+              <div className="realisaties-carousel" style={{ flex: 1, minHeight: 0 }}><ProjectCarousel /></div>
+            </div>
 
             {/* Rechts: Velux boven, Dakgoot onder */}
-            <div className="realisaties-velux-goot" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              <div className="realisaties-velux"><SmallSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" beforePosition="center center" afterPosition="center center" height="210px" title="Velux" /></div>
-              <div className="realisaties-dakgoot"><SmallSlider beforeSrc="/images/Goot%20voor.JPEG" afterSrc="/images/Goot%20na.JPEG" height="210px" title="Dakgoot" /></div>
+            <div>
+              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", color: "#1A1A1A", letterSpacing: "-0.01em", marginBottom: "10px" }}>Ook de details tellen mee</p>
+              <div className="realisaties-velux-goot" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <div className="realisaties-velux"><BeforeAfterSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" beforePosition="center center" afterPosition="center center" height="210px" title="Velux" borderRadius="12px" /></div>
+                <div className="realisaties-dakgoot"><BeforeAfterSlider beforeSrc="/images/Goot%20voor.JPEG" afterSrc="/images/Goot%20na.JPEG" height="210px" title="Dakgoot" borderRadius="12px" /></div>
+              </div>
             </div>
           </div>
           </div>

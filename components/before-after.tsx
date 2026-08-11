@@ -93,7 +93,7 @@ function BeforeAfterCard({ project }: { project: typeof projects[0] }) {
       {/* Image comparison */}
       <div
         ref={containerRef}
-        className="relative h-64 md:h-72 cursor-col-resize select-none overflow-hidden"
+        className="relative h-64 md:h-72 select-none overflow-hidden" style={{ cursor: "ew-resize" }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
@@ -177,11 +177,9 @@ function BeforeAfterCard({ project }: { project: typeof projects[0] }) {
           className="absolute top-0 bottom-0 w-0.5 bg-white z-20 pointer-events-none"
           style={{ left: `${split}%` }}
         >
-          <div
-            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center gap-0.5"
-          >
-            <ChevronLeft className="w-3 h-3 text-[#1B3A26]" />
-            <ChevronRight className="w-3 h-3 text-[#1B3A26]" />
+          <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "32px", height: "32px", borderRadius: "50%", background: "#FFFFFF", border: "2px solid #9BCB6C", boxShadow: "0 2px 10px rgba(0,0,0,0.22)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <ChevronLeft style={{ width: "11px", height: "11px", color: "#9BCB6C" }} />
+            <ChevronRight style={{ width: "11px", height: "11px", color: "#9BCB6C" }} />
           </div>
         </div>
       </div>

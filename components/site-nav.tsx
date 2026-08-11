@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Phone, ChevronRight } from "lucide-react";
@@ -22,6 +23,8 @@ export default function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isDakzorg = pathname === "/diensten/mos-x-dakzorg";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -148,27 +151,51 @@ export default function SiteNav() {
               <Phone style={{ width: "14px", height: "14px", color: "currentColor", flexShrink: 0 }} />
               +32 468 35 28 69
             </a>
-            <Link
-              href="/#calculator"
-              style={{
-                background: "#9BCB6C",
-                color: "#FFFFFF",
-                borderRadius: "6px",
-                padding: "8px 20px",
-                fontSize: "13px",
-                fontWeight: 700,
-                fontFamily: "var(--font-montserrat)",
-                textDecoration: "none",
-                transition: "background 200ms ease",
-                display: "inline-flex", alignItems: "center", gap: "6px",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
-              onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
-            >
-              Bereken mijn richtprijs
-              <ChevronRight size={13} strokeWidth={2.5} />
-            </Link>
+            {isDakzorg ? (
+              <a
+                href="#dakzorg-prijs"
+                style={{
+                  background: "#9BCB6C",
+                  color: "#FFFFFF",
+                  borderRadius: "6px",
+                  padding: "8px 20px",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-montserrat)",
+                  textDecoration: "none",
+                  transition: "background 200ms ease",
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
+              >
+                MOS-X Dakzorg aanvragen
+                <ChevronRight size={13} strokeWidth={2.5} />
+              </a>
+            ) : (
+              <Link
+                href="/#calculator"
+                style={{
+                  background: "#9BCB6C",
+                  color: "#FFFFFF",
+                  borderRadius: "6px",
+                  padding: "8px 20px",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  fontFamily: "var(--font-montserrat)",
+                  textDecoration: "none",
+                  transition: "background 200ms ease",
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
+              >
+                Bereken mijn richtprijs
+                <ChevronRight size={13} strokeWidth={2.5} />
+              </Link>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -240,17 +267,37 @@ export default function SiteNav() {
                 <Phone className="w-4 h-4" style={{ color: "#1A1A1A" }} />
                 +32 468 35 28 69
               </a>
-              <Link href="/#calculator" onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center w-full text-sm font-bold"
-                style={{
-                  background: "#9BCB6C", color: "#FFFFFF", borderRadius: "50px",
-                  padding: "12px 20px", textDecoration: "none",
-                  fontFamily: "var(--font-montserrat)",
-                }}
-              >
-                Bereken mijn richtprijs
-                <ChevronRight size={13} strokeWidth={2.5} />
-              </Link>
+              {isDakzorg ? (
+                <a
+                  href="#dakzorg-prijs"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center w-full text-sm font-bold"
+                  style={{
+                    background: "#9BCB6C", color: "#FFFFFF", borderRadius: "50px",
+                    padding: "12px 20px", textDecoration: "none",
+                    fontFamily: "var(--font-montserrat)",
+                    transition: "background 200ms ease",
+                    gap: "6px", display: "flex",
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
+                >
+                  MOS-X Dakzorg aanvragen
+                  <ChevronRight size={13} strokeWidth={2.5} />
+                </a>
+              ) : (
+                <Link href="/#calculator" onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center w-full text-sm font-bold"
+                  style={{
+                    background: "#9BCB6C", color: "#FFFFFF", borderRadius: "50px",
+                    padding: "12px 20px", textDecoration: "none",
+                    fontFamily: "var(--font-montserrat)",
+                  }}
+                >
+                  Bereken mijn richtprijs
+                  <ChevronRight size={13} strokeWidth={2.5} />
+                </Link>
+              )}
             </div>
           </div>
         </div>

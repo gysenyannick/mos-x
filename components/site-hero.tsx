@@ -136,7 +136,12 @@ export default function SiteHero() {
             </div>
 
             {/* Trust indicators */}
-            <div className="flex flex-col items-start gap-3 mb-8">
+            <div className="flex flex-row items-center flex-wrap gap-3 mb-8">
+              <div style={{ display: "inline-flex", alignItems: "center", overflow: "hidden", height: "30px", padding: "0 6px", background: "white", borderRadius: "10px" }}>
+                <div style={{ display: "inline-block", zoom: 0.75, flexShrink: 0 }}>
+                  <div ref={trustindexRef} />
+                </div>
+              </div>
               <span style={{
                 display: "inline-flex", alignItems: "center", gap: "5px",
                 background: "transparent",
@@ -150,11 +155,6 @@ export default function SiteHero() {
                 <span style={{ fontSize: "13px", fontStyle: "italic", fontWeight: 700, fontFamily: "Georgia, serif", color: "#FFFFFF" }}>&amp;</span>
                 <span style={{ fontSize: "12px", fontStyle: "italic", fontWeight: 400, fontFamily: "Georgia, serif", color: "#FF6600" }}>Wonen</span>
               </span>
-              <div style={{ display: "inline-flex", alignItems: "center", overflow: "hidden", height: "30px", padding: "0 6px", background: "white", borderRadius: "10px" }}>
-                <div style={{ display: "inline-block", zoom: 0.75, flexShrink: 0 }}>
-                  <div ref={trustindexRef} />
-                </div>
-              </div>
             </div>
           </div>
 

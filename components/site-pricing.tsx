@@ -214,6 +214,7 @@ const NextBtn = ({ onClick, disabled, label }: { onClick: () => void; disabled?:
 export default function SitePricing() {
   const [step, setStep] = useState(1);
   const [opp, setOpp] = useState(150);
+  const [oppPreset, setOppPreset] = useState<number | null>(null);
   const [woning, setWoning] = useState("");
   const [dak, setDak] = useState("");
   const [extra, setExtra] = useState("");
@@ -461,13 +462,100 @@ export default function SitePricing() {
                     </span>
                   </div>
                   <input type="range" min={50} max={500} step={5} value={opp}
-                    onChange={e => setOpp(Number(e.target.value))}
+                    onChange={e => { setOpp(Number(e.target.value)); setOppPreset(null); }}
                     style={{ width: "100%", accentColor: GREEN, marginBottom: "8px" }}
                   />
-                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#AAA", marginBottom: "28px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#AAA", marginBottom: "16px" }}>
                     <span>50 m²</span><span>500 m²</span>
                   </div>
-                  <NextBtn onClick={next} />
+                  {/* Preset size cards — 4 in één rij */}
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginBottom: "24px" }}>
+                    {([
+                      { label: "Klein",       sub: "tot 100 m²",  value: 75  },
+                      { label: "Gemiddeld",   sub: "100 - 175 m²",  value: 137 },
+                      { label: "Groot",       sub: "175 - 250 m²",  value: 212 },
+                      { label: "Extra groot", sub: "250+ m²",     value: 300 },
+                    ] as { label: string; sub: string; value: number }[]).map(p => {
+                      const active = oppPreset === p.value;
+                      return (
+                        <button
+                          key={p.label}
+                          onClick={() => { setOpp(p.value); setOppPreset(p.value); }}
+                          style={{
+                            border: `2px solid ${active ? GREEN : "#E5E7EB"}`,
+                            borderRadius: "10px",
+                            background: active ? "rgba(155,203,108,0.10)" : "#FAFAFA",
+                            padding: "10px 10px",
+                            cursor: "pointer",
+                            textAlign: "center",
+                            boxShadow: active ? `0 2px 12px rgba(155,203,108,0.22)` : "none",
+                            transform: "translateY(0px)",
+                            transition: "border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
+                          }}
+                          onMouseEnter={e => {
+                            if (opp !== p.value) {
+                              e.currentTarget.style.borderColor = "rgba(155,203,108,0.6)";
+                              e.currentTarget.style.boxShadow = "0 4px 14px rgba(155,203,108,0.18)";
+                            }
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                          }}
+                          onMouseLeave={e => {
+                            if (opp !== p.value) {
+                              e.currentTarget.style.borderColor = "#E5E7EB";
+                              e.currentTarget.style.boxShadow = "none";
+                            }
+                            e.currentTarget.style.transform = "translateY(0px)";
+                          }}
+                        >
+                          <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: active ? "#1A5C36" : "#111", margin: 0, whiteSpace: "nowrap" }}>{p.label}</p>
+                          <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "11px", color: active ? "#2d7a4f" : "#888", margin: "3px 0 0", whiteSpace: "nowrap" }}>{p.sub}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {/* Terug links, Ga verder rechts (compact) */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+                    <button onClick={prev} style={{
+                      background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
+                      borderRadius: "24px", cursor: "pointer",
+                      fontSize: "14px", fontWeight: 600, color: GREEN,
+                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                      display: "inline-flex", alignItems: "center", gap: "6px",
+                      padding: "8px 18px", flexShrink: 0,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(155,203,108,0.22)"; e.currentTarget.style.borderColor = GREEN; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(155,203,108,0.12)"; e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; }}
+                    >
+                      <ChevronLeft size={15} strokeWidth={2.5} /> Terug
+                    </button>
+                    <button onClick={next}
+                      style={{
+                        padding: "10px 22px", borderRadius: "8px", border: "none",
+                        background: GREEN, color: "#fff",
+                        fontWeight: 700, fontSize: "14px", cursor: "pointer",
+                        fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                        boxShadow: "0 4px 16px rgba(90,158,47,0.25)",
+                        display: "inline-flex", alignItems: "center", gap: "6px",
+                        transition: "background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = "#7AB54E";
+                        e.currentTarget.style.boxShadow = "0 6px 22px rgba(90,158,47,0.38)";
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        const chevron = e.currentTarget.querySelector("svg");
+                        if (chevron) (chevron as HTMLElement).style.transform = "translateX(3px)";
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = GREEN;
+                        e.currentTarget.style.boxShadow = "0 4px 16px rgba(90,158,47,0.25)";
+                        e.currentTarget.style.transform = "translateY(0px)";
+                        const chevron = e.currentTarget.querySelector("svg");
+                        if (chevron) (chevron as HTMLElement).style.transform = "translateX(0px)";
+                      }}
+                    >
+                      Ga verder <ChevronRight size={15} strokeWidth={2.5} style={{ transition: "transform 0.18s ease" }} />
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -502,7 +590,7 @@ export default function SitePricing() {
               )}
 
               <div style={{ marginTop: "16px", display: "flex", alignItems: "center", justifyContent: step > 1 ? "flex-start" : "center" }}>
-                {step > 1 && (
+                {step > 1 && step !== 3 && (
                   <button onClick={prev} style={{
                     background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
                     borderRadius: "24px", cursor: "pointer",

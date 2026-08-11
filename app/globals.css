@@ -502,11 +502,50 @@
 }
 
 /* -----------------------------------------------
-   SCROLLBAR
+   SCROLLBAR — premium MOS-X stijl (desktop only)
 ----------------------------------------------- */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #F7F8F6; }
-::-webkit-scrollbar-thumb { background: #9BCB6C; border-radius: 3px; }
+
+/* Chromium / Safari / Edge */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #EDEEED;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #9BCB6C;
+  border-radius: 100px;
+  border: 3px solid #EDEEED; /* visuele ruimte tussen thumb en buitenrand */
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #AEDD7E;
+  border-color: #EDEEED;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:active {
+  background-color: #7AB54E;
+  border-color: #EDEEED;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #9BCB6C #EDEEED;
+}
+
+/* Mobiel/tablet: native scrollbar herstellen */
+@media (pointer: coarse) {
+  ::-webkit-scrollbar { width: 0; }
+  html { scrollbar-width: auto; scrollbar-color: auto; }
+}
 
 /* Site-contact desktop gap */
 .site-contact-grid { gap: 56px; }

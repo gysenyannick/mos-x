@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import { ChevronRight } from "lucide-react";
 
 const GOOGLE_REVIEW_URL = "https://www.google.com/search?sca_esv=bcc915fd4b92abab&rlz=1C1GCEU_enBE1139BE1139&hl=nl-BE&sxsrf=ANbL-n6TrSUrDpAkVOrNUQ51U5GNZs9b_Q:1781020093012&q=MOS-X+%7C+Dakontmossing+%26+Coating+Reviews&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qORc7vib1r0gQO2ABjRXpl_uRZy99-xBVdTGpP89RMUA3yzcvCK6A2AazedCdjGkX1gn8bkQ%3D&uds=ALYpb_mOSBfVE_qjsUIUDwhXk-cv8R5BmJbdPhES1TRqg_vpjJyijAOWQNUWx-ymHj1rypkaCI5vDZLjKLW1ObrTyqmMebN8NP7CqX96tO1wgBatLBTT6ccEki20RIqT8UXa_cZv3U6K&sa=X&ved=2ahUKEwiuju3vwPqUAxVNRaQEHUolF-wQ3PALegQIMBAF&biw=1920&bih=911&dpr=1";
+// Vervang met de directe write-review link uit je Google Business dashboard (g.page/r/…/review)
+const GOOGLE_WRITE_REVIEW_URL = GOOGLE_REVIEW_URL;
 
 const outlineBtnStyle: React.CSSProperties = {
   display: "inline-block",
@@ -149,6 +151,7 @@ export default function SiteReviews() {
           }}>
             Niet onze woorden, maar die van onze klanten. Lees zelf waarom huiseigenaars MOS-X aanbevelen.
           </p>
+          <OutlineGoogleBtn text="Laat een review achter" url={GOOGLE_WRITE_REVIEW_URL} />
         </div>
 
         {/* Trustindex injects here — script tag is appended to this div via useEffect */}
