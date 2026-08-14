@@ -11,6 +11,7 @@ export interface ServiceCardData {
   href: string;
   img: string;
   video: string | null;
+  videoPosition?: string;
   Icon: React.ElementType;
   desc: string;
   checks: string[];
@@ -26,6 +27,7 @@ export const serviceCards: ServiceCardData[] = [
     href: "/diensten/dakontmossing",
     img: "/images/dak-reinigen.webp",
     video: "/videos/dakreiniging-hero.mp4",
+    videoPosition: "center 20%",
     Icon: Droplets,
     desc: "Mos, algen en vuil verwijderen voor een proper en gezond dak.",
     checks: [
@@ -109,7 +111,7 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
               src={s.video}
               poster={s.img}
               autoPlay muted loop playsInline
-              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 65%", opacity: 1 }}
+              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: s.videoPosition ?? "center 65%", opacity: 1 }}
             />
           )}
           <div style={{
