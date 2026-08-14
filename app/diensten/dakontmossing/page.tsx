@@ -284,7 +284,7 @@ export default function DakontmossingPage() {
           }
           .werkwijze-photo {
             width: 100% !important;
-            opacity: 0.55 !important;
+            opacity: 0.40 !important;
           }
           .werkwijze-photo > img {
             object-position: 25% bottom !important;
@@ -296,7 +296,7 @@ export default function DakontmossingPage() {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(17,17,17,0.85) 0%, rgba(17,17,17,0.6) 40%, rgba(17,17,17,0.8) 100%);
+            background: linear-gradient(to bottom, rgba(17,17,17,0.92) 0%, rgba(17,17,17,0.78) 40%, rgba(17,17,17,0.90) 100%);
             pointer-events: none;
           }
           .werkwijze-content {

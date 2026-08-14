@@ -208,10 +208,43 @@ export default function DakcoatingPage() {
       {/* Waarom je dak laten coaten? — tekst links, benefit grid rechts */}
       <section style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
         <div className="site-wrap">
-          <div className="grid gap-10 lg:gap-16 items-start grid-cols-1 lg:grid-cols-[5fr_7fr]">
+          {/*
+            Mobile volgorde: 1) slider  2) header  3) body+CTA
+            Desktop volgorde: links: header boven body — rechts: slider (span 2 rijen)
+            Gerealiseerd door 3 aparte grid-items met expliciete lg: plaatsing.
+          */}
+          <div className="grid gap-4 lg:gap-x-16 lg:gap-y-0 items-start grid-cols-1 lg:grid-cols-[5fr_7fr]">
 
-            {/* Links: tekst + CTA */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            {/* 1 — Slider + foto's (mobiel: eerste; desktop: rechterkolom, overspant 2 rijen) */}
+            <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <BeforeAfterSlider
+                beforeSrc="/images/FullSizeRender.JPEG"
+                afterSrc="/images/IMG_4574.JPEG"
+                beforePosition="center 40%"
+                afterPosition="center 40%"
+                aspectRatio="16/10"
+              />
+              <div style={{ display: "flex", gap: "10px" }}>
+                {[
+                  { src: "/images/IMG_4581 achteraanzicht coating.JPEG", alt: "Achteraanzicht dakcoating" },
+                  { src: "/images/IMG_4584 Vooraanzicht dakcoating.JPEG", alt: "Vooraanzicht dakcoating" },
+                ].map(photo => (
+                  <div key={photo.src} onClick={() => setLightboxImg(photo.src)}
+                    style={{ flex: 1, height: "175px", borderRadius: "12px", overflow: "hidden", position: "relative", cursor: "zoom-in", minWidth: 0 }}>
+                    <img src={photo.src} alt={photo.alt}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      draggable={false}
+                    />
+                    <div style={{ position: "absolute", top: "8px", right: "8px", background: "rgba(0,0,0,0.50)", borderRadius: "6px", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 2 — Header (eyebrow + titel + ondertitel) — mobiel: tweede; desktop: linkerkolom rij 1 */}
+            <div className="lg:col-start-1 lg:row-start-1" style={{ display: "flex", flexDirection: "column" }}>
               <p className="site-eyebrow mb-4">Waarom dakcoating?</p>
               <h2 style={{
                 fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
@@ -220,9 +253,13 @@ export default function DakcoatingPage() {
               }}>
                 Waarom je dak<br />laten coaten?
               </h2>
-              <p style={{ color: "#9BCB6C", fontWeight: 700, fontSize: "15px", marginBottom: "28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
+              <p style={{ color: "#9BCB6C", fontWeight: 700, fontSize: "15px", marginBottom: "8px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
                 Meer dan alleen een nieuwe kleur.
               </p>
+            </div>
+
+            {/* 3 — Body tekst + CTA — mobiel: derde; desktop: linkerkolom rij 2 */}
+            <div className="lg:col-start-1 lg:row-start-2" style={{ display: "flex", flexDirection: "column" }}>
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 Na tientallen jaren krijgen dakpannen heel wat te verduren. Regen, vorst, UV-straling en vervuiling zorgen ervoor dat de oorspronkelijke beschermlaag langzaam verdwijnt.
               </p>
@@ -249,34 +286,6 @@ export default function DakcoatingPage() {
                   Bereken je richtprijs
                   <ChevronRight size={14} strokeWidth={2.5} />
                 </Link>
-              </div>
-            </div>
-
-            {/* Rechts: slider + luchtfoto's */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <BeforeAfterSlider
-                beforeSrc="/images/FullSizeRender.JPEG"
-                afterSrc="/images/IMG_4574.JPEG"
-                beforePosition="center 40%"
-                afterPosition="center 40%"
-                aspectRatio="16/10"
-              />
-              <div style={{ display: "flex", gap: "10px" }}>
-                {[
-                  { src: "/images/IMG_4581 achteraanzicht coating.JPEG", alt: "Achteraanzicht dakcoating" },
-                  { src: "/images/IMG_4584 Vooraanzicht dakcoating.JPEG", alt: "Vooraanzicht dakcoating" },
-                ].map(photo => (
-                  <div key={photo.src} onClick={() => setLightboxImg(photo.src)}
-                    style={{ flex: 1, height: "175px", borderRadius: "12px", overflow: "hidden", position: "relative", cursor: "zoom-in", minWidth: 0 }}>
-                    <img src={photo.src} alt={photo.alt}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                      draggable={false}
-                    />
-                    <div style={{ position: "absolute", top: "8px", right: "8px", background: "rgba(0,0,0,0.50)", borderRadius: "6px", width: "28px", height: "28px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
 
@@ -346,6 +355,9 @@ export default function DakcoatingPage() {
         <style>{`
           @media (max-width: 1023px) {
             .werkwijze-dakcoating-content { padding: 48px 20px !important; margin-left: 0 !important; max-width: 100% !important; }
+            .page-cta-bar { flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 28px 24px !important; }
+            .page-cta-text { min-width: unset !important; width: 100% !important; }
+            .page-cta-buttons { justify-content: center !important; width: 100% !important; }
           }
         `}</style>
 
@@ -533,37 +545,27 @@ export default function DakcoatingPage() {
                   </li>
                 ))}
               </ul>
+              <div style={{ marginTop: "24px", paddingTop: "24px", borderTop: "1px solid rgba(155,203,108,0.18)" }}>
+                <Link
+                  href="/contact"
+                  onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "8px",
+                    background: "#9BCB6C", color: "#FFFFFF", border: "none",
+                    borderRadius: "8px", padding: "13px 24px",
+                    fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                    fontWeight: 700, fontSize: "15px", textDecoration: "none",
+                    whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                  }}
+                >
+                  Plan een gratis plaatsbezoek
+                  <ChevronRight size={14} strokeWidth={2.5} />
+                </Link>
+              </div>
             </div>
 
             </div>{/* einde grid */}
-
-            {/* CTA onder vergelijking */}
-            <div style={{ marginTop: "48px", background: "#F7F8F6", borderRadius: "16px", padding: "32px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "24px", flexWrap: "wrap", border: "1px solid #E5E7EB" }}>
-              <div style={{ flex: 1, minWidth: "240px" }}>
-                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 1.8vw, 1.15rem)", color: "#1A1A1A", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.3 }}>
-                  Benieuwd of jouw dak nog geschikt is voor coating?
-                </p>
-                <p style={{ fontSize: "14px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>
-                  Yannick bekijkt de staat van je dak en adviseert eerlijk of coating nog zinvol is.
-                </p>
-              </div>
-              <Link
-                href="/contact"
-                onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px", flexShrink: 0,
-                  background: "#9BCB6C", color: "#FFFFFF", border: "none",
-                  borderRadius: "8px", padding: "13px 24px",
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
-                }}
-              >
-                Plan een gratis plaatsbezoek
-                <ChevronRight size={14} strokeWidth={2.5} />
-              </Link>
-            </div>
           </div>{/* einde relative wrapper */}
         </div>
       </section>
@@ -655,10 +657,23 @@ export default function DakcoatingPage() {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
                   <div style={{
                     width: "54px", height: "54px", borderRadius: "50%",
-                    background: "conic-gradient(from 0deg, #EF4444, #F97316, #EAB308, #22C55E, #3B82F6, #A855F7, #EF4444)",
+                    overflow: "hidden",
                     border: "2px solid rgba(0,0,0,0.10)",
                     boxShadow: "0 2px 10px rgba(0,0,0,0.16)",
-                  }} />
+                    flexShrink: 0,
+                  }}>
+                    <img
+                      src="/images/Regenboogcirkel.png"
+                      alt="Andere kleuren"
+                      style={{
+                        width: "100%", height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                        transform: "scale(1.4)",
+                        transformOrigin: "center",
+                      }}
+                    />
+                  </div>
                   <p style={{ fontSize: "11px", fontWeight: 600, color: "#9BCB6C", textAlign: "center", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1.2 }}>
                     Andere kleuren op aanvraag
                   </p>

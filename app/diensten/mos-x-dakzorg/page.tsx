@@ -91,6 +91,11 @@ export default function MosXDakzorgPage() {
 
   return (
     <PageLayout>
+      <style>{`
+        @media (max-width: 1023px) {
+          .dakzorg-section { padding-top: 60px !important; padding-bottom: 50px !important; }
+        }
+      `}</style>
 
       {/* ── HERO ── */}
       <section style={{ background: "#111111", position: "relative", overflow: "hidden", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -215,7 +220,7 @@ export default function MosXDakzorgPage() {
       </section>
 
       {/* ── SECTIE 1: Waarom MOS-X Dakzorg? ── */}
-      <section style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
+      <section className="dakzorg-section" style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
         <div className="site-wrap">
 
           {/* Gecentreerde tekst */}
@@ -288,7 +293,7 @@ export default function MosXDakzorgPage() {
       </section>
 
       {/* ── SECTIE 2: Wat zit er in jouw Dakzorg plan? ── */}
-      <section style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
+      <section className="dakzorg-section" style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
         <div className="site-wrap">
 
           {/* Kop boven het grid — volledige breedte */}
@@ -399,7 +404,7 @@ export default function MosXDakzorgPage() {
       </section>
 
       {/* ── SECTIE 3: VS vergelijking ── */}
-      <section style={{ background: "#111111", padding: "120px 0 100px" }}>
+      <section className="dakzorg-section" style={{ background: "#111111", padding: "120px 0 100px" }}>
         <div className="site-wrap">
           <div style={{ textAlign: "center", marginBottom: "60px" }}>
             <p className="site-eyebrow mb-4">Het verschil</p>
@@ -501,14 +506,14 @@ export default function MosXDakzorgPage() {
       </section>
 
       {/* ── SECTIE 4: Dakzorg prijskaart ── */}
-      <section id="dakzorg-prijs" style={{ background: "#F7F8F6", padding: "80px 0 100px", scrollMarginTop: "100px" }}>
+      <section id="dakzorg-prijs" className="dakzorg-section" style={{ background: "#F7F8F6", padding: "80px 0 100px", scrollMarginTop: "100px" }}>
         <div className="site-wrap">
           <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr]" style={{ gap: "56px", alignItems: "stretch" }}>
 
             {/* Links: foto + badge */}
             <div className="aspect-[4/5] lg:aspect-auto" style={{ position: "relative", borderRadius: "20px", overflow: "hidden", minHeight: 0 }}>
               <img
-                src="/images/Foto realisatie.jpg"
+                src="/images/Foto%20realisatie.jpg"
                 alt="MOS-X Dakzorg realisatie"
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
@@ -630,7 +635,7 @@ export default function MosXDakzorgPage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="site-pad" style={{ background: "#F7F8F6" }}>
+      <section className="site-pad dakzorg-section" style={{ background: "#F7F8F6" }}>
         <div className="site-wrap">
           <h2
             className="font-bold mb-8"

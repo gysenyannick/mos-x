@@ -41,7 +41,7 @@ export const serviceCards: ServiceCardData[] = [
     imgSubtitle: "Bescherming en vernieuwing.",
     badge: "10 jaar garantie",
     href: "/diensten/dakcoating",
-    img: "/images/dak-coaten.webp",
+    img: "/images/IMG_4468 (2).JPEG",
     video: "/videos/Dakcoating.mp4",
     Icon: Shield,
     desc: "Geef je dak een tweede leven zonder een dure renovatie.",
