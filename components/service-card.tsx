@@ -25,7 +25,7 @@ export const serviceCards: ServiceCardData[] = [
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     href: "/diensten/dakontmossing",
     img: "/images/dak-reinigen.webp",
-    video: "/images/IMG_5894.MOV",
+    video: "/videos/Dakreiniging_yannick.mp4",
     Icon: Droplets,
     desc: "Mos, algen en vuil verwijderen voor een proper en gezond dak.",
     checks: [
