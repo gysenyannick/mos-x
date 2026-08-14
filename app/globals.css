@@ -779,6 +779,16 @@ html {
 }
 
 /* -----------------------------------------------
+   MOBILE CONTACT BAR
+   - Hide WhatsApp FAB on mobile (bar replaces it)
+   - Add body padding so content clears the bar
+----------------------------------------------- */
+@media (max-width: 1023px) {
+  .whatsapp-fab { display: none !important; }
+  body { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+}
+
+/* -----------------------------------------------
    TRUSTINDEX widget overrides — show full review text
 ----------------------------------------------- */
 .ti-review-item-body-text,

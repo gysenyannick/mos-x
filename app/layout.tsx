@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import MobileContactBar from "@/components/mobile-contact-bar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -54,6 +55,7 @@ export default function RootLayout({
     <html lang="nl" className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body className="antialiased">
         {children}
+        <MobileContactBar />
         <a
           href="https://wa.me/32468352869"
           target="_blank"
