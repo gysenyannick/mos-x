@@ -355,12 +355,12 @@ export default function MosXDakzorgPage() {
 
               {/* Gootreiniging — voor/na slider */}
               <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden" }}>
-                <BeforeAfterSlider beforeSrc="/images/Goot voor.JPEG" afterSrc="/images/Goot na.JPEG" title="Gootreiniging" height="100%" borderRadius="12px" />
+                <BeforeAfterSlider beforeSrc="/images/Goot voor.JPEG" afterSrc="/images/Goot na.JPEG" title="Gootreiniging" height="100%" borderRadius="12px" hideLabels />
               </div>
 
               {/* Velux reiniging — voor/na slider */}
               <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden" }}>
-                <BeforeAfterSlider beforeSrc="/images/Velux voor 1.0.png" afterSrc="/images/Velux na 1.0.png" title="Velux reiniging" height="100%" borderRadius="12px" />
+                <BeforeAfterSlider beforeSrc="/images/Velux voor 1.0.png" afterSrc="/images/Velux na 1.0.png" title="Velux reiniging" height="100%" borderRadius="12px" hideLabels />
               </div>
 
               {/* Anti-mosbehandeling */}

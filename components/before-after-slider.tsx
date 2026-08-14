@@ -16,6 +16,7 @@ export interface BeforeAfterSliderProps {
   title?: string;
   className?: string;
   style?: React.CSSProperties;
+  hideLabels?: boolean;
 }
 
 export default function BeforeAfterSlider({
@@ -31,6 +32,7 @@ export default function BeforeAfterSlider({
   title,
   className,
   style,
+  hideLabels = false,
 }: BeforeAfterSliderProps) {
   const [position, setPosition] = useState(50);
   const [showHint, setShowHint] = useState(true);
@@ -148,24 +150,24 @@ export default function BeforeAfterSlider({
       </div>
 
       {/* VOOR label */}
-      <div style={{
+      {!hideLabels && <div style={{
         position: "absolute", top: "12px", left: "12px", zIndex: 3,
         background: "rgba(0,0,0,0.65)", color: "#FFFFFF",
         fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
         padding: "5px 12px", borderRadius: "50px",
         fontFamily: "var(--font-montserrat), system-ui, sans-serif",
         pointerEvents: "none",
-      }}>VOOR</div>
+      }}>VOOR</div>}
 
       {/* NA label */}
-      <div style={{
+      {!hideLabels && <div style={{
         position: "absolute", top: "12px", right: "12px", zIndex: 3,
         background: "#9BCB6C", color: "#1A1A1A",
         fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
         padding: "5px 12px", borderRadius: "50px",
         fontFamily: "var(--font-montserrat), system-ui, sans-serif",
         pointerEvents: "none",
-      }}>NA</div>
+      }}>NA</div>}
 
       {/* Divider line */}
       <div style={{
