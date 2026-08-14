@@ -94,6 +94,9 @@ export default function MosXDakzorgPage() {
       <style>{`
         @media (max-width: 1023px) {
           .dakzorg-section { padding-top: 60px !important; padding-bottom: 50px !important; }
+          .dakzorg-benefit-card { padding: 14px 16px !important; }
+          .dakzorg-photo-badge-title { font-size: 12px !important; }
+          .dakzorg-realisatie-photo { height: 310px !important; aspect-ratio: unset !important; }
         }
       `}</style>
 
@@ -247,6 +250,7 @@ export default function MosXDakzorgPage() {
               const Icon = b.Icon;
               return (
                 <div key={i}
+                  className="dakzorg-benefit-card"
                   onMouseEnter={() => setHoveredBenefit(i)}
                   onMouseLeave={() => setHoveredBenefit(null)}
                   style={{
@@ -264,14 +268,14 @@ export default function MosXDakzorgPage() {
                   }}
                 >
                   {/* Mobiel: icon | lijn | tekst naast elkaar */}
-                  <div className="flex lg:hidden" style={{ alignItems: "center", gap: "14px" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <Icon size={22} color="#9BCB6C" strokeWidth={2} />
+                  <div className="flex lg:hidden" style={{ alignItems: "center", gap: "12px" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Icon size={16} color="#9BCB6C" strokeWidth={2} />
                     </div>
                     <div style={{ width: "1px", alignSelf: "stretch", background: "rgba(155,203,108,0.5)", flexShrink: 0 }} />
                     <div style={{ flex: 1 }}>
                       <div>
-                        <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
+                        <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
                         <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
                       </div>
                     </div>
@@ -320,15 +324,15 @@ export default function MosXDakzorgPage() {
                   { title: "Controle van zinkwerk & aansluitingen", desc: "Controle van gevoelige zones waar problemen ontstaan." },
                   { title: "Kleine herstellingen inbegrepen",         desc: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
                 ].map((item, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "12px 14px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB" }}>
-                    <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <Check size={18} color="#FFFFFF" strokeWidth={2.5} />
-                    </div>
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "14px", padding: "12px 14px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB" }}>
                     <div style={{ flex: 1 }}>
                       <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>{item.title}</p>
                       <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item.desc}</p>
                     </div>
-                    <span style={{ fontSize: "13px", fontWeight: 700, color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</span>
+                    {/* Groen vinkje — alle schermen */}
+                    <div style={{ width: "20px", height: "20px", background: "#9BCB6C", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
+                      <Check size={11} color="#FFFFFF" strokeWidth={2.5} />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -511,11 +515,11 @@ export default function MosXDakzorgPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr]" style={{ gap: "56px", alignItems: "stretch" }}>
 
             {/* Links: foto + badge */}
-            <div className="aspect-[4/5] lg:aspect-auto" style={{ position: "relative", borderRadius: "20px", overflow: "hidden", minHeight: 0 }}>
+            <div className="aspect-square lg:aspect-auto dakzorg-realisatie-photo" style={{ position: "relative", borderRadius: "20px", overflow: "hidden", minHeight: 0 }}>
               <img
                 src="/images/Foto%20realisatie.jpg"
                 alt="MOS-X Dakzorg realisatie"
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center bottom", display: "block" }}
               />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%)" }} />
               <div style={{
@@ -528,7 +532,7 @@ export default function MosXDakzorgPage() {
               }}>
                 <ShieldCheck size={20} color="#9BCB6C" strokeWidth={2} style={{ flexShrink: 0 }} />
                 <div>
-                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1.3, marginBottom: "4px" }}>
+                  <p className="dakzorg-photo-badge-title" style={{ fontSize: "14px", fontWeight: 700, color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1.3, marginBottom: "4px" }}>
                     Je dak in topconditie, jaar na jaar.
                   </p>
                   <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>
