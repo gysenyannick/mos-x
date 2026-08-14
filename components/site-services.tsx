@@ -12,7 +12,7 @@ const services = [
     href: "/diensten/dakontmossing",
     img: "/images/dak-reinigen.webp",
     video: "/videos/dakreiniging-hero.mp4",
-    videoPosition: "center 20%",
+    videoPosition: "center 35%",
     Icon: Droplets,
     desc: "Mos, algen en vuil verwijderen voor een proper en gezond dak.",
     checks: [
