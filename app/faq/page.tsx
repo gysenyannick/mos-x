@@ -124,7 +124,7 @@ function AccordionItem({ faq, open, onToggle }: {
 }
 
 export default function FaqPage() {
-  const [open, setOpen] = useState<string | null>("Prijs-0");
+  const [open, setOpen] = useState<string | null>(null);
   const [homeHov, setHomeHov] = useState(false);
   const [waHov, setWaHov] = useState(false);
   const [phoneHov, setPhoneHov] = useState(false);
@@ -188,8 +188,17 @@ export default function FaqPage() {
 
   return (
     <PageLayout>
+      <style>{`
+        /* Mobiel: ruimte tussen intro en eerste categorie halveren
+           (was 40px hero-onderpadding + 40px sectie-bovenpadding) */
+        @media (max-width: 767px) {
+          .faq-hero { padding-bottom: 20px !important; }
+          .faq-accordion-section { padding-top: 20px !important; }
+        }
+      `}</style>
+
       {/* ── Hero ── */}
-      <section className="relative pt-28 pb-10 overflow-hidden" style={{ background: "#F7F8F6" }}>
+      <section className="faq-hero relative pt-28 pb-10 overflow-hidden" style={{ background: "#F7F8F6" }}>
         <div className="site-wrap relative z-10">
           <BackLink href="/" />
           <p style={{ fontSize: "13px", marginBottom: "20px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
@@ -221,7 +230,7 @@ export default function FaqPage() {
       </section>
 
       {/* ── FAQ accordion ── */}
-      <section style={{ background: "#F7F8F6", padding: "40px 0 80px" }}>
+      <section className="faq-accordion-section" style={{ background: "#F7F8F6", padding: "40px 0 80px" }}>
         <div className="site-wrap">
           <div className="grid lg:grid-cols-[1fr_320px] gap-10">
             {/* Accordion list — grouped by category */}

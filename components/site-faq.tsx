@@ -264,6 +264,53 @@ export default function SiteFaq() {
             width: 100%;
           }
         }
+
+        /* De compacte afsluiting bestaat alleen op mobiel */
+        .faq-mini-cta { display: none; }
+
+        @media (max-width: 767px) {
+          /* Volledige contactkaart (foto, telefoon, uren) verbergen */
+          .faq-card-col { display: none !important; }
+
+          .faq-mini-cta {
+            display: block;
+            margin-top: 22px;
+            text-align: center;
+          }
+          .faq-mini-title {
+            font-family: var(--font-montserrat), system-ui, sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.3;
+            color: #1A1A1A;
+            margin: 0 0 12px;
+          }
+          .faq-mini-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--font-montserrat), system-ui, sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: #9BCB6C;
+            max-width: 100%;
+            transition: background 200ms ease;
+          }
+          .faq-mini-link svg { width: 16px; height: 16px; }
+          .faq-mini-link:hover,
+          .faq-mini-link:active {
+            background: #7AB54E;
+          }
+          .faq-mini-link:focus-visible {
+            outline: 2px solid #7AB54E;
+            outline-offset: 2px;
+          }
+        }
       `}</style>
 
       <div className="faq-wrap">
@@ -294,6 +341,20 @@ export default function SiteFaq() {
             {faqs.map((faq, i) => (
               <FaqItem key={i} faq={faq} />
             ))}
+
+            {/* Mobiel: compacte afsluiting i.p.v. de volledige contactkaart */}
+            <div className="faq-mini-cta">
+              <p className="faq-mini-title">Staat je vraag er niet bij?</p>
+              <a
+                className="faq-mini-link"
+                href={WA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {WA_ICON}
+                Stel je vraag aan Yannick
+              </a>
+            </div>
           </div>
 
           {/* Right: sticky contact card */}

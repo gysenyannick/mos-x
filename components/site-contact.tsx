@@ -28,6 +28,54 @@ export default function SiteContact() {
           margin-top: 0 !important;
         }
       }
+
+      /* Korte bullettekst bestaat alleen op mobiel */
+      .bullet-kort { display: none; }
+
+      /* ── Mobiel: uitlijning en knopbreedtes gelijktrekken ── */
+      @media (max-width: 767px) {
+        /* 1. Bovenste tekst centreren */
+        .contact-headline-col h2,
+        .contact-headline-col > p:not(.contact-region-label) {
+          text-align: center !important;
+        }
+
+        /* Regio-badge gecentreerd meelopen met de rest */
+        .contact-region-label {
+          justify-content: center !important;
+          text-align: center !important;
+        }
+
+        /* Derde bullet ingekort zodat de groep centraler uitvalt */
+        .bullet-lang { display: none !important; }
+        .bullet-kort { display: inline !important; }
+
+        /* 2. Bulletgroep als geheel inspringen; bullets blijven links uitgelijnd.
+              width:fit-content geeft de groep de breedte van de langste regel,
+              auto-marges centreren die groep binnen de kaart. */
+        .contact-richtprijs-group {
+          width: fit-content !important;
+          max-width: 100% !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+
+        /* 3. Bovenste twee knoppen even breed als WhatsApp/telefoon eronder */
+        .contact-cta-btns {
+          width: 100% !important;
+        }
+
+        /* 4. Onderste contactzone centreren; knoppen behouden hun breedte */
+        .contact-advies-col > p {
+          text-align: center !important;
+        }
+        .contact-profile {
+          justify-content: center !important;
+        }
+        .contact-hours {
+          text-align: center !important;
+        }
+      }
     `}</style>
     <section style={{
       background: "#F7F8F6",
@@ -52,8 +100,8 @@ export default function SiteContact() {
         }}>
 
           {/* ── Col 1: Headline + curved arrow ── */}
-          <div style={{ display: "flex", flexDirection: "column", paddingBottom: "20px" }}>
-            <p style={{
+          <div className="contact-headline-col" style={{ display: "flex", flexDirection: "column", paddingBottom: "20px" }}>
+            <p className="contact-region-label" style={{
               fontSize: "9.5px", fontWeight: 700, textTransform: "uppercase",
               letterSpacing: "0.12em", color: GREEN, marginBottom: "16px",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
@@ -85,6 +133,7 @@ export default function SiteContact() {
 
           {/* ── Col 2: CTA button ── */}
           <div className="contact-col-divider" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="contact-richtprijs-group">
             <p style={{
               fontSize: "11px", fontWeight: 700, textTransform: "uppercase",
               letterSpacing: "0.14em", color: GREEN, marginBottom: "16px",
@@ -94,20 +143,33 @@ export default function SiteContact() {
             </p>
             {/* Checkmarks */}
             <div className="contact-checkmarks" style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "0" }}>
-              {["Binnen 1 minuut", "Persoonlijk dakadvies", "Vrijblijvend en zonder verplichtingen"].map((txt) => (
+              {[
+                { txt: "Binnen 1 minuut" },
+                { txt: "Persoonlijk dakadvies" },
+                { txt: "Vrijblijvend en zonder verplichtingen", kort: "Vrijblijvend" },
+              ].map(({ txt, kort }) => (
                 <div key={txt} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <CheckCircle size={18} color="#9BCB6C" strokeWidth={2.5} style={{ flexShrink: 0 }} />
                   <span style={{
                     fontSize: "15px", color: "rgba(255,255,255,0.75)",
                     fontFamily: "var(--font-inter), system-ui, sans-serif",
                     fontWeight: 500,
-                  }}>{txt}</span>
+                  }}>
+                    {kort ? (
+                      <>
+                        <span className="bullet-lang">{txt}</span>
+                        <span className="bullet-kort">{kort}</span>
+                      </>
+                    ) : txt}
+                  </span>
                 </div>
               ))}
             </div>
 
+            </div>
+
             {/* CTA buttons — pushed to bottom */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", width: "calc(100% - 60px)" }}>
+            <div className="contact-cta-btns" style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", width: "calc(100% - 60px)" }}>
               <a
                 href="https://v0-dak-calculator.vercel.app/"
                 target="_blank"
@@ -151,7 +213,7 @@ export default function SiteContact() {
           </div>
 
           {/* ── Col 3: Yannick contact block ── */}
-          <div className="contact-col-divider" style={{ display: "flex", flexDirection: "column" }}>
+          <div className="contact-col-divider contact-advies-col" style={{ display: "flex", flexDirection: "column" }}>
             <p style={{
               fontSize: "11px", fontWeight: 700, textTransform: "uppercase",
               letterSpacing: "0.14em", color: GREEN, marginBottom: "16px",
@@ -161,7 +223,7 @@ export default function SiteContact() {
             </p>
 
             {/* Profile */}
-            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+            <div className="contact-profile" style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
               <div style={{ position: "relative", width: "72px", height: "72px", flexShrink: 0 }}>
                 <div style={{ width: "72px", height: "72px", borderRadius: "50%", border: `2px solid ${GREEN}`, overflow: "hidden", position: "relative" }}>
                   <Image

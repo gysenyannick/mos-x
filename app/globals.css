@@ -936,6 +936,33 @@ html {
 .opp-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .opp-input[type=number] { -moz-appearance: textfield; }
 
+/* -----------------------------------------------
+   HOMEPAGE HERO — mobiel (tablet/desktop ongewijzigd)
+----------------------------------------------- */
+@media (max-width: 767px) {
+  /* Consistente verticale ritmiek: 16 / 20 / 28 / 28 */
+  .hero-region-label { margin-bottom: 16px !important; }
+  .hero-title        { margin-bottom: 20px !important; }
+  .hero-desc         { margin-bottom: 28px !important; }
+  .hero-ctas         { margin-bottom: 28px !important; }
+
+  /* Regio-label: iets minder letterspatiëring zodat "Vlaams-Brabant"
+     niet middenin het woord afbreekt op smalle schermen */
+  .hero-region-label { letter-spacing: 0.05em !important; }
+  .hero-region-label span { overflow-wrap: normal !important; }
+
+  /* Breedte blijft op contentbreedte (zoals origineel); alleen de hoogtes
+     gelijktrekken — de secundaire knop was 1px hoger door zijn rand */
+  .hero-ctas > a {
+    height: 52px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Badges onder elkaar even breed uitlijnen als de knoppen */
+  .hero-badges { gap: 10px !important; }
+}
+
 /* Hide Trustindex expired trial bottom banner (direct body child only, not the inline widgets) */
 body > div:has(img[src*="trustindex.io/assets/platform/Trustindex/logo.svg"]) {
   display: none !important;

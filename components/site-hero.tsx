@@ -56,7 +56,7 @@ export default function SiteHero() {
           {/* ── Left column ── */}
           <div>
             <p
-              className="mb-5 text-[10px] md:text-[12px]"
+              className="hero-region-label mb-5 text-[10px] md:text-[12px]"
               style={{
                 fontFamily: "var(--font-inter), system-ui, sans-serif",
                 fontWeight: 600,
@@ -73,11 +73,13 @@ export default function SiteHero() {
                 <rect x="6"  width="6"  height="13" fill="#FFE000" />
                 <rect x="12" width="6"  height="13" fill="#EF3340" />
               </svg>
-              <span>Actief regio Antwerpen, Limburg, Vlaams-Brabant</span>
+              <span>Actief regio Antwerpen, Limburg,{" "}
+                <span style={{ whiteSpace: "nowrap" }}>Vlaams-Brabant</span>
+              </span>
             </p>
 
             <h1
-              className="leading-[1.06] mb-6"
+              className="hero-title leading-[1.06] mb-6"
               style={{
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                 fontWeight: 800,
@@ -92,14 +94,14 @@ export default function SiteHero() {
             </h1>
 
             <p
-              className="leading-relaxed mb-8"
+              className="hero-desc leading-relaxed mb-8"
               style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
               MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mb-8">
+            <div className="hero-ctas flex flex-wrap gap-3 mb-8">
               <Link
                 href="/#calculator"
                 style={{
@@ -136,7 +138,7 @@ export default function SiteHero() {
             </div>
 
             {/* Trust indicators */}
-            <div className="flex flex-row items-center flex-wrap gap-3 mb-8">
+            <div className="hero-badges flex flex-row items-center flex-wrap gap-3 mb-8">
               <div style={{ display: "inline-flex", alignItems: "center", overflow: "hidden", height: "30px", padding: "0 6px", background: "white", borderRadius: "10px" }}>
                 <div style={{ display: "inline-block", zoom: 0.75, flexShrink: 0 }}>
                   <div ref={trustindexRef} />

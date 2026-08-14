@@ -422,18 +422,43 @@ export default function RealisatiesPage() {
             flex-direction: column !important;
             gap: 20px !important;
           }
+          /* Volgorde op mobiel: label+titel, grote slider, tekst+kenmerken, overige foto's.
+             display:contents maakt de nesting plat zodat één order-reeks volstaat.
+             De twee kolommen van de sub-grid zijn de echte flex-items — zij krijgen
+             de order, niet de elementen daarbinnen. */
           .realisaties-main-grid { display: contents !important; }
           .realisaties-sub-grid { display: contents !important; }
-          .realisaties-velux-goot { display: contents !important; }
           .realisaties-text-info { display: contents !important; }
           .realisaties-text-header { order: 1; }
-          .realisaties-large-slider { order: 2; height: 280px !important; }
+          /* Titel op één regel: de tekst is ~13,6x de fontgrootte breed en de
+             kaart biedt (100vw - 80px). De calc blijft daar met marge onder. */
+          .realisaties-text-header h2 {
+            font-size: clamp(15px, calc(6.8vw - 5.5px), 24px) !important;
+            white-space: nowrap !important;
+          }
+
+          /* Grote slider: landscape en in de normale flow.
+             De component zet inline height:100% + min-height:460px; die moeten
+             hier wijken, anders steekt de slider 180px buiten zijn wrapper en
+             valt hij over de projecttekst. Hoogte volgt uit de aspect-ratio,
+             dus geen vaste hoogte die overlap kan veroorzaken. */
+          .realisaties-large-slider {
+            order: 2;
+            height: auto !important;
+            /* globals.css zet hier min-height:260px; die liet 65px witruimte
+               onder de slider staan */
+            min-height: 0 !important;
+          }
+          .realisaties-large-slider > div {
+            height: auto !important;
+            min-height: 0 !important;
+            aspect-ratio: 4 / 3;
+          }
           .realisaties-text-body { order: 3; }
+          .realisaties-carousel-col { order: 4; }
+          .realisaties-details-col { order: 5; }
           .realisaties-stats-grid { grid-template-columns: 1fr 1fr 1fr !important; }
           .realisaties-location-badges { justify-content: center; width: 100%; }
-          .realisaties-carousel { order: 3; }
-          .realisaties-velux { order: 4; }
-          .realisaties-dakgoot { order: 5; }
 
           /* Bekijk meer */
           .realisaties-project-grid {
@@ -582,13 +607,13 @@ export default function RealisatiesPage() {
           {/* Foto carrousel + gestapelde Velux/Dakgoot sliders */}
           <div className="realisaties-sub-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px", marginTop: "32px", paddingTop: "32px", alignItems: "stretch" }}>
             {/* Links: foto carrousel — flex column zodat carrousel de resterende hoogte vult */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className="realisaties-carousel-col" style={{ display: "flex", flexDirection: "column" }}>
               <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", color: "#1A1A1A", letterSpacing: "-0.01em", marginBottom: "10px" }}>Dakreiniging &amp; coating in beeld</p>
               <div className="realisaties-carousel" style={{ flex: 1, minHeight: 0 }}><ProjectCarousel /></div>
             </div>
 
             {/* Rechts: Velux boven, Dakgoot onder */}
-            <div>
+            <div className="realisaties-details-col">
               <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", color: "#1A1A1A", letterSpacing: "-0.01em", marginBottom: "10px" }}>Ook de details tellen mee</p>
               <div className="realisaties-velux-goot" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 <div className="realisaties-velux"><BeforeAfterSlider beforeSrc="/images/Velux%20voor%201.0.png" afterSrc="/images/Velux%20na%201.0.png" beforePosition="center center" afterPosition="center center" height="210px" title="Velux" borderRadius="12px" /></div>

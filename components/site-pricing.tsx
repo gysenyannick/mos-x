@@ -447,6 +447,17 @@ export default function SitePricing() {
           .dak-grid {
             grid-template-columns: repeat(2, 1fr) !important;
           }
+          /* Stap 3 oppervlakte-presets: 2 × 2 op mobile.
+             min-width:0 is nodig omdat de nowrap-tekst anders de kolommen
+             oprekt tot max-content en de vierde kaart buiten beeld duwt. */
+          .opp-preset-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+          .opp-preset-grid > button {
+            min-width: 0 !important;
+          }
+
           /* Stap 4 coating-keuze: 1 kolom op mobile */
           .extra-grid {
             grid-template-columns: 1fr !important;
@@ -458,6 +469,68 @@ export default function SitePricing() {
           /* Combined naam-veld focus */
           .naam-wrapper:focus-within {
             border-color: #9BCB6C !important;
+          }
+
+          /* Stap 5 mobiel: naam op één rij (voornaam | achternaam),
+             telefoon eronder over de volle breedte.
+             Inputs hebben een intrinsieke minimumbreedte (~170px); zonder
+             min-width:0 rekken ze de kolommen op en valt het veld buiten de kaart. */
+          .naam-tel-grid {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+          }
+          .naam-tel-grid > div,
+          .postcode-adres-grid > div {
+            min-width: 0 !important;
+          }
+          .naam-tel-grid input,
+          .postcode-adres-grid input {
+            min-width: 0 !important;
+            width: 100% !important;
+          }
+          .naam-wrapper input {
+            flex: 1 1 0 !important;
+            min-width: 0 !important;
+          }
+
+          /* Resultaatscherm: prijsrange altijd op één regel.
+             Font schaalt mee met de viewport zodat hij van 320 tot 640px
+             binnen de groene kaart blijft passen. */
+          .prijs-kaart {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+          .prijs-bedrag {
+            white-space: nowrap !important;
+            font-size: clamp(19px, 6.2vw, 30px) !important;
+          }
+
+          /* E-mailbevestiging: compacter zodat hij op één regel past.
+             Bewust geen nowrap — bij een extra lang adres breekt hij liever
+             af dan buiten de container te lopen. */
+          .email-status {
+            padding: 5px 9px !important;
+            gap: 5px !important;
+            max-width: 100% !important;
+          }
+          .email-status span {
+            font-size: 11px !important;
+            line-height: 1.35 !important;
+          }
+
+          /* "Wil je een exacte prijs?" — gecentreerd op mobiel */
+          .exacte-prijs-kaart {
+            text-align: center !important;
+          }
+          .exacte-prijs-rij {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 12px !important;
+          }
+          .exacte-prijs-rij > div {
+            flex: 0 1 auto !important;
+            min-width: 0 !important;
           }
         }
       `}</style>
@@ -621,8 +694,8 @@ export default function SitePricing() {
               </div>
 
               {/* Prijskaart */}
-              <div style={{ background: "#F4FBF0", border: "2px solid rgba(155,203,108,0.4)", borderRadius: "14px", padding: "16px 24px 14px", marginBottom: "10px", textAlign: "center" }}>
-                <div style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "34px", color: "#111", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
+              <div className="prijs-kaart" style={{ background: "#F4FBF0", border: "2px solid rgba(155,203,108,0.4)", borderRadius: "14px", padding: "16px 24px 14px", marginBottom: "10px", textAlign: "center" }}>
+                <div className="prijs-bedrag" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "34px", color: "#111", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
                   {fmt(priceRange.low)} - {fmt(priceRange.high)}
                 </div>
                 <div style={{ fontSize: "12px", color: "#666", marginTop: "5px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
@@ -637,8 +710,8 @@ export default function SitePricing() {
 
               {/* E-mailbevestiging — statusbalk */}
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "28px" }}>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "6px", padding: "5px 12px" }}>
-                <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#4A8A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+              <div className="email-status" style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "6px", padding: "5px 12px" }}>
+                <svg width="12" height="12" viewBox="0 0 12 12" style={{ flexShrink: 0 }}><path d="M2 6l3 3 5-5" stroke="#4A8A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
                 <span style={{ fontSize: "12px", color: "#4A8A2A", fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 600 }}>
                   Ook verzonden naar {form.email}
                 </span>
@@ -684,8 +757,8 @@ export default function SitePricing() {
                   </div>
                 </div>
               ) : (
-                <div style={{ background: "#F7FBF2", border: "1.5px solid rgba(155,203,108,0.3)", borderRadius: "12px", padding: "14px 18px" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+                <div className="exacte-prijs-kaart" style={{ background: "#F7FBF2", border: "1.5px solid rgba(155,203,108,0.3)", borderRadius: "12px", padding: "14px 18px" }}>
+                  <div className="exacte-prijs-rij" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
                     <div style={{ flex: 1, minWidth: "160px" }}>
                       <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "15px", color: "#111", margin: "0 0 3px" }}>
                         Wil je een exacte prijs?
@@ -811,8 +884,8 @@ export default function SitePricing() {
                     </span>
                     <span>500 m²</span>
                   </div>
-                  {/* Preset size cards — 4 in één rij */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginTop: "36px", marginBottom: "44px" }}>
+                  {/* Preset size cards — 4 in één rij (mobiel: 2 × 2) */}
+                  <div className="opp-preset-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginTop: "36px", marginBottom: "44px" }}>
                     {([
                       { label: "Klein",       sub: "tot 100 m²",  value: 75  },
                       { label: "Gemiddeld",   sub: "100 - 175 m²",  value: 137 },
@@ -1011,8 +1084,8 @@ export default function SitePricing() {
                   {/* E-mail — full width */}
                   <Field label="E-mailadres *" placeholder="bv. naam@email.be" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} type="email" />
 
-                  {/* Naam (samen) + Telefoon */}
-                  <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "12px", marginBottom: "14px" }}>
+                  {/* Naam (samen) + Telefoon — mobiel: onder elkaar */}
+                  <div className="naam-tel-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "12px", marginBottom: "14px" }}>
                     <div>
                       <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                         Voornaam &amp; Achternaam *
@@ -1044,7 +1117,7 @@ export default function SitePricing() {
                   </div>
 
                   {/* Postcode + Adres — 2 kolommen */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "12px", marginBottom: "14px" }}>
+                  <div className="postcode-adres-grid" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "12px", marginBottom: "14px" }}>
 
                     {/* Postcode met dropdown */}
                     <div style={{ position: "relative" }}>

@@ -181,6 +181,16 @@ export default function SiteWerkwijze() {
             margin-top: 6px !important;
           }
         }
+        /* Mobiel: bredere knop via meer zijpadding. De beschikbare ruimte in de
+           kaart groeit met 0,5px per zijde per px viewport; de calc blijft daar
+           net onder zodat de knop van 320px tot 767px binnen de kaart past.
+           Verticale padding blijft 10px, dus de hoogte verandert niet. */
+        @media (max-width: 767px) {
+          .werkwijze-cta-btn {
+            padding-left: clamp(10px, calc(35vw - 102px), 30px) !important;
+            padding-right: clamp(10px, calc(35vw - 102px), 30px) !important;
+          }
+        }
       `}</style>
       <div className="site-wrap">
 

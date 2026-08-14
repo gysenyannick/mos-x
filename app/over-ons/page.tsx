@@ -40,6 +40,20 @@ export default function OverOnsPage() {
           .over-ons-mission-grid > *:last-child  { order: 2; }
           .over-ons-mission-grid h2 { white-space: normal !important; }
           .over-ons-mission-grid p  { white-space: normal !important; }
+          /* Gemoedsrust-header: op mobiel stapelen titel, scheidingslijn en tekst.
+             De lijn van 64px plus 2x de gap van 48px zette de tekst 160px onder
+             de titel — lijn verbergen en gap terugbrengen. */
+          .gemoedsrust-header {
+            gap: 16px !important;
+            align-items: flex-start !important;
+          }
+          .gemoedsrust-divider { display: none !important; }
+
+          /* Ruimte tussen de Yannick-tekst en de voor/na-slider halveren:
+             2 x 80px sectiepadding wordt 2 x 40px. */
+          .over-ons-yannick-section { padding-bottom: 40px !important; }
+          .over-ons-mission-section { padding-top: 40px !important; }
+
           .gemoedsrust-cards {
             display: grid !important;
             grid-template-columns: repeat(2, 1fr) !important;
@@ -173,7 +187,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ── Achter MOS-X / Yannick ── */}
-      <section style={{ background: "#FFFFFF", padding: "80px 0" }}>
+      <section className="over-ons-yannick-section" style={{ background: "#FFFFFF", padding: "80px 0" }}>
         <div className="site-wrap">
           <div className="over-ons-yannick-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "56px", alignItems: "center" }}>
 
@@ -222,7 +236,7 @@ export default function OverOnsPage() {
       </section>
 
       {/* ── Onderhouden is Overhouden ── */}
-      <section style={{ background: "#FFFFFF", padding: "80px 0" }}>
+      <section className="over-ons-mission-section" style={{ background: "#FFFFFF", padding: "80px 0" }}>
         <div className="site-wrap">
           <div className="over-ons-mission-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
 
@@ -274,7 +288,7 @@ export default function OverOnsPage() {
         <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
 
           {/* Header: label+heading | verticale lijn | beschrijving */}
-          <div style={{ display: "flex", alignItems: "center", gap: "48px", marginBottom: "48px", flexWrap: "wrap" }}>
+          <div className="gemoedsrust-header" style={{ display: "flex", alignItems: "center", gap: "48px", marginBottom: "48px", flexWrap: "wrap" }}>
             <div style={{ flex: "0 0 auto" }}>
               <p style={{ fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "#9BCB6C", marginBottom: "10px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
                 Waar klanten ons voor kiezen
@@ -283,7 +297,7 @@ export default function OverOnsPage() {
                 Gemoedsrust<span style={{ color: "#9BCB6C" }}>.</span>
               </h2>
             </div>
-            <div style={{ width: "1px", height: "64px", background: "rgba(255,255,255,0.15)", flexShrink: 0 }} />
+            <div className="gemoedsrust-divider" style={{ width: "1px", height: "64px", background: "rgba(255,255,255,0.15)", flexShrink: 0 }} />
             <p style={{ flex: 1, minWidth: "260px", fontSize: "15px", color: "rgba(255,255,255,0.60)", lineHeight: 1.75, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
               Een proper dak is belangrijk. Maar uiteinidelijk kiezen klanten<br />voor iets veel waardevollers: de zekerheid dat alles correct verloopt.
             </p>
