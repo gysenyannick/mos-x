@@ -202,11 +202,11 @@ export default function BeforeAfterSlider({
         <ChevronRight style={{ width: "11px", height: "11px", color: "#9BCB6C" }} />
       </div>
 
-      {/* Instruction badge — below center handle, disappears on first use */}
+      {/* Instruction badge — top of image, disappears on first use */}
       <div style={{
         position: "absolute",
         left: "50%",
-        top: "68%",
+        top: "22%",
         transform: "translate(-50%, -50%)",
         zIndex: 6,
         background: "rgba(0,0,0,0.68)",
