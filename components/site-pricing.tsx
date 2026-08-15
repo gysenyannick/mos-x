@@ -884,9 +884,7 @@ export default function SitePricing() {
                       <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => setDak(d.label)} />
                     ))}
                   </div>
-                  <div style={{ maxWidth: "320px" }}>
-                    <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => setDak("Ik weet het niet")} />
-                  </div>
+                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => setDak("Ik weet het niet")} />
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "18px" }}>
                     <button onClick={prev} style={{
                       padding: "10px 20px", borderRadius: "8px",
