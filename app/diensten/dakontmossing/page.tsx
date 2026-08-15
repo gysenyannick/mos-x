@@ -8,6 +8,7 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import { BtnPress } from "@/components/btn-press";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 const steps = [
   { step: "STAP 01", Icon: Search,        title: "Dakcontrole & voorbereiding",      desc: "We starten met een grondige controle van je dak en vervangen meteen eventuele gebroken pannen of leien." },
@@ -216,6 +217,7 @@ export default function DakontmossingPage() {
   const [openFaq, setOpenFaq]                 = useState<number | null>(null);
   const [waHovered, setWaHovered]             = useState(false);
   const [phoneHovered, setPhoneHovered]       = useState(false);
+  const [bezoekOpen, setBezoekOpen]           = useState(false);
 
   return (
     <PageLayout>
@@ -702,8 +704,9 @@ export default function DakontmossingPage() {
 
             {/* CTA — onderaan in de donkere sectie */}
             <div style={{ marginTop: "24px" }}>
-              <BtnPress
-                href="/contact"
+              <button
+                onClick={() => setBezoekOpen(true)}
+                onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
                 style={{
@@ -711,13 +714,14 @@ export default function DakontmossingPage() {
                   background: "#9BCB6C", color: "#FFFFFF", border: "none",
                   borderRadius: "8px", padding: "13px 24px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  transition: "background-color 0.2s ease",
+                  fontWeight: 700, fontSize: "15px",
+                  transition: "background 200ms ease, transform 140ms ease, opacity 140ms ease",
+                  cursor: "pointer",
                 }}
               >
                 Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </BtnPress>
+              </button>
             </div>
           </div>
       </section>
@@ -875,8 +879,9 @@ export default function DakontmossingPage() {
               </p>
             </div>
             <div className="page-cta-buttons" style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
-              <Link
-                href="/contact"
+              <button
+                onClick={() => setBezoekOpen(true)}
+                onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={() => setWaHovered(true)}
                 onMouseLeave={() => setWaHovered(false)}
                 style={{
@@ -885,14 +890,15 @@ export default function DakontmossingPage() {
                   color: "#FFFFFF", border: "none",
                   borderRadius: "8px", padding: "12px 20px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                  fontWeight: 700, fontSize: "14px",
+                  whiteSpace: "nowrap", transition: "background 200ms ease, transform 140ms ease, opacity 140ms ease",
+                  cursor: "pointer",
                 }}
               >
                 Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </Link>
-              <a
+              </button>
+              <BtnPress
                 href="tel:+32468352869"
                 onMouseEnter={() => setPhoneHovered(true)}
                 onMouseLeave={() => setPhoneHovered(false)}
@@ -909,11 +915,13 @@ export default function DakontmossingPage() {
               >
                 <Phone size={15} />
                 +32 468 35 28 69
-              </a>
+              </BtnPress>
             </div>
           </div>
         </div>
       </section>
+
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="Dakreiniging" bron="Dakontmossing pagina" />
 
     </PageLayout>
   );

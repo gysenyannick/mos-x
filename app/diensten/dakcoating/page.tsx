@@ -7,6 +7,7 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import { BtnPress } from "@/components/btn-press";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 const steps = [
   { step: "STAP 01", Icon: Home,        title: "Afplakken & voorbereiding", desc: "Ramen, zonnepanelen, veranda's, schouwen en andere onderdelen worden zorgvuldig afgeschermd zodat de werken veilig en netjes kunnen verlopen." },
@@ -69,6 +70,7 @@ export default function DakcoatingPage() {
   const [openFaq, setOpenFaq]                 = useState<number | null>(null);
   const [waHovered, setWaHovered]             = useState(false);
   const [phoneHovered, setPhoneHovered]       = useState(false);
+  const [bezoekOpen, setBezoekOpen]           = useState(false);
   const [lightboxImg, setLightboxImg]         = useState<string | null>(null);
 
   useEffect(() => {
@@ -421,8 +423,9 @@ export default function DakcoatingPage() {
 
           {/* CTA */}
           <div style={{ marginTop: "24px" }}>
-            <BtnPress
-              href="/contact"
+            <button
+              onClick={() => setBezoekOpen(true)}
+              onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
               onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
               style={{
@@ -430,13 +433,14 @@ export default function DakcoatingPage() {
                 background: "#9BCB6C", color: "#FFFFFF", border: "none",
                 borderRadius: "8px", padding: "13px 24px",
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                transition: "background-color 0.2s ease",
+                fontWeight: 700, fontSize: "15px",
+                transition: "background 200ms ease, transform 140ms ease, opacity 140ms ease",
+                cursor: "pointer",
               }}
             >
               Plan een gratis plaatsbezoek
               <ChevronRight size={14} strokeWidth={2.5} />
-            </BtnPress>
+            </button>
           </div>
         </div>
       </section>
@@ -547,8 +551,9 @@ export default function DakcoatingPage() {
                 ))}
               </ul>
               <div style={{ marginTop: "24px", paddingTop: "24px", borderTop: "1px solid rgba(155,203,108,0.18)" }}>
-                <BtnPress
-                  href="/contact"
+                <button
+                  onClick={() => setBezoekOpen(true)}
+                  onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                   onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
                   style={{
@@ -556,13 +561,14 @@ export default function DakcoatingPage() {
                     background: "#9BCB6C", color: "#FFFFFF", border: "none",
                     borderRadius: "8px", padding: "13px 24px",
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                    fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                    whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                    fontWeight: 700, fontSize: "15px",
+                    whiteSpace: "nowrap", transition: "background 200ms ease, transform 140ms ease, opacity 140ms ease",
+                    cursor: "pointer",
                   }}
                 >
                   Plan een gratis plaatsbezoek
                   <ChevronRight size={14} strokeWidth={2.5} />
-                </BtnPress>
+                </button>
               </div>
             </div>
 
@@ -806,8 +812,9 @@ export default function DakcoatingPage() {
               </p>
             </div>
             <div className="page-cta-buttons" style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
-              <BtnPress
-                href="/contact"
+              <button
+                onClick={() => setBezoekOpen(true)}
+                onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={() => setWaHovered(true)}
                 onMouseLeave={() => setWaHovered(false)}
                 style={{
@@ -816,13 +823,14 @@ export default function DakcoatingPage() {
                   color: "#FFFFFF", border: "none",
                   borderRadius: "8px", padding: "12px 20px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                  fontWeight: 700, fontSize: "14px",
+                  whiteSpace: "nowrap", transition: "background 200ms ease, transform 140ms ease, opacity 140ms ease",
+                  cursor: "pointer",
                 }}
               >
                 Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </BtnPress>
+              </button>
               <BtnPress
                 href="tel:+32468352869"
                 onMouseEnter={() => setPhoneHovered(true)}
@@ -846,6 +854,8 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
+
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="Dakcoating" bron="Dakcoating pagina" />
 
       {/* Lightbox */}
       {lightboxImg && (

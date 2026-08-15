@@ -80,14 +80,21 @@ export default function MosXDakzorgPage() {
   const [hoveredBenefit, setHoveredBenefit]   = useState<number | null>(null);
   const [formOpen, setFormOpen]               = useState(false);
   const [formSubmitted, setFormSubmitted]     = useState(false);
-  const formRef                               = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (formOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [formOpen]);
 
   useEffect(() => {
     if (!formOpen) return;
-    const timeout = setTimeout(() => {
-      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 60);
-    return () => clearTimeout(timeout);
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setFormOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [formOpen]);
 
   return (
@@ -98,6 +105,11 @@ export default function MosXDakzorgPage() {
           .dakzorg-benefit-card { padding: 14px 16px !important; }
           .dakzorg-photo-badge-title { font-size: 12px !important; }
           .dakzorg-realisatie-photo { height: 310px !important; aspect-ratio: unset !important; }
+        }
+        @keyframes dz-modal-bg { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes dz-modal-in { from { opacity: 0; transform: translateY(28px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @media (prefers-reduced-motion: reduce) {
+          .dz-modal-wrap, .dz-modal-card { animation: none !important; }
         }
       `}</style>
 
@@ -732,9 +744,8 @@ export default function MosXDakzorgPage() {
               </p>
             </div>
             <div className="flex flex-col lg:flex-row w-full lg:w-auto" style={{ gap: "10px" }}>
-              <BtnPress
-                href="https://wa.me/32468352869"
-                target="_blank"
+              <button
+                onClick={() => { setFormOpen(true); setFormSubmitted(false); }}
                 onMouseEnter={() => setCtaWaHovered(true)}
                 onMouseLeave={() => setCtaWaHovered(false)}
                 style={{
@@ -744,13 +755,14 @@ export default function MosXDakzorgPage() {
                   color: "#FFFFFF", border: "none",
                   borderRadius: "8px", padding: "12px 20px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                  fontWeight: 700, fontSize: "14px",
+                  whiteSpace: "nowrap", transition: "background 200ms ease",
+                  cursor: "pointer",
                 }}
               >
                 MOS-X Dakzorg aanvragen
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </BtnPress>
+              </button>
               <BtnPress
                 href="tel:+32468352869"
                 onMouseEnter={() => setCtaPhoneHovered(true)}
@@ -775,90 +787,136 @@ export default function MosXDakzorgPage() {
         </div>
       </section>
 
-      {/* ── INLINE FORMULIER: MOS-X Dakzorg aanvragen ── */}
+      {/* ── MODAL: MOS-X Dakzorg aanvragen ── */}
       {formOpen && (
-        <section ref={formRef} style={{ background: "#F7F8F6", padding: "0 0 80px", scrollMarginTop: "100px" }}>
-          <div className="site-wrap">
-            <div style={{
-              background: "#FFFFFF", borderRadius: "16px",
-              border: "1px solid #9BCB6C",
-              boxShadow: "0 2px 16px rgba(155,203,108,0.12)",
+        <div
+          className="dz-modal-wrap"
+          onClick={(e) => { if (e.target === e.currentTarget) setFormOpen(false); }}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(4px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "16px",
+            animation: "dz-modal-bg 200ms ease both",
+          }}
+        >
+          <div
+            className="dz-modal-card"
+            style={{
+              background: "#FFFFFF",
+              borderRadius: "20px",
               padding: "36px 40px",
-              maxWidth: "640px",
-              margin: "0 auto",
-            }}>
-              {formSubmitted ? (
-                <div style={{ textAlign: "center", padding: "24px 0" }}>
-                  <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-                    <Check size={24} color="#9BCB6C" strokeWidth={2.5} />
-                  </div>
-                  <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "18px", color: "#1A1A1A", marginBottom: "8px" }}>Aanvraag verstuurd!</p>
-                  <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.6 }}>
-                    Yannick bekijkt je aanvraag en neemt persoonlijk contact met je op.
-                  </p>
+              maxWidth: "560px",
+              width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              position: "relative",
+              boxShadow: "0 8px 60px rgba(0,0,0,0.30), 0 2px 12px rgba(0,0,0,0.10)",
+              animation: "dz-modal-in 280ms cubic-bezier(0.22,1,0.36,1) both",
+            }}
+          >
+            {/* Sluitknop */}
+            <button
+              onClick={() => setFormOpen(false)}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#1A1A1A"; (e.currentTarget as HTMLButtonElement).style.background = "#F3F4F6"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "#9CA3AF"; (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
+              style={{
+                position: "absolute", top: "16px", right: "16px",
+                background: "transparent", border: "none", cursor: "pointer",
+                color: "#9CA3AF", padding: "6px", borderRadius: "8px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "color 150ms ease, background 150ms ease",
+              }}
+            >
+              <X size={20} />
+            </button>
+
+            {formSubmitted ? (
+              <div style={{ textAlign: "center", padding: "24px 0" }}>
+                <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+                  <Check size={24} color="#9BCB6C" strokeWidth={2.5} />
                 </div>
-              ) : (
-                <>
-                  <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#1A1A1A", marginBottom: "6px", lineHeight: 1.2 }}>
-                    MOS-X Dakzorg aanvragen
-                  </p>
-                  <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", lineHeight: 1.55 }}>
-                    Vul je gegevens in. Yannick bekijkt je aanvraag en neemt persoonlijk contact met je op.
-                  </p>
+                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "18px", color: "#1A1A1A", marginBottom: "8px" }}>Aanvraag verstuurd!</p>
+                <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.6, marginBottom: "24px" }}>
+                  Yannick bekijkt je aanvraag en neemt persoonlijk contact met je op.
+                </p>
+                <button
+                  onClick={() => setFormOpen(false)}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "8px",
+                    padding: "12px 28px", borderRadius: "10px",
+                    background: "#9BCB6C", color: "#FFFFFF", border: "none", cursor: "pointer",
+                    fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                    fontWeight: 700, fontSize: "14px", transition: "background 200ms ease",
+                  }}
+                >
+                  Sluiten
+                </button>
+              </div>
+            ) : (
+              <>
+                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#1A1A1A", marginBottom: "6px", lineHeight: 1.2, paddingRight: "32px" }}>
+                  MOS-X Dakzorg aanvragen
+                </p>
+                <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", lineHeight: 1.55 }}>
+                  Vul je gegevens in. Yannick bekijkt je aanvraag en neemt persoonlijk contact met je op.
+                </p>
 
-                  <form
-                    style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-                    onSubmit={e => { e.preventDefault(); setFormSubmitted(true); }}
+                <form
+                  style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+                  onSubmit={e => { e.preventDefault(); setFormSubmitted(true); }}
+                >
+                  <input type="hidden" name="bron" value="MOS-X Dakzorg" />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "14px" }}>
+                    <div>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Voornaam *</label>
+                      <input type="text" name="voornaam" required placeholder="Voornaam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    </div>
+                    <div>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Naam *</label>
+                      <input type="text" name="naam" required placeholder="Naam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
+                    <input type="email" name="email" required placeholder="jouw@email.be" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Adres *</label>
+                    <input type="text" name="adres" required placeholder="Straat, nummer, gemeente" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                  </div>
+
+                  <div>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Bericht <span style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span></label>
+                    <textarea name="bericht" rows={4} placeholder="Extra informatie of vragen..." style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const, resize: "none" as const }} />
+                  </div>
+
+                  <button
+                    type="submit"
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                      width: "100%", padding: "16px 24px", borderRadius: "10px",
+                      background: "#9BCB6C", color: "#FFFFFF", border: "none", cursor: "pointer",
+                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                      fontWeight: 700, fontSize: "15px", transition: "background 200ms ease",
+                    }}
                   >
-                    <input type="hidden" name="bron" value="MOS-X Dakzorg" />
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "14px" }}>
-                      <div>
-                        <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Voornaam *</label>
-                        <input type="text" name="voornaam" required placeholder="Voornaam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                      </div>
-                      <div>
-                        <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Naam *</label>
-                        <input type="text" name="naam" required placeholder="Naam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
-                      <input type="email" name="email" required placeholder="jouw@email.be" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                    </div>
-
-                    <div>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Adres *</label>
-                      <input type="text" name="adres" required placeholder="Straat, nummer, gemeente" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                    </div>
-
-                    <div>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Bericht <span style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span></label>
-                      <textarea name="bericht" rows={4} placeholder="Extra informatie of vragen..." style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const, resize: "none" as const }} />
-                    </div>
-
-                    <button
-                      type="submit"
-                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                        width: "100%", padding: "16px 24px", borderRadius: "10px",
-                        background: "#9BCB6C", color: "#FFFFFF", border: "none", cursor: "pointer",
-                        fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                        fontWeight: 700, fontSize: "15px", transition: "background 200ms ease",
-                      }}
-                    >
-                      Verstuur mijn aanvraag
-                      <ChevronRight size={16} strokeWidth={2.5} />
-                    </button>
-                  </form>
-                </>
-              )}
-            </div>
+                    Verstuur mijn aanvraag
+                    <ChevronRight size={16} strokeWidth={2.5} />
+                  </button>
+                </form>
+              </>
+            )}
           </div>
-        </section>
+        </div>
       )}
 
     </PageLayout>

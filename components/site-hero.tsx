@@ -3,10 +3,12 @@
 import { Phone, Tv, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { BtnPress } from "@/components/btn-press";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
   const trustindexRef = useRef<HTMLDivElement>(null);
+  const [bezoekOpen, setBezoekOpen] = useState(false);
 
   useEffect(() => {
     const container = trustindexRef.current;
@@ -115,8 +117,11 @@ export default function SiteHero() {
                 Bereken mijn richtprijs
                 <ChevronRight size={15} strokeWidth={2.5} />
               </BtnPress>
-              <BtnPress
-                href="/contact"
+              <button
+                onClick={() => setBezoekOpen(true)}
+                onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "transparent",
@@ -124,15 +129,13 @@ export default function SiteHero() {
                   border: "1px solid rgba(155,203,108,0.5)",
                   borderRadius: "8px", padding: "14px 28px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  transition: "border-color 0.2s ease, color 0.2s ease",
-                  whiteSpace: "nowrap",
+                  fontWeight: 700, fontSize: "15px",
+                  transition: "border-color 0.2s ease, color 0.2s ease, transform 140ms ease, opacity 140ms ease",
+                  whiteSpace: "nowrap", cursor: "pointer",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
               >
                 Plan een gratis plaatsbezoek
-              </BtnPress>
+              </button>
             </div>
 
             {/* Trust indicators */}
@@ -161,6 +164,8 @@ export default function SiteHero() {
 
         </div>
       </div>
+
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Homepage" />
 
       {/* Wave onderaan */}
       <div style={{ position: "absolute", bottom: "-1px", left: 0, width: "100%", overflow: "hidden", lineHeight: 0, zIndex: 3 }}>

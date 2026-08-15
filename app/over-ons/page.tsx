@@ -7,6 +7,7 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import { BtnPress } from "@/components/btn-press";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function OverOnsPage() {
   const [homeHovered, setHomeHovered] = useState(false);
@@ -16,6 +17,7 @@ export default function OverOnsPage() {
   const [heroPriceHovered, setHeroPriceHovered] = useState(false);
   const [midVisitHovered, setMidVisitHovered] = useState(false);
   const [midPhoneHovered, setMidPhoneHovered] = useState(false);
+  const [bezoekOpen, setBezoekOpen]           = useState(false);
 
   return (
     <PageLayout>
@@ -164,8 +166,9 @@ export default function OverOnsPage() {
               Bereken mijn richtprijs
               <ChevronRight size={15} strokeWidth={2.5} />
             </BtnPress>
-            <BtnPress
-              href="/contact"
+            <button
+              onClick={() => setBezoekOpen(true)}
+              onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
               onMouseEnter={() => setHeroVisitHovered(true)}
               onMouseLeave={() => setHeroVisitHovered(false)}
               style={{
@@ -176,13 +179,14 @@ export default function OverOnsPage() {
                 borderRadius: "8px",
                 padding: "14px 24px",
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                transition: "color 200ms ease, border-color 200ms ease", whiteSpace: "nowrap",
+                fontWeight: 700, fontSize: "15px",
+                transition: "color 200ms ease, border-color 200ms ease, transform 140ms ease, opacity 140ms ease",
+                whiteSpace: "nowrap", cursor: "pointer",
               }}
             >
               Plan een gratis plaatsbezoek
               <ChevronRight size={15} strokeWidth={2.5} />
-            </BtnPress>
+            </button>
           </div>
         </div>
       </section>
@@ -337,8 +341,9 @@ export default function OverOnsPage() {
           {/* CTA — geïntegreerd in Gemoedsrust */}
           <div style={{ textAlign: "center", marginTop: "48px", position: "relative", zIndex: 1 }}>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <BtnPress
-                href="/contact"
+              <button
+                onClick={() => setBezoekOpen(true)}
+                onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={() => setMidVisitHovered(true)}
                 onMouseLeave={() => setMidVisitHovered(false)}
                 style={{
@@ -346,13 +351,14 @@ export default function OverOnsPage() {
                   background: midVisitHovered ? "#7AB54E" : "#9BCB6C",
                   color: "#FFFFFF", borderRadius: "8px", padding: "13px 22px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
+                  fontWeight: 700, fontSize: "14px",
+                  whiteSpace: "nowrap", transition: "background 200ms ease, transform 140ms ease, opacity 140ms ease",
+                  cursor: "pointer", border: "none",
                 }}
               >
                 Plan een gratis plaatsbezoek
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </BtnPress>
+              </button>
               <BtnPress
                 href="tel:+32468352869"
                 onMouseEnter={() => setMidPhoneHovered(true)}
@@ -527,6 +533,8 @@ export default function OverOnsPage() {
           </div>
         </div>
       </section>
+
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Over ons pagina" />
 
     </PageLayout>
   );
