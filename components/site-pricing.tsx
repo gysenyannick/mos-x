@@ -62,12 +62,15 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
     <button
       onClick={onClick}
       onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.99)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
+      onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = GREEN; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(155,203,108,0.15)'; } }}
+      onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.boxShadow = 'none'; } }}
       style={{
         width: "100%", display: "flex", alignItems: "center", gap: "16px",
         padding: "10px 16px", borderRadius: "12px", cursor: "pointer",
         border: selected ? `2px solid ${GREEN}` : "2px solid #E5E7EB",
         background: selected ? "rgba(90,158,47,0.05)" : "#FFFFFF",
-        transition: "border-color 180ms ease, background 180ms ease, transform 140ms ease", textAlign: "left", marginBottom: "0",
+        boxShadow: selected ? "0 0 0 3px rgba(155,203,108,0.2)" : "none",
+        transition: "border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 140ms ease", textAlign: "left", marginBottom: "0",
       }}
     >
       {imgSrc && (
@@ -881,7 +884,9 @@ export default function SitePricing() {
                       <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => setDak(d.label)} />
                     ))}
                   </div>
-                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => setDak("Ik weet het niet")} />
+                  <div style={{ maxWidth: "320px" }}>
+                    <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => setDak("Ik weet het niet")} />
+                  </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "18px" }}>
                     <button onClick={prev} style={{
                       padding: "10px 20px", borderRadius: "8px",
