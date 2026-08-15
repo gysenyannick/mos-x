@@ -28,7 +28,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "MOS-X | Dakreiniging & Dakcoating door Yannick",
   description:
-    "Yannick ontmost en coat jouw dak persoonlijk — geen onderaannemers. Gratis plaatsbezoek in Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg.",
+    "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
   keywords: [
     "dakontmossing",
     "dakcoating",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "MOS-X | Dakreiniging & Dakcoating door Yannick",
-    description: "Yannick ontmost en coat jouw dak persoonlijk — geen onderaannemers. Gratis plaatsbezoek in Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg.",
+    description: "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
     type: "website",
     locale: "nl_BE",
   },
