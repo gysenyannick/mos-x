@@ -92,6 +92,19 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
         @media (prefers-reduced-motion: reduce) {
           .pv-modal-wrap, .pv-modal-card { animation: none !important; }
         }
+        .pv-loc-grid {
+          display: grid;
+          grid-template-columns: 1fr 90px;
+          grid-template-areas: "tel postcode" "adres adres";
+          gap: 10px;
+        }
+        @media (min-width: 560px) {
+          .pv-loc-grid {
+            grid-template-columns: 120px 1fr;
+            grid-template-areas: "tel tel" "postcode adres";
+            gap: 14px;
+          }
+        }
       `}</style>
 
       <div
@@ -235,9 +248,9 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                   </p>
                 </div>
 
-                {/* Telefoonnummer + Postcode naast elkaar (ook op mobiel) */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 90px", gap: "10px" }}>
-                  <div>
+                {/* Tel / Postcode / Adres — responsive via grid-template-areas */}
+                <div className="pv-loc-grid">
+                  <div style={{ gridArea: "tel" }}>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Telefoonnummer *</label>
                     <input
                       type="tel" name="tel" required placeholder="0470 00 00 00"
@@ -250,16 +263,14 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                       style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }}
                     />
                   </div>
-                  <div>
+                  <div style={{ gridArea: "postcode" }}>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Postcode *</label>
                     <input type="text" name="postcode" required placeholder="2000" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 10px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
-                </div>
-
-                {/* Gemeente (volle breedte) */}
-                <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Gemeente *</label>
-                  <input type="text" name="gemeente" required placeholder="Bv. Mechelen, Leuven, Hasselt…" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                  <div style={{ gridArea: "adres" }}>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Adres *</label>
+                    <input type="text" name="gemeente" required placeholder="Bv. Kerkstraat 12, Mechelen" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                  </div>
                 </div>
 
                 {/* Bericht */}
