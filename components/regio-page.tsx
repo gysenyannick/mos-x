@@ -356,7 +356,10 @@ export default function RegioPage({
                   onMouseEnter={() => setSidebarBtnHov(true)}
                   onMouseLeave={() => setSidebarBtnHov(false)}
                   style={{
-                    display: "block",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
                     width: "100%",
                     background: sidebarBtnHov ? "#7AB54E" : "#9BCB6C",
                     color: "#fff",
@@ -367,7 +370,7 @@ export default function RegioPage({
                     fontWeight: 700,
                     fontFamily: "var(--font-montserrat)",
                     textDecoration: "none",
-                    textAlign: "center",
+                    whiteSpace: "nowrap",
                     boxSizing: "border-box",
                     marginBottom: "12px",
                     transition: "background 200ms ease",
