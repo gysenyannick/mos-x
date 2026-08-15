@@ -119,6 +119,7 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
               poster={s.img}
               autoPlay
               muted
+              loop
               playsInline
               preload="auto"
               style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: s.videoPosition ?? "center 65%", opacity: 1 }}
