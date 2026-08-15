@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { Droplets, Shield, CalendarCheck, ChevronRight } from "lucide-react";
 
@@ -78,6 +78,13 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
   const [hovered, setHovered] = useState(false);
   const { Icon } = s;
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !s.video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, [s.video]);
+
   return (
     <div style={{ position: "relative", cursor: "pointer", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
       <Link
@@ -110,7 +117,10 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
               ref={videoRef}
               src={s.video}
               poster={s.img}
-              autoPlay muted loop playsInline
+              autoPlay
+              muted
+              playsInline
+              preload="auto"
               style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: s.videoPosition ?? "center 65%", opacity: 1 }}
             />
           )}
