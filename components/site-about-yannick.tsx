@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
+import { BtnPress } from "@/components/btn-press";
 
 const usps = [
   "We komen onze afspraken na.",
@@ -126,39 +127,37 @@ export default function SiteAboutYannick() {
 
             {/* Buttons */}
             <div className="about-btns" style={{ display: "flex", gap: "12px", marginTop: "36px", flexWrap: "wrap" }}>
-              <a
+              <BtnPress
                 href="/over-ons"
-                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   border: "2px solid #9BCB6C", color: "#9BCB6C",
                   background: "transparent", borderRadius: "8px",
                   padding: "12px 24px", fontSize: "15px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", transition: "transform 150ms ease, background 200ms ease, color 200ms ease",
+                  textDecoration: "none", transition: "background 200ms ease, color 200ms ease",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#9BCB6C"; e.currentTarget.style.color = "#fff"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#9BCB6C"; }}
               >
                 Meer over ons
-              </a>
-              <a
+              </BtnPress>
+              <BtnPress
                 href="/#calculator"
-                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "#9BCB6C", color: "#FFFFFF",
                   border: "2px solid #9BCB6C", borderRadius: "8px",
                   padding: "12px 24px", fontSize: "15px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", transition: "transform 150ms ease, background 200ms ease",
+                  textDecoration: "none", transition: "background 200ms ease",
                 }}
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
               >
                 Bereken mijn richtprijs
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </a>
+              </BtnPress>
             </div>
 
           </div>

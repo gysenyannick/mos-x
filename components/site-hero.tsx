@@ -2,6 +2,7 @@
 
 import { Phone, Tv, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { BtnPress } from "@/components/btn-press";
 import { useRef, useEffect } from "react";
 
 export default function SiteHero() {
@@ -99,25 +100,23 @@ export default function SiteHero() {
 
             {/* CTAs */}
             <div className="hero-ctas flex flex-wrap gap-3 mb-8">
-              <Link
+              <BtnPress
                 href="/#calculator"
-                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "#9BCB6C", color: "#fff", borderRadius: "8px",
                   padding: "14px 28px", fontSize: "16px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", transition: "transform 150ms ease, background 200ms ease", whiteSpace: "nowrap",
+                  textDecoration: "none", transition: "background 200ms ease", whiteSpace: "nowrap",
                 }}
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
               >
                 Bereken mijn richtprijs
                 <ChevronRight size={15} strokeWidth={2.5} />
-              </Link>
-              <Link
+              </BtnPress>
+              <BtnPress
                 href="/contact"
-                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "transparent",
@@ -126,14 +125,14 @@ export default function SiteHero() {
                   borderRadius: "8px", padding: "14px 28px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  transition: "transform 150ms ease, border-color 0.2s ease, color 0.2s ease",
+                  transition: "border-color 0.2s ease, color 0.2s ease",
                   whiteSpace: "nowrap",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
               >
                 Plan een gratis plaatsbezoek
-              </Link>
+              </BtnPress>
             </div>
 
             {/* Trust indicators */}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { BtnPress } from "@/components/btn-press";
 import { useRef, useEffect, useState, useCallback } from "react";
 
 export default function SiteRealisatiesPreview() {
@@ -131,16 +132,15 @@ Resultaten die je <span style={{ color: "#9BCB6C" }}>ziet.</span>
 
         {/* CTA */}
         <div style={{ textAlign: "center", marginTop: "40px" }}>
-          <Link
+          <BtnPress
             href="/realisaties"
-            className="btn-press"
-            style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "8px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textDecoration: "none", transition: "transform 150ms ease, background 200ms ease" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "8px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textDecoration: "none", transition: "background 200ms ease" }}
             onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
             onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
           >
             Bekijk alle realisaties
             <ChevronRight size={15} strokeWidth={2.5} style={{ marginLeft: "2px" }} />
-          </Link>
+          </BtnPress>
         </div>
 
       </div>
