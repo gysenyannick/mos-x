@@ -356,11 +356,7 @@ export default function RegioPage({
                   onMouseEnter={() => setSidebarBtnHov(true)}
                   onMouseLeave={() => setSidebarBtnHov(false)}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexWrap: "nowrap",
-                    gap: "4px",
+                    display: "block",
                     width: "100%",
                     background: sidebarBtnHov ? "#7AB54E" : "#9BCB6C",
                     color: "#fff",
@@ -371,14 +367,15 @@ export default function RegioPage({
                     fontWeight: 700,
                     fontFamily: "var(--font-montserrat)",
                     textDecoration: "none",
+                    textAlign: "center",
                     whiteSpace: "nowrap",
                     boxSizing: "border-box",
                     marginBottom: "12px",
                     transition: "background 200ms ease",
                   }}
                 >
-                  <span style={{ whiteSpace: "nowrap" }}>{sidebarButton ?? "Gratis diagnose aanvragen"}</span>
-                  <ChevronRight size={14} strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                  {sidebarButton ?? "Gratis diagnose aanvragen"}
+                  <ChevronRight size={14} strokeWidth={2.5} style={{ display: "inline", verticalAlign: "middle", marginLeft: "4px" }} />
                 </Link>
 
                 <a
