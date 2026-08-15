@@ -6,6 +6,7 @@ import { CheckCircle, Phone, ArrowRight, ChevronDown, Droplets, ShieldCheck, Hom
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
+import { BtnPress } from "@/components/btn-press";
 
 const steps = [
   { step: "STAP 01", Icon: Home,        title: "Afplakken & voorbereiding", desc: "Ramen, zonnepanelen, veranda's, schouwen en andere onderdelen worden zorgvuldig afgeschermd zodat de werken veilig en netjes kunnen verlopen." },
@@ -150,7 +151,7 @@ export default function DakcoatingPage() {
               Met een professionele dakcoating krijgt je dak een nieuwe beschermende afwerking en opnieuw de uitstraling die het verdient.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <Link
+              <BtnPress
                 href="/#calculator"
                 onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
@@ -164,8 +165,8 @@ export default function DakcoatingPage() {
               >
                 Bereken je richtprijs
                 <ChevronRight size={15} strokeWidth={2.5} />
-              </Link>
-              <a
+              </BtnPress>
+              <BtnPress
                 href="tel:+32468352869"
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
@@ -180,7 +181,7 @@ export default function DakcoatingPage() {
               >
                 <Phone size={16} />
                 +32 468 35 28 69
-              </a>
+              </BtnPress>
             </div>
 
             {/* Google Reviews widget */}
@@ -270,7 +271,7 @@ export default function DakcoatingPage() {
                 Zo krijgt je dak niet alleen zijn frisse uitstraling terug, maar verleng je ook de levensduur van je bestaande dak.
               </p>
               <div>
-                <Link
+                <BtnPress
                   href="/#calculator"
                   onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
@@ -285,7 +286,7 @@ export default function DakcoatingPage() {
                 >
                   Bereken je richtprijs
                   <ChevronRight size={14} strokeWidth={2.5} />
-                </Link>
+                </BtnPress>
               </div>
             </div>
 
@@ -420,7 +421,7 @@ export default function DakcoatingPage() {
 
           {/* CTA */}
           <div style={{ marginTop: "24px" }}>
-            <Link
+            <BtnPress
               href="/contact"
               onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
@@ -435,7 +436,7 @@ export default function DakcoatingPage() {
             >
               Plan een gratis plaatsbezoek
               <ChevronRight size={14} strokeWidth={2.5} />
-            </Link>
+            </BtnPress>
           </div>
         </div>
       </section>
@@ -546,7 +547,7 @@ export default function DakcoatingPage() {
                 ))}
               </ul>
               <div style={{ marginTop: "24px", paddingTop: "24px", borderTop: "1px solid rgba(155,203,108,0.18)" }}>
-                <Link
+                <BtnPress
                   href="/contact"
                   onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
@@ -561,7 +562,7 @@ export default function DakcoatingPage() {
                 >
                   Plan een gratis plaatsbezoek
                   <ChevronRight size={14} strokeWidth={2.5} />
-                </Link>
+                </BtnPress>
               </div>
             </div>
 
@@ -682,7 +683,7 @@ export default function DakcoatingPage() {
 
               {/* CTA */}
               <div style={{ marginTop: "auto", paddingTop: "24px", borderTop: "1px solid #E5E7EB" }}>
-                <Link
+                <BtnPress
                   href="/#calculator"
                   onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
@@ -697,7 +698,7 @@ export default function DakcoatingPage() {
                 >
                   Bereken je richtprijs
                   <ChevronRight size={14} strokeWidth={2.5} />
-                </Link>
+                </BtnPress>
               </div>
             </div>
 

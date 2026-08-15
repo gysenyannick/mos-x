@@ -6,6 +6,7 @@ import { Phone, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck, Calendar, Ey
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
+import { BtnPress } from "@/components/btn-press";
 
 const benefits = [
   { Icon: Home,     title: "Resultaat langer behouden",         desc: "Je dak blijft langer proper en verzorgd." },
@@ -166,7 +167,7 @@ export default function MosXDakzorgPage() {
               Zo haal je meer uit je dakreiniging en voorkom je dat je dak na enkele jaren opnieuw volledig aangepakt moet worden.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <a
+              <BtnPress
                 href="#dakzorg-prijs"
                 onMouseEnter={() => setWaHovered(true)}
                 onMouseLeave={() => setWaHovered(false)}
@@ -181,8 +182,8 @@ export default function MosXDakzorgPage() {
               >
                 Bekijk het Dakzorg plan
                 <ChevronRight size={15} strokeWidth={2.5} />
-              </a>
-              <a
+              </BtnPress>
+              <BtnPress
                 href="tel:+32468352869"
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
@@ -197,7 +198,7 @@ export default function MosXDakzorgPage() {
               >
                 <Phone size={16} />
                 +32 468 35 28 69
-              </a>
+              </BtnPress>
             </div>
 
             {/* Google Reviews widget */}
@@ -388,7 +389,7 @@ export default function MosXDakzorgPage() {
 
           {/* CTA — scroll naar prijssectie */}
           <div style={{ marginTop: "48px", textAlign: "center" }}>
-            <a
+            <BtnPress
               href="#dakzorg-prijs"
               onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
@@ -402,7 +403,7 @@ export default function MosXDakzorgPage() {
             >
               Bekijk de prijs van MOS-X Dakzorg
               <ChevronRight size={15} strokeWidth={2.5} />
-            </a>
+            </BtnPress>
           </div>
         </div>
       </section>
@@ -484,7 +485,7 @@ export default function MosXDakzorgPage() {
 
                 {/* Divider + CTA */}
                 <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(155,203,108,0.2)" }}>
-                  <a
+                  <BtnPress
                     href="#dakzorg-prijs"
                     onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
@@ -500,7 +501,7 @@ export default function MosXDakzorgPage() {
                   >
                     Bekijk het Dakzorg plan
                     <ChevronRight size={14} strokeWidth={2.5} />
-                  </a>
+                  </BtnPress>
                 </div>
               </div>
             </div>

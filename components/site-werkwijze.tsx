@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Calculator, MapPin, FileText, Home, ShieldCheck, ChevronRight } from "lucide-react";
+import { BtnPress } from "@/components/btn-press";
 
 const steps = [
   {
@@ -122,7 +123,7 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
 
       {showButton && (
         <div className="werkwijze-cta-wrap" style={{ marginTop: "24px", alignSelf: "center" }}>
-          <a
+          <BtnPress
             href="/#calculator"
             className="werkwijze-cta-btn"
             style={{
@@ -141,7 +142,7 @@ function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0]
           >
             Bereken mijn richtprijs
             <ChevronRight size={14} strokeWidth={2.5} />
-          </a>
+          </BtnPress>
         </div>
       )}
     </div>

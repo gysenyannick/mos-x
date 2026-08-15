@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircle, Phone, Star, ArrowRight, ChevronRight } from "lucide-react";
 import { ServiceCard, serviceCards } from "@/components/service-card";
 import SiteContact from "@/components/site-contact";
+import { BtnPress } from "@/components/btn-press";
 
 interface Municipality {
   name: string;
@@ -351,7 +352,7 @@ export default function RegioPage({
 
                 <div style={{ borderTop: "1px solid #E5E7EB", marginBottom: "20px" }} />
 
-                <Link
+                <BtnPress
                   href="/#calculator"
                   onMouseEnter={() => setSidebarBtnHov(true)}
                   onMouseLeave={() => setSidebarBtnHov(false)}
@@ -376,9 +377,9 @@ export default function RegioPage({
                 >
                   {sidebarButton ?? "Gratis diagnose aanvragen"}
                   <ChevronRight size={14} strokeWidth={2.5} style={{ display: "inline", verticalAlign: "middle", marginLeft: "4px" }} />
-                </Link>
+                </BtnPress>
 
-                <a
+                <BtnPress
                   href="tel:+32468352869"
                   onMouseEnter={() => setSidebarPhoneHov(true)}
                   onMouseLeave={() => setSidebarPhoneHov(false)}
@@ -403,7 +404,7 @@ export default function RegioPage({
                 >
                   <Phone className="w-4 h-4" style={{ color: sidebarPhoneHov ? "#9BCB6C" : "#1A1A1A", transition: "color 200ms ease" }} />
                   +32 468 35 28 69
-                </a>
+                </BtnPress>
 
                 <div style={{ borderTop: "1px solid #E5E7EB", margin: "20px 0" }} />
 
@@ -478,7 +479,7 @@ export default function RegioPage({
                 </p>
               </div>
               <div style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
-                <Link
+                <BtnPress
                   href="/#calculator"
                   onMouseEnter={() => setDarkBtnHov(true)}
                   onMouseLeave={() => setDarkBtnHov(false)}
@@ -494,8 +495,8 @@ export default function RegioPage({
                 >
                   {ctaButton ?? "Gratis diagnose aanvragen"}
                   <ChevronRight size={14} strokeWidth={2.5} />
-                </Link>
-                <a
+                </BtnPress>
+                <BtnPress
                   href="tel:+32468352869"
                   onMouseEnter={() => setDarkPhoneHov(true)}
                   onMouseLeave={() => setDarkPhoneHov(false)}
@@ -512,7 +513,7 @@ export default function RegioPage({
                 >
                   <Phone size={15} />
                   +32 468 35 28 69
-                </a>
+                </BtnPress>
               </div>
             </div>
           ) : ctaCard ? (
@@ -538,7 +539,7 @@ export default function RegioPage({
               <p style={{ fontSize: "15px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", maxWidth: "500px", margin: "0 auto 28px" }}>
                 {ctaSubline ?? `Yannick inspecteert uw dak persoonlijk in heel ${province}. Volledig gratis, geen verplichtingen.`}
               </p>
-              <Link
+              <BtnPress
                 href="/#calculator"
                 onMouseEnter={() => setCtaBtnHov(true)}
                 onMouseLeave={() => setCtaBtnHov(false)}
@@ -560,7 +561,7 @@ export default function RegioPage({
               >
                 {ctaButton ?? "Gratis diagnose aanvragen"}
                 <ChevronRight size={14} strokeWidth={2.5} style={{ marginLeft: "2px" }} />
-              </Link>
+              </BtnPress>
             </div>
           ) : (
             <div className="text-center">
@@ -578,7 +579,7 @@ export default function RegioPage({
               <p className="mb-8 mx-auto" style={{ color: "#545454", fontSize: "16px", maxWidth: "500px" }}>
                 {ctaSubline ?? `Yannick inspecteert uw dak persoonlijk in heel ${province}. Volledig gratis, geen verplichtingen.`}
               </p>
-              <Link
+              <BtnPress
                 href="/#calculator"
                 style={{
                   display: "inline-flex",
@@ -597,7 +598,7 @@ export default function RegioPage({
               >
                 {ctaButton ?? "Gratis diagnose aanvragen"}
                 <ChevronRight size={14} strokeWidth={2.5} style={{ marginLeft: "2px" }} />
-              </Link>
+              </BtnPress>
             </div>
           )}
         </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronRight, Phone, Clock } from "lucide-react";
+import { BtnPress } from "@/components/btn-press";
 
 const faqs = [
   {
@@ -108,10 +109,9 @@ function ContactCard() {
       </div>
 
       {/* WhatsApp button */}
-      <a
+      <BtnPress
         href={WA_URL}
         target="_blank"
-        rel="noopener noreferrer"
         style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
           width: "100%", background: "#9BCB6C", color: "#FFFFFF",
@@ -126,10 +126,10 @@ function ContactCard() {
       >
         {WA_ICON}
         WhatsApp Yannick
-      </a>
+      </BtnPress>
 
       {/* Phone button */}
-      <a
+      <BtnPress
         href="tel:+32468352869"
         style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
@@ -146,7 +146,7 @@ function ContactCard() {
       >
         <Phone size={15} strokeWidth={2} style={{ flexShrink: 0 }} />
         +32 468 35 28 69
-      </a>
+      </BtnPress>
 
       {/* Hours */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
@@ -204,7 +204,7 @@ function FaqItem({ faq, defaultOpen }: { faq: typeof faqs[0]; defaultOpen?: bool
             {faq.a}
           </p>
           {faq.btn && (
-            <a
+            <BtnPress
               href="/#calculator"
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "16px",
@@ -220,7 +220,7 @@ function FaqItem({ faq, defaultOpen }: { faq: typeof faqs[0]; defaultOpen?: bool
             >
               Bereken mijn richtprijs
               <ChevronRight size={14} strokeWidth={2.5} />
-            </a>
+            </BtnPress>
           )}
         </div>
       </div>
@@ -345,15 +345,14 @@ export default function SiteFaq() {
             {/* Mobiel: compacte afsluiting i.p.v. de volledige contactkaart */}
             <div className="faq-mini-cta">
               <p className="faq-mini-title">Staat je vraag er niet bij?</p>
-              <a
+              <BtnPress
                 className="faq-mini-link"
                 href={WA_URL}
                 target="_blank"
-                rel="noopener noreferrer"
               >
                 {WA_ICON}
                 Stel je vraag aan Yannick
-              </a>
+              </BtnPress>
             </div>
           </div>
 

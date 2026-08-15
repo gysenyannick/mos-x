@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { BtnPress } from "@/components/btn-press";
 
 const projects = [
   {
@@ -189,9 +190,9 @@ export default function SiteGallery() {
               Sleep de schuifregelaar om het verschil te zien. Echte opdrachten, geen digitale nabewerking.
             </p>
           </div>
-          <Link href="/realisaties" className="site-btn-outline-white shrink-0">
+          <BtnPress href="/realisaties" className="site-btn-outline-white shrink-0">
             Alle realisaties <ArrowRight className="w-4 h-4" />
-          </Link>
+          </BtnPress>
         </div>
 
         {/* Grid */}

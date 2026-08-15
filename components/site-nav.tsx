@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Phone, ChevronRight } from "lucide-react";
+import { BtnPress } from "@/components/btn-press";
 
 const links = [
   { label: "Diensten",    href: "/diensten" },
@@ -122,7 +123,7 @@ export default function SiteNav() {
 
           {/* Desktop right */}
           <div className="hidden lg:flex items-center gap-4">
-            <a
+            <BtnPress
               href="tel:+32468352869"
               style={{
                 display: "flex",
@@ -150,9 +151,9 @@ export default function SiteNav() {
             >
               <Phone style={{ width: "14px", height: "14px", color: "currentColor", flexShrink: 0 }} />
               +32 468 35 28 69
-            </a>
+            </BtnPress>
             {isDakzorg ? (
-              <a
+              <BtnPress
                 href="#dakzorg-prijs"
                 style={{
                   background: "#9BCB6C",
@@ -172,9 +173,9 @@ export default function SiteNav() {
               >
                 MOS-X Dakzorg aanvragen
                 <ChevronRight size={13} strokeWidth={2.5} />
-              </a>
+              </BtnPress>
             ) : (
-              <Link
+              <BtnPress
                 href="/#calculator"
                 style={{
                   background: "#9BCB6C",
@@ -194,7 +195,7 @@ export default function SiteNav() {
               >
                 Bereken mijn richtprijs
                 <ChevronRight size={13} strokeWidth={2.5} />
-              </Link>
+              </BtnPress>
             )}
           </div>
 
@@ -259,14 +260,14 @@ export default function SiteNav() {
             </div>
 
             <div className="space-y-3 pt-6" style={{ borderTop: "1px solid rgba(0,0,0,0.1)" }}>
-              <a href="tel:+32468352869" className="flex items-center justify-center gap-2 text-sm font-semibold"
+              <BtnPress href="tel:+32468352869" className="flex items-center justify-center gap-2 text-sm font-semibold"
                 style={{
                   color: "#1A1A1A", border: "2px solid #9BCB6C", borderRadius: "50px",
                   padding: "12px 20px", textDecoration: "none", fontFamily: "var(--font-montserrat)",
                 }}>
                 <Phone className="w-4 h-4" style={{ color: "#1A1A1A" }} />
                 +32 468 35 28 69
-              </a>
+              </BtnPress>
               {isDakzorg ? (
                 <a
                   href="#dakzorg-prijs"

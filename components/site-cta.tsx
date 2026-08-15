@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Phone } from "lucide-react";
 import { useState } from "react";
+import { BtnPress } from "@/components/btn-press";
 
 const GREEN = "#9ACA63";
 const DARK = "#0B0F0C";
@@ -139,7 +140,7 @@ export default function SiteCta() {
             </div>
 
             {/* Primary CTA button */}
-            <a
+            <BtnPress
               href="/#calculator"
               onMouseEnter={() => setBtnHovered(true)}
               onMouseLeave={() => setBtnHovered(false)}
@@ -155,7 +156,7 @@ export default function SiteCta() {
               }}
             >
               PRIJS BEREKENEN
-            </a>
+            </BtnPress>
 
             <p style={{
               textAlign: "center", fontSize: "12px",
@@ -233,7 +234,7 @@ export default function SiteCta() {
             </p>
 
             {/* Phone button */}
-            <a
+            <BtnPress
               href="tel:+32468352869"
               onMouseEnter={() => setPhoneHovered(true)}
               onMouseLeave={() => setPhoneHovered(false)}
@@ -249,7 +250,7 @@ export default function SiteCta() {
             >
               <Phone size={17} />
               +32 468 35 28 69
-            </a>
+            </BtnPress>
           </div>
 
         </div>

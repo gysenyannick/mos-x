@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Phone, MapPin } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
+import { BtnPress } from "@/components/btn-press";
 
 const projecten = [
   {
@@ -727,10 +728,9 @@ export default function RealisatiesPage() {
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.65, marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 Ontdek dagelijks nieuwe projecten, voor & na transformaties en handige tips voor een verzorgd en duurzaam dak.
               </p>
-              <a
+              <BtnPress
                 href="https://www.instagram.com/mosx.be/"
                 target="_blank"
-                rel="noopener noreferrer"
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
                 style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "10px", padding: "13px 22px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", textDecoration: "none", transition: "background 200ms ease" }}
@@ -740,7 +740,7 @@ export default function RealisatiesPage() {
                 </svg>
                 Bekijk ons op Instagram
                 <ChevronRight size={15} strokeWidth={2.5} />
-              </a>
+              </BtnPress>
             </div>
 
             {/* Midden: schuin telefoon */}
@@ -923,19 +923,19 @@ export default function RealisatiesPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3 justify-center shrink-0" style={{ position: "relative", zIndex: 1 }}>
-              <Link href="/#calculator" className="inline-flex items-center gap-2"
+              <BtnPress href="/#calculator" className="inline-flex items-center gap-2"
                 style={{ background: ctaGreenHovered ? "#7AB54E" : "#9BCB6C", color: "#FFFFFF", borderRadius: "8px", padding: "12px 24px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", textDecoration: "none", transition: "background-color 0.2s ease" }}
                 onMouseEnter={() => setCtaGreenHovered(true)}
                 onMouseLeave={() => setCtaGreenHovered(false)}>
                 Bereken je richtprijs
                 <ChevronRight size={14} strokeWidth={2.5} />
-              </Link>
-              <a href="tel:+32468352869" className="inline-flex items-center gap-2"
+              </BtnPress>
+              <BtnPress href="tel:+32468352869" className="inline-flex items-center gap-2"
                 style={{ background: "transparent", border: ctaPhoneHovered ? "1px solid #9BCB6C" : "1px solid rgba(155,203,108,0.5)", color: ctaPhoneHovered ? "#9BCB6C" : "#FFFFFF", borderRadius: "8px", padding: "12px 24px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease" }}
                 onMouseEnter={() => setCtaPhoneHovered(true)}
                 onMouseLeave={() => setCtaPhoneHovered(false)}>
                 <Phone className="w-4 h-4" /> +32 468 35 28 69
-              </a>
+              </BtnPress>
             </div>
           </div>
         </div>
