@@ -26,9 +26,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "MOS-X | Professionele Dakreiniging & Dakcoating, Oost-Vlaanderen",
+  title: "MOS-X | Dakreiniging & Dakcoating door Yannick",
   description:
-    "MOS-X verzorgt dakontmossing, dakcoating en gevelreiniging in Oost-Vlaanderen. Gratis dakdiagnose inclusief drone-inspectie. Eerlijk advies van Yannick.",
+    "Yannick ontmost en coat jouw dak persoonlijk — geen onderaannemers. Gratis plaatsbezoek in Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg.",
   keywords: [
     "dakontmossing",
     "dakcoating",
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
     "MOS-X",
   ],
   openGraph: {
-    title: "MOS-X | Dakreiniging & Dakcoating",
-    description: "Gratis dakdiagnose inclusief drone-inspectie. Eerlijk advies van Yannick.",
+    title: "MOS-X | Dakreiniging & Dakcoating door Yannick",
+    description: "Yannick ontmost en coat jouw dak persoonlijk — geen onderaannemers. Gratis plaatsbezoek in Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg.",
     type: "website",
     locale: "nl_BE",
   },
