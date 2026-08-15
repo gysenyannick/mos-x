@@ -315,8 +315,8 @@ export default function DakontmossingPage() {
         {/* Video desktop — absoluut, vult de volledige rechterhelft van de sectie */}
         <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "44%", zIndex: 1 }}>
           <video
-            src="/images/IMG_5894.MOV"
-            autoPlay muted loop playsInline
+            src="/videos/dakreiniging-hero.mp4"
+            autoPlay muted loop playsInline preload="auto"
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
           />
           {/* Gradient van boven: subtiel, video is direct zichtbaar */}
@@ -328,8 +328,8 @@ export default function DakontmossingPage() {
         {/* Video mobile — uitlopend boven en onder voor naadloze overgang */}
         <div className="block lg:hidden" style={{ position: "absolute", top: "-200px", right: 0, bottom: "-200px", left: 0, zIndex: 1 }}>
           <video
-            src="/images/IMG_5894.MOV"
-            autoPlay muted loop playsInline
+            src="/videos/dakreiniging-hero.mp4"
+            autoPlay muted loop playsInline preload="auto"
             style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "40% 70%", display: "block" }}
           />
           {/* Gradient overlay voor leesbaarheid */}
