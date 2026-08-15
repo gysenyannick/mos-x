@@ -173,7 +173,7 @@ export default function SiteReviews() {
         className="hidden lg:block"
         style={{
           position: "absolute",
-          right: "-40px",
+          right: "0",
           top: "0",
           height: "100%",
           width: "auto",
@@ -186,7 +186,7 @@ export default function SiteReviews() {
       {/* Moss texture decoration */}
       <div className="hidden lg:block" style={{
         position: "absolute",
-        right: "-80px",
+        right: "0",
         top: "120px",
         width: "360px",
         height: "520px",
