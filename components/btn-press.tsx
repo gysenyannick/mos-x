@@ -32,12 +32,12 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
       } else {
         router.push(href);
       }
-    }, 180);
+    }, 220);
   };
 
   const mergedStyle: React.CSSProperties = {
     ...style,
-    transition: `transform 160ms ease, opacity 160ms ease${style?.transition ? ", " + style.transition : ""}`,
+    transition: `transform 120ms ease, opacity 120ms ease${style?.transition ? ", " + style.transition : ""}`,
   };
 
   return (
