@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Phone, CheckCircle, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { BtnPress } from "@/components/btn-press";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 const GREEN = "#9ACA63";
 const DARK = "#0B0F0C";
@@ -13,6 +14,7 @@ export default function SiteContact() {
   const [btnHovered, setBtnHovered] = useState(false);
   const [phoneHovered, setPhoneHovered] = useState(false);
   const [waHovered, setWaHovered] = useState(false);
+  const [bezoekOpen, setBezoekOpen] = useState(false);
 
   return (
     <>
@@ -191,8 +193,10 @@ export default function SiteContact() {
                 <ChevronRight size={16} strokeWidth={2.5} style={{ marginLeft: "8px" }} />
               </BtnPress>
 
-              <BtnPress
-                href="/contact"
+              <button
+                onClick={() => setBezoekOpen(true)}
+                onMouseEnter={e => { const el = e.currentTarget; el.style.borderColor = GREEN; el.style.background = "rgba(155,203,108,0.08)"; el.style.color = GREEN; }}
+                onMouseLeave={e => { const el = e.currentTarget; el.style.borderColor = "rgba(155,203,108,0.5)"; el.style.background = "transparent"; el.style.color = "#FFFFFF"; }}
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "center",
                   height: "48px", width: "100%", borderRadius: "12px",
@@ -200,15 +204,13 @@ export default function SiteContact() {
                   border: "1px solid rgba(155,203,108,0.5)",
                   color: "#FFFFFF", fontSize: "14px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", letterSpacing: "0.04em",
-                  transition: "border-color 0.2s ease, background 0.2s ease",
+                  letterSpacing: "0.04em", cursor: "pointer",
+                  transition: "border-color 0.2s ease, background 0.2s ease, color 0.2s ease",
                   boxSizing: "border-box",
                 }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = GREEN; el.style.background = "rgba(155,203,108,0.08)"; el.style.color = GREEN; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = "rgba(155,203,108,0.5)"; el.style.background = "transparent"; el.style.color = "#FFFFFF"; }}
               >
                 Plan een plaatsbezoek
-              </BtnPress>
+              </button>
             </div>
           </div>
 
@@ -328,6 +330,7 @@ export default function SiteContact() {
         </div>
       </div>
     </section>
+    <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="CTA sectie" />
     </>
   );
 }
