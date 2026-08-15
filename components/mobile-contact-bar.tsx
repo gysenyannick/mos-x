@@ -1,8 +1,20 @@
 "use client";
 
 import { Phone } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function MobileContactBar() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setVisible(window.scrollY > window.innerHeight * 0.85);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div
       className="lg:hidden"
@@ -10,7 +22,7 @@ export default function MobileContactBar() {
         position: "fixed",
         bottom: "calc(16px + env(safe-area-inset-bottom))",
         left: "50%",
-        transform: "translateX(-50%)",
+        transform: `translateX(-50%) translateY(${visible ? "0" : "calc(100% + 24px)"})`,
         width: "calc(100% - 40px)",
         zIndex: 1000,
         borderRadius: "12px",
@@ -19,6 +31,7 @@ export default function MobileContactBar() {
         background: "#FFFFFF",
         overflow: "hidden",
         height: "52px",
+        transition: "transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1)",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
