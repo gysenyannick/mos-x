@@ -26,7 +26,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "MOS-X | Dakreiniging & Dakcoating door Yannick",
+  title: "MOS-X | Specialist in dakreiniging & dakcoating",
   description:
     "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
   keywords: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "MOS-X",
   ],
   openGraph: {
-    title: "MOS-X | Dakreiniging & Dakcoating door Yannick",
+    title: "MOS-X | Specialist in dakreiniging & dakcoating",
     description: "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
     type: "website",
     locale: "nl_BE",
