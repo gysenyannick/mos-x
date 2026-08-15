@@ -18,10 +18,12 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
   const ref = useRef<HTMLAnchorElement>(null);
   const router = useRouter();
   const navTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pressed = useRef(false);
 
   const navigate = () => {
     const el = ref.current;
     if (el) el.removeAttribute("data-pressed");
+    pressed.current = false;
     if (target === "_blank") {
       window.open(href, "_blank", rel ?? "noopener noreferrer");
     } else if (href.startsWith("tel:") || href.startsWith("mailto:")) {
@@ -32,24 +34,24 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
   };
 
   const handlePointerDown = () => {
+    if (pressed.current) return;
+    pressed.current = true;
     const el = ref.current;
-    if (el) el.setAttribute("data-pressed", "true");
-    // Navigate after animation is visible
-    navTimer.current = setTimeout(navigate, 200);
+    // rAF forces iOS Safari to paint the state change before navigating
+    requestAnimationFrame(() => {
+      if (el) el.setAttribute("data-pressed", "true");
+      navTimer.current = setTimeout(navigate, 230);
+    });
   };
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    // Click fires after pointerDown on mobile — navigation already scheduled
-    // On desktop without pointerDown having fired, trigger it now
-    if (!ref.current?.hasAttribute("data-pressed")) {
-      handlePointerDown();
-    }
+    if (!pressed.current) handlePointerDown();
   };
 
   const handlePointerCancel = () => {
-    // Finger moved away — cancel navigation, remove pressed state
     if (navTimer.current) clearTimeout(navTimer.current);
+    pressed.current = false;
     const el = ref.current;
     if (el) el.removeAttribute("data-pressed");
   };
@@ -57,7 +59,7 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
   const mergedStyle: React.CSSProperties = {
     ...style,
     WebkitTapHighlightColor: "transparent",
-    transition: `transform 120ms ease, opacity 120ms ease${style?.transition ? ", " + style.transition : ""}`,
+    transition: `transform 150ms ease, opacity 150ms ease${style?.transition ? ", " + style.transition : ""}`,
   };
 
   return (
