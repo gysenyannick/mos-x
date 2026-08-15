@@ -508,7 +508,7 @@
 
 /* Chromium / Safari / Edge */
 ::-webkit-scrollbar {
-  width: 14px;
+  width: 18px;
 }
 ::-webkit-scrollbar-track {
   background: #E4E6E3;
@@ -517,7 +517,7 @@
 ::-webkit-scrollbar-thumb {
   background-color: #9BCB6C;
   border-radius: 100px;
-  border: 2px solid #E4E6E3;
+  border: 3px solid #E4E6E3;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
