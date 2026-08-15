@@ -61,12 +61,13 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
   return (
     <button
       onClick={onClick}
+      onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.99)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
       style={{
         width: "100%", display: "flex", alignItems: "center", gap: "16px",
         padding: "10px 16px", borderRadius: "12px", cursor: "pointer",
         border: selected ? `2px solid ${GREEN}` : "2px solid #E5E7EB",
         background: selected ? "rgba(90,158,47,0.05)" : "#FFFFFF",
-        transition: "all 0.2s ease", textAlign: "left", marginBottom: "0",
+        transition: "border-color 180ms ease, background 180ms ease, transform 140ms ease", textAlign: "left", marginBottom: "0",
       }}
     >
       {imgSrc && (
@@ -84,8 +85,9 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
         border: selected ? "none" : "2px solid #DDD",
         background: selected ? GREEN : "transparent",
         display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "background 180ms ease, border-color 180ms ease",
       }}>
-        {selected && <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+        {selected && <svg key="row-check" className="calc-check" width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
       </div>
     </button>
   );
@@ -95,6 +97,7 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
   return (
     <button
       onClick={onClick}
+      onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.98)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
       className={`choice-card ${cardClass}`}
       style={{
         display: "flex", flexDirection: "column", alignItems: "stretch",
@@ -126,7 +129,7 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
             background: selected ? GREEN : "transparent",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
-            {selected && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+            {selected && <svg key="ov-check" className="calc-check" width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
           </div>
         </div>
       </div>
@@ -140,8 +143,9 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
           border: selected ? "none" : "2px solid #DDD",
           background: selected ? GREEN : "transparent",
           display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "background 180ms ease, border-color 180ms ease",
         }}>
-          {selected && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+          {selected && <svg key="ft-check" className="calc-check" width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
         </div>
       </div>
     </button>
@@ -152,6 +156,7 @@ function ExtraCard({ title, subtitle, bullets, selected, onClick }: { title: str
   return (
     <button
       onClick={onClick}
+      onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.98)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
       style={{
         width: "100%", display: "flex", alignItems: "flex-start", gap: "14px",
         padding: "16px", borderRadius: "12px", cursor: "pointer",
@@ -165,8 +170,9 @@ function ExtraCard({ title, subtitle, bullets, selected, onClick }: { title: str
         border: selected ? "none" : "2px solid #DDD",
         background: selected ? GREEN : "transparent",
         display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "background 180ms ease, border-color 180ms ease",
       }}>
-        {selected && <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+        {selected && <svg key="extra-check" className="calc-check" width="12" height="12" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
       </div>
       <div style={{ flex: 1 }}>
         <div style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#111", marginBottom: subtitle || bullets.length ? "4px" : "0" }}>
@@ -202,6 +208,7 @@ function Field({ label, placeholder, value, onChange, type = "text" }: { label: 
           fontSize: "15px", color: "#111", outline: "none",
           fontFamily: "var(--font-inter), system-ui, sans-serif",
           boxSizing: "border-box",
+          transition: "border-color 160ms ease",
         }}
         onFocus={e => (e.currentTarget.style.borderColor = GREEN)}
         onBlur={e => (e.currentTarget.style.borderColor = "#E5E7EB")}
@@ -218,6 +225,7 @@ const NextBtn = ({ onClick, disabled, label }: { onClick: () => void; disabled?:
     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
     boxShadow: disabled ? "none" : "0 4px 16px rgba(90,158,47,0.25)",
     display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+    transition: "background 220ms ease, color 220ms ease, box-shadow 220ms ease",
   }}>
     {label ?? "Ga verder"}<ChevronRight size={16} strokeWidth={2.5} />
   </button>
@@ -268,6 +276,9 @@ export default function SitePricing() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const postcodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const adresTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stepContainerRef = useRef<HTMLDivElement>(null);
+  const isAnimatingRef = useRef(false);
+  const prefersReducedMotion = useRef(typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false);
   const [postcodeSuggestions, setPostcodeSuggestions] = useState<{postcode: string; municipality: string}[]>([]);
   const [showPostcodeDrop, setShowPostcodeDrop] = useState(false);
   const [adresSuggestions, setAdresSuggestions] = useState<string[]>([]);
@@ -390,8 +401,36 @@ export default function SitePricing() {
   });
   const contactUrl = "/contact?" + params.toString();
 
-  const next = () => setStep(s => Math.min(s + 1, TOTAL_STEPS));
-  const prev = () => setStep(s => Math.max(s - 1, 1));
+  const animateStep = (newStep: number, dir: 'forward' | 'backward') => {
+    if (isAnimatingRef.current) return;
+    const el = stepContainerRef.current;
+    if (!el || prefersReducedMotion.current) { setStep(newStep); return; }
+    isAnimatingRef.current = true;
+    el.style.transition = 'opacity 140ms ease, transform 140ms ease';
+    el.style.opacity = '0';
+    el.style.transform = dir === 'forward' ? 'translateX(-14px)' : 'translateX(14px)';
+    setTimeout(() => {
+      setStep(newStep);
+      el.style.transition = 'none';
+      el.style.transform = dir === 'forward' ? 'translateX(14px)' : 'translateX(-14px)';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          el.style.transition = 'opacity 240ms ease-out, transform 240ms ease-out';
+          el.style.transform = 'translateX(0)';
+          el.style.opacity = '1';
+          setTimeout(() => {
+            isAnimatingRef.current = false;
+            el.style.transition = '';
+            el.style.transform = '';
+            el.style.opacity = '';
+          }, 250);
+        });
+      });
+    }, 150);
+  };
+
+  const next = () => animateStep(Math.min(step + 1, TOTAL_STEPS), 'forward');
+  const prev = () => animateStep(Math.max(step - 1, 1), 'backward');
 
   const tabLabels = ["Woningtype", "Daktype", "Oppervlakte", "Behandeling", "Richtprijs"];
 
@@ -418,6 +457,31 @@ export default function SitePricing() {
   return (
     <section id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
       <style>{`
+        /* ── Calculator animations ── */
+        @keyframes calc-check-pop {
+          from { opacity: 0; transform: scale(0.55); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        .calc-check {
+          animation: calc-check-pop 180ms ease forwards;
+          display: block;
+        }
+        @keyframes calc-fade-up {
+          from { opacity: 0; transform: translateY(9px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .calc-r1 { animation: calc-fade-up 280ms ease-out 0ms   both; }
+        .calc-r2 { animation: calc-fade-up 280ms ease-out 80ms  both; }
+        .calc-r3 { animation: calc-fade-up 280ms ease-out 170ms both; }
+        .calc-r4 { animation: calc-fade-up 280ms ease-out 260ms both; }
+        .calc-r5 { animation: calc-fade-up 280ms ease-out 360ms both; }
+        @media (prefers-reduced-motion: reduce) {
+          .calc-check { animation: none; }
+          .calc-r1,.calc-r2,.calc-r3,.calc-r4,.calc-r5 {
+            animation: none; opacity: 1; transform: none;
+          }
+        }
+
         @media (max-width: 640px) {
           .woning-grid {
             grid-template-columns: 1fr !important;
@@ -648,6 +712,7 @@ export default function SitePricing() {
                         <div style={{
                           height: "3px", borderRadius: "2px", marginTop: "6px",
                           background: isActive ? GREEN : "#E8E8E8",
+                          transition: "background 220ms ease",
                         }} />
                       </button>
                     );
@@ -655,12 +720,13 @@ export default function SitePricing() {
                 </div>
               )}
 
-        <div className="site-pricing-steps" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 clamp(0px, 3vw, 40px)", minHeight: "280px" }}>
+        <div style={{ overflow: "hidden" }}>
+        <div ref={stepContainerRef} className="site-pricing-steps" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 clamp(0px, 3vw, 40px)", minHeight: "280px" }}>
 
           {phase === 'animating' ? (
             <div style={{ padding: "48px 0 36px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: GREEN, marginBottom: "22px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-                Berekening loopt…
+              <p key={checksDone < 2 ? 'a' : checksDone < 4 ? 'b' : 'c'} style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: GREEN, marginBottom: "22px", letterSpacing: "0.12em", textTransform: "uppercase", animation: "calc-fade-up 260ms ease both" }}>
+                {checksDone < 2 ? "We bekijken je dakgegevens…" : checksDone < 4 ? "We berekenen de behandeling…" : "Je richtprijs is bijna klaar…"}
               </p>
               <div style={{ width: "100%", maxWidth: "320px", height: "5px", borderRadius: "3px", background: "#EFEFEF", marginBottom: "28px", overflow: "hidden" }}>
                 <div style={{ height: "100%", width: `${progress}%`, background: GREEN, borderRadius: "3px", transition: "width 0.04s linear" }} />
@@ -671,20 +737,19 @@ export default function SitePricing() {
                   return (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px", opacity: active ? 1 : 0.25, transition: "opacity 0.45s ease" }}>
                       <div style={{ width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0, background: active ? GREEN : "#E0E0E0", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.3s ease" }}>
-                        {active && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+                        {active && <svg key={`anim-check-${i}`} className="calc-check" width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
                       </div>
                       <span style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: active ? "#222" : "#CCC", transition: "color 0.3s ease" }}>{label}</span>
                     </div>
                   );
                 })}
               </div>
-              <p style={{ marginTop: "18px", fontSize: "11px", color: "#CCCCCC", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{progress}%</p>
             </div>
           ) : phase === 'result' ? (
             <div style={{ padding: "16px 0 8px" }}>
 
               {/* Check + titel */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
+              <div className="calc-r1" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
                 <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: GREEN, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </div>
@@ -694,7 +759,7 @@ export default function SitePricing() {
               </div>
 
               {/* Prijskaart */}
-              <div className="prijs-kaart" style={{ background: "#F4FBF0", border: "2px solid rgba(155,203,108,0.4)", borderRadius: "14px", padding: "16px 24px 14px", marginBottom: "10px", textAlign: "center" }}>
+              <div className="prijs-kaart calc-r2" style={{ background: "#F4FBF0", border: "2px solid rgba(155,203,108,0.4)", borderRadius: "14px", padding: "16px 24px 14px", marginBottom: "10px", textAlign: "center" }}>
                 <div className="prijs-bedrag" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "34px", color: "#111", letterSpacing: "-0.025em", lineHeight: 1.1 }}>
                   {fmt(priceRange.low)} - {fmt(priceRange.high)}
                 </div>
@@ -704,12 +769,12 @@ export default function SitePricing() {
               </div>
 
               {/* Subtekst */}
-              <p style={{ fontSize: "13px", color: "#888", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "10px", textAlign: "center" }}>
+              <p className="calc-r3" style={{ fontSize: "13px", color: "#888", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "10px", textAlign: "center" }}>
                 Op basis van jouw gegevens. De exacte prijs bepalen we na controle van je dak.
               </p>
 
               {/* E-mailbevestiging — statusbalk */}
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "28px" }}>
+              <div className="calc-r3" style={{ display: "flex", justifyContent: "center", marginBottom: "28px" }}>
               <div className="email-status" style={{ display: "inline-flex", alignItems: "center", gap: "7px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.3)", borderRadius: "6px", padding: "5px 12px" }}>
                 <svg width="12" height="12" viewBox="0 0 12 12" style={{ flexShrink: 0 }}><path d="M2 6l3 3 5-5" stroke="#4A8A2A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
                 <span style={{ fontSize: "12px", color: "#4A8A2A", fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 600 }}>
@@ -719,7 +784,7 @@ export default function SitePricing() {
               </div>
 
               {/* Jouw keuzes */}
-              <div style={{ marginBottom: "24px" }}>
+              <div className="calc-r4" style={{ marginBottom: "24px" }}>
                 <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "10px", color: "#BBBBBB", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
                   Jouw keuzes
                 </p>
@@ -739,6 +804,7 @@ export default function SitePricing() {
               </div>
 
               {/* CTA — gratis plaatsbezoek */}
+              <div className="calc-r5">
               {plaatsbezoekStatus === 'success' ? (
                 <div style={{ background: "#F4FBF0", border: "1.5px solid rgba(155,203,108,0.4)", borderRadius: "12px", padding: "16px 20px", display: "flex", alignItems: "center", gap: "14px" }}>
                   <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "#9BCB6C", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -784,6 +850,7 @@ export default function SitePricing() {
                   )}
                 </div>
               )}
+              </div>{/* einde calc-r5 */}
 
             </div>
           ) : (
@@ -988,6 +1055,7 @@ export default function SitePricing() {
                         <button
                           key={o.id}
                           onClick={() => setExtra(o.id)}
+                          onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.98)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
                           style={{
                             display: "flex", flexDirection: "column", alignItems: "flex-start",
                             padding: "28px 16px 16px", borderRadius: "16px", cursor: "pointer",
@@ -1045,7 +1113,7 @@ export default function SitePricing() {
                               display: "flex", alignItems: "center", justifyContent: "center",
                               transition: "all 0.18s ease",
                             }}>
-                              {selected && <svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
+                              {selected && <svg key={`s4-check-${o.id}`} className="calc-check" width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>}
                             </div>
                           </div>
                         </button>
@@ -1326,6 +1394,7 @@ export default function SitePricing() {
             </>
           )}
         </div>{/* einde stap content */}
+        </div>{/* einde overflow wrapper */}
             </div>{/* einde rechts */}
           </div>{/* einde flex row */}
         </div>{/* einde witte kaart */}
