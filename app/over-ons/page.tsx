@@ -246,7 +246,7 @@ export default function OverOnsPage() {
           <div className="over-ons-mission-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
 
             {/* Links: interactieve voor/na slider */}
-            <BeforeAfterSlider beforeSrc="/images/Voor dakreiniging slider (2).png" afterSrc="/images/Na dakreiniging slider.png" beforePosition="center bottom" afterPosition="center bottom" style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }} />
+            <BeforeAfterSlider beforeSrc="/images/Voor dakreiniging slider (2).png" afterSrc="/images/Na dakreiniging slider.png" beforePosition="center 40%" afterPosition="center 40%" style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.10)" }} />
 
             {/* Rechts: tekst */}
             <div>
