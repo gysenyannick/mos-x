@@ -10,7 +10,7 @@ const services = [
     title: "Dakreiniging",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     href: "/diensten/dakontmossing",
-    img: "/images/dak-reinigen.webp",
+    img: "/images/herentals-voor.png",
     video: "/videos/dakreiniging-hero.mp4",
     videoPosition: "center 35%",
     Icon: Droplets,

@@ -78,8 +78,8 @@ export default function SiteResults() {
           {/* Col 2 — Before/after slider */}
           <div>
             <BeforeAfterSlider
-              beforeSrc="/images/dak-reinigen.webp"
-              afterSrc="/images/dak-reinigen.webp"
+              beforeSrc="/images/herentals-voor.png"
+              afterSrc="/images/herentals-na.png"
               beforeFilter="saturate(0.4) brightness(0.55) hue-rotate(60deg)"
             />
           </div>
