@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     "MOS-X",
   ],
   icons: {
-    icon: "/images/Logo Mos-x png.png",
-    shortcut: "/images/Logo Mos-x png.png",
-    apple: "/images/Logo Mos-x png.png",
+    icon: "/images/Favicon Mos-x.png",
+    shortcut: "/images/Favicon Mos-x.png",
+    apple: "/images/Favicon Mos-x.png",
   },
   openGraph: {
     title: "MOS-X | Specialist in dakreiniging & dakcoating",
