@@ -73,7 +73,7 @@ export const serviceCards: ServiceCardData[] = [
   },
 ];
 
-export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imageHeight?: number }) {
+export function ServiceCard({ s, imageHeight = 380, isActive = false, onMount }: { s: ServiceCardData; imageHeight?: number; isActive?: boolean; onMount?: (id: string, el: HTMLDivElement | null) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
   const { Icon } = s;
@@ -85,8 +85,18 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
     video.play().catch(() => {});
   }, [s.video]);
 
+  const cardBoxShadow = isActive
+    ? "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06), 0 0 0 2px #9BCB6C"
+    : hovered
+      ? "0 12px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)"
+      : "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)";
+
   return (
-    <div style={{ position: "relative", cursor: "pointer", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
+    <div
+      ref={onMount ? (el) => onMount(s.id, el) : undefined}
+      data-card-id={s.id}
+      style={{ position: "relative", cursor: "pointer", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}
+    >
       <Link
         href={s.href}
         data-service={s.id}
@@ -98,7 +108,7 @@ export function ServiceCard({ s, imageHeight = 380 }: { s: ServiceCardData; imag
           borderRadius: "16px",
           overflow: "hidden",
           textDecoration: "none",
-          boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)" : "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)",
+          boxShadow: cardBoxShadow,
           transition: "box-shadow 300ms ease",
           display: "flex", flexDirection: "column",
         }}

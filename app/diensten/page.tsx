@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { Phone, ShieldCheck, ChevronRight } from "lucide-react";
 import BackLink from "@/components/back-link";
@@ -11,6 +11,36 @@ export default function DienstenPage() {
   const [homeHovered, setHomeHovered] = useState(false);
   const [waHovered, setWaHovered] = useState(false);
   const [phoneHovered, setPhoneHovered] = useState(false);
+
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const cardEls = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  const registerCard = useCallback((id: string, el: HTMLDivElement | null) => {
+    if (el) cardEls.current.set(id, el);
+    else cardEls.current.delete(id);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth >= 1024) return;
+    const ratios = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const id = (entry.target as HTMLElement).dataset.cardId!;
+          ratios.set(id, entry.intersectionRatio);
+        });
+        let bestId: string | null = null;
+        let bestRatio = 0.75;
+        ratios.forEach((ratio, id) => {
+          if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
+        });
+        setActiveCardId(bestId);
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 0.9, 1] }
+    );
+    cardEls.current.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <PageLayout>
@@ -44,7 +74,7 @@ export default function DienstenPage() {
         <div className="site-wrap">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {serviceCards.map((s) => (
-              <ServiceCard key={s.id} s={s} />
+              <ServiceCard key={s.id} s={s} isActive={activeCardId === s.id} onMount={registerCard} />
             ))}
           </div>
         </div>
