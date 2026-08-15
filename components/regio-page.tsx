@@ -359,6 +359,7 @@ export default function RegioPage({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
+                    flexWrap: "nowrap",
                     gap: "4px",
                     width: "100%",
                     background: sidebarBtnHov ? "#7AB54E" : "#9BCB6C",
@@ -376,8 +377,8 @@ export default function RegioPage({
                     transition: "background 200ms ease",
                   }}
                 >
-                  {sidebarButton ?? "Gratis diagnose aanvragen"}
-                  <ChevronRight size={14} strokeWidth={2.5} style={{ marginLeft: "2px" }} />
+                  <span style={{ whiteSpace: "nowrap" }}>{sidebarButton ?? "Gratis diagnose aanvragen"}</span>
+                  <ChevronRight size={14} strokeWidth={2.5} style={{ flexShrink: 0 }} />
                 </Link>
 
                 <a
