@@ -101,12 +101,13 @@ export default function SiteHero() {
             <div className="hero-ctas flex flex-wrap gap-3 mb-8">
               <Link
                 href="/#calculator"
+                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "#9BCB6C", color: "#fff", borderRadius: "8px",
                   padding: "14px 28px", fontSize: "16px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", transition: "background 200ms ease", whiteSpace: "nowrap",
+                  textDecoration: "none", transition: "transform 150ms ease, background 200ms ease", whiteSpace: "nowrap",
                 }}
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
@@ -116,6 +117,7 @@ export default function SiteHero() {
               </Link>
               <Link
                 href="/contact"
+                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "transparent",
@@ -124,7 +126,7 @@ export default function SiteHero() {
                   borderRadius: "8px", padding: "14px 28px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  transition: "border-color 0.2s ease, color 0.2s ease",
+                  transition: "transform 150ms ease, border-color 0.2s ease, color 0.2s ease",
                   whiteSpace: "nowrap",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}

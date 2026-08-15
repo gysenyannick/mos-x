@@ -128,13 +128,14 @@ export default function SiteAboutYannick() {
             <div className="about-btns" style={{ display: "flex", gap: "12px", marginTop: "36px", flexWrap: "wrap" }}>
               <a
                 href="/over-ons"
+                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   border: "2px solid #9BCB6C", color: "#9BCB6C",
                   background: "transparent", borderRadius: "8px",
                   padding: "12px 24px", fontSize: "15px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", transition: "background 200ms ease, color 200ms ease",
+                  textDecoration: "none", transition: "transform 150ms ease, background 200ms ease, color 200ms ease",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#9BCB6C"; e.currentTarget.style.color = "#fff"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#9BCB6C"; }}
@@ -143,13 +144,14 @@ export default function SiteAboutYannick() {
               </a>
               <a
                 href="/#calculator"
+                className="btn-press"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "#9BCB6C", color: "#FFFFFF",
                   border: "2px solid #9BCB6C", borderRadius: "8px",
                   padding: "12px 24px", fontSize: "15px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", transition: "background 200ms ease",
+                  textDecoration: "none", transition: "transform 150ms ease, background 200ms ease",
                 }}
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}

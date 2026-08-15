@@ -174,6 +174,7 @@ export default function SiteContact() {
                 href="https://v0-dak-calculator.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="btn-press"
                 onMouseEnter={() => setBtnHovered(true)}
                 onMouseLeave={() => setBtnHovered(false)}
                 style={{
@@ -183,7 +184,7 @@ export default function SiteContact() {
                   color: "#FFFFFF", fontSize: "14px", fontWeight: 800,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   textDecoration: "none", letterSpacing: "0.04em",
-                  transition: "background 200ms ease",
+                  transition: "transform 150ms ease, background 200ms ease",
                   boxSizing: "border-box",
                 }}
               >
@@ -193,6 +194,7 @@ export default function SiteContact() {
 
               <a
                 href="/contact"
+                className="btn-press"
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "center",
                   height: "48px", width: "100%", borderRadius: "12px",
@@ -201,7 +203,7 @@ export default function SiteContact() {
                   color: "#FFFFFF", fontSize: "14px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   textDecoration: "none", letterSpacing: "0.04em",
-                  transition: "border-color 0.2s ease, background 0.2s ease",
+                  transition: "transform 150ms ease, border-color 0.2s ease, background 0.2s ease",
                   boxSizing: "border-box",
                 }}
                 onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.borderColor = GREEN; el.style.background = "rgba(155,203,108,0.08)"; el.style.color = GREEN; }}
@@ -282,6 +284,7 @@ export default function SiteContact() {
                 href="https://wa.me/32468352869"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="btn-press"
                 onMouseEnter={() => setWaHovered(true)}
                 onMouseLeave={() => setWaHovered(false)}
                 style={{
@@ -292,7 +295,7 @@ export default function SiteContact() {
                   fontSize: "14px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   textDecoration: "none",
-                  transition: "background 0.2s ease",
+                  transition: "transform 150ms ease, background 0.2s ease",
                   boxSizing: "border-box",
                 }}
               >
@@ -303,6 +306,7 @@ export default function SiteContact() {
               </a>
               <a
                 href="tel:+32468352869"
+                className="btn-press"
                 onMouseEnter={() => setPhoneHovered(true)}
                 onMouseLeave={() => setPhoneHovered(false)}
                 style={{
@@ -314,7 +318,7 @@ export default function SiteContact() {
                   fontSize: "14px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   textDecoration: "none",
-                  transition: "border-color 0.2s ease, color 0.2s ease",
+                  transition: "transform 150ms ease, border-color 0.2s ease, color 0.2s ease",
                   whiteSpace: "nowrap",
                   boxSizing: "border-box",
                 }}

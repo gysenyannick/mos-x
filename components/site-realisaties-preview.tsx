@@ -133,7 +133,8 @@ Resultaten die je <span style={{ color: "#9BCB6C" }}>ziet.</span>
         <div style={{ textAlign: "center", marginTop: "40px" }}>
           <Link
             href="/realisaties"
-            style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "8px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textDecoration: "none", transition: "background 200ms ease" }}
+            className="btn-press"
+            style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "#9BCB6C", color: "#FFFFFF", borderRadius: "8px", padding: "14px 32px", fontSize: "15px", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textDecoration: "none", transition: "transform 150ms ease, background 200ms ease" }}
             onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
             onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
           >

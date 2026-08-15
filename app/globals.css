@@ -563,6 +563,16 @@ html {
 .step-card-hdivider { align-self: center; }
 
 /* -----------------------------------------------
+   BUTTON PRESS — homepage only via .btn-press class
+----------------------------------------------- */
+.btn-press:active {
+  transform: scale(0.97) translateY(1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-press:active { transform: none; }
+}
+
+/* -----------------------------------------------
    HERO OVERLAY - responsive gradient
 ----------------------------------------------- */
 .hero-overlay {

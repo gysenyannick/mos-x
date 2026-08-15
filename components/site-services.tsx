@@ -332,8 +332,8 @@ export default function SiteServices() {
             href="https://wa.me/32468352869"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center"
-            style={{ border: "none", color: "#FFFFFF", background: "#9BCB6C", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "background-color 0.2s ease", gap: "10px" }}
+            className="inline-flex items-center btn-press"
+            style={{ border: "none", color: "#FFFFFF", background: "#9BCB6C", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "transform 150ms ease, background-color 0.2s ease", gap: "10px" }}
             onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
             onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
           >
@@ -344,8 +344,8 @@ export default function SiteServices() {
           </a>
           <Link
             href="/diensten"
-            className="inline-flex items-center"
-            style={{ border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease", gap: "8px" }}
+            className="inline-flex items-center btn-press"
+            style={{ border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "transform 150ms ease, border-color 0.2s ease, color 0.2s ease", gap: "8px" }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
           >
