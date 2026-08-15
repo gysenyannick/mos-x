@@ -565,11 +565,16 @@ html {
 /* -----------------------------------------------
    BUTTON PRESS — homepage only via .btn-press class
 ----------------------------------------------- */
+.btn-press {
+  cursor: pointer; /* iOS Safari: needed for :active to fire on touch */
+}
 .btn-press:active {
-  transform: scale(0.94) translateY(2px);
+  transform: scale(0.85) translateY(4px);
+  opacity: 0.75;
+  transition: transform 120ms ease, opacity 120ms ease !important;
 }
 @media (prefers-reduced-motion: reduce) {
-  .btn-press:active { transform: none; }
+  .btn-press:active { transform: none; opacity: 1; }
 }
 
 /* -----------------------------------------------
