@@ -214,20 +214,29 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                   </p>
                 </div>
 
-                {/* Naam */}
-                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "14px" }}>
+                {/* Voornaam + Naam naast elkaar (ook op mobiel) */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                   <div>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Voornaam *</label>
-                    <input type="text" name="voornaam" required placeholder="Voornaam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    <input type="text" name="voornaam" required placeholder="Voornaam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                   <div>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Naam *</label>
-                    <input type="text" name="naam" required placeholder="Naam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    <input type="text" name="naam" required placeholder="Naam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                 </div>
 
-                {/* Telefoon + E-mail naast elkaar */}
-                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "14px" }}>
+                {/* E-mailadres (volle breedte) */}
+                <div>
+                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
+                  <input type="email" name="email" required placeholder="jouw@email.be" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                  <p style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                    Je ontvangt hierop een bevestigingsmail.
+                  </p>
+                </div>
+
+                {/* Telefoonnummer + Postcode naast elkaar (ook op mobiel) */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 90px", gap: "10px" }}>
                   <div>
                     <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Telefoonnummer *</label>
                     <input
@@ -238,28 +247,19 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                         const formatted = formatBelgianPhone(e.currentTarget.value);
                         if (formatted !== e.currentTarget.value) e.currentTarget.value = formatted;
                       }}
-                      style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }}
+                      style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }}
                     />
                   </div>
                   <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
-                    <input type="email" name="email" required placeholder="jouw@email.be" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                    <p style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      Je ontvangt hierop een bevestigingsmail.
-                    </p>
+                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Postcode *</label>
+                    <input type="text" name="postcode" required placeholder="2000" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 10px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                 </div>
 
-                {/* Postcode + Gemeente naast elkaar */}
-                <div className="grid grid-cols-[120px_1fr]" style={{ gap: "14px" }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Postcode *</label>
-                    <input type="text" name="postcode" required placeholder="2000" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Gemeente *</label>
-                    <input type="text" name="gemeente" required placeholder="Bv. Mechelen, Leuven, Hasselt…" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                  </div>
+                {/* Gemeente (volle breedte) */}
+                <div>
+                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Gemeente *</label>
+                  <input type="text" name="gemeente" required placeholder="Bv. Mechelen, Leuven, Hasselt…" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                 </div>
 
                 {/* Bericht */}
