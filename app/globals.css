@@ -566,7 +566,7 @@ html {
    BUTTON PRESS — homepage only via .btn-press class
 ----------------------------------------------- */
 .btn-press:active {
-  transform: scale(0.97) translateY(1px);
+  transform: scale(0.94) translateY(2px);
 }
 @media (prefers-reduced-motion: reduce) {
   .btn-press:active { transform: none; }
