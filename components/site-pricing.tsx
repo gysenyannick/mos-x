@@ -98,6 +98,8 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
     <button
       onClick={onClick}
       onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.98)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
+      onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = GREEN; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(155,203,108,0.15)'; } }}
+      onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'; } }}
       className={`choice-card ${cardClass}`}
       style={{
         display: "flex", flexDirection: "column", alignItems: "stretch",
@@ -1066,7 +1068,7 @@ export default function SitePricing() {
                             transition: "border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease",
                             textAlign: "left", width: "100%",
                           }}
-                          onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = "rgba(155,203,108,0.6)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(155,203,108,0.12)"; } }}
+                          onMouseEnter={e => { if (!selected) { e.currentTarget.style.borderColor = GREEN; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(155,203,108,0.15)"; } }}
                           onMouseLeave={e => { if (!selected) { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.05)"; } }}
                         >
                           {/* Badge — zit IN de border */}
