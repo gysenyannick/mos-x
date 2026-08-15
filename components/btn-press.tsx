@@ -35,6 +35,11 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
     }, 180);
   };
 
+  const mergedStyle: React.CSSProperties = {
+    ...style,
+    transition: `transform 160ms ease, opacity 160ms ease${style?.transition ? ", " + style.transition : ""}`,
+  };
+
   return (
     <a
       ref={ref}
@@ -42,7 +47,7 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
       target={target}
       rel={rel}
       className={`btn-press ${className}`.trim()}
-      style={style}
+      style={mergedStyle}
       onClick={handleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
