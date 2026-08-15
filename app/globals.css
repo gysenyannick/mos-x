@@ -502,31 +502,32 @@
 }
 
 /* -----------------------------------------------
-   SCROLLBAR — premium MOS-X stijl (desktop only)
+   SCROLLBAR — MOS-X stijl (desktop only)
+   14px breed, 2px border → 10px zichtbare thumb
 ----------------------------------------------- */
 
 /* Chromium / Safari / Edge */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 14px;
 }
 ::-webkit-scrollbar-track {
-  background: #EDEEED;
+  background: #E4E6E3;
   border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: #9BCB6C;
   border-radius: 100px;
-  border: 3px solid #EDEEED; /* visuele ruimte tussen thumb en buitenrand */
+  border: 2px solid #E4E6E3;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #AEDD7E;
-  border-color: #EDEEED;
+  background-color: #7AB54E;
+  border-color: #E4E6E3;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:active {
-  background-color: #7AB54E;
-  border-color: #EDEEED;
+  background-color: #5E9B3A;
+  border-color: #E4E6E3;
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-button {
@@ -538,7 +539,7 @@
 /* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: #9BCB6C #EDEEED;
+  scrollbar-color: #9BCB6C #E4E6E3;
 }
 
 /* Mobiel/tablet: native scrollbar herstellen */
