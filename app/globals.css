@@ -563,6 +563,13 @@ html {
 .step-card-hdivider { align-self: center; }
 
 /* -----------------------------------------------
+   HERO OVERLAY - responsive gradient
+----------------------------------------------- */
+.hero-overlay {
+  background: linear-gradient(to right, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.88) 45%, rgba(26,26,26,0.55) 65%, rgba(26,26,26,0.30) 100%);
+}
+
+/* -----------------------------------------------
    MOBILE RESPONSIVE OVERRIDES (= 1023px)
 ----------------------------------------------- */
 @media (max-width: 1023px) {
@@ -571,6 +578,11 @@ html {
   .hero-content-wrap {
     padding-left: 20px !important;
     padding-right: 20px !important;
+  }
+
+  /* -- Hero overlay: full dark on mobile -- */
+  .hero-overlay {
+    background: rgba(26,26,26,0.82) !important;
   }
 
   /* -- About Yannick: tighten outer padding -- */

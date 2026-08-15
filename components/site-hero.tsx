@@ -36,11 +36,8 @@ export default function SiteHero() {
 
       {/* Gradient overlay */}
       <div
-        className="absolute inset-0"
-        style={{
-          zIndex: 1,
-          background: "linear-gradient(to right, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.88) 45%, rgba(26,26,26,0.55) 65%, rgba(26,26,26,0.30) 100%)",
-        }}
+        className="absolute inset-0 hero-overlay"
+        style={{ zIndex: 1 }}
       />
 
       {/* Content */}
