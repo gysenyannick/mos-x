@@ -105,6 +105,11 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
             gap: 14px;
           }
         }
+        @media (max-width: 500px) {
+          .pv-modal-card { padding: 28px 20px !important; }
+          .pv-title { font-size: 15px !important; white-space: nowrap; }
+          .pv-subtitle { font-size: 11.5px !important; white-space: nowrap; }
+        }
       `}</style>
 
       <div
@@ -178,10 +183,10 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
             </div>
           ) : (
             <>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#9BCB6C", marginBottom: "6px", lineHeight: 1.2, paddingRight: "32px" }}>
+              <p className="pv-title" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#9BCB6C", marginBottom: "6px", lineHeight: 1.2, paddingRight: "32px" }}>
                 Plan een gratis plaatsbezoek
               </p>
-              <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", lineHeight: 1.55 }}>
+              <p className="pv-subtitle" style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", lineHeight: 1.55 }}>
                 Yannick komt langs en bekijkt je dak persoonlijk.
               </p>
 
