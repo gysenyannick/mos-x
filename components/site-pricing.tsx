@@ -878,10 +878,28 @@ export default function SitePricing() {
                   </h3>
                   <div className="dak-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "10px" }}>
                     {dakTypes.filter(d => d.label !== "Ik weet het niet").map(d => (
-                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => { setDak(d.label); setTimeout(next, 220); }} />
+                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => setDak(d.label)} />
                     ))}
                   </div>
-                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => { setDak("Ik weet het niet"); setTimeout(next, 220); }} />
+                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => setDak("Ik weet het niet")} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "18px" }}>
+                    <button onClick={prev} style={{
+                      padding: "10px 20px", borderRadius: "8px",
+                      background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
+                      cursor: "pointer", fontSize: "15px", fontWeight: 700, color: GREEN,
+                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(155,203,108,0.22)"; e.currentTarget.style.borderColor = GREEN; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(155,203,108,0.12)"; e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; }}
+                    >
+                      <ChevronLeft size={16} strokeWidth={2.5} /> Terug
+                    </button>
+                    <div style={{ flex: 1 }}>
+                      <NextBtn onClick={next} disabled={!dak} />
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -1376,7 +1394,7 @@ export default function SitePricing() {
                 </div>
               )}
 
-              {step > 1 && step !== 3 && step !== 4 && step !== 5 && (
+              {step > 1 && step !== 2 && step !== 3 && step !== 4 && step !== 5 && (
                 <div style={{ marginTop: "18px", display: "flex", justifyContent: "flex-start" }}>
                   <button onClick={prev} style={{
                     padding: "10px 20px", borderRadius: "8px",
