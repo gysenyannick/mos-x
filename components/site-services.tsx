@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Droplets, Shield, CalendarCheck, LayoutGrid, ArrowRight, ShieldCheck, ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
@@ -59,11 +59,9 @@ const services = [
   },
 ];
 
-function ServiceCard({ s }: { s: typeof services[0] }) {
+function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive: boolean; onMount: (id: string, el: HTMLDivElement | null) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const [inView, setInView] = useState(false);
   const { Icon } = s;
 
   useEffect(() => {
@@ -73,23 +71,12 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
     video.play().catch(() => {});
   }, [s.video]);
 
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el || window.innerWidth >= 1024) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const cardBoxShadow = inView
+  const cardBoxShadow = isActive
     ? "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06), 0 0 0 2px #9BCB6C"
     : "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)";
 
   return (
-    <div ref={cardRef} style={{ position: "relative", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
+    <div ref={(el) => onMount(s.id, el)} data-card-id={s.id} style={{ position: "relative", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
     <Link
       href={s.href}
       data-service={s.id}
@@ -245,6 +232,38 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
 }
 
 export default function SiteServices() {
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const cardEls = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  const registerCard = useCallback((id: string, el: HTMLDivElement | null) => {
+    if (el) cardEls.current.set(id, el);
+    else cardEls.current.delete(id);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth >= 1024) return;
+    const ratios = new Map<string, number>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          const id = (entry.target as HTMLElement).dataset.cardId!;
+          ratios.set(id, entry.intersectionRatio);
+        });
+        let bestId: string | null = null;
+        let bestRatio = 0.75;
+        ratios.forEach((ratio, id) => {
+          if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
+        });
+        setActiveCardId(bestId);
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 0.9, 1] }
+    );
+
+    cardEls.current.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="site-pad" id="diensten" style={{
       position: "relative",
@@ -341,7 +360,7 @@ export default function SiteServices() {
         {/* 3-col grid */}
         <div className="grid lg:grid-cols-3 gap-6 mb-10 services-grid">
           {services.map((s) => (
-            <ServiceCard key={s.id} s={s} />
+            <ServiceCard key={s.id} s={s} isActive={activeCardId === s.id} onMount={registerCard} />
           ))}
         </div>
 
