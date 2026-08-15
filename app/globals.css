@@ -582,7 +582,7 @@ html {
 
   /* -- Hero overlay: full dark on mobile -- */
   .hero-overlay {
-    background: rgba(26,26,26,0.82) !important;
+    background: rgba(26,26,26,0.90) !important;
   }
 
   /* -- About Yannick: tighten outer padding -- */
