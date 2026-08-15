@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     "Oost-Vlaanderen",
     "MOS-X",
   ],
+  icons: {
+    icon: "/images/Logo Mos-x png.png",
+    shortcut: "/images/Logo Mos-x png.png",
+    apple: "/images/Logo Mos-x png.png",
+  },
   openGraph: {
     title: "MOS-X | Specialist in dakreiniging & dakcoating",
     description: "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
