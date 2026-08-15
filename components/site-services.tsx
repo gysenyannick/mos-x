@@ -61,7 +61,9 @@ const services = [
 
 function ServiceCard({ s }: { s: typeof services[0] }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [inView, setInView] = useState(false);
   const { Icon } = s;
 
   useEffect(() => {
@@ -71,8 +73,23 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
     video.play().catch(() => {});
   }, [s.video]);
 
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el || window.innerWidth >= 1024) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const cardBoxShadow = inView
+    ? "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06), 0 0 0 2px #9BCB6C"
+    : "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)";
+
   return (
-    <div style={{ position: "relative", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
+    <div ref={cardRef} style={{ position: "relative", transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 300ms ease" }}>
     <Link
       href={s.href}
       data-service={s.id}
@@ -84,7 +101,8 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
         borderRadius: "16px",
         overflow: "hidden",
         textDecoration: "none",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06)",
+        boxShadow: cardBoxShadow,
+        transition: "box-shadow 300ms ease",
         display: "flex", flexDirection: "column",
       }}
     >
