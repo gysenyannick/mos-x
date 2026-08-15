@@ -18,12 +18,10 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
   const ref = useRef<HTMLAnchorElement>(null);
   const router = useRouter();
   const navTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pressed = useRef(false);
+  const isPressed = useRef(false);
 
   const navigate = () => {
-    const el = ref.current;
-    if (el) el.removeAttribute("data-pressed");
-    pressed.current = false;
+    isPressed.current = false;
     if (target === "_blank") {
       window.open(href, "_blank", rel ?? "noopener noreferrer");
     } else if (href.startsWith("tel:") || href.startsWith("mailto:")) {
@@ -33,33 +31,41 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
     }
   };
 
-  const handlePointerDown = () => {
-    if (pressed.current) return;
-    pressed.current = true;
+  const applyPress = () => {
     const el = ref.current;
-    // rAF forces iOS Safari to paint the state change before navigating
-    requestAnimationFrame(() => {
-      if (el) el.setAttribute("data-pressed", "true");
-      navTimer.current = setTimeout(navigate, 230);
-    });
+    if (!el || isPressed.current) return;
+    isPressed.current = true;
+    // Direct inline style — werkt gegarandeerd op iOS Safari
+    el.style.transform = "scale(0.96) translateY(1px)";
+    el.style.opacity = "0.80";
+    navTimer.current = setTimeout(() => {
+      el.style.transform = "";
+      el.style.opacity = "";
+      navigate();
+    }, 230);
   };
 
+  const cancelPress = () => {
+    if (navTimer.current) clearTimeout(navTimer.current);
+    isPressed.current = false;
+    const el = ref.current;
+    if (el) {
+      el.style.transform = "";
+      el.style.opacity = "";
+    }
+  };
+
+  const handlePointerDown = () => applyPress();
+  const handlePointerCancel = () => cancelPress();
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (!pressed.current) handlePointerDown();
-  };
-
-  const handlePointerCancel = () => {
-    if (navTimer.current) clearTimeout(navTimer.current);
-    pressed.current = false;
-    const el = ref.current;
-    if (el) el.removeAttribute("data-pressed");
+    if (!isPressed.current) applyPress();
   };
 
   const mergedStyle: React.CSSProperties = {
     ...style,
     WebkitTapHighlightColor: "transparent",
-    transition: `transform 150ms ease, opacity 150ms ease${style?.transition ? ", " + style.transition : ""}`,
+    transition: `transform 140ms ease, opacity 140ms ease${style?.transition ? ", " + style.transition : ""}`,
   };
 
   return (
@@ -68,7 +74,7 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
       href={href}
       target={target}
       rel={rel}
-      className={`btn-press ${className}`.trim()}
+      className={className ? `btn-press ${className}` : "btn-press"}
       style={mergedStyle}
       onPointerDown={handlePointerDown}
       onPointerCancel={handlePointerCancel}

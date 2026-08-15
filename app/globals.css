@@ -568,12 +568,8 @@ html {
 .btn-press {
   cursor: pointer;
 }
-.btn-press[data-pressed="true"] {
-  transform: scale(0.98) translateY(1px) !important;
-  opacity: 0.88 !important;
-}
 @media (prefers-reduced-motion: reduce) {
-  .btn-press[data-pressed="true"] { transform: none !important; opacity: 1 !important; }
+  .btn-press { transition: none !important; }
 }
 
 /* -----------------------------------------------
