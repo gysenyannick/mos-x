@@ -147,7 +147,7 @@ export default function SiteAboutYannick() {
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   background: "#9BCB6C", color: "#FFFFFF",
-                  border: "2px solid #9BCB6C", borderRadius: "8px",
+                  border: "none", borderRadius: "8px",
                   padding: "12px 24px", fontSize: "15px", fontWeight: 700,
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   textDecoration: "none", transition: "background 200ms ease",
