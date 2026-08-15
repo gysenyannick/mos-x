@@ -106,9 +106,18 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
           }
         }
         @media (max-width: 500px) {
-          .pv-modal-card { padding: 28px 20px !important; }
-          .pv-title { font-size: 15px !important; white-space: nowrap; }
-          .pv-subtitle { font-size: 11.5px !important; white-space: nowrap; }
+          .pv-modal-card    { padding: 28px 20px !important; }
+          .pv-title         { font-size: 15px !important; white-space: nowrap; }
+          .pv-subtitle      { font-size: 11.5px !important; white-space: nowrap; margin-bottom: 18px !important; }
+          .pv-form          { gap: 13px !important; }
+          .pv-dienst-label  { font-size: 13px !important; margin-bottom: 6px !important; }
+          .pv-chip-wrap     { gap: 6px !important; }
+          .pv-chip          { font-size: 13px !important; padding: 7px 12px !important; }
+          .pv-hint          { font-size: 11.5px !important; margin-top: 4px !important; }
+          .pv-field-label   { font-size: 12.5px !important; margin-bottom: 4px !important; }
+          .pv-input         { font-size: 13.5px !important; padding: 10px 11px !important; }
+          .pv-optioneel     { font-size: 11.5px !important; }
+          .pv-submit        { font-size: 14px !important; padding: 13px 20px !important; }
         }
       `}</style>
 
@@ -190,20 +199,21 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                 Yannick komt langs en bekijkt je dak persoonlijk.
               </p>
 
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <form onSubmit={handleSubmit} className="pv-form" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
                 {/* Dienst selector — multi-select */}
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "8px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
+                  <label className="pv-dienst-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "8px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
                     Welke dienst wil je aanvragen? *
                   </label>
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <div className="pv-chip-wrap" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
                     {DIENSTEN.map(d => {
                       const selected = diensten.includes(d);
                       return (
                         <button
                           key={d}
                           type="button"
+                          className="pv-chip"
                           onClick={() => toggleDienst(d)}
                           onMouseEnter={e => { if (!selected) { const b = e.currentTarget; b.style.borderColor = "#9BCB6C"; b.style.background = "rgba(155,203,108,0.06)"; b.style.color = "#1A1A1A"; } }}
                           onMouseLeave={e => { if (!selected) { const b = e.currentTarget; b.style.borderColor = "#E5E7EB"; b.style.background = "#F8F8F8"; b.style.color = "#555555"; } }}
@@ -227,7 +237,7 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                       );
                     })}
                   </div>
-                  <p style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                  <p className="pv-hint" style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                     Meerdere keuzes mogelijk
                   </p>
                 </div>
@@ -235,20 +245,20 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                 {/* Voornaam + Naam naast elkaar (ook op mobiel) */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                   <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Voornaam *</label>
-                    <input type="text" name="voornaam" required placeholder="Voornaam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Voornaam *</label>
+                    <input type="text" name="voornaam" required placeholder="Voornaam" className="pv-input" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                   <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Naam *</label>
-                    <input type="text" name="naam" required placeholder="Naam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Naam *</label>
+                    <input type="text" name="naam" required placeholder="Naam" className="pv-input" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                 </div>
 
                 {/* E-mailadres (volle breedte) */}
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
-                  <input type="email" name="email" required placeholder="jouw@email.be" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                  <p style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                  <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
+                  <input type="email" name="email" required placeholder="jouw@email.be" className="pv-input" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                  <p className="pv-hint" style={{ fontSize: "11px", color: "#9CA3AF", marginTop: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                     Je ontvangt hierop een bevestigingsmail.
                   </p>
                 </div>
@@ -256,7 +266,7 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                 {/* Tel / Postcode / Adres — responsive via grid-template-areas */}
                 <div className="pv-loc-grid">
                   <div style={{ gridArea: "tel" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Telefoonnummer *</label>
+                    <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Telefoonnummer *</label>
                     <input
                       type="tel" name="tel" required placeholder="0470 00 00 00"
                       onFocus={e => { e.currentTarget.style.borderColor = "#9BCB6C"; }}
@@ -265,28 +275,29 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                         const formatted = formatBelgianPhone(e.currentTarget.value);
                         if (formatted !== e.currentTarget.value) e.currentTarget.value = formatted;
                       }}
-                      style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }}
+                      className="pv-input" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 12px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }}
                     />
                   </div>
                   <div style={{ gridArea: "postcode" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Postcode *</label>
-                    <input type="text" name="postcode" required placeholder="2000" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 10px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Postcode *</label>
+                    <input type="text" name="postcode" required placeholder="2000" className="pv-input" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 10px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                   <div style={{ gridArea: "adres" }}>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Adres *</label>
-                    <input type="text" name="gemeente" required placeholder="Bv. Kerkstraat 12, Mechelen" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
+                    <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Adres *</label>
+                    <input type="text" name="gemeente" required placeholder="Bv. Kerkstraat 12, Mechelen" className="pv-input" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
                   </div>
                 </div>
 
                 {/* Bericht */}
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
-                    Bericht / voorkeursmoment <span style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span>
+                  <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
+                    Bericht / voorkeursmoment <span className="pv-optioneel" style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span>
                   </label>
                   <textarea
                     name="bericht"
                     rows={3}
                     placeholder="Bv. Ik zou graag eens naar mijn dak laten kijken. Een plaatsbezoek op vrijdag rond 18.00 u zou ideaal zijn."
+                    className="pv-input"
                     style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const, resize: "none" as const }}
                   />
                 </div>
@@ -300,6 +311,7 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                 <button
                   type="submit"
                   disabled={!canSubmit}
+                  className="pv-submit"
                   onMouseEnter={e => { if (canSubmit) (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
                   onMouseLeave={e => { if (canSubmit) (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
                   style={{
