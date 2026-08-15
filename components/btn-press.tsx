@@ -36,8 +36,8 @@ export function BtnPress({ href, target, rel, className = "", style, onMouseEnte
     if (!el || isPressed.current) return;
     isPressed.current = true;
     // Direct inline style — werkt gegarandeerd op iOS Safari
-    el.style.transform = "scale(0.96) translateY(1px)";
-    el.style.opacity = "0.80";
+    el.style.transform = "scale(0.98) translateY(1px)";
+    el.style.opacity = "0.88";
     navTimer.current = setTimeout(() => {
       el.style.transform = "";
       el.style.opacity = "";
