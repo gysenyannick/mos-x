@@ -1,4 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  FROM_INTERN,
+  FROM_KLANT,
+  SUBJECT_PLAATSBEZOEK,
+  idempotencyKey,
+  plaatsbezoekKlantHtml,
+  sendMail,
+} from "@/lib/mail";
 
 export const runtime = "nodejs";
 
@@ -64,81 +72,47 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
-    // ── Bevestigingsmail naar klant ──────────────────────────────────────────
-    const klantHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-
-        <div style="background: #F4FBF0; border-left: 4px solid #9BCB6C; padding: 16px 20px; margin-bottom: 28px; border-radius: 0 8px 8px 0;">
-          <p style="margin: 0; font-weight: 700; color: #1A5C36; font-size: 15px;">
-            ✅ Je aanvraag is goed ontvangen!
-          </p>
-        </div>
-
-        <h2 style="color: #1A1A1A; border-bottom: 3px solid #9BCB6C; padding-bottom: 12px; margin-top: 0;">
-          Dag ${voornaam},
-        </h2>
-
-        <p style="font-size: 15px; color: #333; line-height: 1.75; margin-bottom: 20px;">
-          We hebben je aanvraag voor een gratis plaatsbezoek goed ontvangen.<br>
-          Yannick neemt <strong>binnen 1 werkdag</strong> persoonlijk contact met je op om een afspraak in te plannen.
-        </p>
-
-        <div style="background: #F7F8F6; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
-          <p style="margin: 0 0 6px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em;">Aangevraagde dienst(en)</p>
-          <p style="margin: 0; font-size: 17px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
-        </div>
-
-        <p style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 8px;">
-          Heb je in de tussentijd nog vragen? Je kan Yannick altijd bereiken via:
-        </p>
-        <table style="font-size: 14px; color: #555; border-collapse: collapse;">
-          <tr><td style="padding: 5px 12px 5px 0;">📞</td><td style="padding: 5px 0;"><a href="tel:+32468352869" style="color: #1A5C36; font-weight: 600; text-decoration: none;">+32 468 35 28 69</a></td></tr>
-          <tr><td style="padding: 5px 12px 5px 0;">💬</td><td style="padding: 5px 0;"><a href="https://wa.me/32468352869" style="color: #1A5C36; font-weight: 600; text-decoration: none;">WhatsApp Yannick</a></td></tr>
-        </table>
-
-        <div style="margin-top: 32px; padding: 14px 16px; background: #F7F8F6; border-radius: 8px; font-size: 12px; color: #999;">
-          Dit is een automatische bevestiging van mos-x.be. Je hoeft hier niet op te antwoorden.
-        </div>
-      </div>
-    `;
+    // Bevestigingsmail naar klant — gedeelde template (zie lib/mail.ts)
+    const klantHtml = plaatsbezoekKlantHtml({ voornaam, dienst });
 
     // Stuur e-mail naar Yannick
-    const yannickRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from: "MOS-X Website <noreply@mos-x.be>",
+    const yannick = await sendMail(
+      apiKey,
+      {
+        from: FROM_INTERN,
         to: [toEmail],
         reply_to: email || undefined,
         subject: `🏠 Gratis plaatsbezoek — ${voornaam} ${naam} · ${dienst}`,
         html: yannickHtml,
-      }),
-    });
+      },
+      idempotencyKey("bezoek-intern", email || tel, dienst, postcode, bericht),
+    );
 
-    if (!yannickRes.ok) {
-      const err = await yannickRes.text();
-      console.error("Resend error (Yannick):", err);
+    if (!yannick.ok) {
+      console.error("Resend error (Yannick):", yannick.error);
       return NextResponse.json({ error: "send_failed" }, { status: 500 });
     }
 
     // Stuur bevestigingsmail naar klant (enkel als e-mailadres opgegeven)
+    let klantMail = false;
     if (email) {
-      const klantRes = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          from: "MOS-X <noreply@mos-x.be>",
+      const klant = await sendMail(
+        apiKey,
+        {
+          from: FROM_KLANT,
           to: [email],
-          subject: "Bevestiging: aanvraag gratis plaatsbezoek ontvangen",
+          subject: SUBJECT_PLAATSBEZOEK,
           html: klantHtml,
-        }),
-      });
-      if (!klantRes.ok) {
-        console.warn("Resend warning (klant bevestiging):", await klantRes.text());
+        },
+        idempotencyKey("bezoek-klant", email, dienst, postcode, bericht),
+      );
+      klantMail = klant.ok;
+      if (!klant.ok) {
+        console.warn("Resend warning (klant bevestiging):", klant.error);
       }
     }
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, klantMail });
   } catch (err) {
     console.error("Bezoek API error:", err);
     return NextResponse.json({ error: "server_error" }, { status: 500 });

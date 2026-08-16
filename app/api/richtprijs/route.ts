@@ -1,4 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  FROM_INTERN,
+  FROM_KLANT,
+  SUBJECT_RICHTPRIJS_KLANT,
+  idempotencyKey,
+  richtprijsKlantHtml,
+  sendMail,
+} from "@/lib/mail";
 
 export const runtime = "nodejs";
 
@@ -22,6 +30,8 @@ export async function POST(req: NextRequest) {
     const dak       = (data.get("dak")       as string) ?? "";
     const opp       = (data.get("opp")       as string) ?? "";
     const extra     = (data.get("extra")     as string) ?? "";
+    const priceLow  = (data.get("priceLow")  as string) ?? "";
+    const priceHigh = (data.get("priceHigh") as string) ?? "";
 
     // Collect photo attachments (base64 for Resend)
     const attachments: { filename: string; content: string }[] = [];
@@ -79,7 +89,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body: Record<string, unknown> = {
-      from: "MOS-X Website <noreply@mos-x.be>",
+      from: FROM_INTERN,
       to: [toEmail],
       reply_to: email,
       subject: `Richtprijsaanvraag — ${voornaam} ${achternaam} (${postcode})`,
@@ -90,22 +100,48 @@ export async function POST(req: NextRequest) {
       body.attachments = attachments;
     }
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    // ── 1. Interne lead naar info@mos-x.be — dit is de kritieke mail ──────────
+    const intern = await sendMail(
+      apiKey,
+      body,
+      idempotencyKey("richtprijs-intern", email, opp, extra, priceLow, priceHigh),
+    );
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text();
-      console.error("Resend error:", err);
+    if (!intern.ok) {
+      console.error("Resend error (richtprijs intern):", intern.error);
       return NextResponse.json({ error: "send_failed" }, { status: 500 });
     }
 
-    return NextResponse.json({ ok: true });
+    // ── 2. Klantmail met de richtprijs ────────────────────────────────────────
+    // Bewust ná de interne mail en met eigen foutafhandeling: als deze faalt,
+    // is de lead al veilig binnen en mag de aanvraag niet als mislukt gelden.
+    let klantMail = false;
+    if (email) {
+      const klant = await sendMail(
+        apiKey,
+        {
+          from: FROM_KLANT,
+          to: [email],
+          subject: SUBJECT_RICHTPRIJS_KLANT,
+          html: richtprijsKlantHtml({
+            voornaam,
+            woning,
+            dak,
+            opp,
+            behandeling: EXTRA_LABELS[extra] ?? extra,
+            priceLow,
+            priceHigh,
+          }),
+        },
+        idempotencyKey("richtprijs-klant", email, opp, extra, priceLow, priceHigh),
+      );
+      klantMail = klant.ok;
+      if (!klant.ok) {
+        console.warn("Resend warning (richtprijs klantmail):", klant.error);
+      }
+    }
+
+    return NextResponse.json({ ok: true, klantMail });
   } catch (err) {
     console.error("Richtprijs API error:", err);
     return NextResponse.json({ error: "server_error" }, { status: 500 });

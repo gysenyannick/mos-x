@@ -1,4 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  FROM_INTERN,
+  FROM_KLANT,
+  SUBJECT_PLAATSBEZOEK_NA_RICHTPRIJS,
+  idempotencyKey,
+  plaatsbezoekKlantHtml,
+  sendMail,
+} from "@/lib/mail";
 
 export const runtime = "nodejs";
 
@@ -95,7 +103,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body: Record<string, unknown> = {
-      from: "MOS-X Website <noreply@mos-x.be>",
+      from: FROM_INTERN,
       to: [toEmail],
       reply_to: email,
       subject: `Gratis plaatsbezoek — ${voornaam} ${achternaam} (${postcode})`,
@@ -106,22 +114,43 @@ export async function POST(req: NextRequest) {
       body.attachments = attachments;
     }
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+    // ── 1. Interne lead naar info@mos-x.be — dit is de kritieke mail ──────────
+    const intern = await sendMail(
+      apiKey,
+      body,
+      idempotencyKey("plaatsbezoek-intern", email, opp, extra, priceLow, priceHigh),
+    );
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text();
-      console.error("Resend error:", err);
+    if (!intern.ok) {
+      console.error("Resend error (plaatsbezoek intern):", intern.error);
       return NextResponse.json({ error: "send_failed" }, { status: 500 });
     }
 
-    return NextResponse.json({ ok: true });
+    // ── 2. Bevestiging naar de klant ──────────────────────────────────────────
+    // Zelfde template als bij een gewoon plaatsbezoek; enkel het onderwerp
+    // verschilt omdat de aanvraag uit de richtprijscalculator komt.
+    let klantMail = false;
+    if (email) {
+      const klant = await sendMail(
+        apiKey,
+        {
+          from: FROM_KLANT,
+          to: [email],
+          subject: SUBJECT_PLAATSBEZOEK_NA_RICHTPRIJS,
+          html: plaatsbezoekKlantHtml({
+            voornaam,
+            dienst: EXTRA_LABELS[extra] ?? extra,
+          }),
+        },
+        idempotencyKey("plaatsbezoek-klant", email, opp, extra, priceLow, priceHigh),
+      );
+      klantMail = klant.ok;
+      if (!klant.ok) {
+        console.warn("Resend warning (plaatsbezoek klantbevestiging):", klant.error);
+      }
+    }
+
+    return NextResponse.json({ ok: true, klantMail });
   } catch (err) {
     console.error("Plaatsbezoek API error:", err);
     return NextResponse.json({ error: "server_error" }, { status: 500 });

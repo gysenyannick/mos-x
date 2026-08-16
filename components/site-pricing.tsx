@@ -281,6 +281,7 @@ export default function SitePricing() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const postcodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const adresTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const submitInFlight = useRef(false);
   const stepContainerRef = useRef<HTMLDivElement>(null);
   const isAnimatingRef = useRef(false);
   const prefersReducedMotion = useRef(typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false);
@@ -355,10 +356,14 @@ export default function SitePricing() {
   };
 
   const handleSubmit = () => {
+    // Guard tegen dubbelklikken: één verzending per berekening.
+    if (submitInFlight.current) return;
+    submitInFlight.current = true;
     setSubmitError(false);
     setPhase('animating');
     setChecksDone(0);
     setProgress(0);
+    const pr = calcPrice(opp, extra);
     const fd = new FormData();
     fd.append("voornaam", form.voornaam);
     fd.append("achternaam", form.achternaam);
@@ -370,8 +375,12 @@ export default function SitePricing() {
     fd.append("dak", dak);
     fd.append("opp", String(opp));
     fd.append("extra", extra);
+    fd.append("priceLow", String(pr.low));
+    fd.append("priceHigh", String(pr.high));
     photos.forEach((f, i) => fd.append(`foto_${i}`, f, f.name));
-    fetch("/api/richtprijs", { method: "POST", body: fd }).catch(() => {});
+    fetch("/api/richtprijs", { method: "POST", body: fd })
+      .catch(() => {})
+      .finally(() => { submitInFlight.current = false; });
   };
 
   useEffect(() => {
