@@ -2,6 +2,7 @@
 import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import MobileContactBar from "@/components/mobile-contact-bar";
+import CalculatorScroll from "@/components/calculator-scroll";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -60,6 +61,7 @@ export default function RootLayout({
     <html lang="nl" className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body className="antialiased" style={{ overflowX: "hidden" }}>
         {children}
+        <CalculatorScroll />
         <MobileContactBar />
         <div className="hidden lg:block">
           <a
