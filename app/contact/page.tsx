@@ -49,6 +49,28 @@ export default function ContactPage() {
   const [gemeente, setGemeente] = useState("");
   const [dienst, setDienst] = useState("");
   const [bericht, setBericht] = useState("");
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // Zonder dit doet de browser een native POST naar /contact, wat een 405 geeft.
+    e.preventDefault();
+    if (status === 'sending' || status === 'success') return;
+    setStatus('sending');
+    try {
+      const fd = new FormData();
+      fd.append("naam", naam);
+      fd.append("email", email);
+      fd.append("telefoon", telefoon);
+      fd.append("gemeente", gemeente);
+      fd.append("dienst", dienst);
+      fd.append("bericht", bericht);
+      const res = await fetch("/api/contact", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("send_failed");
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -113,7 +135,7 @@ export default function ContactPage() {
               <p style={{ fontSize: "13px", color: "#888888", marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                 Stel je vraag of vraag vrijblijvend een offerte aan.
               </p>
-              <form className="space-y-5" action="#" method="POST">
+              <form className="space-y-5" onSubmit={handleSubmit} noValidate={false}>
                 <div>
                   <label style={labelStyle}>Naam *</label>
                   <input type="text" name="naam" required placeholder="Jouw naam" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} />
@@ -155,16 +177,42 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
+                  disabled={status === 'sending' || status === 'success'}
                   className="w-full flex items-center justify-center gap-2"
                   style={{
-                    background: "#9BCB6C", color: "#111111", borderRadius: "8px",
-                    padding: "14px 24px", border: "none", cursor: "pointer",
+                    background: status === 'sending' || status === 'success' ? "#C6DFAE" : "#9BCB6C",
+                    color: "#111111", borderRadius: "8px",
+                    padding: "14px 24px", border: "none",
+                    cursor: status === 'sending' || status === 'success' ? "not-allowed" : "pointer",
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                     fontWeight: 700, fontSize: "15px",
+                    transition: "background 180ms ease",
                   }}
                 >
-                  Verstuur mijn aanvraag <ArrowRight className="w-5 h-5" />
+                  {status === 'sending'
+                    ? "Versturen…"
+                    : status === 'success'
+                      ? "Verzonden"
+                      : <>Verstuur mijn aanvraag <ArrowRight className="w-5 h-5" /></>}
                 </button>
+
+                {status === 'success' && (
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.4)", borderRadius: "8px", padding: "12px 14px" }}>
+                    <CheckCircle size={16} color="#4A8A2A" style={{ flexShrink: 0, marginTop: "1px" }} />
+                    <p style={{ margin: 0, fontSize: "13.5px", lineHeight: 1.55, color: "#4A8A2A", fontWeight: 600, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Bedankt! Je bericht is goed ontvangen. Yannick neemt zo snel mogelijk contact met je op.
+                    </p>
+                  </div>
+                )}
+
+                {status === 'error' && (
+                  <div style={{ background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: "8px", padding: "12px 14px" }}>
+                    <p style={{ margin: 0, fontSize: "13.5px", lineHeight: 1.55, color: "#C0392B", fontWeight: 600, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Er ging iets mis bij het versturen. Probeer het opnieuw, of bel Yannick op{" "}
+                      <a href="tel:+32468352869" style={{ color: "#C0392B", textDecoration: "underline" }}>+32 468 35 28 69</a>.
+                    </p>
+                  </div>
+                )}
 
                 {/* 3 trust-chips onder de knop */}
                 <div className="contact-trust-chips" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "4px" }}>

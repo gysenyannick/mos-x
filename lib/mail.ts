@@ -20,6 +20,7 @@ export const SUBJECT_PLAATSBEZOEK = "Bevestiging: aanvraag gratis plaatsbezoek o
 export const SUBJECT_PLAATSBEZOEK_NA_RICHTPRIJS =
   "Bevestiging: aanvraag gratis plaatsbezoek ontvangen na richtprijs";
 export const SUBJECT_RICHTPRIJS_KLANT = "Je richtprijs voor je dak | MOS-X";
+export const SUBJECT_CONTACT_KLANT = "Bevestiging: we hebben je bericht ontvangen | MOS-X";
 
 const TEL = "+32 468 35 28 69";
 const TEL_HREF = "tel:+32468352869";
@@ -128,6 +129,39 @@ export function plaatsbezoekKlantHtml(opts: { voornaam: string; dienst: string }
         <div style="margin-top: 32px; padding: 14px 16px; background: #F7F8F6; border-radius: 8px; font-size: 12px; color: #999;">
           Dit is een automatische bevestiging van mos-x.be. Je hoeft hier niet op te antwoorden.
         </div>
+      </div>
+    `;
+}
+
+/** Bevestigingsmail naar de klant na een bericht via het contactformulier. */
+export function contactKlantHtml(opts: { voornaam: string; dienst: string }): string {
+  const voornaam = esc(opts.voornaam);
+  const dienst = esc(opts.dienst);
+  return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+
+        <div style="background: #F4FBF0; border-left: 4px solid #9BCB6C; padding: 16px 20px; margin-bottom: 28px; border-radius: 0 8px 8px 0;">
+          <p style="margin: 0; font-weight: 700; color: #1A5C36; font-size: 15px;">
+            ✅ Je bericht is goed ontvangen!
+          </p>
+        </div>
+
+        <h2 style="color: #1A1A1A; border-bottom: 3px solid #9BCB6C; padding-bottom: 12px; margin-top: 0;">
+          Dag ${voornaam},
+        </h2>
+
+        <p style="font-size: 15px; color: #333; line-height: 1.75; margin-bottom: 20px;">
+          We hebben je bericht goed ontvangen.<br>
+          Yannick neemt zo snel mogelijk persoonlijk contact met je op.
+        </p>
+
+        <div style="background: #F7F8F6; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
+          <p style="margin: 0 0 6px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em;">Je vraag ging over</p>
+          <p style="margin: 0; font-size: 17px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
+        </div>
+
+        ${CONTACT_BLOK}
+        ${FOOTER_AUTOMATISCH}
       </div>
     `;
 }
