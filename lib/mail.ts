@@ -102,35 +102,112 @@ export function plaatsbezoekKlantHtml(opts: { voornaam: string; dienst: string }
   const voornaam = esc(opts.voornaam);
   const dienst = esc(opts.dienst);
   return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; color: #1A1A1A;">
 
-        <div style="background: #F4FBF0; border-left: 4px solid #9BCB6C; padding: 16px 20px; margin-bottom: 28px; border-radius: 0 8px 8px 0;">
-          <p style="margin: 0; font-weight: 700; color: #1A5C36; font-size: 15px;">
-            ✅ Je aanvraag is goed ontvangen!
-          </p>
-        </div>
-
-        <h2 style="color: #1A1A1A; border-bottom: 3px solid #9BCB6C; padding-bottom: 12px; margin-top: 0;">
-          Dag ${voornaam},
-        </h2>
-
-        <p style="font-size: 15px; color: #333; line-height: 1.75; margin-bottom: 20px;">
-          We hebben je aanvraag voor een gratis plaatsbezoek goed ontvangen.<br>
-          Yannick neemt <strong>binnen 1 werkdag</strong> persoonlijk contact met je op om een afspraak in te plannen.
-        </p>
-
-        <div style="background: #F7F8F6; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;">
-          <p style="margin: 0 0 6px; font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em;">Aangevraagde dienst(en)</p>
-          <p style="margin: 0; font-size: 17px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
-        </div>
-
-        ${CONTACT_BLOK}
-
-        <div style="margin-top: 32px; padding: 14px 16px; background: #F7F8F6; border-radius: 8px; font-size: 12px; color: #999;">
-          Dit is een automatische bevestiging van mos-x.be. Je hoeft hier niet op te antwoorden.
-        </div>
+      <!-- 1. HEADER -->
+      <div style="background: #FFFFFF; padding: 28px 32px 20px; text-align: center; border-bottom: 3px solid #9BCB6C;">
+        <img src="${SITE}/images/Logo%20Mos-x%20png.png" alt="MOS-X" width="160" style="display: inline-block; max-width: 160px; height: auto;" />
       </div>
-    `;
+
+      <!-- 2. HERO -->
+      <div style="padding: 36px 32px 24px; text-align: center;">
+        <div style="display: inline-block; background: #9BCB6C; border-radius: 50%; width: 54px; height: 54px; line-height: 54px; text-align: center; margin-bottom: 20px;">
+          <span style="color: #FFFFFF; font-size: 26px; font-weight: 700; line-height: 54px;">&#10003;</span>
+        </div>
+        <h1 style="font-size: 22px; font-weight: 800; color: #1A1A1A; margin: 0 0 18px; line-height: 1.35;">
+          Je aanvraag is goed ontvangen
+        </h1>
+        <p style="font-size: 15px; font-weight: 600; color: #1A1A1A; margin: 0 0 8px;">Dag ${voornaam},</p>
+        <p style="font-size: 15px; color: #545454; margin: 0; line-height: 1.65;">
+          Bedankt! We hebben je aanvraag voor een gratis plaatsbezoek ontvangen.
+        </p>
+      </div>
+
+      <!-- 3. VERWACHTINGSBLOK -->
+      <div style="margin: 0 32px 28px; background: #F4FBF0; border: 2px solid #9BCB6C; border-radius: 16px; padding: 24px; text-align: center;">
+        <p style="margin: 0 0 8px; font-size: 17px; font-weight: 700; color: #1A1A1A; line-height: 1.45;">
+          Yannick neemt binnen 1 werkdag<br>persoonlijk contact met je op
+        </p>
+        <p style="margin: 0; font-size: 14px; color: #545454; line-height: 1.55;">
+          om een geschikt moment voor het plaatsbezoek af te spreken.
+        </p>
+      </div>
+
+      <!-- 4. JOUW AANVRAAG -->
+      <div style="margin: 0 32px 28px; background: #F7F8F6; border-radius: 12px; padding: 20px 24px;">
+        <p style="margin: 0 0 14px; font-size: 12px; font-weight: 700; color: #1A1A1A; text-transform: uppercase; letter-spacing: 0.08em;">Jouw aanvraag</p>
+        <p style="margin: 0 0 4px; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.08em;">Aangevraagde dienst(en)</p>
+        <p style="margin: 0; font-size: 16px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
+      </div>
+
+      <!-- 5. WAT GEBEURT ER NU? -->
+      <div style="margin: 0 32px 28px;">
+        <p style="margin: 0 0 16px; font-size: 15px; font-weight: 700; color: #1A1A1A;">Wat gebeurt er nu?</p>
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px;">
+          <tr>
+            <td width="40" valign="top">
+              <div style="background: #9BCB6C; color: #FFFFFF; border-radius: 50%; width: 28px; height: 28px; text-align: center; line-height: 28px; font-size: 13px; font-weight: 700;">1</div>
+            </td>
+            <td valign="top" style="padding-left: 12px;">
+              <p style="margin: 0 0 3px; font-size: 14px; font-weight: 700; color: #1A1A1A;">Persoonlijk contact</p>
+              <p style="margin: 0; font-size: 14px; color: #545454; line-height: 1.55;">Yannick neemt binnen 1 werkdag contact met je op.</p>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px;">
+          <tr>
+            <td width="40" valign="top">
+              <div style="background: #9BCB6C; color: #FFFFFF; border-radius: 50%; width: 28px; height: 28px; text-align: center; line-height: 28px; font-size: 13px; font-weight: 700;">2</div>
+            </td>
+            <td valign="top" style="padding-left: 12px;">
+              <p style="margin: 0 0 3px; font-size: 14px; font-weight: 700; color: #1A1A1A;">We plannen het plaatsbezoek</p>
+              <p style="margin: 0; font-size: 14px; color: #545454; line-height: 1.55;">Samen kiezen jullie een moment dat past.</p>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="40" valign="top">
+              <div style="background: #9BCB6C; color: #FFFFFF; border-radius: 50%; width: 28px; height: 28px; text-align: center; line-height: 28px; font-size: 13px; font-weight: 700;">3</div>
+            </td>
+            <td valign="top" style="padding-left: 12px;">
+              <p style="margin: 0 0 3px; font-size: 14px; font-weight: 700; color: #1A1A1A;">We bekijken je situatie ter plaatse</p>
+              <p style="margin: 0; font-size: 14px; color: #545454; line-height: 1.55;">Zo kunnen we je gericht adviseren over de beste aanpak.</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 6. CONTACTBLOK -->
+      <div style="margin: 0 32px 28px; background: #F7F8F6; border-radius: 12px; padding: 20px 24px;">
+        <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #1A1A1A;">Heb je ondertussen een vraag?</p>
+        <p style="margin: 0 0 18px; font-size: 14px; color: #545454;">Je kunt Yannick rechtstreeks bereiken.</p>
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="padding-bottom: 10px;">
+              <a href="${TEL_HREF}" style="display: inline-block; background: #9BCB6C; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: 8px;">Bel ${TEL}</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="${WA_HREF}" style="display: inline-block; background: #FFFFFF; color: #9BCB6C; border: 2px solid #9BCB6C; text-decoration: none; font-weight: 700; font-size: 14px; padding: 10px 22px; border-radius: 8px;">WhatsApp Yannick</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 7. FOOTER -->
+      <div style="padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
+        <p style="margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #1A1A1A;">MOS-X</p>
+        <p style="margin: 0 0 18px; font-size: 12px; color: #888;">Professionele dakreiniging &amp; onderhoud</p>
+        <p style="margin: 0; font-size: 11px; color: #AAA; line-height: 1.7;">
+          Dit is een automatische bevestiging van je aanvraag via mos-x.be.<br>
+          Je hoeft deze e-mail niet te beantwoorden.
+        </p>
+      </div>
+
+    </div>
+  `;
 }
 
 /** Bevestigingsmail naar de klant na een bericht via het contactformulier. */
