@@ -12,8 +12,15 @@ export const runtime = "nodejs";
 
 const EXTRA_LABELS: Record<string, string> = {
   coating: "Dakcoating",
-  geen: "Dakreiniging",
-  advies: "Ik twijfel nog — advies gewenst",
+  geen:    "Dakreiniging",
+  advies:  "Advies gewenst",
+};
+
+// Zinsvorm voor de AANVRAAG-card ("Plaatsbezoek voor …")
+const EXTRA_DIENST: Record<string, string> = {
+  coating: "Dakcoating",
+  geen:    "Dakreiniging",
+  advies:  "advies over de behandeling",
 };
 
 export async function POST(req: NextRequest) {
@@ -69,7 +76,7 @@ export async function POST(req: NextRequest) {
         <!-- AANVRAAG CARD -->
         <div style="margin: 20px 32px 0; background: #F4FBF0; border: 1px solid #9BCB6C; border-radius: 14px; padding: 18px 22px;">
           <p style="margin: 0 0 6px; font-size: 11px; font-weight: 700; color: #9BCB6C; text-transform: uppercase; letter-spacing: 0.08em;">AANVRAAG</p>
-          <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1A1A1A;">Plaatsbezoek voor ${EXTRA_LABELS[extra] ?? extra}</p>
+          <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1A1A1A;">Plaatsbezoek voor ${EXTRA_DIENST[extra] ?? EXTRA_LABELS[extra] ?? extra}</p>
         </div>
 
         <!-- CONTACTGEGEVENS -->
@@ -191,7 +198,7 @@ export async function POST(req: NextRequest) {
           subject: SUBJECT_PLAATSBEZOEK_NA_RICHTPRIJS,
           html: plaatsbezoekKlantHtml({
             voornaam,
-            dienst: EXTRA_LABELS[extra] ?? extra,
+            dienst: EXTRA_DIENST[extra] ?? EXTRA_LABELS[extra] ?? extra,
           }),
         },
         idempotencyKey("plaatsbezoek-klant", email, opp, extra, priceLow, priceHigh),

@@ -13,8 +13,8 @@ export const runtime = "nodejs";
 
 const EXTRA_LABELS: Record<string, string> = {
   coating: "Dakcoating",
-  geen: "Dakreiniging",
-  advies: "Ik twijfel nog — advies gewenst",
+  geen:    "Dakreiniging",
+  advies:  "Advies gewenst",
 };
 
 export async function POST(req: NextRequest) {
