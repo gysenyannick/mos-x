@@ -68,12 +68,12 @@ export async function POST(req: NextRequest) {
             </tr>
             <tr>
               <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Telefoon</td>
-              <td style="padding: 7px 0;"><a href="tel:${tel}" style="font-size: 15px; font-weight: 700; color: #9BCB6C; text-decoration: none;">${tel}</a></td>
+              <td style="padding: 7px 0;"><a href="tel:${tel}" style="font-size: 15px; font-weight: 700; color: #1A1A1A; text-decoration: none;">${tel}</a></td>
             </tr>
             ${email ? `
             <tr>
               <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">E-mail</td>
-              <td style="padding: 7px 0;"><a href="mailto:${email}" style="font-size: 14px; color: #1A5C36; text-decoration: none;">${email}</a></td>
+              <td style="padding: 7px 0;"><a href="mailto:${email}" style="font-size: 14px; color: #1A1A1A; text-decoration: none;">${email}</a></td>
             </tr>
             ` : ""}
             ${(postcode || gemeente) ? `
