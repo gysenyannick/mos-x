@@ -3,6 +3,7 @@ import {
   FROM_INTERN,
   FROM_KLANT,
   SUBJECT_RICHTPRIJS_KLANT,
+  fmtPrice,
   idempotencyKey,
   richtprijsKlantHtml,
   sendMail,
@@ -47,36 +48,97 @@ export async function POST(req: NextRequest) {
     }
 
     const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #1A1A1A; border-bottom: 3px solid #9BCB6C; padding-bottom: 12px;">
-          Nieuwe richtprijsaanvraag via mos-x.be
-        </h2>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; color: #1A1A1A;">
 
-        <h3 style="color: #555; margin-top: 24px;">Contactgegevens</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr><td style="padding: 6px 0; color: #888; width: 140px;">Naam</td><td style="padding: 6px 0; font-weight: 600;">${voornaam} ${achternaam}</td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">E-mail</td><td style="padding: 6px 0;"><a href="mailto:${email}">${email}</a></td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">Telefoon</td><td style="padding: 6px 0;"><a href="tel:${tel}">${tel}</a></td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">Postcode</td><td style="padding: 6px 0;">${postcode}</td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">Adres</td><td style="padding: 6px 0;">${adres || "—"}</td></tr>
-        </table>
-
-        <h3 style="color: #555; margin-top: 24px;">Dakinformatie</h3>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr><td style="padding: 6px 0; color: #888; width: 140px;">Woningtype</td><td style="padding: 6px 0; font-weight: 600;">${woning}</td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">Daktype</td><td style="padding: 6px 0;">${dak}</td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">Oppervlakte</td><td style="padding: 6px 0;">${opp} m²</td></tr>
-          <tr><td style="padding: 6px 0; color: #888;">Extra optie</td><td style="padding: 6px 0;">${EXTRA_LABELS[extra] ?? extra}</td></tr>
-        </table>
-
-        ${attachments.length > 0
-          ? `<p style="margin-top: 24px; color: #555;">📷 ${attachments.length} foto${attachments.length > 1 ? "\'s" : ""} bijgevoegd</p>`
-          : ""
-        }
-
-        <div style="margin-top: 32px; padding: 16px; background: #F7F8F6; border-radius: 8px; font-size: 13px; color: #888;">
-          Aanvraag ontvangen via mos-x.be
+        <!-- HEADER -->
+        <div style="background: #FFFFFF; padding: 24px 32px 20px; text-align: center; border-bottom: 3px solid #9BCB6C;">
+          <img src="https://www.mos-x.be/images/Logo%20Mos-x%20png.png" alt="MOS-X" width="140" style="display: inline-block; max-width: 140px; height: auto;" />
         </div>
+
+        <!-- CONTEXT -->
+        <div style="padding: 18px 32px 14px; text-align: center; background: #F4FBF0; border-bottom: 1px solid #E5E7EB;">
+          <p style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #9BCB6C; text-transform: uppercase; letter-spacing: 0.10em;">NIEUWE AANVRAAG · RICHTPRIJS</p>
+          <p style="margin: 0; font-size: 13px; color: #545454;">Via mos-x.be</p>
+        </div>
+
+        <!-- NAAM -->
+        <div style="padding: 28px 32px 0;">
+          <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #1A1A1A; letter-spacing: -0.02em;">${voornaam} ${achternaam}</h1>
+        </div>
+
+        <!-- RICHTPRIJS CARD -->
+        <div style="margin: 20px 32px 0; background: #F4FBF0; border: 1px solid #9BCB6C; border-radius: 16px; padding: 22px 24px; text-align: center;">
+          <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; color: #9BCB6C; text-transform: uppercase; letter-spacing: 0.08em;">RICHTPRIJS</p>
+          <p style="margin: 0 0 6px; font-size: 28px; font-weight: 800; color: #1A1A1A; letter-spacing: -0.02em;">${fmtPrice(priceLow)} - ${fmtPrice(priceHigh)}</p>
+          <p style="margin: 0; font-size: 12px; color: #545454;">Geschatte richtprijs incl. btw</p>
+        </div>
+
+        <!-- CONTACTGEGEVENS -->
+        <div style="padding: 24px 32px 0;">
+          <p style="margin: 0 0 12px; font-size: 11px; font-weight: 700; color: #545454; text-transform: uppercase; letter-spacing: 0.06em;">Contactgegevens</p>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; width: 110px; vertical-align: top;">Naam</td>
+              <td style="padding: 7px 0; font-size: 14px; font-weight: 600; color: #1A1A1A;">${voornaam} ${achternaam}</td>
+            </tr>
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Telefoon</td>
+              <td style="padding: 7px 0;"><a href="tel:${tel}" style="font-size: 14px; font-weight: 700; color: #1A1A1A; text-decoration: none;">${tel}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">E-mail</td>
+              <td style="padding: 7px 0;"><a href="mailto:${email}" style="font-size: 14px; color: #1A1A1A; text-decoration: none;">${email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Postcode</td>
+              <td style="padding: 7px 0; font-size: 14px; color: #1A1A1A;">${postcode}</td>
+            </tr>
+            ${adres ? `
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Adres</td>
+              <td style="padding: 7px 0; font-size: 14px; color: #1A1A1A;">${adres}</td>
+            </tr>
+            ` : ""}
+          </table>
+        </div>
+
+        <!-- DAKINFORMATIE -->
+        <div style="padding: 24px 32px 0;">
+          <p style="margin: 0 0 12px; font-size: 11px; font-weight: 700; color: #545454; text-transform: uppercase; letter-spacing: 0.06em;">Dakinformatie</p>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; width: 110px; vertical-align: top;">Woningtype</td>
+              <td style="padding: 7px 0; font-size: 14px; font-weight: 600; color: #1A1A1A;">${woning}</td>
+            </tr>
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Daktype</td>
+              <td style="padding: 7px 0; font-size: 14px; color: #1A1A1A;">${dak}</td>
+            </tr>
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Oppervlakte</td>
+              <td style="padding: 7px 0; font-size: 14px; color: #1A1A1A;">${opp} m²</td>
+            </tr>
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; vertical-align: top;">Behandeling</td>
+              <td style="padding: 7px 0; font-size: 14px; color: #1A1A1A;">${EXTRA_LABELS[extra] ?? extra}</td>
+            </tr>
+          </table>
+        </div>
+
+        ${attachments.length > 0 ? `
+        <!-- FOTO'S -->
+        <div style="padding: 24px 32px 0;">
+          <p style="margin: 0 0 10px; font-size: 11px; font-weight: 700; color: #545454; text-transform: uppercase; letter-spacing: 0.06em;">Foto's bijgevoegd</p>
+          <p style="margin: 0; font-size: 14px; color: #1A1A1A;">${attachments.length} foto${attachments.length > 1 ? "'s" : ""} meegestuurd met deze aanvraag.</p>
+        </div>
+        ` : ""}
+
+        <!-- FOOTER -->
+        <div style="margin-top: 32px; padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
+          <p style="margin: 0 0 4px; font-size: 14px; font-weight: 800; color: #1A1A1A;">MOS-X</p>
+          <p style="margin: 0; font-size: 12px; color: #545454;">Voor een proper, beschermd en verzorgd dak.</p>
+        </div>
+
       </div>
     `;
 
@@ -92,7 +154,7 @@ export async function POST(req: NextRequest) {
       from: FROM_INTERN,
       to: [toEmail],
       reply_to: email,
-      subject: `Richtprijsaanvraag — ${voornaam} ${achternaam} (${postcode})`,
+      subject: `💶 Richtprijsaanvraag | ${voornaam} ${achternaam} | ${fmtPrice(priceLow)} - ${fmtPrice(priceHigh)}`,
       html,
     };
 
