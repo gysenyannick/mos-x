@@ -242,23 +242,7 @@ export function contactKlantHtml(opts: { voornaam: string; dienst: string; beric
       </div>
       ` : ""}
 
-      <!-- 4. CONTACT -->
-      <div style="margin: 0 32px 28px; background: #F7F8F6; border-radius: 12px; padding: 20px 24px;">
-        <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #1A1A1A;">Heb je ondertussen een vraag?</p>
-        <p style="margin: 0 0 18px; font-size: 14px; color: #545454;">Je kunt Yannick rechtstreeks bereiken.</p>
-        <table cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="padding-right: 12px;">
-              <a href="${TEL_HREF}" style="display: inline-block; background: #9BCB6C; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 14px; padding: 12px 20px; border-radius: 8px;">${TEL}</a>
-            </td>
-            <td>
-              <a href="${WA_HREF}" style="display: inline-block; background: #FFFFFF; color: #9BCB6C; border: 2px solid #9BCB6C; text-decoration: none; font-weight: 700; font-size: 14px; padding: 10px 20px; border-radius: 8px;">WhatsApp Yannick</a>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <!-- 5. FOOTER -->
+      <!-- 4. FOOTER -->
       <div style="padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
         <p style="margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #1A1A1A;">MOS-X</p>
         <p style="margin: 0 0 18px; font-size: 12px; color: #888;">Voor een proper, beschermd en verzorgd dak.</p>
