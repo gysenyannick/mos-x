@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       from: FROM_INTERN,
       to: [toEmail],
       reply_to: email,
-      subject: `Gratis plaatsbezoek — ${voornaam} ${achternaam} (${postcode})`,
+      subject: `🏠 Gratis plaatsbezoek na richtprijs | ${voornaam} ${achternaam} | ${postcode}`,
       html,
     };
 
