@@ -11,7 +11,7 @@ import {
 export const runtime = "nodejs";
 
 const EXTRA_LABELS: Record<string, string> = {
-  coating: "Ja, met dakcoating (10 jaar garantie)",
+  coating: "Dakcoating",
   geen: "Dakreiniging",
   advies: "Ik twijfel nog — advies gewenst",
 };
