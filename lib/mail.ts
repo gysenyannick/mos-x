@@ -16,9 +16,9 @@ export const FROM_INTERN = "MOS-X Website <noreply@mos-x.be>";
 /** Afzender voor mails naar de klant. */
 export const FROM_KLANT = "MOS-X <noreply@mos-x.be>";
 
-export const SUBJECT_PLAATSBEZOEK = "Bevestiging: Aanvraag gratis plaatsbezoek";
+export const SUBJECT_PLAATSBEZOEK = "✅ Bevestiging: Aanvraag gratis plaatsbezoek";
 export const SUBJECT_PLAATSBEZOEK_NA_RICHTPRIJS =
-  "Bevestiging: Aanvraag gratis plaatsbezoek na richtprijs";
+  "✅ Bevestiging: Aanvraag gratis plaatsbezoek na richtprijs";
 export const SUBJECT_RICHTPRIJS_KLANT = "Je richtprijs voor je dak | MOS-X";
 export const SUBJECT_CONTACT_KLANT = "Bevestiging: we hebben je bericht ontvangen | MOS-X";
 
