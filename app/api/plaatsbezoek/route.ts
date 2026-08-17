@@ -12,7 +12,7 @@ export const runtime = "nodejs";
 
 const EXTRA_LABELS: Record<string, string> = {
   coating: "Ja, met dakcoating (10 jaar garantie)",
-  geen: "Nee, alleen dakreiniging",
+  geen: "Dakreiniging",
   advies: "Ik twijfel nog — advies gewenst",
 };
 
