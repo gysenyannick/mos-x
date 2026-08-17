@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
         from: FROM_INTERN,
         to: [toEmail],
         reply_to: email || undefined,
-        subject: `✉️ Contactaanvraag — ${naam} · ${dienst}`,
+        subject: `✉️ Contactaanvraag | ${naam} | ${dienst}`,
         html: yannickHtml,
       },
       idempotencyKey("contact-intern", email || telefoon, dienstRaw, gemeente, bericht),

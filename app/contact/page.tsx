@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Phone, Mail, MapPin, Clock, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, CheckCircle, Phone, Mail, MapPin, Clock, ChevronRight } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 
@@ -128,102 +128,128 @@ export default function ContactPage() {
             {/* ── Formulier ── */}
             <div className="contact-form-card rounded-2xl p-8"
               style={{ background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", boxShadow: "0 2px 16px rgba(155,203,108,0.12)" }}>
-              <p className="font-black text-lg mb-1"
-                style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
-                Waar kunnen we je mee helpen?
-              </p>
-              <p style={{ fontSize: "13px", color: "#888888", marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Stel je vraag of vraag vrijblijvend een offerte aan.
-              </p>
-              <form className="space-y-5" onSubmit={handleSubmit} noValidate={false}>
-                <div>
-                  <label style={labelStyle}>Naam *</label>
-                  <input type="text" name="naam" required placeholder="Jouw naam" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} />
-                </div>
-
-                <div>
-                  <label style={labelStyle}>E-mailadres *</label>
-                  <input type="email" name="email" required placeholder="jouw@email.be" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} />
-                </div>
-
-                <div>
-                  <label style={labelStyle}>Telefoonnummer *</label>
-                  <input type="tel" name="telefoon" required placeholder="0470 00 00 00" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inputStyle} />
-                </div>
-
-                <div>
-                  <label style={labelStyle}>Gemeente / Postcode *</label>
-                  <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" value={gemeente} onChange={e => setGemeente(e.target.value)} style={inputStyle} />
-                </div>
-
-                <div>
-                  <label style={labelStyle}>Interesse in *</label>
-                  <select name="dienst" required value={dienst} onChange={e => setDienst(e.target.value)} style={{ ...inputStyle, color: dienst === "" ? "#AAAAAA" : "#111111" }}>
-                    <option value="" disabled style={{ color: "#AAAAAA" }}>Selecteer een dienst...</option>
-                    <option value="dakreiniging" style={{ color: "#1A1A1A" }}>Dakreiniging</option>
-                    <option value="dakcoating" style={{ color: "#1A1A1A" }}>Dakcoating</option>
-                    <option value="dakabonnement" style={{ color: "#1A1A1A" }}>MOS-X Dakzorg</option>
-                    <option value="weet-niet" style={{ color: "#1A1A1A" }}>Andere</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={labelStyle}>Bericht (optioneel)</label>
-                  <textarea name="bericht" rows={4}
-                    placeholder="Extra informatie over je dak of situatie..."
-                    value={bericht} onChange={e => setBericht(e.target.value)}
-                    style={{ ...inputStyle, resize: "none" as const }} />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={status === 'sending' || status === 'success'}
-                  className="w-full flex items-center justify-center gap-2"
-                  style={{
-                    background: status === 'sending' || status === 'success' ? "#C6DFAE" : "#9BCB6C",
-                    color: "#111111", borderRadius: "8px",
-                    padding: "14px 24px", border: "none",
-                    cursor: status === 'sending' || status === 'success' ? "not-allowed" : "pointer",
-                    fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                    fontWeight: 700, fontSize: "15px",
-                    transition: "background 180ms ease",
-                  }}
-                >
-                  {status === 'sending'
-                    ? "Versturen…"
-                    : status === 'success'
-                      ? "Verzonden"
-                      : <>Verstuur mijn aanvraag <ArrowRight className="w-5 h-5" /></>}
-                </button>
-
-                {status === 'success' && (
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.4)", borderRadius: "8px", padding: "12px 14px" }}>
-                    <CheckCircle size={16} color="#4A8A2A" style={{ flexShrink: 0, marginTop: "1px" }} />
-                    <p style={{ margin: 0, fontSize: "13.5px", lineHeight: 1.55, color: "#4A8A2A", fontWeight: 600, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      Bedankt! Je bericht is goed ontvangen. Yannick neemt zo snel mogelijk contact met je op.
-                    </p>
-                  </div>
-                )}
-
-                {status === 'error' && (
-                  <div style={{ background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: "8px", padding: "12px 14px" }}>
-                    <p style={{ margin: 0, fontSize: "13.5px", lineHeight: 1.55, color: "#C0392B", fontWeight: 600, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      Er ging iets mis bij het versturen. Probeer het opnieuw, of bel Yannick op{" "}
-                      <a href="tel:+32468352869" style={{ color: "#C0392B", textDecoration: "underline" }}>+32 468 35 28 69</a>.
-                    </p>
-                  </div>
-                )}
-
-                {/* 3 trust-chips onder de knop */}
-                <div className="contact-trust-chips" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "4px" }}>
-                  {includes.map((item, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "8px 6px" }}>
-                      <CheckCircle size={13} color="#9BCB6C" style={{ flexShrink: 0 }} />
-                      <span style={{ fontSize: "11px", fontWeight: 600, color: "#555555", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1, whiteSpace: "nowrap" }}>{item}</span>
+              {status === 'success' ? (
+                <>
+                  <style>{`
+                    @keyframes mosx-success-in {
+                      from { opacity: 0; transform: translateY(10px); }
+                      to   { opacity: 1; transform: translateY(0); }
+                    }
+                    @keyframes mosx-check-in {
+                      from { opacity: 0; transform: scale(0.88); }
+                      to   { opacity: 1; transform: scale(1); }
+                    }
+                    @media (prefers-reduced-motion: reduce) {
+                      @keyframes mosx-success-in { from { opacity: 0; } to { opacity: 1; } }
+                      @keyframes mosx-check-in   { from { opacity: 0; } to { opacity: 1; } }
+                    }
+                  `}</style>
+                  <div style={{ padding: "24px 0", textAlign: "center", animation: "mosx-success-in 300ms cubic-bezier(0.16,1,0.3,1) both" }}>
+                    <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "58px", height: "58px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1.5px solid #9BCB6C", marginBottom: "24px", animation: "mosx-check-in 350ms cubic-bezier(0.16,1,0.3,1) 60ms both" }}>
+                      <Check size={26} color="#9BCB6C" strokeWidth={2.5} />
                     </div>
-                  ))}
-                </div>
-              </form>
+                    <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "20px", fontWeight: 800, color: "#1A1A1A", margin: "0 0 14px", letterSpacing: "-0.02em" }}>
+                      Bericht verstuurd!
+                    </h2>
+                    <p style={{ fontSize: "15px", color: "#545454", margin: "0 0 8px", lineHeight: 1.65, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      We hebben je bericht goed ontvangen.
+                    </p>
+                    <p style={{ fontSize: "15px", color: "#545454", margin: 0, lineHeight: 1.65, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      <strong style={{ color: "#1A1A1A" }}>Yannick</strong> neemt{" "}
+                      <strong style={{ color: "#1A1A1A" }}>zo snel mogelijk</strong>{" "}
+                      persoonlijk contact met je op.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="font-black text-lg mb-1"
+                    style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
+                    Waar kunnen we je mee helpen?
+                  </p>
+                  <p style={{ fontSize: "13px", color: "#888888", marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                    Stel je vraag of vraag vrijblijvend een offerte aan.
+                  </p>
+                  <form className="space-y-5" onSubmit={handleSubmit} noValidate={false}>
+                    <div>
+                      <label style={labelStyle}>Naam *</label>
+                      <input type="text" name="naam" required placeholder="Jouw naam" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} />
+                    </div>
+
+                    <div>
+                      <label style={labelStyle}>E-mailadres *</label>
+                      <input type="email" name="email" required placeholder="jouw@email.be" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} />
+                    </div>
+
+                    <div>
+                      <label style={labelStyle}>Telefoonnummer *</label>
+                      <input type="tel" name="telefoon" required placeholder="0470 00 00 00" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inputStyle} />
+                    </div>
+
+                    <div>
+                      <label style={labelStyle}>Gemeente / Postcode *</label>
+                      <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" value={gemeente} onChange={e => setGemeente(e.target.value)} style={inputStyle} />
+                    </div>
+
+                    <div>
+                      <label style={labelStyle}>Interesse in *</label>
+                      <select name="dienst" required value={dienst} onChange={e => setDienst(e.target.value)} style={{ ...inputStyle, color: dienst === "" ? "#AAAAAA" : "#111111" }}>
+                        <option value="" disabled style={{ color: "#AAAAAA" }}>Selecteer een dienst...</option>
+                        <option value="dakreiniging" style={{ color: "#1A1A1A" }}>Dakreiniging</option>
+                        <option value="dakcoating" style={{ color: "#1A1A1A" }}>Dakcoating</option>
+                        <option value="dakabonnement" style={{ color: "#1A1A1A" }}>MOS-X Dakzorg</option>
+                        <option value="weet-niet" style={{ color: "#1A1A1A" }}>Andere</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={labelStyle}>Bericht (optioneel)</label>
+                      <textarea name="bericht" rows={4}
+                        placeholder="Extra informatie over je dak of situatie..."
+                        value={bericht} onChange={e => setBericht(e.target.value)}
+                        style={{ ...inputStyle, resize: "none" as const }} />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={status === 'sending'}
+                      className="w-full flex items-center justify-center gap-2"
+                      style={{
+                        background: status === 'sending' ? "#C6DFAE" : "#9BCB6C",
+                        color: "#111111", borderRadius: "8px",
+                        padding: "14px 24px", border: "none",
+                        cursor: status === 'sending' ? "not-allowed" : "pointer",
+                        fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                        fontWeight: 700, fontSize: "15px",
+                        transition: "background 180ms ease",
+                      }}
+                    >
+                      {status === 'sending'
+                        ? "Versturen…"
+                        : <>Verstuur mijn aanvraag <ArrowRight className="w-5 h-5" /></>}
+                    </button>
+
+                    {status === 'error' && (
+                      <div style={{ background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: "8px", padding: "12px 14px" }}>
+                        <p style={{ margin: 0, fontSize: "13.5px", lineHeight: 1.55, color: "#C0392B", fontWeight: 600, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                          Er ging iets mis bij het versturen. Probeer het opnieuw, of bel Yannick op{" "}
+                          <a href="tel:+32468352869" style={{ color: "#C0392B", textDecoration: "underline" }}>+32 468 35 28 69</a>.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* 3 trust-chips onder de knop */}
+                    <div className="contact-trust-chips" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "4px" }}>
+                      {includes.map((item, i) => (
+                        <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "8px 6px" }}>
+                          <CheckCircle size={13} color="#9BCB6C" style={{ flexShrink: 0 }} />
+                          <span style={{ fontSize: "11px", fontWeight: 600, color: "#555555", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1, whiteSpace: "nowrap" }}>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </form>
+                </>
+              )}
             </div>
 
             {/* ── Sidebar ── */}
