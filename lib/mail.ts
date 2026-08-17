@@ -199,9 +199,10 @@ export function plaatsbezoekKlantHtml(opts: { voornaam: string; dienst: string }
 }
 
 /** Bevestigingsmail naar de klant na een bericht via het contactformulier. */
-export function contactKlantHtml(opts: { voornaam: string; dienst: string }): string {
+export function contactKlantHtml(opts: { voornaam: string; dienst: string; bericht?: string }): string {
   const voornaam = esc(opts.voornaam);
   const dienst = esc(opts.dienst);
+  const bericht = opts.bericht ? esc(opts.bericht).replace(/\n/g, "<br>") : "";
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; color: #1A1A1A;">
 
@@ -230,6 +231,16 @@ export function contactKlantHtml(opts: { voornaam: string; dienst: string }): st
         <p style="margin: 0 0 6px; font-size: 12px; color: #7AB54E; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">Je vraag</p>
         <p style="margin: 0; font-size: 17px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
       </div>
+
+      ${bericht ? `
+      <!-- 3b. JOUW BERICHT -->
+      <div style="margin: 0 32px 28px;">
+        <p style="margin: 0 0 10px; font-size: 13px; font-weight: 700; color: #545454; text-transform: uppercase; letter-spacing: 0.06em;">Jouw bericht</p>
+        <div style="background: #F7F8F6; border: 1px solid #E5E7EB; border-radius: 12px; padding: 18px 22px; font-size: 14px; color: #1A1A1A; line-height: 1.7; text-align: left;">
+          ${bericht}
+        </div>
+      </div>
+      ` : ""}
 
       <!-- 4. CONTACT -->
       <div style="margin: 0 32px 28px; background: #F7F8F6; border-radius: 12px; padding: 20px 24px;">

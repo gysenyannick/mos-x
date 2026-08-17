@@ -146,7 +146,7 @@ export async function POST(req: NextRequest) {
           from: FROM_KLANT,
           to: [email],
           subject: SUBJECT_CONTACT_KLANT,
-          html: contactKlantHtml({ voornaam, dienst }),
+          html: contactKlantHtml({ voornaam, dienst, bericht }),
         },
         idempotencyKey("contact-klant", email, dienstRaw, postcode, bericht),
       );
