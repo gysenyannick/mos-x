@@ -110,37 +110,27 @@ export function plaatsbezoekKlantHtml(opts: { voornaam: string; dienst: string }
       </div>
 
       <!-- 2. HERO -->
-      <div style="padding: 36px 32px 24px; text-align: center;">
+      <div style="padding: 36px 32px 28px; text-align: center;">
         <div style="display: inline-block; background: #9BCB6C; border-radius: 50%; width: 54px; height: 54px; line-height: 54px; text-align: center; margin-bottom: 20px;">
           <span style="color: #FFFFFF; font-size: 26px; font-weight: 700; line-height: 54px;">&#10003;</span>
         </div>
         <h1 style="font-size: 22px; font-weight: 800; color: #1A1A1A; margin: 0 0 18px; line-height: 1.35;">
           Je aanvraag is goed ontvangen
         </h1>
-        <p style="font-size: 15px; font-weight: 600; color: #1A1A1A; margin: 0 0 8px;">Dag ${voornaam},</p>
-        <p style="font-size: 15px; color: #545454; margin: 0; line-height: 1.65;">
-          Bedankt! We hebben je aanvraag voor een gratis plaatsbezoek ontvangen.
+        <p style="font-size: 15px; font-weight: 700; color: #1A1A1A; margin: 0 0 10px;">Dag ${voornaam},</p>
+        <p style="font-size: 15px; color: #545454; margin: 0; line-height: 1.7;">
+          We hebben je aanvraag voor een gratis plaatsbezoek ontvangen.<br>
+          Yannick neemt <strong style="color: #1A1A1A;">binnen 1 werkdag</strong> persoonlijk contact met je op.
         </p>
       </div>
 
-      <!-- 3. VERWACHTINGSBLOK -->
-      <div style="margin: 0 32px 28px; background: #F4FBF0; border: 2px solid #9BCB6C; border-radius: 16px; padding: 24px; text-align: center;">
-        <p style="margin: 0 0 8px; font-size: 17px; font-weight: 700; color: #1A1A1A; line-height: 1.45;">
-          Yannick neemt binnen 1 werkdag<br>persoonlijk contact met je op
-        </p>
-        <p style="margin: 0; font-size: 14px; color: #545454; line-height: 1.55;">
-          om een geschikt moment voor het plaatsbezoek af te spreken.
-        </p>
+      <!-- 3. JOUW AANVRAAG -->
+      <div style="margin: 0 32px 28px; background: #F4FBF0; border: 1px solid #9BCB6C; border-radius: 16px; padding: 22px 24px; text-align: center;">
+        <p style="margin: 0 0 6px; font-size: 12px; color: #7AB54E; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">Jouw aanvraag</p>
+        <p style="margin: 0; font-size: 17px; font-weight: 700; color: #1A1A1A;">Plaatsbezoek voor ${dienst}</p>
       </div>
 
-      <!-- 4. JOUW AANVRAAG -->
-      <div style="margin: 0 32px 28px; background: #F7F8F6; border-radius: 12px; padding: 20px 24px;">
-        <p style="margin: 0 0 14px; font-size: 12px; font-weight: 700; color: #1A1A1A; text-transform: uppercase; letter-spacing: 0.08em;">Jouw aanvraag</p>
-        <p style="margin: 0 0 4px; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.08em;">Aangevraagde dienst(en)</p>
-        <p style="margin: 0; font-size: 16px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
-      </div>
-
-      <!-- 5. WAT GEBEURT ER NU? -->
+      <!-- 4. WAT GEBEURT ER NU? -->
       <div style="margin: 0 32px 28px;">
         <p style="margin: 0 0 16px; font-size: 15px; font-weight: 700; color: #1A1A1A;">Wat gebeurt er nu?</p>
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 14px;">
@@ -178,28 +168,26 @@ export function plaatsbezoekKlantHtml(opts: { voornaam: string; dienst: string }
         </table>
       </div>
 
-      <!-- 6. CONTACTBLOK -->
+      <!-- 5. CONTACTBLOK -->
       <div style="margin: 0 32px 28px; background: #F7F8F6; border-radius: 12px; padding: 20px 24px;">
         <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #1A1A1A;">Heb je ondertussen een vraag?</p>
         <p style="margin: 0 0 18px; font-size: 14px; color: #545454;">Je kunt Yannick rechtstreeks bereiken.</p>
         <table cellpadding="0" cellspacing="0">
           <tr>
-            <td style="padding-bottom: 10px;">
-              <a href="${TEL_HREF}" style="display: inline-block; background: #9BCB6C; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: 8px;">Bel ${TEL}</a>
+            <td style="padding-right: 12px;">
+              <a href="${TEL_HREF}" style="display: inline-block; background: #9BCB6C; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 14px; padding: 12px 20px; border-radius: 8px;">${TEL}</a>
             </td>
-          </tr>
-          <tr>
             <td>
-              <a href="${WA_HREF}" style="display: inline-block; background: #FFFFFF; color: #9BCB6C; border: 2px solid #9BCB6C; text-decoration: none; font-weight: 700; font-size: 14px; padding: 10px 22px; border-radius: 8px;">WhatsApp Yannick</a>
+              <a href="${WA_HREF}" style="display: inline-block; background: #FFFFFF; color: #9BCB6C; border: 2px solid #9BCB6C; text-decoration: none; font-weight: 700; font-size: 14px; padding: 10px 20px; border-radius: 8px;">WhatsApp Yannick</a>
             </td>
           </tr>
         </table>
       </div>
 
-      <!-- 7. FOOTER -->
+      <!-- 6. FOOTER -->
       <div style="padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
         <p style="margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #1A1A1A;">MOS-X</p>
-        <p style="margin: 0 0 18px; font-size: 12px; color: #888;">Professionele dakreiniging &amp; onderhoud</p>
+        <p style="margin: 0 0 18px; font-size: 12px; color: #888;">Voor een proper, beschermd en verzorgd dak.</p>
         <p style="margin: 0; font-size: 11px; color: #AAA; line-height: 1.7;">
           Dit is een automatische bevestiging van je aanvraag via mos-x.be.<br>
           Je hoeft deze e-mail niet te beantwoorden.
