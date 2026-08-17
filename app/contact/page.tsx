@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, CheckCircle, Phone, Mail, MapPin, Clock, ChevronRight } from "lucide-react";
+import { Check, CheckCircle, Phone, Mail, MapPin, Clock, ChevronRight } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 
@@ -50,6 +50,8 @@ export default function ContactPage() {
   const [dienst, setDienst] = useState("");
   const [bericht, setBericht] = useState("");
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [btnHovered, setBtnHovered] = useState(false);
+  const [btnActive, setBtnActive] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // Zonder dit doet de browser een native POST naar /contact, wat een 405 geeft.
@@ -95,6 +97,12 @@ export default function ContactPage() {
 
   return (
     <PageLayout>
+      <style>{`
+        .contact-submit-btn:focus-visible {
+          outline: 2px solid #7AB54E;
+          outline-offset: 3px;
+        }
+      `}</style>
 
       {/* ── Hero ── */}
       <section style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "24px" }}>
@@ -213,20 +221,26 @@ export default function ContactPage() {
                     <button
                       type="submit"
                       disabled={status === 'sending'}
-                      className="w-full flex items-center justify-center gap-2"
+                      className="w-full flex items-center justify-center gap-2 contact-submit-btn"
+                      onMouseEnter={() => setBtnHovered(true)}
+                      onMouseLeave={() => { setBtnHovered(false); setBtnActive(false); }}
+                      onMouseDown={() => setBtnActive(true)}
+                      onMouseUp={() => setBtnActive(false)}
                       style={{
-                        background: status === 'sending' ? "#C6DFAE" : "#9BCB6C",
+                        background: status === 'sending' ? "#C6DFAE" : btnHovered ? "#7AB54E" : "#9BCB6C",
                         color: "#111111", borderRadius: "8px",
                         padding: "14px 24px", border: "none",
                         cursor: status === 'sending' ? "not-allowed" : "pointer",
                         fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                         fontWeight: 700, fontSize: "15px",
-                        transition: "background 180ms ease",
+                        transform: btnActive && status !== 'sending' ? "scale(0.97)" : "scale(1)",
+                        transition: "background 160ms ease, transform 90ms ease",
+                        outline: "none",
                       }}
                     >
                       {status === 'sending'
                         ? "Versturen…"
-                        : <>Verstuur mijn aanvraag <ArrowRight className="w-5 h-5" /></>}
+                        : <>Verstuur mijn aanvraag <ChevronRight className="w-5 h-5" /></>}
                     </button>
 
                     {status === 'error' && (
