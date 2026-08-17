@@ -153,7 +153,7 @@ export default function ContactPage() {
                       @keyframes mosx-success-in { from { opacity: 0; } to { opacity: 1; } }
                     }
                   `}</style>
-                  <div style={{ textAlign: "center", padding: "20px 8px 8px", animation: "mosx-success-in 300ms cubic-bezier(0.16,1,0.3,1) both" }}>
+                  <div style={{ textAlign: "center", padding: "20px 8px 36px", animation: "mosx-success-in 300ms cubic-bezier(0.16,1,0.3,1) both" }}>
                     <div style={{
                       width: "60px", height: "60px", borderRadius: "50%",
                       background: "rgba(155,203,108,0.15)", border: "2px solid #9BCB6C",
@@ -173,7 +173,6 @@ export default function ContactPage() {
                       <strong style={{ color: "#9BCB6C", fontWeight: 600 }}>binnen 1 werkdag</strong>
                       {" "}contact met je op.
                     </p>
-                    <div style={{ borderTop: "1px solid #E5E7EB", margin: "28px 0" }} />
                   </div>
                 </>
               ) : (

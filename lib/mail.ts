@@ -228,7 +228,7 @@ export function contactKlantHtml(opts: { voornaam: string; dienst: string; beric
 
       <!-- 3. JE VRAAG -->
       <div style="margin: 0 32px 28px; background: #F4FBF0; border: 1px solid #9BCB6C; border-radius: 16px; padding: 22px 24px; text-align: center;">
-        <p style="margin: 0 0 6px; font-size: 12px; color: #7AB54E; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">Je vraag</p>
+        <p style="margin: 0 0 6px; font-size: 12px; color: #7AB54E; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">Onderwerp van je bericht</p>
         <p style="margin: 0; font-size: 17px; font-weight: 700; color: #1A1A1A;">${dienst}</p>
       </div>
 
