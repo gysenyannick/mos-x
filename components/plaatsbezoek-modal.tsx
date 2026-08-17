@@ -165,28 +165,52 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
           </button>
 
           {status === "done" ? (
-            <div style={{ textAlign: "center", padding: "24px 0" }}>
-              <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "2px solid #9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-                <Check size={24} color="#9BCB6C" strokeWidth={2.5} />
+            <div style={{ textAlign: "center", padding: "40px 8px 16px" }}>
+              <div style={{
+                width: "60px", height: "60px", borderRadius: "50%",
+                background: "rgba(155,203,108,0.15)", border: "2px solid #9BCB6C",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                margin: "0 auto 24px",
+              }}>
+                <Check size={26} color="#9BCB6C" strokeWidth={2.5} />
               </div>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "18px", color: "#1A1A1A", marginBottom: "8px" }}>
+              <p style={{
+                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                fontWeight: 800, fontSize: "20px", color: "#1A1A1A",
+                marginBottom: "14px", lineHeight: 1.2,
+              }}>
                 Aanvraag verstuurd!
               </p>
-              <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.6, marginBottom: "24px" }}>
-                Je ontvangt dadelijk een bevestigingsmail. Yannick neemt <strong>binnen 1 werkdag</strong> contact met je op.
+              <p style={{
+                fontSize: "14px", color: "#545454",
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                lineHeight: 1.65, marginBottom: "8px",
+              }}>
+                Je ontvangt dadelijk een bevestigingsmail.
               </p>
+              <p style={{
+                fontSize: "14px", color: "#545454",
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                lineHeight: 1.65, marginBottom: 0,
+              }}>
+                Yannick neemt{" "}
+                <strong style={{ color: "#9BCB6C", fontWeight: 600 }}>binnen 1 werkdag</strong>
+                {" "}contact met je op.
+              </p>
+              <div style={{ borderTop: "1px solid #E5E7EB", margin: "28px 0" }} />
               <button
                 onClick={onClose}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
-                  padding: "12px 28px", borderRadius: "10px",
+                  padding: "13px 32px", borderRadius: "8px",
                   background: "#9BCB6C", color: "#FFFFFF", border: "none", cursor: "pointer",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "14px", transition: "background 200ms ease",
                 }}
               >
+                <Check size={16} strokeWidth={2.5} />
                 Sluiten
               </button>
             </div>
