@@ -43,10 +43,12 @@ const labelStyle = {
 
 export default function ContactPage() {
   const [homeHovered, setHomeHovered] = useState(false);
-  const [naam, setNaam] = useState("");
+  const [voornaam, setVoornaam] = useState("");
+  const [achternaam, setAchternaam] = useState("");
   const [email, setEmail] = useState("");
   const [telefoon, setTelefoon] = useState("");
-  const [gemeente, setGemeente] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [adres, setAdres] = useState("");
   const [dienst, setDienst] = useState("");
   const [bericht, setBericht] = useState("");
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -60,10 +62,12 @@ export default function ContactPage() {
     setStatus('sending');
     try {
       const fd = new FormData();
-      fd.append("naam", naam);
+      fd.append("voornaam", voornaam);
+      fd.append("achternaam", achternaam);
       fd.append("email", email);
       fd.append("telefoon", telefoon);
-      fd.append("gemeente", gemeente);
+      fd.append("postcode", postcode);
+      fd.append("adres", adres);
       fd.append("dienst", dienst);
       fd.append("bericht", bericht);
       const res = await fetch("/api/contact", { method: "POST", body: fd });
@@ -76,10 +80,12 @@ export default function ContactPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("naam")) setNaam(params.get("naam")!);
+    if (params.get("voornaam")) setVoornaam(params.get("voornaam")!);
+    if (params.get("achternaam")) setAchternaam(params.get("achternaam")!);
     if (params.get("email")) setEmail(params.get("email")!);
     if (params.get("telefoon")) setTelefoon(params.get("telefoon")!);
-    if (params.get("gemeente")) setGemeente(params.get("gemeente")!);
+    if (params.get("postcode")) setPostcode(params.get("postcode")!);
+    if (params.get("adres")) setAdres(params.get("adres")!);
     if (params.get("dienst")) setDienst(params.get("dienst")!);
     if (params.get("bericht")) setBericht(params.get("bericht")!);
   }, []);
@@ -143,30 +149,31 @@ export default function ContactPage() {
                       from { opacity: 0; transform: translateY(10px); }
                       to   { opacity: 1; transform: translateY(0); }
                     }
-                    @keyframes mosx-check-in {
-                      from { opacity: 0; transform: scale(0.88); }
-                      to   { opacity: 1; transform: scale(1); }
-                    }
                     @media (prefers-reduced-motion: reduce) {
                       @keyframes mosx-success-in { from { opacity: 0; } to { opacity: 1; } }
-                      @keyframes mosx-check-in   { from { opacity: 0; } to { opacity: 1; } }
                     }
                   `}</style>
-                  <div style={{ padding: "24px 0", textAlign: "center", animation: "mosx-success-in 300ms cubic-bezier(0.16,1,0.3,1) both" }}>
-                    <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "58px", height: "58px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1.5px solid #9BCB6C", marginBottom: "24px", animation: "mosx-check-in 350ms cubic-bezier(0.16,1,0.3,1) 60ms both" }}>
+                  <div style={{ textAlign: "center", padding: "20px 8px 8px", animation: "mosx-success-in 300ms cubic-bezier(0.16,1,0.3,1) both" }}>
+                    <div style={{
+                      width: "60px", height: "60px", borderRadius: "50%",
+                      background: "rgba(155,203,108,0.15)", border: "2px solid #9BCB6C",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      margin: "0 auto 24px",
+                    }}>
                       <Check size={26} color="#9BCB6C" strokeWidth={2.5} />
                     </div>
-                    <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "20px", fontWeight: 800, color: "#1A1A1A", margin: "0 0 14px", letterSpacing: "-0.02em" }}>
+                    <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#1A1A1A", marginBottom: "14px", lineHeight: 1.2 }}>
                       Bericht verstuurd!
-                    </h2>
-                    <p style={{ fontSize: "15px", color: "#545454", margin: "0 0 8px", lineHeight: 1.65, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      We hebben je bericht goed ontvangen.
                     </p>
-                    <p style={{ fontSize: "15px", color: "#545454", margin: 0, lineHeight: 1.65, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      <strong style={{ color: "#1A1A1A" }}>Yannick</strong> neemt{" "}
-                      <strong style={{ color: "#1A1A1A" }}>zo snel mogelijk</strong>{" "}
-                      persoonlijk contact met je op.
+                    <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.65, marginBottom: "8px" }}>
+                      Je ontvangt dadelijk een bevestigingsmail.
                     </p>
+                    <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.65, marginBottom: 0 }}>
+                      Yannick neemt{" "}
+                      <strong style={{ color: "#9BCB6C", fontWeight: 600 }}>binnen 1 werkdag</strong>
+                      {" "}contact met je op.
+                    </p>
+                    <div style={{ borderTop: "1px solid #E5E7EB", margin: "28px 0" }} />
                   </div>
                 </>
               ) : (
@@ -179,9 +186,15 @@ export default function ContactPage() {
                     Stel je vraag of vraag vrijblijvend een offerte aan.
                   </p>
                   <form className="space-y-5" onSubmit={handleSubmit} noValidate={false}>
-                    <div>
-                      <label style={labelStyle}>Naam *</label>
-                      <input type="text" name="naam" required placeholder="Jouw naam" value={naam} onChange={e => setNaam(e.target.value)} style={inputStyle} />
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                      <div>
+                        <label style={labelStyle}>Voornaam *</label>
+                        <input type="text" name="voornaam" required placeholder="Voornaam" value={voornaam} onChange={e => setVoornaam(e.target.value)} style={inputStyle} />
+                      </div>
+                      <div>
+                        <label style={labelStyle}>Achternaam *</label>
+                        <input type="text" name="achternaam" required placeholder="Achternaam" value={achternaam} onChange={e => setAchternaam(e.target.value)} style={inputStyle} />
+                      </div>
                     </div>
 
                     <div>
@@ -194,9 +207,15 @@ export default function ContactPage() {
                       <input type="tel" name="telefoon" required placeholder="0470 00 00 00" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inputStyle} />
                     </div>
 
-                    <div>
-                      <label style={labelStyle}>Gemeente / Postcode *</label>
-                      <input type="text" name="gemeente" required placeholder="bv. Lier of 2500" value={gemeente} onChange={e => setGemeente(e.target.value)} style={inputStyle} />
+                    <div style={{ display: "grid", gridTemplateColumns: "130px 1fr", gap: "12px" }}>
+                      <div>
+                        <label style={labelStyle}>Postcode *</label>
+                        <input type="text" name="postcode" required placeholder="2500" value={postcode} onChange={e => setPostcode(e.target.value)} style={inputStyle} />
+                      </div>
+                      <div>
+                        <label style={labelStyle}>Adres</label>
+                        <input type="text" name="adres" placeholder="bv. Kerkstraat 12, Lier" value={adres} onChange={e => setAdres(e.target.value)} style={inputStyle} />
+                      </div>
                     </div>
 
                     <div>
@@ -228,7 +247,7 @@ export default function ContactPage() {
                       onMouseUp={() => setBtnActive(false)}
                       style={{
                         background: status === 'sending' ? "#C6DFAE" : btnHovered ? "#7AB54E" : "#9BCB6C",
-                        color: "#111111", borderRadius: "8px",
+                        color: "#FFFFFF", borderRadius: "8px",
                         padding: "14px 24px", border: "none",
                         cursor: status === 'sending' ? "not-allowed" : "pointer",
                         fontFamily: "var(--font-montserrat), system-ui, sans-serif",

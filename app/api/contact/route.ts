@@ -23,16 +23,17 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.formData();
 
-    const naam     = (data.get("naam")     as string) ?? "";
+    const voornaam   = (data.get("voornaam")   as string) ?? "";
+    const achternaam = (data.get("achternaam") as string) ?? "";
+    const naam = [voornaam, achternaam].filter(Boolean).join(" ");
     const email    = (data.get("email")    as string) ?? "";
     const telefoon = (data.get("telefoon") as string) ?? "";
-    const gemeente = (data.get("gemeente") as string) ?? "";
+    const postcode = (data.get("postcode") as string) ?? "";
+    const adres    = (data.get("adres")    as string) ?? "";
     const dienstRaw = (data.get("dienst")  as string) ?? "";
     const bericht  = (data.get("bericht")  as string) ?? "";
 
     const dienst = DIENST_LABELS[dienstRaw] ?? dienstRaw;
-    // De aanhef gebruikt enkel de voornaam, ook als iemand zijn volledige naam invult.
-    const voornaam = naam.trim().split(/\s+/)[0] || naam;
 
     const apiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.CONTACT_EMAIL ?? "info@mos-x.be";
@@ -66,7 +67,8 @@ export async function POST(req: NextRequest) {
           <tr><td style="padding: 7px 0; color: #888; width: 130px;">Naam</td><td style="padding: 7px 0; font-weight: 600;">${esc(naam)}</td></tr>
           <tr><td style="padding: 7px 0; color: #888;">E-mail</td><td style="padding: 7px 0;"><a href="mailto:${esc(email)}" style="color: #1A5C36;">${esc(email)}</a></td></tr>
           <tr><td style="padding: 7px 0; color: #888;">Telefoon</td><td style="padding: 7px 0;"><a href="tel:${esc(telefoon)}" style="font-weight: 700; color: #1A5C36; text-decoration: none;">${esc(telefoon)}</a></td></tr>
-          <tr><td style="padding: 7px 0; color: #888;">Gemeente</td><td style="padding: 7px 0;">${esc(gemeente) || "—"}</td></tr>
+          <tr><td style="padding: 7px 0; color: #888;">Postcode</td><td style="padding: 7px 0;">${esc(postcode) || "—"}</td></tr>
+          ${adres ? `<tr><td style="padding: 7px 0; color: #888;">Adres</td><td style="padding: 7px 0;">${esc(adres)}</td></tr>` : ""}
         </table>
 
         ${bericht ? `
@@ -92,7 +94,7 @@ export async function POST(req: NextRequest) {
         subject: `✉️ Contactaanvraag | ${naam} | ${dienst}`,
         html: yannickHtml,
       },
-      idempotencyKey("contact-intern", email || telefoon, dienstRaw, gemeente, bericht),
+      idempotencyKey("contact-intern", email || telefoon, dienstRaw, postcode, bericht),
     );
 
     if (!intern.ok) {
@@ -113,7 +115,7 @@ export async function POST(req: NextRequest) {
           subject: SUBJECT_CONTACT_KLANT,
           html: contactKlantHtml({ voornaam, dienst }),
         },
-        idempotencyKey("contact-klant", email, dienstRaw, gemeente, bericht),
+        idempotencyKey("contact-klant", email, dienstRaw, postcode, bericht),
       );
       klantMail = klant.ok;
       if (!klant.ok) {
