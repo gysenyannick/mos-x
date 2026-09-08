@@ -9,8 +9,8 @@ const TOTAL_STEPS = 5;
 function calcPrice(opp: number, extra: string): { low: number; high: number } {
   if (extra === "coating") {
     return {
-      low: Math.max(1200, Math.round(opp * 22 / 50) * 50),
-      high: Math.max(1500, Math.round(opp * 28 / 50) * 50),
+      low: Math.max(1200, Math.round(opp * 25 / 50) * 50),
+      high: Math.max(1500, Math.round(opp * 35 / 50) * 50),
     };
   }
   return {
