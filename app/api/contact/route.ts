@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendToBeavr } from "@/lib/beavr";
 import {
   FROM_INTERN,
   FROM_KLANT,
@@ -34,6 +35,15 @@ export async function POST(req: NextRequest) {
     const bericht  = (data.get("bericht")  as string) ?? "";
 
     const dienst = DIENST_LABELS[dienstRaw] ?? dienstRaw;
+
+    // ── Ook naar Beavr ───────────────────────────────────────────────────────
+    await sendToBeavr({
+      name: naam, email, phone: telefoon, address: adres || postcode,
+      service: dienst || "Contactformulier",
+      note: bericht,
+      answers: { Aanvraag: "Contactformulier", Dienst: dienst, Postcode: postcode },
+      page: "https://www.mos-x.be/contact",
+    });
 
     const apiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.CONTACT_EMAIL ?? "info@mos-x.be";

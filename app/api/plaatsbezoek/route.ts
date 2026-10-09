@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendToBeavr } from "@/lib/beavr";
 import {
   FROM_INTERN,
   FROM_KLANT,
@@ -152,6 +153,21 @@ export async function POST(req: NextRequest) {
 
       </div>
     `;
+
+    // ── Ook naar Beavr: zelfde klant, nu met de vraag om een plaatsbezoek ────
+    await sendToBeavr({
+      name: [voornaam, achternaam].filter(Boolean).join(" "),
+      email, phone: tel, address: adres || postcode,
+      service: EXTRA_LABELS[extra] ?? extra,
+      min: priceLow, max: priceHigh, vat: 21,
+      note: "Wil een gratis plaatsbezoek (na de richtprijs).",
+      answers: {
+        Aanvraag: "Gratis plaatsbezoek", Woningtype: woning, Daktype: dak, Oppervlakte: opp ? `${opp} m²` : "",
+        Behandeling: EXTRA_LABELS[extra] ?? extra, Postcode: postcode,
+        "Foto's": attachments.length ? `${attachments.length} meegestuurd (zie de mail)` : "",
+      },
+      page: "https://www.mos-x.be (plaatsbezoek na richtprijs)",
+    });
 
     const apiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.CONTACT_EMAIL ?? "info@mos-x.be";
