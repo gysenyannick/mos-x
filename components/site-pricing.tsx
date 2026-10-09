@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { trackBeavr } from "@/lib/beavr-track";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const GREEN = "#9BCB6C";
@@ -283,6 +284,25 @@ export default function SitePricing() {
   const adresTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const submitInFlight = useRef(false);
   const stepContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Meten voor Beavr: de calculator komt in beeld (één keer per bezoek)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((x) => x.isIntersecting)) { trackBeavr("view"); io.disconnect(); }
+    }, { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Meten voor Beavr: gestart (stap 2 bereikt) en elke stap die een bezoeker bereikt
+  useEffect(() => {
+    if (step < 2) return;
+    trackBeavr("start");
+    trackBeavr("step", step, STEP_NAMES[step - 1]);
+  }, [step]);
   const isAnimatingRef = useRef(false);
   const prefersReducedMotion = useRef(typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false);
   const [postcodeSuggestions, setPostcodeSuggestions] = useState<{postcode: string; municipality: string}[]>([]);
@@ -359,6 +379,7 @@ export default function SitePricing() {
     // Guard tegen dubbelklikken: één verzending per berekening.
     if (submitInFlight.current) return;
     submitInFlight.current = true;
+    trackBeavr("lead");
     setSubmitError(false);
     setPhase('animating');
     setChecksDone(0);
@@ -469,7 +490,7 @@ export default function SitePricing() {
   ];
 
   return (
-    <section id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
+    <section ref={sectionRef} id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
       <style>{`
         /* ── Calculator animations ── */
         @keyframes calc-check-pop {
