@@ -5,16 +5,16 @@ import { Star, ShieldCheck, Leaf, CircleCheck } from "lucide-react";
 type Stat = { title: string; label: React.ReactNode; icon: React.ReactNode };
 
 const stats: Stat[] = [
-  { title: "4,9/5 op Google",                label: "150+ daken gereinigd in de regio Antwerpen & Kempen", icon: <Star        size={28} color="#9BCB6C" /> },
-  { title: "Vaste prijs, geen verrassingen", label: "De prijs op je offerte is de prijs op je factuur.",   icon: <ShieldCheck size={28} color="#9BCB6C" /> },
-  { title: "Dubbele garantie",               label: "2 jaar mosvrij na reiniging. 10 jaar op je coating.", icon: <Leaf        size={28} color="#9BCB6C" /> },
-  { title: "Schadevrij reinigen",            label: "We reinigen zonder je dakpannen te beschadigen.",     icon: <CircleCheck size={28} color="#9BCB6C" /> },
+  { title: "4,9/5 op Google",  label: "150+ daken gereinigd",          icon: <Star        size={26} color="#9BCB6C" /> },
+  { title: "Vaste prijs",      label: "Geen verrassingen achteraf",    icon: <ShieldCheck size={26} color="#9BCB6C" /> },
+  { title: "Dubbele garantie", label: "2 jaar mosvrij, 10 jaar coating", icon: <Leaf        size={26} color="#9BCB6C" /> },
+  { title: "Schadevrij",       label: "Veilig voor je dakpannen",      icon: <CircleCheck size={26} color="#9BCB6C" /> },
 ];
 
 function UspStat({ title, label, icon }: Stat) {
   return (
-    <div className="usp-stat-inner" style={{ padding: "0 20px" }}>
-      <div className="usp-stat-icon" style={{ marginBottom: "12px" }}>
+    <div className="usp-stat-inner" style={{ padding: "0 32px" }}>
+      <div className="usp-stat-icon" style={{ marginBottom: "14px" }}>
         {icon}
       </div>
       <p className="usp-stat-title" style={{
@@ -41,7 +41,13 @@ export default function SiteStatsBar() {
       <style>{`
         @media (max-width: 640px) {
           .usp-stats-wrap {
-            padding: 24px 20px !important;
+            padding: 24px 12px !important;
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            row-gap: 28px;
+          }
+          .usp-stat-col {
+            border-left: none !important;
           }
           .usp-stat-inner {
             padding: 0 8px !important;
@@ -63,7 +69,7 @@ export default function SiteStatsBar() {
             background: "transparent",
             border: "none",
             borderRadius: "16px",
-            padding: "20px 40px",
+            padding: "28px 40px",
             flexWrap: "wrap",
             overflow: "hidden",
           }}
@@ -71,6 +77,7 @@ export default function SiteStatsBar() {
           {stats.map((s, i) => (
             <div
               key={i}
+              className="usp-stat-col"
               style={{
                 flex: "1 1 0",
                 minWidth: "120px",
