@@ -83,7 +83,8 @@ export default function SiteHero() {
               style={{
                 fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                 fontWeight: 800,
-                fontSize: "clamp(2.5rem, 7.5vw, 5.75rem)",
+                fontSize: "clamp(2rem, 5.5vw, 4.5rem)",
+                textTransform: "uppercase",
                 letterSpacing: "-0.028em",
                 color: "#FFFFFF",
               }}
