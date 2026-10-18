@@ -5,10 +5,10 @@ import { Star, ShieldCheck, Leaf, CircleCheck } from "lucide-react";
 type Stat = { title: string; label: React.ReactNode; icon: React.ReactNode };
 
 const stats: Stat[] = [
-  { title: "4,9/5 op Google",  label: "150+ daken gereinigd",          icon: <Star        size={26} color="#9BCB6C" /> },
-  { title: "Vaste prijs",      label: "Geen verrassingen achteraf",    icon: <ShieldCheck size={26} color="#9BCB6C" /> },
-  { title: "Dubbele garantie", label: "2 jaar mosvrij, 10 jaar coating", icon: <Leaf        size={26} color="#9BCB6C" /> },
-  { title: "Schadevrij",       label: "Veilig voor je dakpannen",      icon: <CircleCheck size={26} color="#9BCB6C" /> },
+  { title: "5/5 op Google",    label: "Meer dan 150 daken gereinigd",           icon: <Star        size={26} color="#9BCB6C" /> },
+  { title: "Vaste prijs",      label: "Geen verrassingen achteraf",             icon: <ShieldCheck size={26} color="#9BCB6C" /> },
+  { title: "Dubbele garantie", label: "2 jaar mosvrij, 10 jaar op de coating",  icon: <Leaf        size={26} color="#9BCB6C" /> },
+  { title: "Schadevrij",       label: "Veilig voor je dakpannen",               icon: <CircleCheck size={26} color="#9BCB6C" /> },
 ];
 
 function UspStat({ title, label, icon }: Stat) {
