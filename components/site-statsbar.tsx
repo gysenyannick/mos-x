@@ -13,7 +13,7 @@ const stats: Stat[] = [
 
 function UspStat({ title, label, icon }: Stat) {
   return (
-    <div className="usp-stat-inner" style={{ padding: "0 32px" }}>
+    <div className="usp-stat-inner" style={{ padding: "0 24px" }}>
       <div className="usp-stat-icon" style={{ marginBottom: "14px" }}>
         {icon}
       </div>
@@ -30,6 +30,7 @@ function UspStat({ title, label, icon }: Stat) {
         fontSize: "13px",
         fontWeight: 500,
         fontFamily: "var(--font-inter), system-ui, sans-serif",
+        whiteSpace: "nowrap",
       }}>{label}</p>
     </div>
   );
@@ -41,17 +42,8 @@ export default function SiteStatsBar() {
       <style>{`
         @media (max-width: 640px) {
           .usp-stats-wrap {
-            padding: 24px 12px !important;
-            display: grid !important;
-            grid-template-columns: 1fr 1fr;
-            row-gap: 28px;
-          }
-          .usp-stat-col {
-            border-left: none !important;
-          }
-          .usp-stat-inner {
-            padding: 0 8px !important;
-            text-align: center;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
           }
           .usp-stat-icon {
             display: flex;
@@ -69,7 +61,7 @@ export default function SiteStatsBar() {
             background: "transparent",
             border: "none",
             borderRadius: "16px",
-            padding: "28px 40px",
+            padding: "28px 0",
             flexWrap: "wrap",
             overflow: "hidden",
           }}
@@ -79,7 +71,7 @@ export default function SiteStatsBar() {
               key={i}
               className="usp-stat-col"
               style={{
-                flex: "1 1 0",
+                flex: "1 1 auto",
                 minWidth: "120px",
                 borderLeft: i > 0 ? "1px solid #E5E7EB" : "none",
                 position: "relative",
