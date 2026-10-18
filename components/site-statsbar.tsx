@@ -1,13 +1,14 @@
 "use client";
 
-import { ShieldCheck, Home, MapPin } from "lucide-react";
+import { Star, ShieldCheck, Leaf, CircleCheck } from "lucide-react";
 
 type Stat = { title: string; label: React.ReactNode; icon: React.ReactNode };
 
 const stats: Stat[] = [
-  { title: "Tot 10 jaar garantie",  label: "Bescherming op onze premium coatings.",  icon: <ShieldCheck size={28} color="#9BCB6C" /> },
-  { title: "150+ daken gereinigd",  label: "Van reiniging tot complete bescherming.", icon: <Home        size={28} color="#9BCB6C" /> },
-  { title: "Actief in de regio's",  label: "Antwerpen, Limburg, Vlaams-Brabant",      icon: <MapPin      size={28} color="#9BCB6C" /> },
+  { title: "4,9/5 op Google",                label: "150+ daken gereinigd in de regio Antwerpen & Kempen", icon: <Star        size={28} color="#9BCB6C" /> },
+  { title: "Vaste prijs, geen verrassingen", label: "De prijs op je offerte is de prijs op je factuur.",   icon: <ShieldCheck size={28} color="#9BCB6C" /> },
+  { title: "Dubbele garantie",               label: "2 jaar mosvrij na reiniging. 10 jaar op je coating.", icon: <Leaf        size={28} color="#9BCB6C" /> },
+  { title: "Schadevrij reinigen",            label: "We reinigen zonder je dakpannen te beschadigen.",     icon: <CircleCheck size={28} color="#9BCB6C" /> },
 ];
 
 function UspStat({ title, label, icon }: Stat) {
