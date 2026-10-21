@@ -78,10 +78,6 @@ function statusZin(k: Klant, volgende?: Afspraak): string {
   const werken = k.werken ?? [];
   const bezig = werken.find((w) => w.status === "bezig");
   switch (k.fase) {
-    case "aanvraag":
-      return k.documenten.some((d) => d.type === "offerte")
-        ? "Je offerte staat klaar. Bekijk ze rustig en laat me weten wat je ervan vindt."
-        : "Ik bekijk je aanvraag en maak je offerte op.";
     case "gepland":
       if (k.start?.precisie === "dag") return `Je werken starten op ${fmtDag(k.start.datum)}. Yannick komt zelf.`;
       if (k.start) return `Je werken staan voorlopig gepland in ${k.start.precisie === "week" ? `de week van ${fmtDagMaand(maandagVan(k.start.datum))}` : fmtMaand(k.start.datum)}.`;
@@ -157,10 +153,6 @@ function volgendeStap(k: Klant, volgende?: Afspraak, controle?: { datum: string 
   if (open.length) return { tekst: `Er staat ${open.length === 1 ? "een factuur" : `${open.length} facturen`} voor je klaar om te betalen.`, href: "documenten", icoon: Wallet };
   if (volgende) return { tekst: `Volgende afspraak: ${volgende.titel.toLowerCase()} op ${fmtDag(volgende.start)} om ${fmtUur(volgende.start)}.`, href: "agenda", icoon: CalendarDays };
   switch (k.fase) {
-    case "aanvraag":
-      return k.documenten.some((d) => d.type === "offerte")
-        ? { tekst: "Je offerte staat klaar. Bekijk hem rustig en laat me weten wat je ervan vindt.", href: "documenten", icoon: FileText }
-        : { tekst: "Ik maak je offerte op. Je vindt hem straks bij Documenten.", href: "documenten", icoon: FileText };
     case "gepland": return { tekst: "Je werken staan gepland. Je startdatum en praktische info vind je in de agenda.", href: "agenda", icoon: CalendarDays };
     case "bezig": return { tekst: "Ik ben aan het werk. Volg de vooruitgang via de werffoto's.", href: "fotos", icoon: Camera };
     case "klaar": return { tekst: "Je dak is klaar! Bekijk het verschil voor en na.", href: "fotos", icoon: Sparkles };

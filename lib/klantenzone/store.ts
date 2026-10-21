@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
-import type { Klant, VrijMoment } from "./types";
+import { normaliseerFase, type Klant, type VrijMoment } from "./types";
 
 /**
  * Opslag van de klantenzone.
@@ -131,7 +131,9 @@ const sloten = new Map<string, number>();
 
 export async function getKlant(id: string): Promise<Klant | null> {
   if (!/^[A-Za-z0-9_-]{16,64}$/.test(id)) return null;
-  return (await backend()).get<Klant>(KEY_KLANT(id));
+  const k = await (await backend()).get<Klant>(KEY_KLANT(id));
+  if (k) k.fase = normaliseerFase(k.fase);
+  return k;
 }
 
 export async function saveKlant(k: Klant): Promise<void> {
@@ -177,7 +179,8 @@ export async function deleteKlant(id: string): Promise<void> {
 export async function listKlanten(): Promise<Klant[]> {
   const b = await backend();
   const ids = await b.smembers(KEY_KLANTEN);
-  const klanten = await Promise.all(ids.map((id) => b.get<Klant>(KEY_KLANT(id))));
+  const klanten = (await Promise.all(ids.map((id) => b.get<Klant>(KEY_KLANT(id)))))
+    .map((k) => (k ? { ...k, fase: normaliseerFase(k.fase) } : k));
   return klanten
     .filter((k): k is Klant => !!k)
     .sort((a, b) => b.bijgewerkt.localeCompare(a.bijgewerkt));

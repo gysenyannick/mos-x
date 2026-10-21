@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-  Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, FileText, Hammer, Plus, ShieldCheck, Users, Wrench,
+  Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, Hammer, Plus, ShieldCheck, Users, Wrench,
 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
@@ -37,10 +37,9 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
   // Cijferkaarten bovenaan; klikken filtert de tabel (zoals in Beavr)
   const filters = [
     { id: "alle", label: "Alle klanten", icoon: Users, tint: kz.tintPaars, lijst: klanten },
-    { id: "aanvraag", label: "Aanvraag", icoon: FileText, tint: kz.tintBlauw, lijst: klanten.filter((k) => k.fase === "aanvraag") },
-    { id: "gepland", label: "Gepland", icoon: CalendarDays, tint: kz.tintBlauw, lijst: klanten.filter((k) => k.fase === "gepland") },
-    { id: "bezig", label: "Aan het werk", icoon: Hammer, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "bezig") },
-    { id: "nazorg", label: "Nazorg", icoon: CheckCircle2, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "klaar" || k.fase === "nazorg") },
+    { id: "gepland", label: "Planning", icoon: CalendarDays, tint: kz.tintBlauw, lijst: klanten.filter((k) => k.fase === "gepland") },
+    { id: "bezig", label: "Uitvoering", icoon: Hammer, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "bezig") },
+    { id: "nazorg", label: "Oplevering en nazorg", icoon: CheckCircle2, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "klaar" || k.fase === "nazorg") },
     { id: "dakzorg", label: "Dakzorg-leden", icoon: ShieldCheck, tint: kz.tintOranje, lijst: klanten.filter((k) => k.dakzorg?.actief) },
   ];
   const gevraagd = (await searchParams).filter;

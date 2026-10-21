@@ -5,29 +5,35 @@
  * (mos-x.be/klant/<id>); de id is lang en willekeurig en werkt dus als sleutel.
  */
 
-export const FASES = ["aanvraag", "gepland", "bezig", "klaar", "nazorg"] as const;
+/**
+ * De vier stappen van een werf. Een klantenzone krijg je pas als je klant bent,
+ * dus er is geen stap "aanvraag": het begint bij de planning.
+ */
+export const FASES = ["gepland", "bezig", "klaar", "nazorg"] as const;
 export type Fase = (typeof FASES)[number];
 
 export const FASE_LABEL: Record<Fase, string> = {
-  aanvraag: "Aanvraag",
-  gepland: "Gepland",
-  bezig: "Aan het werk",
-  klaar: "Klaar",
+  gepland: "Planning",
+  bezig: "Uitvoering",
+  klaar: "Oplevering",
   nazorg: "Nazorg",
 };
 
-/** Nog kortere namen voor de stappenbalk (passen op een smalle gsm) */
+/** Namen in de stappenbalk */
 export const FASE_KORT: Record<Fase, string> = {
-  aanvraag: "Aanvraag",
-  gepland: "Gepland",
-  bezig: "Werken",
-  klaar: "Klaar",
+  gepland: "Planning",
+  bezig: "Uitvoering",
+  klaar: "Oplevering",
   nazorg: "Nazorg",
 };
+
+/** Oude dossiers kunnen nog "aanvraag" hebben: die tellen als planning. */
+export function normaliseerFase(f: string): Fase {
+  return (FASES as readonly string[]).includes(f) ? (f as Fase) : "gepland";
+}
 
 /** Korte uitleg per fase, zoals de klant ze ziet. */
 export const FASE_UITLEG: Record<Fase, string> = {
-  aanvraag: "Ik bekijk je aanvraag en maak je offerte op.",
   gepland: "Je werken staan ingepland. Hieronder zie je wanneer ik kom.",
   bezig: "Ik ben met je dak bezig. Foto's van de werf verschijnen hieronder.",
   klaar: "Je dak is klaar. Je garantie loopt vanaf vandaag.",

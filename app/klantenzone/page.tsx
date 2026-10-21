@@ -18,7 +18,7 @@ const WA = "https://wa.me/32468352869";
 const H = { fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, letterSpacing: "-0.028em" } as const;
 
 const wat = [
-  { icoon: ListChecks, titel: "Waar je dak staat", tekst: "Aanvraag, gepland, aan het werk, klaar, nazorg. Je ziet in één oogopslag in welke stap je zit en wat er nog komt." },
+  { icoon: ListChecks, titel: "Waar je dak staat", tekst: "Planning, uitvoering, oplevering, nazorg. Je ziet in één oogopslag in welke stap je werf zit en wat er nog komt." },
   { icoon: CalendarDays, titel: "Je startdatum", tekst: "Ligt je dag vast, dan staat hij op je pagina. Nog niet helemaal zeker? Dan zie je al de week of de maand." },
   { icoon: Camera, titel: "Foto's van je dak", tekst: "Ik fotografeer je dak voor, tijdens en na de werken. Zo zie je het verschil, ook als je zelf niet thuis bent." },
   { icoon: FileText, titel: "Offerte en factuur", tekst: "Al je documenten bij elkaar, met wat al betaald is en wat nog openstaat. Downloaden wanneer het jou past." },
@@ -60,15 +60,15 @@ function Telefoon() {
           backgroundImage: "radial-gradient(120% 140% at 100% 0%, rgba(155,203,108,.3) 0%, rgba(155,203,108,0) 55%)" }}>
           <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)" }}>Goedemorgen Jan,</div>
           <div style={{ ...H, fontSize: 20, lineHeight: 1.1, margin: "4px 0 10px" }}>Zo staat het met <span style={{ color: GROEN }}>je dak</span>.</div>
-          <span style={{ fontSize: 11, background: GROEN, borderRadius: 99, padding: "4px 10px", fontWeight: 600 }}>● Gepland</span>
+          <span style={{ fontSize: 11, background: GROEN, borderRadius: 99, padding: "4px 10px", fontWeight: 600 }}>● Planning</span>
         </div>
         <div style={{ padding: 12, display: "grid", gap: 8 }}>
           <div style={{ display: "flex", justifyContent: "space-between", background: "#fff", borderRadius: 12, padding: "10px 8px" }}>
-            {["Aanvraag", "Gepland", "Werk", "Klaar"].map((s, i) => (
-              <div key={s} style={{ textAlign: "center", fontSize: 9, color: i <= 1 ? "#1A1A1A" : "#999", flex: 1 }}>
+            {["Planning", "Uitvoering", "Oplevering", "Nazorg"].map((s, i) => (
+              <div key={s} style={{ textAlign: "center", fontSize: 9, color: i === 0 ? "#1A1A1A" : "#999", flex: 1 }}>
                 <div style={{ width: 18, height: 18, borderRadius: 99, margin: "0 auto 4px", display: "grid", placeItems: "center", fontSize: 9,
-                  background: i < 1 ? GROEN : "#fff", color: i < 1 ? "#fff" : i === 1 ? GROEN_D : "#999",
-                  border: `2px solid ${i <= 1 ? GROEN : "#E5E7EB"}` }}>{i < 1 ? "✓" : i + 1}</div>
+                  background: "#fff", color: i === 0 ? GROEN_D : "#999",
+                  border: `2px solid ${i === 0 ? GROEN : "#E5E7EB"}` }}>{i + 1}</div>
                 {s}
               </div>
             ))}
@@ -131,7 +131,7 @@ export default function KlantenzoneInfo() {
             Alles over je dak, <span style={{ color: GROEN }}>op één pagina.</span>
           </h2>
           <p style={{ textAlign: "center", color: "#545454", fontSize: 17, maxWidth: 560, margin: "0 auto 44px" }}>
-            Je pagina groeit mee: van je eerste aanvraag tot de nazorg, jaren na de werken.
+            Je pagina groeit mee: van de planning tot de nazorg, jaren na de werken.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 18 }}>
             {wat.map(({ icoon: Icoon, titel, tekst }) => (

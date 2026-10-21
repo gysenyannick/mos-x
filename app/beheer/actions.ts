@@ -76,7 +76,7 @@ export async function maakKlant(fd: FormData) {
     email: s(fd, "email"),
     adres: s(fd, "adres"),
     dienst: s(fd, "dienst") || "Dakreiniging",
-    fase: "aanvraag",
+    fase: "gepland",
     afspraken: [], fotos: [], documenten: [],
     garantie: { mosvrijJaren: 2, coatingJaren: s(fd, "dienst").toLowerCase().includes("coating") ? 10 : 0 },
     werken: werkenUitDienst(s(fd, "dienst") || "Dakreiniging"),

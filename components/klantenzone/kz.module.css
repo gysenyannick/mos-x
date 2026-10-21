@@ -724,7 +724,7 @@ a.volgendeStap:hover { border-color: var(--groen); }
 @media (max-width: 860px) { .alleenMobiel { display: block; } }
 
 /* Beheer: zes cijferkaarten en een tabel zoals in Beavr */
-.statRij6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 4px; }
+.statRij6 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 4px; }
 .statRij6 .stat { padding: 16px; }
 .statRij6 .statLabel { margin-top: 10px; font-size: 14px; }
 .statAan { border: 2px solid var(--donker); padding: 15px !important; box-shadow: 0 6px 18px -10px rgba(0,0,0,.3); }
@@ -815,7 +815,7 @@ a.volgendeStap:hover { border-color: var(--groen); }
   background: radial-gradient(90% 130% at 100% 0%, rgba(155,203,108,.25) 0%, rgba(155,203,108,0) 60%), var(--donker);
 }
 .appLabel { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--groen); }
-.appGroet { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 36px); letter-spacing: -0.025em; color: #fff; }
+.appGroet { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(22px, 6.6vw, 36px); letter-spacing: -0.025em; color: #fff; }
 .appStreep { display: block; width: 44px; height: 3px; border-radius: 3px; background: var(--groen); margin-top: 14px; }
 
 .statusKaart {
@@ -878,3 +878,5 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .statusStap { font-size: 11px; letter-spacing: .07em; }
   .dossierNr { font-size: 11px; padding: 3px 8px; }
 }
+
+@media (max-width: 360px) { .docKlik .rijTitel { font-size: 14px; } .docKlik { gap: 10px; } }
