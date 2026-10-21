@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   AppWindow, ArrowRight, Building2, CalendarDays, CalendarPlus, Camera, CheckCircle2, Clock, Droplets,
-  FileText, Hammer, Home, Info, LayoutDashboard, Leaf, MessageCircle, NotebookPen, ShieldCheck, Sparkles,
+  FileText, Hammer, Home, Info, LayoutDashboard, Leaf, NotebookPen, ShieldCheck, Sparkles,
   Sun, Tag, UserRound, Users, Wallet, Wrench, Grid3x3,
 } from "lucide-react";
 import { headers } from "next/headers";
@@ -24,7 +24,6 @@ import DocumentLijst from "@/components/klantenzone/document-lijst";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
 import MeerMenu from "@/components/klantenzone/meer-menu";
 import NietNuKnop from "@/components/klantenzone/niet-nu-knop";
-import UploadKnop from "@/components/klantenzone/upload";
 import VerzetKnop from "@/components/klantenzone/verzet-knop";
 import VoorNa from "@/components/klantenzone/voor-na";
 import kz from "@/components/klantenzone/kz.module.css";
@@ -43,7 +42,6 @@ const YANNICK_FOTO = "/images/Yannick%20foto%20op%20dak.JPEG";
 /** Menu links. De eerste vier staan op gsm ook onderaan, de rest onder "Meer". */
 const TABS = [
   { id: "overzicht", label: "Overzicht", icoon: LayoutDashboard },
-  { id: "agenda", label: "Agenda", icoon: CalendarDays },
   { id: "fotos", label: "Foto's", icoon: Camera },
   { id: "documenten", label: "Documenten", icoon: FileText },
   { id: "dak", label: "Mijn dak", icoon: Home },
@@ -52,7 +50,7 @@ const TABS = [
   { id: "logboek", label: "Logboek", icoon: NotebookPen },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
-const ONDERAAN: TabId[] = ["overzicht", "agenda", "fotos", "documenten"];
+const ONDERAAN: TabId[] = ["overzicht", "fotos", "documenten", "dak"];
 
 const EXTRA_ICOON: Record<(typeof EXTRAS)[number]["id"], typeof Droplets> = {
   goten: Droplets, gevel: Building2, oprit: Grid3x3, velux: AppWindow, zonnepanelen: Sun, herstelling: Hammer,
@@ -187,13 +185,6 @@ function kanVerzetten(a: Afspraak, ctx: Ctx) {
 
 /* ══ Overzicht ═════════════════════════════════════════════════════════════ */
 
-const FAQ = [
-  { v: "Moet ik thuis zijn tijdens de werken?", a: "Meestal niet. Zolang ik aan je dak kan en een buitenkraan mag gebruiken, kan ik aan de slag. Bij de start en de oplevering spreek ik graag even met je af." },
-  { v: "Wat als het regent?", a: "Een reiniging kan bij lichte regen, een coating niet: die heeft droog weer nodig. Schuift de planning op, dan zie je de nieuwe dag hier en krijg je een berichtje." },
-  { v: "Hoe betaal ik?", a: "Via overschrijving, met de gegevens op je factuur. Bij Documenten zie je altijd wat al betaald is en wat nog openstaat." },
-  { v: "Kan ik een afspraak verzetten?", a: "Ja. Tot 48 uur vooraf kies je zelf een ander vrij moment. Later nog? Stuur me een WhatsApp, dan zoeken we samen een oplossing." },
-  { v: "Hoe lang blijft deze link werken?", a: "Altijd. Ook na de werken vind je hier je foto's, documenten en garantie terug." },
-];
 
 function Overzicht(ctx: Ctx) {
   const { k, komend, controle } = ctx;
@@ -253,7 +244,6 @@ function Overzicht(ctx: Ctx) {
       <section className={kz.kaart}>
         <div className={kz.kaartKop}>
           <h2 className={kz.kaartTitel}><CalendarDays size={18} /> Jouw planning</h2>
-          {k.afspraken.length > 0 && <Link href="?tab=agenda" className={kz.meerLink}>Agenda <ArrowRight size={14} /></Link>}
         </div>
         {komend.length === 0 && !toonStart ? (
           <p className={kz.leeg}>Zodra je werken gepland zijn, zie je hier wanneer en hoe laat ik kom.</p>
@@ -275,6 +265,7 @@ function Overzicht(ctx: Ctx) {
                   <span className={kz.planningTitel}>{a.titel}</span>
                   <span className={kz.planningDatum}>{hfd(fmtDag(a.start))}</span>
                   <span className={kz.planningUur}><Clock size={13} /> {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)}</span>
+                  {(a.info || AFSPRAAK_TIPS[a.titel]) && <span className={kz.planningInfo}>{a.info || AFSPRAAK_TIPS[a.titel]}</span>}
                 </span>
                 {kanVerzetten(a, ctx) && (
                   <span className={kz.planningActie}>
@@ -327,58 +318,6 @@ function Overzicht(ctx: Ctx) {
         <DocumentLijst documenten={prijsDocs} labels={labels} />
       </section>}
 
-      {/* 6. Veelgestelde vragen */}
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><MessageCircle size={18} /> Veelgestelde vragen</h2></div>
-        <div>
-          {FAQ.map((f) => (
-            <details key={f.v} className={kz.faq}>
-              <summary>{f.v}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-    </>
-  );
-}
-
-/* ══ Agenda ════════════════════════════════════════════════════════════════ */
-
-function AfspraakKaart({ a, ctx, uitgelicht }: { a: Afspraak; ctx: Ctx; uitgelicht?: boolean }) {
-  const { k } = ctx;
-  const info = a.info || AFSPRAAK_TIPS[a.titel];
-  const dagen = dagenTot(a.start);
-  return (
-    <section className={`${kz.kaart} ${uitgelicht ? kz.kaartUitgelicht : ""}`}>
-      <div className={kz.afspraakGroot}>
-        <DatumBlok start={a.start} groot />
-        <div style={{ minWidth: 0 }}>
-          {uitgelicht && <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ marginBottom: 8 }}>{dagen === 0 ? "Vandaag" : dagen === 1 ? "Morgen" : `Over ${dagen} dagen`}</span>}
-          <p className={kz.groot} style={{ fontSize: 20 }}>{a.titel}</p>
-          <div className={kz.metaRij}>
-            <span><CalendarDays size={15} /> {hfd(fmtDag(a.start))}</span>
-            <span><Clock size={15} /> {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)}</span>
-          </div>
-          {info && <div className={kz.infoBlok}><Info size={16} /><span>{info}</span></div>}
-          {kanVerzetten(a, ctx) && <div className={kz.rijKnoppen}>
-            <VerzetKnop klantId={k.id} afspraakId={a.id} titel={`${a.titel}, nu op ${fmtDag(a.start)} om ${fmtUur(a.start)}`} momenten={ctx.vrijeMomenten} dagLabels={ctx.dagLabels} />
-          </div>}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Agenda(ctx: Ctx) {
-  const { komend } = ctx;
-  return (
-    <>
-      <PaginaKop titel="Agenda" teller={komend.length} sub={`Je afspraken op een rij. Tot ${VERZET_UREN} uur vooraf kies je zelf een ander moment.`} />
-      {komend.length === 0 ? (
-        <Leeg>Er staan nu geen afspraken gepland. Zodra er iets vastligt, zie je het hier en krijg je een berichtje.</Leeg>
-      ) : komend.map((a, i) => <AfspraakKaart key={a.id} a={a} ctx={ctx} uitgelicht={i === 0} />)}
-
     </>
   );
 }
@@ -396,7 +335,6 @@ function Fotos({ k }: Ctx) {
         titel="Foto's"
         teller={k.fotos.length}
         sub="Inspectie, voor, tijdens en na. Tik op een foto om ze groot te bekijken."
-        rechts={<UploadKnop klantId={k.id} soort="foto" label="Foto toevoegen" licht meerdere />}
       />
       {voor && na && (
         <section className={kz.kaart}>
@@ -681,13 +619,12 @@ export default async function KlantPagina({
   const p = k.paspoort ?? {};
   const zichtbaar: Record<TabId, boolean> = {
     overzicht: true,
-    agenda: k.afspraken.length > 0,
-    fotos: true, // ook leeg tonen: de klant kan er zelf een foto toevoegen
+    fotos: k.fotos.length > 0,
     documenten: k.documenten.length > 0,
     dak: (k.aanbevelingen ?? []).some((a) => a.status !== "gedaan" && a.status !== "nietnu") || !!p.aandachtspunten
       || !!k.garantie.vanaf || !!controle,
-    extras: true,
-    acties: acties.length > 0 || k.fase === "klaar" || k.fase === "nazorg",
+    extras: k.fase !== "gepland", // pas als ik ter plaatse ben, niet al bij de planning
+    acties: k.fase !== "gepland" && (acties.length > 0 || k.fase === "klaar" || k.fase === "nazorg"),
     logboek: (k.notities ?? []).length > 0 || (k.behandelingen ?? []).length > 0,
   };
   const tabs = TABS.filter((t) => zichtbaar[t.id]);
@@ -715,7 +652,6 @@ export default async function KlantPagina({
   const openAanb = (k.aanbevelingen ?? []).filter((a) => a.status === "open");
   const openDocs = k.documenten.filter((d) => d.status === "open").length;
   const teller: Partial<Record<TabId, { n: number; amber?: boolean }>> = {
-    agenda: ctx.komend.length ? { n: ctx.komend.length } : undefined,
     fotos: k.fotos.length ? { n: k.fotos.length } : undefined,
     documenten: openDocs ? { n: openDocs, amber: true } : k.documenten.length ? { n: k.documenten.length } : undefined,
     dak: openAanb.length ? { n: openAanb.length, amber: true } : undefined,
@@ -739,9 +675,6 @@ export default async function KlantPagina({
 
       <div className={kz.dash}>
         <aside className={kz.zijbalk}>
-          <a className={`${kz.knop} ${kz.knopPrimair} ${kz.zijKnop}`} href={waLink(k)} target="_blank" rel="noopener noreferrer">
-            <WaIcoon size={17} /> Vraag aan Yannick
-          </a>
           <nav aria-label="Klantenzone">
             <ul className={kz.navLijst}>
               {tabs.map((t) => (
@@ -767,7 +700,6 @@ export default async function KlantPagina({
 
         <div className={kz.inhoud}>
           {tab === "overzicht" && <Overzicht {...ctx} />}
-          {tab === "agenda" && <Agenda {...ctx} />}
           {tab === "fotos" && <Fotos {...ctx} />}
           {tab === "documenten" && <Documenten {...ctx} />}
           {tab === "dak" && <MijnDak {...ctx} />}

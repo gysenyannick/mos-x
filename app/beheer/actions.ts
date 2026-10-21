@@ -268,16 +268,8 @@ export async function verwijderMoment(momentId: string) {
 
 export async function bewaarPaspoort(id: string, fd: FormData) {
   const k = await laad(id);
-  k.paspoort = {
-    daktype: s(fd, "daktype") || undefined,
-    oppervlakte: n(fd, "oppervlakte"),
-    bouwjaar: s(fd, "bouwjaar") || undefined,
-    kleur: s(fd, "kleur") || undefined,
-    zonnepanelen: s(fd, "zonnepanelen") === "ja" ? true : s(fd, "zonnepanelen") === "nee" ? false : undefined,
-    dakvensters: n(fd, "dakvensters"),
-    goten: s(fd, "goten") || undefined,
-    aandachtspunten: s(fd, "aandachtspunten") || undefined,
-  };
+  // Enkel wat de klant ziet; andere velden blijven ongemoeid
+  k.paspoort = { ...k.paspoort, aandachtspunten: s(fd, "aandachtspunten") || undefined };
   k.volgendeControle = s(fd, "volgendeControle") || undefined;
   await saveKlant(k);
   ververs(id);

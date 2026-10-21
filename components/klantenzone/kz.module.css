@@ -724,7 +724,7 @@ a.volgendeStap:hover { border-color: var(--groen); }
 @media (max-width: 860px) { .alleenMobiel { display: block; } }
 
 /* Beheer: zes cijferkaarten en een tabel zoals in Beavr */
-.statRij6 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 4px; }
+.statRij6 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 4px; }
 .statRij6 .stat { padding: 16px; }
 .statRij6 .statLabel { margin-top: 10px; font-size: 14px; }
 .statAan { border: 2px solid var(--donker); padding: 15px !important; box-shadow: 0 6px 18px -10px rgba(0,0,0,.3); }
@@ -963,3 +963,6 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .docKlik { align-items: center; }
 @media (max-width: 560px) { .docKlik .rijIcoon { display: none; } }
 @media (max-width: 360px) { .rijRechts { gap: 6px; } .rijRechts .badge { padding: 3px 8px; font-size: 12px; } .docKlik .rijTitel { font-size: 13.5px; } }
+
+/* Praktische uitleg bij een afspraak in de planning */
+.planningInfo { display: block; margin-top: 6px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }

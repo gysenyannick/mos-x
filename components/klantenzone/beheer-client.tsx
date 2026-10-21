@@ -107,7 +107,6 @@ export function DocumentUpload({ klantId }: { klantId: string }) {
             <option value="oplevering">Opleveringsverslag</option>
             <option value="inspectie">Inspectierapport</option>
             <option value="fiche">Technische fiche (producten)</option>
-            <option value="product">Foto van gebruikt product</option>
           </optgroup>
           <option value="andere">Ander document</option>
         </select>

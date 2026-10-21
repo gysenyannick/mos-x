@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-  Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, Hammer, Plus, ShieldCheck, Users, Wrench,
+  Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, Hammer, Plus, Users, Wrench,
 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
@@ -31,7 +31,7 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
     }
     const c = volgendeControle(k);
     if (c && controleBinnen(c.datum) <= 30 && !(k.aanvragen ?? []).some((a) => a.soort === "onderhoud" && a.status === "nieuw")) {
-      taken.push({ klantId: k.id, naam, icoon: "controle", tekst: `Controle ${controleBinnen(c.datum) < 0 ? "was" : "is"} aangeraden in ${fmtMaand(c.datum)}${k.dakzorg?.actief ? " (Dakzorg)" : ""}`, datum: c.datum });
+      taken.push({ klantId: k.id, naam, icoon: "controle", tekst: `Controle ${controleBinnen(c.datum) < 0 ? "was" : "is"} aangeraden in ${fmtMaand(c.datum)}`, datum: c.datum });
     }
   }
   taken.sort((a, b) => b.datum.localeCompare(a.datum));
@@ -42,7 +42,6 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
     { id: "gepland", label: "Planning", icoon: CalendarDays, tint: kz.tintBlauw, lijst: klanten.filter((k) => k.fase === "gepland") },
     { id: "bezig", label: "Uitvoering", icoon: Hammer, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "bezig") },
     { id: "nazorg", label: "Oplevering en nazorg", icoon: CheckCircle2, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "klaar" || k.fase === "nazorg") },
-    { id: "dakzorg", label: "Dakzorg-leden", icoon: ShieldCheck, tint: kz.tintOranje, lijst: klanten.filter((k) => k.dakzorg?.actief) },
   ];
   const gevraagd = (await searchParams).filter;
   const filter = filters.some((f) => f.id === gevraagd) ? gevraagd! : "alle";
@@ -132,7 +131,6 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
                       <td className={kz.verbergMobiel} style={{ whiteSpace: "nowrap" }}>{k.start ? (k.start.precisie === "dag" ? fmtKort(k.start.datum) : `± ${fmtMaand(k.start.datum)}`) : "—"}</td>
                       <td>
                         <span className={`${kz.badge} ${k.fase === "bezig" ? kz.badgeGroen : ""}`}>{FASE_LABEL[k.fase]}</span>
-                        {k.dakzorg?.actief && <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ marginLeft: 4 }}>Dakzorg</span>}
                       </td>
                       <td className={kz.verbergMobiel} style={{ textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>{open ? fmtEuro(open) : "—"}</td>
                       <td style={{ textAlign: "right" }}><Link href={`/beheer/${k.id}`} className={kz.icoonKnop} aria-label={`Open ${k.voornaam}`}><ChevronRight size={16} /></Link></td>

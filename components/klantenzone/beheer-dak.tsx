@@ -1,7 +1,7 @@
-import { Bell, ClipboardList, Home, Lightbulb, ShieldCheck, Trash2, Users, Wrench } from "lucide-react";
+import { Bell, ClipboardList, Home, Lightbulb, Trash2, Users, Wrench } from "lucide-react";
 import {
   verwijderWerk, voegWerkToe, zetWerkStatus,
-  bewaarDakzorg, bewaarPaspoort, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
+  bewaarPaspoort, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
   zetAanbevelingStatus, zetAanvraagStatus, zetVerwijzingStatus,
 } from "@/app/beheer/actions";
 import { volgendeControle } from "@/lib/klantenzone/onderhoud";
@@ -90,29 +90,10 @@ export function BeheerDak({ k }: { k: Klant }) {
 
       {/* ── Dakpaspoort ── */}
       <section className={kz.kaart}>
-        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Home size={18} /> Dakpaspoort en onderhoud</h2>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>De klant ziet dit bij &quot;Mijn dak&quot;. Lege velden worden niet getoond.</p>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Home size={18} /> Mijn dak</h2>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>De klant ziet dit bij &quot;Mijn dak&quot;.</p>
         <form action={bewaarPaspoort.bind(null, k.id)}>
           <div className={kz.velden}>
-            <div className={kz.veld}>
-              <label htmlFor="daktype">Daktype</label>
-              <input id="daktype" name="daktype" list="daktypes" defaultValue={p.daktype ?? ""} className={kz.invoer} />
-              <datalist id="daktypes">
-                <option value="Betonpannen" /><option value="Keramische pannen" /><option value="Natuurleien" />
-                <option value="Kunstleien (vezelcement)" /><option value="Golfplaten" />
-              </datalist>
-            </div>
-            <div className={kz.veld}><label htmlFor="oppervlakte">Oppervlakte (m²)</label><input id="oppervlakte" name="oppervlakte" type="number" min={0} defaultValue={p.oppervlakte ?? ""} className={kz.invoer} /></div>
-            <div className={kz.veld}><label htmlFor="bouwjaar">Bouwjaar woning</label><input id="bouwjaar" name="bouwjaar" defaultValue={p.bouwjaar ?? ""} className={kz.invoer} placeholder="bv. 1985" /></div>
-            <div className={kz.veld}><label htmlFor="kleur">Kleur dak</label><input id="kleur" name="kleur" defaultValue={p.kleur ?? ""} className={kz.invoer} placeholder="bv. Antraciet" /></div>
-            <div className={kz.veld}>
-              <label htmlFor="zonnepanelen">Zonnepanelen</label>
-              <select id="zonnepanelen" name="zonnepanelen" defaultValue={p.zonnepanelen === undefined ? "" : p.zonnepanelen ? "ja" : "nee"} className={kz.invoer}>
-                <option value="">Niet ingevuld</option><option value="ja">Ja</option><option value="nee">Nee</option>
-              </select>
-            </div>
-            <div className={kz.veld}><label htmlFor="dakvensters">Aantal dakvensters</label><input id="dakvensters" name="dakvensters" type="number" min={0} defaultValue={p.dakvensters ?? ""} className={kz.invoer} /></div>
-            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="goten">Dakgoten</label><input id="goten" name="goten" defaultValue={p.goten ?? ""} className={kz.invoer} placeholder="bv. Zinken bakgoot voor, hanggoot achter" /></div>
             <div className={`${kz.veld} ${kz.vol}`}>
               <label htmlFor="aandachtspunten">Waar je op let (één per regel)</label>
               <textarea id="aandachtspunten" name="aandachtspunten" defaultValue={p.aandachtspunten ?? ""} className={kz.invoer} placeholder={"Noordkant: veel schaduw, mos komt sneller terug\nNok: mortel in het oog houden"} />
@@ -122,7 +103,7 @@ export function BeheerDak({ k }: { k: Klant }) {
               <input id="volgendeControle" name="volgendeControle" type="date" defaultValue={k.volgendeControle ?? ""} className={kz.invoer} />
             </div>
           </div>
-          <div className={kz.rijKnoppen}><button className={kz.knop}>Dakpaspoort opslaan</button></div>
+          <div className={kz.rijKnoppen}><button className={kz.knop}>Opslaan</button></div>
         </form>
       </section>
 
@@ -205,25 +186,7 @@ export function BeheerDak({ k }: { k: Klant }) {
         </form>
       </section>
 
-      <div className={kz.grid2} style={{ alignItems: "start", marginTop: 14 }}>
-        {/* ── Dakzorg ── */}
-        <section className={kz.kaart}>
-          <h2 className={kz.kaartTitel} style={{ marginBottom: 14 }}><ShieldCheck size={18} /> MOS-X Dakzorg</h2>
-          <form action={bewaarDakzorg.bind(null, k.id)}>
-            <div className={kz.velden}>
-              <div className={kz.veld}>
-                <label htmlFor="dzactief">Lid</label>
-                <select id="dzactief" name="actief" defaultValue={k.dakzorg?.actief ? "ja" : "nee"} className={kz.invoer}>
-                  <option value="nee">Nee</option><option value="ja">Ja, actief</option>
-                </select>
-              </div>
-              <div className={kz.veld}><label htmlFor="dzsinds">Sinds</label><input id="dzsinds" name="sinds" type="date" defaultValue={k.dakzorg?.sinds ?? ""} className={kz.invoer} /></div>
-              <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="dzprijs">Formule / prijs (klant ziet dit)</label><input id="dzprijs" name="prijs" defaultValue={k.dakzorg?.prijs ?? ""} className={kz.invoer} placeholder="bv. € 195 per jaar" /></div>
-            </div>
-            <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Opslaan</button></div>
-          </form>
-        </section>
-
+      <div style={{ marginTop: 14 }}>
         {/* ── Doorverwijzingen ── */}
         <section className={kz.kaart}>
           <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Users size={18} /> Via de buurlink ({(k.verwijzingen ?? []).length})</h2>

@@ -103,7 +103,7 @@ export const DOC_GROEPEN: { titel: string; uitleg: string; types: DocType[] }[] 
   { titel: "Garanties", uitleg: "Bewaar ze goed: hiermee ben je zwart op wit gedekt.", types: ["garantie"] },
   { titel: "Offertes", uitleg: "Wat we afspraken, met de prijs vooraf.", types: ["offerte"] },
   { titel: "Verslagen", uitleg: "Wat ik vaststelde bij inspecties en bij de oplevering.", types: ["oplevering", "inspectie"] },
-  { titel: "Gebruikte producten", uitleg: "Technische fiches en foto's van de producten op je dak.", types: ["fiche", "product"] },
+  { titel: "Technische fiches", uitleg: "De producten die op je dak gebruikt zijn.", types: ["fiche", "product"] },
   { titel: "Andere documenten", uitleg: "", types: ["andere"] },
 ];
 
