@@ -98,6 +98,12 @@ export async function bewaarKlant(id: string, fd: FormData) {
   const precisie = (s(fd, "startPrecisie") || "dag") as Precisie;
   const oudStart = JSON.stringify(k.start ?? null);
   k.start = startDatum ? { datum: startDatum, precisie } : undefined;
+  // Vaste startdag gewijzigd? Dan schuift de afspraak "Start werken" mee (zelfde uur)
+  const startAfspraak = k.afspraken.find((a) => a.titel === "Start werken");
+  if (k.start?.precisie === "dag" && startAfspraak && startAfspraak.start.slice(0, 10) !== k.start.datum) {
+    startAfspraak.start = `${k.start.datum}${startAfspraak.start.slice(10)}`;
+    k.afspraken.sort((a, b) => a.start.localeCompare(b.start));
+  }
   if (JSON.stringify(k.start ?? null) !== oudStart && k.start) {
     k.log.unshift({
       datum: nu,
@@ -145,8 +151,11 @@ export async function voegAfspraakToe(id: string, fd: FormData) {
     start: `${datum}T${uur}`,
     duurMin: n(fd, "duurMin") ?? 60,
     titel: s(fd, "titel") || "Afspraak",
+    info: s(fd, "info") || undefined,
   });
   k.afspraken.sort((a, b) => a.start.localeCompare(b.start));
+  // "Start werken" legt meteen ook de startdatum vast: één datum, geen tegenspraak
+  if (s(fd, "titel") === "Start werken") k.start = { datum, precisie: "dag" };
   k.log.unshift({ datum: new Date().toISOString(), tekst: `Nieuwe afspraak: ${s(fd, "titel") || "Afspraak"}.` });
   await saveKlant(k);
   ververs(id);
@@ -155,6 +164,29 @@ export async function voegAfspraakToe(id: string, fd: FormData) {
 export async function verwijderAfspraak(id: string, afspraakId: string) {
   const k = await laad(id);
   k.afspraken = k.afspraken.filter((a) => a.id !== afspraakId);
+  await saveKlant(k);
+  ververs(id);
+}
+
+/* ── Notities (logboek voor de klant) ─────────────────────────────────────── */
+
+export async function voegNotitieToe(id: string, fd: FormData) {
+  const k = await laad(id);
+  const tekst = s(fd, "tekst");
+  if (!tekst) return;
+  (k.notities ??= []).unshift({
+    id: nieuwId(6),
+    datum: new Date().toISOString(),
+    titel: s(fd, "titel") || undefined,
+    tekst,
+  });
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function verwijderNotitie(id: string, notitieId: string) {
+  const k = await laad(id);
+  k.notities = (k.notities ?? []).filter((x) => x.id !== notitieId);
   await saveKlant(k);
   ververs(id);
 }

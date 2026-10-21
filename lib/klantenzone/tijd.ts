@@ -99,3 +99,22 @@ export function fmtEuro(n: number): string {
 export function nuMs(): number {
   return Date.now();
 }
+
+/** Einduur van een afspraak: "10u30" */
+export function eindUur(lokaal: string, duurMin: number): string {
+  const [h, m] = lokaal.slice(11, 16).split(":").map(Number);
+  const tot = h * 60 + m + duurMin;
+  return `${String(Math.floor(tot / 60) % 24).padStart(2, "0")}u${String(tot % 60).padStart(2, "0")}`;
+}
+
+/** "zo 3 nov., 14u05" voor logboek-items */
+export function fmtMoment(iso: string): string {
+  return new Intl.DateTimeFormat("nl-BE", {
+    timeZone: "Europe/Brussels", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
+  }).format(new Date(iso)).replace(":", "u");
+}
+
+/** Eerste letter als hoofdletter: "dinsdag 27 oktober" → "Dinsdag 27 oktober" */
+export function hfd(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}

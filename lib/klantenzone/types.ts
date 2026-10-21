@@ -39,6 +39,8 @@ export type Afspraak = {
   start: string;
   duurMin: number;
   titel: string;
+  /** Uitleg voor de klant: wat gebeurt er, wat moet hij voorzien */
+  info?: string;
 };
 
 export type FotoFase = "voor" | "tijdens" | "na" | "klant";
@@ -91,6 +93,15 @@ export type Garantie = {
   vanaf?: string;
 };
 
+/** Notitie van Yannick in het logboek van de klant */
+export type Notitie = {
+  id: string;
+  /** ISO-tijdstip */
+  datum: string;
+  titel?: string;
+  tekst: string;
+};
+
 export type LogItem = {
   /** ISO-tijdstip */
   datum: string;
@@ -113,6 +124,8 @@ export type Klant = {
   fotos: Foto[];
   documenten: Document[];
   garantie: Garantie;
+  /** Kan ontbreken bij dossiers van vóór deze functie */
+  notities?: Notitie[];
   log: LogItem[];
   aangemaakt: string;
   bijgewerkt: string;
@@ -124,6 +137,16 @@ export type VrijMoment = {
   /** YYYY-MM-DDTHH:mm, Belgische tijd */
   start: string;
   duurMin: number;
+};
+
+/** Standaarduitleg per soort afspraak, als Yannick zelf niets invult. */
+export const AFSPRAAK_TIPS: Record<string, string> = {
+  "Plaatsbezoek": "Ik kom je dak bekijken en bespreek met jou wat het nodig heeft. Reken op een halfuurtje. Je hoeft niets voor te bereiden.",
+  "Start werken": "Zorg dat de oprit of het stuk voor je woning vrij is, en dat ik een buitenkraan kan gebruiken. Thuis zijn hoeft niet.",
+  "Dakreiniging": "Hou ramen en dakvensters dicht tijdens de werken. Een buitenkraan in de buurt is handig.",
+  "Dakcoating": "De coating heeft droog weer nodig. Is het nat, dan verschuif ik in overleg. Hou ramen en dakvensters dicht.",
+  "Oplevering": "We lopen samen het resultaat na en ik overloop je garantie. Reken op een kwartiertje.",
+  "Nazorgbezoek": "Ik kom kijken hoe je dak erbij ligt. Gratis, je hoeft niets te doen.",
 };
 
 /** Hoe lang vooraf een klant een afspraak nog zelf mag verzetten. */

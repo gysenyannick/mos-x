@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, NotebookPen, Save, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getKlant } from "@/lib/klantenzone/store";
 import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
@@ -10,7 +10,7 @@ import FotoGalerij from "@/components/klantenzone/foto-galerij";
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
 import {
   bewaarKlant, nieuweLink, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
-  voegAfspraakToe, zetDocumentStatus,
+  verwijderNotitie, voegAfspraakToe, voegNotitieToe, zetDocumentStatus,
 } from "../actions";
 import kz from "@/components/klantenzone/kz.module.css";
 
@@ -144,6 +144,20 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
                 </div>
                 <div className={kz.veld}><label htmlFor="datum">Datum</label><input id="datum" name="datum" type="date" className={kz.invoer} required /></div>
                 <div className={kz.veld}><label htmlFor="uur">Uur</label><input id="uur" name="uur" type="time" defaultValue="09:00" className={kz.invoer} /></div>
+                <div className={kz.veld}>
+                  <label htmlFor="duurMin">Duur</label>
+                  <select id="duurMin" name="duurMin" className={kz.invoer} defaultValue="60">
+                    <option value="30">30 min</option>
+                    <option value="60">1 uur</option>
+                    <option value="120">2 uur</option>
+                    <option value="240">Halve dag</option>
+                    <option value="480">Hele dag</option>
+                  </select>
+                </div>
+                <div className={`${kz.veld} ${kz.vol}`}>
+                  <label htmlFor="info">Info voor de klant (leeg = standaardtekst)</label>
+                  <textarea id="info" name="info" className={kz.invoer} placeholder="bv. Ik kom met de hoogwerker, zet je auto even op straat?" />
+                </div>
               </div>
               <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Afspraak toevoegen</button></div>
             </form>
@@ -182,6 +196,33 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
           </section>
         </div>
       </div>
+
+      {/* ── Notities ── */}
+      <section className={kz.kaart}>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><NotebookPen size={18} /> Notities voor de klant ({(k.notities ?? []).length})</h2>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Verschijnen in het logboek van de klant: wat je zag op het dak, onderhoudstips, gemaakte afspraken.</p>
+        <form action={voegNotitieToe.bind(null, k.id)}>
+          <div className={kz.velden}>
+            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntitel">Titel (optioneel)</label><input id="ntitel" name="titel" className={kz.invoer} placeholder="bv. Twee gebroken pannen vervangen" /></div>
+            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntekst">Notitie</label><textarea id="ntekst" name="tekst" className={kz.invoer} required placeholder="bv. Aan de noordkant lagen twee pannen gebarsten. Die heb ik meteen vervangen, zonder extra kosten." /></div>
+          </div>
+          <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Notitie toevoegen</button></div>
+        </form>
+        {(k.notities ?? []).length > 0 && (
+          <ul className={kz.lijst} style={{ marginTop: 16 }}>
+            {(k.notities ?? []).map((n) => (
+              <li key={n.id} className={kz.rij} style={{ alignItems: "flex-start" }}>
+                <div className={kz.rijMidden}>
+                  {n.titel && <p className={kz.rijTitel}>{n.titel}</p>}
+                  <p className={kz.notitieTekst} style={{ fontSize: 14, marginTop: n.titel ? 2 : 0 }}>{n.tekst}</p>
+                  <p className={kz.rijSub}>{fmtKort(n.datum)}</p>
+                </div>
+                <BevestigKnop actie={verwijderNotitie.bind(null, k.id, n.id)} vraag="Notitie verwijderen?"><Trash2 size={14} /></BevestigKnop>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {/* ── Foto's ── */}
       <section className={kz.kaart}>
