@@ -957,3 +957,9 @@ a.volgendeStap:hover { border-color: var(--groen); }
 /* Bevestigingsregels: vinkje en tekst altijd naast elkaar */
 .ok { display: flex; gap: 6px; align-items: flex-start; }
 .ok svg { flex-shrink: 0; margin-top: 2px; vertical-align: 0 !important; }
+
+/* Documentrij: alles op één lijn, verticaal gecentreerd */
+.lijst .rij { align-items: center; }
+.docKlik { align-items: center; }
+@media (max-width: 560px) { .docKlik .rijIcoon { display: none; } }
+@media (max-width: 360px) { .rijRechts { gap: 6px; } .rijRechts .badge { padding: 3px 8px; font-size: 12px; } .docKlik .rijTitel { font-size: 13.5px; } }

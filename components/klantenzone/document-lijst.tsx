@@ -49,11 +49,11 @@ export default function DocumentLijst({ documenten, labels }: Props) {
                 <span className={kz.rijSub} style={{ display: "block" }}>
                   {DOC_TYPE_LABEL[d.type]} · {labels[d.id]?.datum}{labels[d.id]?.bedrag ? ` · ${labels[d.id].bedrag}` : ""}
                 </span>
-                {d.status === "betaald" && <span className={`${kz.badge} ${kz.badgeGroen} ${kz.docStatus}`}>Betaald</span>}
-                {d.status === "open" && <span className={`${kz.badge} ${kz.badgeAmber} ${kz.docStatus}`}>Te betalen</span>}
               </span>
             </button>
             <div className={kz.rijRechts}>
+              {d.status === "betaald" && <span className={`${kz.badge} ${kz.badgeGroen}`}>Betaald</span>}
+              {d.status === "open" && <span className={`${kz.badge} ${kz.badgeAmber}`}>Open</span>}
               <button type="button" className={`${kz.icoonKnop} ${kz.verbergMobiel}`} onClick={() => setOpen(d)} aria-label="Bekijken"><Eye size={16} /></button>
               <a className={kz.icoonKnop} href={d.url} download target="_blank" rel="noopener" aria-label="Downloaden"><Download size={16} /></a>
             </div>
