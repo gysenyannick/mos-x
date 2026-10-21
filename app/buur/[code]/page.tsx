@@ -25,7 +25,7 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
 
   return (
     <PageLayout>
-      <section style={{ background: "#F7F8F6", padding: "130px 0 80px", position: "relative", overflow: "hidden" }}>
+      <section className={kz.balans} style={{ background: "#F7F8F6", padding: "130px 0 80px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 60% at 85% 15%, rgba(155,203,108,0.14) 0%, rgba(155,203,108,0) 70%)" }} />
         <div className="site-wrap" style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(320px, 100%), 1fr))", gap: 40, alignItems: "start" }}>
           <div>

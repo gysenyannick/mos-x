@@ -64,7 +64,7 @@ export default async function BeheerOverzicht() {
         </section>
       )}
 
-      <section className={kz.kaart}>
+      <section className={`${kz.kaart} ${kz.balans}`}>
         <div className={kz.kaartKop}>
           <h1 className={kz.kaartTitel}>Klanten ({klanten.length})</h1>
         </div>
@@ -86,7 +86,8 @@ export default async function BeheerOverzicht() {
                   <tr key={k.id}>
                     <td>
                       <Link href={`/beheer/${k.id}`}>{k.voornaam} {k.achternaam}</Link>
-                      <div style={{ fontSize: 13, color: "#545454" }}>{k.dienst}{k.adres ? ` · ${k.adres}` : ""}</div>
+                      <div style={{ fontSize: 13, color: "#545454" }}>{k.dienst}</div>
+                      {k.adres && <div style={{ fontSize: 13, color: "#545454" }}>{k.adres}</div>}
                     </td>
                     <td>
                       <span className={`${kz.badge} ${k.fase === "klaar" || k.fase === "nazorg" ? kz.badgeGroen : ""}`}>{FASE_LABEL[k.fase]}</span>
@@ -105,7 +106,7 @@ export default async function BeheerOverzicht() {
       </section>
 
       {klaar && (
-        <section className={kz.kaart}>
+        <section className={`${kz.kaart} ${kz.balans}`}>
           <h2 className={kz.kaartTitel} style={{ marginBottom: 14 }}><Plus size={18} /> Nieuwe klant</h2>
           <form action={maakKlant}>
             <div className={kz.velden}>

@@ -4,6 +4,7 @@ import {
   CalendarDays, Camera, ChevronRight, Clock, FileText, Link2, ListChecks, MessageCircle, ShieldCheck,
 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
+import kz from "@/components/klantenzone/kz.module.css";
 
 export const metadata: Metadata = {
   title: "Jouw klantenzone | MOS-X",
@@ -80,7 +81,7 @@ export default function KlantenzoneInfo() {
   return (
     <PageLayout>
       {/* ── Hero ── */}
-      <section style={{ background: "#F7F8F6", padding: "140px 0 80px", position: "relative", overflow: "hidden" }}>
+      <section className={kz.balans} style={{ background: "#F7F8F6", padding: "140px 0 80px", position: "relative", overflow: "hidden" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 60% at 85% 20%, rgba(155,203,108,0.14) 0%, rgba(155,203,108,0) 70%)" }} />
         <div className="site-wrap" style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 48, alignItems: "center" }}>
           <div>
@@ -107,7 +108,7 @@ export default function KlantenzoneInfo() {
       </section>
 
       {/* ── Wat je ziet ── */}
-      <section style={{ background: "#fff", padding: "90px 0" }}>
+      <section className={kz.balans} style={{ background: "#fff", padding: "90px 0" }}>
         <div className="site-wrap">
           <h2 style={{ ...H, fontSize: "clamp(1.8rem, 3.6vw, 2.6rem)", color: "#1A1A1A", margin: "0 0 10px", textAlign: "center" }}>
             Alles over je dak, <span style={{ color: GROEN }}>op één pagina.</span>
@@ -128,7 +129,7 @@ export default function KlantenzoneInfo() {
       </section>
 
       {/* ── Zo werkt het ── */}
-      <section style={{ background: "#F7F8F6", padding: "90px 0" }}>
+      <section className={kz.balans} style={{ background: "#F7F8F6", padding: "90px 0" }}>
         <div className="site-wrap">
           <h2 style={{ ...H, fontSize: "clamp(1.8rem, 3.6vw, 2.6rem)", color: "#1A1A1A", margin: "0 0 44px", textAlign: "center" }}>
             Zo werkt het
@@ -146,7 +147,7 @@ export default function KlantenzoneInfo() {
       </section>
 
       {/* ── WhatsApp ── */}
-      <section style={{ background: "#fff", padding: "90px 0" }}>
+      <section className={kz.balans} style={{ background: "#fff", padding: "90px 0" }}>
         <div className="site-wrap" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 48, alignItems: "center" }}>
           <div>
             <h2 style={{ ...H, fontSize: "clamp(1.8rem, 3.6vw, 2.6rem)", color: "#1A1A1A", margin: "0 0 14px" }}>
@@ -163,10 +164,10 @@ export default function KlantenzoneInfo() {
           </div>
           <div aria-hidden="true" style={{ background: "#ECE5DD", borderRadius: 20, padding: 20, display: "grid", gap: 10, maxWidth: 420, width: "100%", justifySelf: "center" }}>
             <div style={{ justifySelf: "end", background: "#DCF8C6", borderRadius: "14px 14px 4px 14px", padding: "10px 12px", fontSize: 14, maxWidth: "85%" }}>
-              Hallo Yannick, weet je al wanneer je komt? <span style={{ fontSize: 11, color: "#7a8a6e", marginLeft: 6 }}>09:41</span>
+              Hallo Yannick, weet je al wanneer je komt?<span className={kz.chatTijd}>09:41</span>
             </div>
             <div style={{ justifySelf: "start", background: "#fff", borderRadius: "14px 14px 14px 4px", padding: "10px 12px", fontSize: 14, maxWidth: "85%" }}>
-              Dag Jan! Ik kom maandag 12 oktober om 8u. Op je pagina zie je alles staan, ook de foto&apos;s zodra ik begin. 👍 <span style={{ fontSize: 11, color: "#999", marginLeft: 6 }}>09:43</span>
+              Dag Jan! Ik kom maandag 12 oktober om 8u. Op je pagina zie je alles staan, ook de foto&apos;s zodra ik begin. 👍<span className={kz.chatTijd}>09:43</span>
             </div>
           </div>
         </div>

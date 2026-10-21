@@ -485,3 +485,129 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .aanbevelingFoto { width: 100%; height: 160px; }
   .kenmerken { grid-template-columns: 1fr 1fr; }
 }
+
+/* ══ Typografie: regels mooi verdelen ═════════════════════════════════════ */
+/* Alle tekst wordt gelijk over de regels verdeeld: geen los woord en geen halflege laatste regel.
+   (Browsers doen dit tot zo'n 6 regels; langere teksten krijgen minstens geen weeswoord.) */
+.page :is(h1, h2, h3, p, li, dd, dt, label, a, span, button, div, td),
+.balans :is(h1, h2, h3, p, li, dd, dt, label, a, span, button, div) { text-wrap: balance; }
+/* Lange Nederlandse woorden (voorschotfactuur, dakreiniging) mogen netjes afbreken op smalle vakken */
+.page :is(.tegelNieuws, .tegelWaarde, .rijTitel, .kenmerken dd, .werkNaam) { hyphens: auto; -webkit-hyphens: auto; }
+/* Korte labels en knoppen nooit afbreken (moet ná de regel hierboven, met hogere voorrang) */
+.page :is(.knop, .tab, .navItem, .onderItem, .tegelLabel, .label, .sectieTitel, .badge, .stapLabel, .datumWeekdag),
+.balans :is(.knop, .badge, .label) { text-wrap: nowrap; white-space: nowrap; }
+
+/* ══ Overzicht: vernieuwde kop ════════════════════════════════════════════ */
+.hero {
+  margin-top: 0; padding: 0; min-height: 220px; display: flex; align-items: stretch;
+  background: var(--donker);
+}
+.heroBeeld {
+  position: absolute; inset: 0 0 0 auto; width: 46%; height: 100%; object-fit: cover; opacity: .55;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 70%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 70%);
+}
+.heroInhoud {
+  position: relative; z-index: 1; padding: 28px 28px 24px; width: 100%;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(155,203,108,.22) 0%, rgba(155,203,108,0) 55%);
+}
+.heroGroet { font-size: 15px; color: rgba(255,255,255,.7); margin: 0 0 6px; }
+.heroTitel { font-size: clamp(30px, 5vw, 44px); margin: 0 0 16px; max-width: 18ch; }
+.heroVoortgang { margin-top: 22px; max-width: 460px; }
+.heroVoortgangKop { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.85); margin-bottom: 8px; }
+.heroVoortgangKop span:first-child { display: inline-flex; align-items: center; gap: 8px; color: #fff; }
+.heroBalk { height: 6px; border-radius: 99px; background: rgba(255,255,255,.14); overflow: hidden; }
+.heroBalk div { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--groen-d), var(--groen)); }
+
+/* Stappen in een eigen kaart, met de uitleg erin */
+.stappenKaart { margin-top: 14px; padding: 18px 12px 16px; background: var(--kaart); border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,.07); }
+.stappenKaart .stappen { margin: 0; padding: 0; background: none; box-shadow: none; }
+.stapLabel { display: block; line-height: 1.25; }
+.stapKlaar .stapBol svg { color: #fff; }
+.stappenKaart .stapUitleg { margin: 14px 8px 0; padding-top: 14px; border-top: 1px solid var(--lijn); font-size: 15px; color: var(--tekst); }
+
+/* Bericht van Yannick, licht */
+.berichtLicht {
+  display: flex; gap: 14px; align-items: flex-start; margin-top: 14px; padding: 16px 18px;
+  border-radius: 16px; background: var(--kaart); box-shadow: 0 2px 16px rgba(0,0,0,.07); border-left: 4px solid var(--groen);
+}
+.berichtLicht .berichtFoto { width: 44px; height: 44px; }
+.berichtVanLicht { margin: 0 0 4px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--groen-d); }
+.berichtTekstLicht { margin: 0; font-size: 16px; line-height: 1.55; white-space: pre-line; }
+
+.volgendeTekst { display: block; font-weight: 600; font-size: 15px; line-height: 1.45; }
+.pijl { flex-shrink: 0; color: var(--groen-d); transition: transform .2s; }
+.volgendeStap:hover .pijl, .dakStrook:hover .pijl { transform: translateX(3px); }
+
+/* ══ Je werken ════════════════════════════════════════════════════════════ */
+.werkBalk { display: flex; gap: 4px; margin-bottom: 16px; }
+.werkBalkDeel { flex: 1; height: 6px; border-radius: 99px; background: var(--lijn); }
+.werkBalkDeel.werk_bezig { background: linear-gradient(90deg, var(--groen) 50%, var(--groen-zacht) 50%); }
+.werkBalkDeel.werk_klaar { background: var(--groen); }
+.werkLijst { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.werk { display: flex; gap: 14px; padding: 14px; border-radius: 14px; background: var(--zacht); border: 1px solid transparent; }
+.werk.werk_bezig { background: var(--groen-zacht); border-color: #DCEDCB; }
+.werkStatusIcoon { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; background: #fff; color: var(--muted); }
+.werk_klaar .werkStatusIcoon { background: var(--groen); color: #fff; }
+.werk_bezig .werkStatusIcoon { background: #fff; }
+.pulseGroen { width: 12px; height: 12px; border-radius: 50%; background: var(--groen); position: relative; }
+.pulseGroen::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--groen); animation: pulse 1.8s ease-out infinite; }
+.werkTekst { flex: 1; min-width: 0; }
+.werkKop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.werkNaam { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -0.015em; }
+.werkUitleg { margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.werkDatum { display: flex; align-items: center; gap: 6px; margin: 8px 0 0; font-size: 13px; font-weight: 600; color: var(--tekst); }
+.werkDatum svg { color: var(--groen-d); }
+
+/* ══ Tegels met icoon ═════════════════════════════════════════════════════ */
+.tegel { gap: 4px; padding: 18px; }
+.tegelIcoon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--groen-zacht); color: var(--groen-d); margin-bottom: 8px; }
+.tegelLabel { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tegelWaarde { font-size: 19px; margin-top: 2px; }
+.tegelNieuws { margin: 2px 0 0; font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--tekst); }
+.miniFotos { margin-top: 8px; }
+
+.knopWa { background: #25D366; }
+.knopWa:hover { background: #1EBE5B; box-shadow: 0 4px 14px rgba(37,211,102,.35); }
+.garantieRegel + .garantieRegel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--lijn); }
+
+/* Kaarten iets ruimer en rustiger */
+.kaart { padding: 22px; }
+.kaartKop { margin-bottom: 16px; }
+.sectieKop { margin: 30px 0 12px; }
+
+@media (max-width: 640px) {
+  .heroBeeld { width: 100%; opacity: .22; -webkit-mask-image: none; mask-image: none; }
+  .heroInhoud { padding: 24px 20px 20px; }
+  .kaart { padding: 18px 16px; }
+  .stappenKaart { padding: 16px 6px 14px; }
+  .stapLabel { font-size: 10.5px; }
+  .werk { padding: 12px; gap: 12px; }
+  .werkStatusIcoon { width: 34px; height: 34px; }
+}
+
+/* ══ Fijnafstelling na de regelcontrole ═══════════════════════════════════ */
+/* Tegels: 2 kolommen zolang het menu links staat, anders worden ze te smal */
+@media (max-width: 1180px) and (min-width: 861px) { .tegels { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 400px) {
+  .tegels { gap: 10px; }
+  .tegel { padding: 14px 12px; }
+  .tegelWaarde { font-size: 15.5px; }
+  .tegelLabel { font-size: 10.5px; letter-spacing: .04em; }
+  .tegelNieuws { font-size: 13px; }
+}
+/* Dakpaspoort: lange waarden over de volle breedte */
+.kenmerkBreed { grid-column: 1 / -1; }
+/* Documenten: status onder de titel, zodat de titel de volle breedte krijgt */
+.docStatus { display: inline-flex; margin-top: 6px; }
+/* Rijen in het beheer: knoppen schuiven onder de tekst als het smal wordt */
+.rijWrap { flex-wrap: wrap; }
+.rijWrap .rijMidden { flex: 1 1 220px; }
+.rijWrap .rijRechts { flex-wrap: wrap; }
+/* Chatballonnen op de uitlegpagina */
+.chatTijd { display: block; text-align: right; font-size: 11px; color: #7a8a6e; margin-top: 4px; }
+
+/* Werken op gsm: status boven de naam, zodat lange namen (anti-mosbehandeling) heel blijven */
+@media (max-width: 520px) {
+  .werkKop { flex-direction: column-reverse; align-items: flex-start; gap: 4px; }
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  AlertTriangle, ArrowRight, CalendarDays, CalendarPlus, Camera, CheckCircle2, Clock, CloudLightning, FileText, History,
+  AlertTriangle, ArrowRight, CalendarDays, ClipboardList, CalendarPlus, Camera, CheckCircle2, Clock, CloudLightning, FileText, History,
   Home, Info, LayoutDashboard, Leaf, Lightbulb, MapPin, MessageCircle, NotebookPen, ShieldCheck, Sparkles, Users, Wallet,
   Wrench,
 } from "lucide-react";
@@ -9,11 +9,11 @@ import { headers } from "next/headers";
 import { getInstellingen, getKlant, getMomenten, zorgVoorRefCode } from "@/lib/klantenzone/store";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
 import {
-  brusselNaarDate, dagenTot, eindUur, fmtDag, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd, maandagVan,
+  brusselNaarDate, dagenTot, eindUur, fmtDag, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, fmtDagMaand, groet, hfd, maandagVan,
   nuMs, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
-  AFSPRAAK_TIPS, DAKZORG_INBEGREPEN, FASES, FASE_LABEL, FASE_UITLEG, FOTO_FASE_LABEL, PRIORITEIT_LABEL, VERZET_UREN,
+  AFSPRAAK_TIPS, DAKZORG_INBEGREPEN, FASES, FASE_KORT, FASE_LABEL, FASE_UITLEG, FOTO_FASE_LABEL, PRIORITEIT_LABEL, VERZET_UREN, WERK_STATUS_LABEL, WERK_UITLEG,
   type Afspraak, type FotoFase, type Klant, type VrijMoment,
 } from "@/lib/klantenzone/types";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
@@ -84,15 +84,17 @@ function SectieKop({ titel, meer }: { titel: string; meer?: { href: string; labe
   );
 }
 
-function startTekst(k: Klant): { waarde: string; sub: string; zeker: boolean } {
+function startTekst(k: Klant): { waarde: string; kort?: string; sub: string; zeker: boolean } {
   if (!k.start) return { waarde: "Nog te plannen", sub: "Je krijgt een berichtje zodra de datum vastligt.", zeker: false };
   const { datum, precisie } = k.start;
   if (precisie === "maand") return { waarde: fmtMaand(datum), sub: "Voorlopig. De exacte dag volgt.", zeker: false };
   if (precisie === "week") return { waarde: `Week van ${fmtDag(maandagVan(datum)).replace(/^\S+\s/, "")}`, sub: "Voorlopig. De exacte dag volgt.", zeker: false };
   const d = dagenTot(datum);
+  const weekdag = hfd(fmtDag(datum).split(" ")[0]);
   return {
     waarde: fmtDag(datum),
-    sub: d > 1 ? `Nog ${d} dagen` : d === 1 ? "Morgen!" : d === 0 ? "Vandaag!" : `Gestart op ${fmtKort(datum)}`,
+    kort: fmtDagMaand(datum),
+    sub: d > 1 ? `${weekdag}, nog ${d} dagen` : d === 1 ? `${weekdag}, morgen!` : d === 0 ? `${weekdag}, vandaag!` : `${weekdag}, al gestart`,
     zeker: true,
   };
 }
@@ -164,6 +166,46 @@ type Ctx = {
   burenVoordeel?: string;
 };
 
+function Werken({ k }: { k: Klant }) {
+  const werken = k.werken ?? [];
+  if (!werken.length) return null;
+  const klaar = werken.filter((w) => w.status === "klaar").length;
+  return (
+    <section className={kz.kaart}>
+      <div className={kz.kaartKop}>
+        <h2 className={kz.kaartTitel}><ClipboardList size={18} /> Je werken</h2>
+        <span className={`${kz.badge} ${klaar === werken.length ? kz.badgeGroen : ""}`}>{klaar} van {werken.length} klaar</span>
+      </div>
+      <div className={kz.werkBalk} aria-hidden="true">
+        {werken.map((w) => <span key={w.id} className={`${kz.werkBalkDeel} ${kz[`werk_${w.status}`] ?? ""}`} />)}
+      </div>
+      <ul className={kz.werkLijst}>
+        {werken.map((w) => (
+          <li key={w.id} className={`${kz.werk} ${kz[`werk_${w.status}`] ?? ""}`}>
+            <span className={kz.werkStatusIcoon} aria-hidden="true">
+              {w.status === "klaar" ? <CheckCircle2 size={20} /> : w.status === "bezig" ? <span className={kz.pulseGroen} /> : <Clock size={18} />}
+            </span>
+            <div className={kz.werkTekst}>
+              <div className={kz.werkKop}>
+                <p className={kz.werkNaam}>{w.naam}</p>
+                <span className={`${kz.badge} ${w.status === "gepland" ? "" : kz.badgeGroen}`}>{WERK_STATUS_LABEL[w.status]}</span>
+              </div>
+              <p className={kz.werkUitleg}>{w.omschrijving || WERK_UITLEG[w.naam] || ""}</p>
+              {w.datum && (
+                <p className={kz.werkDatum}>
+                  <CalendarDays size={13} /> {w.status === "klaar" ? `Uitgevoerd op ${fmtDag(w.datum)}`
+                    : w.status === "bezig" ? (w.datum === vandaag() ? "Vandaag aan de slag" : `Gestart op ${fmtDag(w.datum)}`)
+                    : `Gepland op ${fmtDag(w.datum)}`}
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function Overzicht({ k, komend, controle }: Ctx) {
   const faseIndex = FASES.indexOf(k.fase);
   const stap = volgendeStap(k, komend[0], controle);
@@ -174,63 +216,77 @@ function Overzicht({ k, komend, controle }: Ctx) {
   const garantie = garantieStaat(k);
   const laatste = [...(k.notities ?? []).map((n) => ({ datum: n.datum, tekst: `Notitie: ${n.titel ?? n.tekst}` })), ...k.log]
     .sort((a, b) => b.datum.localeCompare(a.datum)).slice(0, 4);
+  const naKlaar = (k.fase === "klaar" || k.fase === "nazorg") && controle;
 
   return (
     <>
-      <section className={kz.hero} style={{ marginTop: 0 }}>
-        <p className={kz.heroGroet}>{groet()} {k.voornaam},</p>
-        <h1 className={kz.heroTitel}>Zo staat het met <em>je {k.dienst.toLowerCase() || "dak"}</em>.</h1>
-        <div className={kz.heroMeta}>
-          <span className={`${kz.pill} ${kz.pillGroen}`}><span className={kz.pulse} /> {FASE_LABEL[k.fase]}</span>
-          {k.adres && <span className={kz.pill}><MapPin size={13} /> {k.adres}</span>}
-        </div>
-        {k.bericht && (
-          <div className={kz.bericht}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={YANNICK_FOTO} alt="" className={kz.berichtFoto} />
-            <div>
-              <p className={kz.berichtTekst}>{k.bericht}</p>
-              <p className={kz.berichtVan}>Yannick</p>
-            </div>
+      {/* ── Kop ── */}
+      <section className={kz.hero}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/Betonpannen.jpg" alt="" className={kz.heroBeeld} aria-hidden="true" />
+        <div className={kz.heroInhoud}>
+          <p className={kz.heroGroet}>{groet()} {k.voornaam}</p>
+          <h1 className={kz.heroTitel}>Zo staat het met <em>je dak.</em></h1>
+          <div className={kz.heroMeta}>
+            {k.dienst && <span className={kz.pill}><Sparkles size={13} /> {k.dienst}</span>}
+            {k.adres && <span className={kz.pill}><MapPin size={13} /> {k.adres}</span>}
           </div>
-        )}
+          <div className={kz.heroVoortgang}>
+            <div className={kz.heroVoortgangKop}>
+              <span><span className={kz.pulse} /> {FASE_LABEL[k.fase]}</span>
+              <span>Stap {faseIndex + 1} van {FASES.length}</span>
+            </div>
+            <div className={kz.heroBalk}><div style={{ width: `${((faseIndex + 1) / FASES.length) * 100}%` }} /></div>
+          </div>
+        </div>
       </section>
 
-      <ol className={kz.stappen} aria-label="Waar je project staat">
-        {FASES.map((f, i) => (
-          <li key={f} className={`${kz.stap} ${i < faseIndex ? kz.stapKlaar : ""} ${i === faseIndex ? kz.stapNu : ""}`} aria-current={i === faseIndex ? "step" : undefined}>
-            <div className={kz.stapBol}>{i < faseIndex ? "✓" : i + 1}</div>
-            {FASE_LABEL[f]}
-          </li>
-        ))}
-      </ol>
-      <p className={kz.stapUitleg}>{FASE_UITLEG[k.fase]}</p>
+      {/* ── Stappen ── */}
+      <section className={kz.stappenKaart}>
+        <ol className={kz.stappen} aria-label="Waar je project staat">
+          {FASES.map((f, i) => (
+            <li key={f} className={`${kz.stap} ${i < faseIndex ? kz.stapKlaar : ""} ${i === faseIndex ? kz.stapNu : ""}`} aria-current={i === faseIndex ? "step" : undefined}>
+              <div className={kz.stapBol}>{i < faseIndex ? <CheckCircle2 size={16} /> : i + 1}</div>
+              <span className={kz.stapLabel}>{FASE_KORT[f]}</span>
+            </li>
+          ))}
+        </ol>
+        <p className={kz.stapUitleg}>{FASE_UITLEG[k.fase]}</p>
+      </section>
+
+      {k.bericht && (
+        <div className={kz.berichtLicht}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={YANNICK_FOTO} alt="" className={kz.berichtFoto} />
+          <div>
+            <p className={kz.berichtVanLicht}>Bericht van Yannick</p>
+            <p className={kz.berichtTekstLicht}>{k.bericht}</p>
+          </div>
+        </div>
+      )}
 
       <Link href={`?tab=${stap.href}`} className={kz.volgendeStap}>
         <span className={kz.rijIcoon}><stap.icoon size={18} /></span>
-        <span style={{ flex: 1 }}>
-          <span className={kz.label} style={{ display: "block", margin: 0 }}>Volgende stap</span>
-          <span style={{ fontWeight: 600, fontSize: 15 }}>{stap.tekst}</span>
+        <span style={{ flex: 1, minWidth: 0 }}>
+          <span className={kz.label} style={{ display: "block", margin: "0 0 2px" }}>Volgende stap</span>
+          <span className={kz.volgendeTekst}>{stap.tekst}</span>
         </span>
-        <ArrowRight size={18} />
+        <ArrowRight size={18} className={kz.pijl} />
       </Link>
 
+      <Werken k={k} />
+
+      {/* ── Snelkoppelingen ── */}
       <div className={kz.tegels}>
-        {(k.fase === "klaar" || k.fase === "nazorg") && controle ? (
-          <Link href="?tab=dak" className={kz.tegel}>
-            <span className={kz.tegelKop}>Volgende controle <Wrench size={16} /></span>
-            <p className={kz.tegelWaarde}>{fmtMaand(controle.datum)}</p>
-            <p className={kz.tegelSub}>Plan ze in met één klik</p>
-          </Link>
-        ) : (
-          <Link href="?tab=agenda" className={kz.tegel}>
-            <span className={kz.tegelKop}>Startdatum <CalendarDays size={16} /></span>
-            <p className={kz.tegelWaarde}>{start.waarde}</p>
-            <p className={kz.tegelSub}>{start.sub}</p>
-          </Link>
-        )}
+        <Link href={naKlaar ? "?tab=dak" : "?tab=agenda"} className={kz.tegel}>
+          <span className={kz.tegelIcoon}>{naKlaar ? <Wrench size={18} /> : <CalendarDays size={18} />}</span>
+          <span className={kz.tegelLabel}>{naKlaar ? "Volgende controle" : "Start werken"}</span>
+          <p className={kz.tegelWaarde}>{naKlaar ? fmtMaand(controle.datum) : start.kort ?? start.waarde}</p>
+          <p className={kz.tegelSub}>{naKlaar ? "Plan ze in met één klik" : start.sub}</p>
+        </Link>
         <Link href="?tab=fotos" className={kz.tegel}>
-          <span className={kz.tegelKop}>Werffoto&apos;s <Camera size={16} /></span>
+          <span className={kz.tegelIcoon}><Camera size={18} /></span>
+          <span className={kz.tegelLabel}>Werffoto&apos;s</span>
           <p className={kz.tegelWaarde}>{k.fotos.length ? `${k.fotos.length} foto${k.fotos.length > 1 ? "'s" : ""}` : "Nog geen"}</p>
           {k.fotos.length > 0 ? (
             <div className={kz.miniFotos}>
@@ -239,16 +295,18 @@ function Overzicht({ k, komend, controle }: Ctx) {
                 <img key={f.id} src={f.url} alt="" />
               ))}
             </div>
-          ) : <p className={kz.tegelSub}>Verschijnen zodra ik start</p>}
+          ) : <p className={kz.tegelSub}>Volgen zodra ik start</p>}
         </Link>
         <Link href="?tab=documenten" className={kz.tegel}>
-          <span className={kz.tegelKop}>Te betalen <Wallet size={16} /></span>
+          <span className={kz.tegelIcoon}><Wallet size={18} /></span>
+          <span className={kz.tegelLabel}>Te betalen</span>
           <p className={kz.tegelWaarde}>{facturen.length ? (open ? fmtEuro(open) : "Alles betaald") : "Niets"}</p>
           <p className={kz.tegelSub}>{k.documenten.length} document{k.documenten.length === 1 ? "" : "en"}</p>
         </Link>
         <Link href="?tab=logboek" className={kz.tegel}>
-          <span className={kz.tegelKop}>Laatste nieuws <History size={16} /></span>
-          <p className={kz.tegelSub} style={{ color: "#1A1A1A", fontWeight: 500, fontSize: 14 }}>{laatste[0]?.tekst ?? "Nog niets"}</p>
+          <span className={kz.tegelIcoon}><History size={18} /></span>
+          <span className={kz.tegelLabel}>Laatste nieuws</span>
+          <p className={kz.tegelNieuws}>{laatste[0]?.tekst ?? "Nog niets"}</p>
           {laatste[0] && <p className={kz.tegelSub}>{fmtMoment(laatste[0].datum)}</p>}
         </Link>
       </div>
@@ -256,13 +314,13 @@ function Overzicht({ k, komend, controle }: Ctx) {
       <Link href="?tab=dak" className={kz.dakStrook}>
         <span className={kz.rijIcoon}><Home size={18} /></span>
         <span style={{ flex: 1, minWidth: 0 }}>
-          <span className={kz.rijTitel} style={{ display: "block" }}>Mijn dak{k.dakzorg?.actief ? " · MOS-X Dakzorg actief" : ""}</span>
+          <span className={kz.rijTitel} style={{ display: "block" }}>Mijn dak{k.dakzorg?.actief ? " · Dakzorg actief" : ""}</span>
           <span className={kz.rijSub} style={{ display: "block" }}>
-            {controle ? `Volgende controle: ${fmtMaand(controle.datum)}` : "Je dakpaspoort, onderhoud en garantie"}
-            {openAanb > 0 && ` · ${openAanb} aanbeveling${openAanb > 1 ? "en" : ""} van Yannick`}
+            {controle ? `Volgende controle in ${fmtMaand(controle.datum)}` : "Je dakpaspoort, onderhoud en garantie"}
+            {openAanb > 0 && ` · ${openAanb} aanbeveling${openAanb > 1 ? "en" : ""}`}
           </span>
         </span>
-        <ArrowRight size={18} />
+        <ArrowRight size={18} className={kz.pijl} />
       </Link>
 
       <div className={kz.grid2} style={{ marginTop: 14 }}>
@@ -273,11 +331,11 @@ function Overzicht({ k, komend, controle }: Ctx) {
             <img src={YANNICK_FOTO} alt="Yannick van MOS-X" className={kz.persoonFoto} />
             <div>
               <p className={kz.rijTitel}>Yannick</p>
-              <p className={kz.rijSub}>Ik doe het werk zelf. Geen onderaannemers. Een vraag? Je krijgt mij.</p>
+              <p className={kz.rijSub}>Ik doe het werk zelf, zonder onderaannemers. Een vraag? Dan krijg je mij.</p>
             </div>
           </div>
           <div className={kz.rijKnoppen}>
-            <a className={kz.knop} style={{ background: "#25D366" }} href={waLink(k)} target="_blank" rel="noopener noreferrer"><WaIcoon size={16} /> WhatsApp</a>
+            <a className={`${kz.knop} ${kz.knopWa}`} href={waLink(k)} target="_blank" rel="noopener noreferrer"><WaIcoon size={16} /> WhatsApp</a>
             <a className={`${kz.knop} ${kz.knopLicht}`} href="tel:+32468352869">Bellen</a>
           </div>
         </section>
@@ -287,10 +345,10 @@ function Overzicht({ k, komend, controle }: Ctx) {
           {garantie.length === 0 ? (
             <p className={kz.sub}>Je garantie verschijnt hier zodra je werken bevestigd zijn.</p>
           ) : garantie.map((g) => (
-            <div key={g.id} style={{ marginBottom: 12 }}>
+            <div key={g.id} className={kz.garantieRegel}>
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <span className={kz.rijIcoon} style={{ width: 34, height: 34 }}><g.icoon size={17} /></span>
-                <div>
+                <span className={kz.rijIcoon} style={{ width: 36, height: 36 }}><g.icoon size={17} /></span>
+                <div style={{ minWidth: 0 }}>
                   <p className={kz.rijTitel}>{g.titel}</p>
                   <p className={kz.rijSub}>{g.staat}</p>
                 </div>
@@ -298,7 +356,6 @@ function Overzicht({ k, komend, controle }: Ctx) {
               {g.rest !== null && <div className={kz.balk} aria-hidden="true"><div className={kz.balkIn} style={{ width: `${g.rest}%` }} /></div>}
             </div>
           ))}
-          {garantie.length > 0 && <p className={kz.sub} style={{ fontSize: 13, marginTop: 0 }}>{garantie.map((g) => g.uitleg).join(" ")}</p>}
         </section>
       </div>
 
@@ -320,7 +377,6 @@ function Overzicht({ k, komend, controle }: Ctx) {
     </>
   );
 }
-
 
 function MijnDak({ k, controle, refUrl, burenVoordeel }: Ctx) {
   const p = k.paspoort ?? {};
@@ -435,7 +491,7 @@ function MijnDak({ k, controle, refUrl, burenVoordeel }: Ctx) {
         ) : (
           <dl className={kz.kenmerken}>
             {kenmerken.map((x) => (
-              <div key={x.label}><dt>{x.label}</dt><dd>{x.waarde}</dd></div>
+              <div key={x.label} className={String(x.waarde).length > 22 ? kz.kenmerkBreed : undefined}><dt>{x.label}</dt><dd>{x.waarde}</dd></div>
             ))}
           </dl>
         )}
@@ -609,13 +665,15 @@ function Agenda(ctx: Ctx) {
       <PaginaKop titel="Agenda" sub={`Al je afspraken op een rij. Tot ${VERZET_UREN} uur vooraf kies je zelf een ander moment.`} />
 
       <section className={kz.kaart}>
-        <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
           <span className={kz.rijIcoon}><CalendarDays size={18} /></span>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p className={kz.label} style={{ margin: 0 }}>Start van je werken</p>
-            <p className={kz.groot} style={{ fontSize: 19 }}>{start.waarde}</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+              <p className={kz.label} style={{ margin: 0 }}>Start van je werken</p>
+              <span className={`${kz.badge} ${start.zeker ? kz.badgeGroen : kz.badgeAmber}`}>{start.zeker ? "Vastgelegd" : k.start ? "Voorlopig" : "Te plannen"}</span>
+            </div>
+            <p className={kz.groot} style={{ fontSize: 19, marginTop: 4 }}>{start.waarde}</p>
           </div>
-          <span className={`${kz.badge} ${start.zeker ? kz.badgeGroen : kz.badgeAmber}`}>{start.zeker ? "Vastgelegd" : k.start ? "Voorlopig" : "Te plannen"}</span>
         </div>
         <p className={kz.sub} style={{ fontSize: 13 }}>{start.sub}</p>
       </section>

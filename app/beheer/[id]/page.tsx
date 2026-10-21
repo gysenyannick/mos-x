@@ -45,7 +45,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
     <>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
         <Link href="/beheer" className={kz.icoonKnop} aria-label="Terug"><ArrowLeft size={18} /></Link>
-        <h1 className={kz.kaartTitel} style={{ fontSize: 22, flex: 1 }}>{k.voornaam} {k.achternaam}</h1>
+        <h1 className={kz.kaartTitel} style={{ fontSize: 22, flex: "1 1 200px" }}>{k.voornaam} {k.achternaam}</h1>
         <a href={`/klant/${k.id}`} target="_blank" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><ExternalLink size={15} /> Bekijk als klant</a>
       </div>
 
@@ -172,7 +172,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
             {k.documenten.length > 0 && (
               <ul className={kz.lijst} style={{ marginBottom: 16 }}>
                 {k.documenten.map((d) => (
-                  <li key={d.id} className={kz.rij} style={{ flexWrap: "wrap" }}>
+                  <li key={d.id} className={`${kz.rij} ${kz.rijWrap}`}>
                     <div className={kz.rijMidden}>
                       <a href={d.url} target="_blank" className={kz.rijTitel} style={{ color: "inherit" }}>{d.titel}</a>
                       <p className={kz.rijSub}>{DOC_TYPE_LABEL[d.type]} · {fmtKort(d.datum)}{d.bedrag ? ` · ${fmtEuro(d.bedrag)}` : ""}</p>

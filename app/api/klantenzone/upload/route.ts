@@ -65,7 +65,13 @@ export async function POST(req: NextRequest) {
           status: String(fd.get("status") || (type === "offerte" ? "info" : "open")) as DocStatus,
           datum: String(fd.get("datum") || nu.slice(0, 10)),
         });
-        k.log.unshift({ datum: nu, tekst: `Nieuw document: ${titel}.` });
+        const zin: Record<DocType, string> = {
+          offerte: "Je offerte staat klaar.",
+          voorschot: "Je voorschotfactuur staat klaar.",
+          factuur: "Je factuur staat klaar.",
+          andere: `Nieuw document: ${titel}.`,
+        };
+        k.log.unshift({ datum: nu, tekst: zin[type] ?? zin.andere });
       });
     } else {
       return fout("Onbekend soort upload.");

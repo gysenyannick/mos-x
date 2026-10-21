@@ -16,6 +16,15 @@ export const FASE_LABEL: Record<Fase, string> = {
   nazorg: "Nazorg",
 };
 
+/** Nog kortere namen voor de stappenbalk (passen op een smalle gsm) */
+export const FASE_KORT: Record<Fase, string> = {
+  aanvraag: "Aanvraag",
+  gepland: "Gepland",
+  bezig: "Werken",
+  klaar: "Klaar",
+  nazorg: "Nazorg",
+};
+
 /** Korte uitleg per fase, zoals de klant ze ziet. */
 export const FASE_UITLEG: Record<Fase, string> = {
   aanvraag: "Ik bekijk je aanvraag en maak je offerte op.",
@@ -100,6 +109,37 @@ export type Notitie = {
   datum: string;
   titel?: string;
   tekst: string;
+};
+
+/* ── Werken in dit project (bv. dakreiniging + dakcoating) ───────────────── */
+
+export type WerkStatus = "gepland" | "bezig" | "klaar";
+
+export const WERK_STATUS_LABEL: Record<WerkStatus, string> = {
+  gepland: "Gepland",
+  bezig: "Bezig",
+  klaar: "Klaar",
+};
+
+/** Uitleg per soort werk, zodat de klant weet wat er gebeurt. */
+export const WERK_UITLEG: Record<string, string> = {
+  "Dakreiniging": "Mos, algen en vuil verwijderen met lage druk, zodat je pannen niet beschadigen.",
+  "Anti-mosbehandeling": "Een behandeling die nieuwe mosgroei afremt.",
+  "Dakcoating": "Een beschermlaag die je pannen waterafstotend maakt en opnieuw kleur geeft.",
+  "Gootreiniging": "Bladeren en vuil uit de dakgoten halen, zodat het water weer vlot weg kan.",
+  "Velux reiniging": "Dakvensters reinigen, binnen en buiten.",
+  "Herstelling": "Gebroken of verschoven pannen vervangen of terugleggen.",
+  "Inspectie": "Een volledige controle van je dak, met foto's.",
+};
+
+export type Werk = {
+  id: string;
+  naam: string;
+  status: WerkStatus;
+  /** YYYY-MM-DD: geplande of uitgevoerde dag */
+  datum?: string;
+  /** Extra uitleg van Yannick (leeg = standaarduitleg) */
+  omschrijving?: string;
 };
 
 /* ── Dakpaspoort ───────────────────────────────────────────────────────────── */
@@ -222,6 +262,7 @@ export type Klant = {
   documenten: Document[];
   garantie: Garantie;
   /* Velden hieronder kunnen ontbreken bij dossiers van vóór die functie */
+  werken?: Werk[];
   notities?: Notitie[];
   paspoort?: Paspoort;
   behandelingen?: Behandeling[];

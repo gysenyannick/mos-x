@@ -118,3 +118,8 @@ export function fmtMoment(iso: string): string {
 export function hfd(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+/** "20 oktober" (zonder weekdag), voor kleine vakjes */
+export function fmtDagMaand(d: string): string {
+  return new Intl.DateTimeFormat("nl-BE", { timeZone: "UTC", day: "numeric", month: "long" }).format(new Date(`${d.slice(0, 10)}T12:00:00Z`));
+}

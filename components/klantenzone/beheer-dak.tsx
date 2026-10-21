@@ -1,11 +1,14 @@
-import { Bell, Home, Lightbulb, ShieldCheck, Trash2, Users, Wrench } from "lucide-react";
+import { Bell, ClipboardList, Home, Lightbulb, ShieldCheck, Trash2, Users, Wrench } from "lucide-react";
 import {
+  verwijderWerk, voegWerkToe, zetWerkStatus,
   bewaarDakzorg, bewaarPaspoort, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
   zetAanbevelingStatus, zetAanvraagStatus, zetVerwijzingStatus,
 } from "@/app/beheer/actions";
 import { volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
-import { AANVRAAG_LABEL, BEHANDELING_SOORTEN, PRIORITEIT_LABEL, type Klant } from "@/lib/klantenzone/types";
+import {
+  AANVRAAG_LABEL, BEHANDELING_SOORTEN, PRIORITEIT_LABEL, WERK_STATUS_LABEL, WERK_UITLEG, type Klant, type WerkStatus,
+} from "@/lib/klantenzone/types";
 import { BevestigKnop } from "./beheer-client";
 import kz from "./kz.module.css";
 
@@ -44,6 +47,47 @@ export function BeheerDak({ k }: { k: Klant }) {
 
   return (
     <>
+      {/* ── Werken ── */}
+      <section className={kz.kaart}>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><ClipboardList size={18} /> Werken in dit project</h2>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>
+          Wat je bij deze klant uitvoert. Zet een werk op &quot;Klaar&quot; en het komt vanzelf in de onderhoudshistoriek.
+        </p>
+        {(k.werken ?? []).length > 0 && (
+          <ul className={kz.lijst} style={{ marginBottom: 16 }}>
+            {(k.werken ?? []).map((w) => (
+              <li key={w.id} className={`${kz.rij} ${kz.rijWrap}`}>
+                <div className={kz.rijMidden}>
+                  <p className={kz.rijTitel}>{w.naam}</p>
+                  <p className={kz.rijSub}>{w.datum ? fmtKort(w.datum) : "Nog geen datum"}{w.omschrijving ? ` · ${w.omschrijving}` : ""}</p>
+                </div>
+                <div className={kz.rijRechts}>
+                  {(["gepland", "bezig", "klaar"] as WerkStatus[]).map((st) => (
+                    <form key={st} action={zetWerkStatus.bind(null, k.id, w.id, st)}>
+                      <button className={`${kz.knop} ${kz.knopKlein} ${w.status === st ? "" : kz.knopLicht}`}>{WERK_STATUS_LABEL[st]}</button>
+                    </form>
+                  ))}
+                  <BevestigKnop actie={verwijderWerk.bind(null, k.id, w.id)} vraag="Werk verwijderen?"><Trash2 size={14} /></BevestigKnop>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <form action={voegWerkToe.bind(null, k.id)}>
+          <div className={kz.velden}>
+            <div className={kz.veld}>
+              <label htmlFor="wnaam">Werk</label>
+              <select id="wnaam" name="naam" className={kz.invoer}>
+                {[...Object.keys(WERK_UITLEG), "Gevelreiniging"].map((x) => <option key={x}>{x}</option>)}
+              </select>
+            </div>
+            <div className={kz.veld}><label htmlFor="wdatum">Geplande dag (optioneel)</label><input id="wdatum" name="datum" type="date" className={kz.invoer} /></div>
+            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="womschr">Uitleg voor de klant (leeg = standaard)</label><input id="womschr" name="omschrijving" className={kz.invoer} placeholder="bv. Voor- en achterkant, inclusief nok" /></div>
+          </div>
+          <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Werk toevoegen</button></div>
+        </form>
+      </section>
+
       {/* ── Dakpaspoort ── */}
       <section className={kz.kaart}>
         <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Home size={18} /> Dakpaspoort en onderhoud</h2>
@@ -122,7 +166,7 @@ export function BeheerDak({ k }: { k: Klant }) {
         {(k.aanbevelingen ?? []).length > 0 && (
           <ul className={kz.lijst} style={{ marginBottom: 16 }}>
             {(k.aanbevelingen ?? []).map((a) => (
-              <li key={a.id} className={kz.rij} style={{ flexWrap: "wrap" }}>
+              <li key={a.id} className={`${kz.rij} ${kz.rijWrap}`}>
                 <div className={kz.rijMidden}>
                   <p className={kz.rijTitel}>{a.titel}</p>
                   <p className={kz.rijSub}>{PRIORITEIT_LABEL[a.prioriteit]} · {fmtKort(a.datum)} · <strong>{AANBEVELING_STATUS[a.status]}</strong></p>
@@ -189,7 +233,7 @@ export function BeheerDak({ k }: { k: Klant }) {
           ) : (
             <ul className={kz.lijst}>
               {(k.verwijzingen ?? []).map((v) => (
-                <li key={v.id} className={kz.rij} style={{ flexWrap: "wrap" }}>
+                <li key={v.id} className={`${kz.rij} ${kz.rijWrap}`}>
                   <div className={kz.rijMidden}>
                     <p className={kz.rijTitel}>{v.naam}</p>
                     <p className={kz.rijSub}><a href={`tel:${v.telefoon}`} style={{ color: "inherit" }}>{v.telefoon}</a>{v.adres ? ` · ${v.adres}` : ""}</p>

@@ -10,7 +10,7 @@ import {
 } from "@/lib/klantenzone/store";
 import {
   FASES, FASE_LABEL, type Aanbeveling, type DocStatus, type Fase, type Klant, type Precisie, type Prioriteit,
-  type Verwijzing,
+  type Verwijzing, type WerkStatus,
 } from "@/lib/klantenzone/types";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
@@ -32,6 +32,18 @@ async function laad(id: string): Promise<Klant> {
   const k = await getKlant(id);
   if (!k) throw new Error("Klant niet gevonden");
   return k;
+}
+
+/** "Dakreiniging en dakcoating" → twee geplande werken */
+function werkenUitDienst(dienst: string) {
+  const d = dienst.toLowerCase();
+  const namen = [
+    d.includes("reiniging") && !d.includes("gevel") && "Dakreiniging",
+    d.includes("coating") && "Dakcoating",
+    d.includes("gevel") && "Gevelreiniging",
+    d.includes("dakzorg") && "Inspectie",
+  ].filter((x): x is string => !!x);
+  return namen.map((naam) => ({ id: nieuwId(6), naam, status: "gepland" as const }));
 }
 
 /* ── Inloggen ─────────────────────────────────────────────────────────────── */
@@ -67,6 +79,7 @@ export async function maakKlant(fd: FormData) {
     fase: "aanvraag",
     afspraken: [], fotos: [], documenten: [],
     garantie: { mosvrijJaren: 2, coatingJaren: s(fd, "dienst").toLowerCase().includes("coating") ? 10 : 0 },
+    werken: werkenUitDienst(s(fd, "dienst") || "Dakreiniging"),
     log: [{ datum: nu, tekst: "Je dossier is aangemaakt." }],
     aangemaakt: nu, bijgewerkt: nu,
   };
@@ -365,4 +378,46 @@ export async function bewaarInstellingen(fd: FormData) {
   await vereisBeheerder();
   await saveInstellingen({ burenVoordeel: s(fd, "burenVoordeel") || undefined });
   revalidatePath("/beheer/instellingen");
+}
+
+/* ── Werken in dit project ────────────────────────────────────────────────── */
+
+export async function voegWerkToe(id: string, fd: FormData) {
+  const k = await laad(id);
+  const naam = s(fd, "naam");
+  if (!naam) return;
+  (k.werken ??= []).push({
+    id: nieuwId(6), naam, status: "gepland",
+    datum: s(fd, "datum") || undefined,
+    omschrijving: s(fd, "omschrijving") || undefined,
+  });
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function zetWerkStatus(id: string, werkId: string, status: WerkStatus) {
+  const k = await laad(id);
+  const w = (k.werken ?? []).find((x) => x.id === werkId);
+  if (!w || w.status === status) return;
+  const nu = new Date().toISOString();
+  w.status = status;
+  if (status === "bezig") k.log.unshift({ datum: nu, tekst: `Gestart: ${w.naam.toLowerCase()}.` });
+  if (status === "klaar") {
+    w.datum = w.datum && w.datum <= nu.slice(0, 10) ? w.datum : nu.slice(0, 10);
+    k.log.unshift({ datum: nu, tekst: `Klaar: ${w.naam.toLowerCase()}.` });
+    // Afgewerkt werk komt automatisch in de onderhoudshistoriek van het dakpaspoort
+    if (!(k.behandelingen ?? []).some((b) => b.soort === w.naam && b.datum === w.datum)) {
+      (k.behandelingen ??= []).unshift({ id: nieuwId(6), datum: w.datum, soort: w.naam, opmerking: w.omschrijving });
+      k.behandelingen.sort((a, b) => b.datum.localeCompare(a.datum));
+    }
+  }
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function verwijderWerk(id: string, werkId: string) {
+  const k = await laad(id);
+  k.werken = (k.werken ?? []).filter((x) => x.id !== werkId);
+  await saveKlant(k);
+  ververs(id);
 }
