@@ -79,11 +79,6 @@ function groetKort(): string {
   return groet().replace("Goede", "Goeie").replace("Goedenavond", "Goeienavond");
 }
 
-/** Leesbaar dossiernummer, bv. MX-2026-ETF0 */
-function dossierNr(k: Klant): string {
-  return `MX-${k.aangemaakt.slice(0, 4)}-${k.id.replace(/[^A-Za-z0-9]/g, "").slice(0, 4).toUpperCase()}`;
-}
-
 /** Eén zin in gewone taal: wat gebeurt er nu met je dak? */
 function statusZin(k: Klant, volgende?: Afspraak): string {
   const bezig = (k.werken ?? []).find((w) => w.status === "bezig");
@@ -123,15 +118,6 @@ function PaginaKop({ titel, sub, rechts, teller }: { titel: string; sub?: string
         {sub && <p className={kz.paginaSub}>{sub}</p>}
       </div>
       {rechts}
-    </div>
-  );
-}
-
-function SectieKop({ titel, meer }: { titel: string; meer?: { href: string; label: string } }) {
-  return (
-    <div className={kz.sectieKop}>
-      <h2 className={kz.sectieTitel}>{titel}</h2>
-      {meer && <Link href={meer.href} className={kz.meerLink}>{meer.label} <ArrowRight size={14} /></Link>}
     </div>
   );
 }
@@ -231,7 +217,6 @@ function Overzicht(ctx: Ctx) {
       <section className={kz.statusKaart}>
         <div className={kz.statusBoven}>
           <span className={kz.statusStap}><span className={kz.verbergMobiel}>{(k.dienst || "Dakwerken").split(" en ")[0]} · </span>Stap {faseIndex + 1} van {FASES.length}</span>
-          <span className={kz.dossierNr}>{dossierNr(k)}</span>
         </div>
         <h2 className={kz.statusZin}>{statusZin(k, komend[0])}</h2>
         <p className={kz.statusVolgende}><strong>Volgende:</strong> {volgendeStap(k, komend[0], controle)}</p>
@@ -309,8 +294,7 @@ function Overzicht(ctx: Ctx) {
           <video className={kz.vakmanVideo} src="/videos/yannick-hero.mp4" poster={YANNICK_FOTO} controls muted playsInline preload="none" />
           <div>
             <p className={kz.rijTitel} style={{ fontSize: 18 }}>Yannick</p>
-            <p className={kz.rijSub}>Zaakvoerder van MOS-X</p>
-            <p className={kz.sub} style={{ marginTop: 10 }}>Ik plan je werf, voer ze zelf uit en ben je aanspreekpunt van begin tot eind. Geen onderaannemers.</p>
+            <p className={kz.sub} style={{ marginTop: 6 }}>Ik plan je werf en voer ze zelf uit. Vragen? Je krijgt mij.</p>
             <div className={kz.rijKnoppen}>
               <a className={`${kz.knop} ${kz.knopPrimair}`} href={waLink(k)} target="_blank" rel="noopener noreferrer"><WaIcoon size={16} /> WhatsApp</a>
               <a className={`${kz.knop} ${kz.knopLicht}`} href="tel:+32468352869">Bellen</a>
@@ -328,7 +312,6 @@ function Overzicht(ctx: Ctx) {
         {voor && na ? (
           <>
             <VoorNa voor={voor.url} na={na.url} />
-            <p className={kz.sub} style={{ fontSize: 13 }}>Voor en na: sleep de schuif naar links en rechts.</p>
           </>
         ) : (
           <FotoGalerij fotos={k.fotos.slice(0, 6)} />
@@ -378,10 +361,9 @@ function AfspraakKaart({ a, ctx, uitgelicht }: { a: Afspraak; ctx: Ctx; uitgelic
             <span><Clock size={15} /> {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)}</span>
           </div>
           {info && <div className={kz.infoBlok}><Info size={16} /><span>{info}</span></div>}
-          <div className={kz.rijKnoppen}>
-            <a className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`} href={`/api/klantenzone/agenda?k=${k.id}&a=${a.id}`}><CalendarPlus size={15} /> In mijn agenda</a>
-            {kanVerzetten(a, ctx) && <VerzetKnop klantId={k.id} afspraakId={a.id} titel={`${a.titel}, nu op ${fmtDag(a.start)} om ${fmtUur(a.start)}`} momenten={ctx.vrijeMomenten} dagLabels={ctx.dagLabels} />}
-          </div>
+          {kanVerzetten(a, ctx) && <div className={kz.rijKnoppen}>
+            <VerzetKnop klantId={k.id} afspraakId={a.id} titel={`${a.titel}, nu op ${fmtDag(a.start)} om ${fmtUur(a.start)}`} momenten={ctx.vrijeMomenten} dagLabels={ctx.dagLabels} />
+          </div>}
         </div>
       </div>
     </section>
@@ -389,7 +371,7 @@ function AfspraakKaart({ a, ctx, uitgelicht }: { a: Afspraak; ctx: Ctx; uitgelic
 }
 
 function Agenda(ctx: Ctx) {
-  const { komend, voorbij } = ctx;
+  const { komend } = ctx;
   return (
     <>
       <PaginaKop titel="Agenda" teller={komend.length} sub={`Je afspraken op een rij. Tot ${VERZET_UREN} uur vooraf kies je zelf een ander moment.`} />
@@ -397,25 +379,6 @@ function Agenda(ctx: Ctx) {
         <Leeg>Er staan nu geen afspraken gepland. Zodra er iets vastligt, zie je het hier en krijg je een berichtje.</Leeg>
       ) : komend.map((a, i) => <AfspraakKaart key={a.id} a={a} ctx={ctx} uitgelicht={i === 0} />)}
 
-      {voorbij.length > 0 && (
-        <>
-          <SectieKop titel="Afgerond" />
-          <section className={`${kz.kaart} ${kz.afgelopen}`} style={{ marginTop: 0 }}>
-            <ul className={kz.planning}>
-              {[...voorbij].reverse().map((a) => (
-                <li key={a.id}>
-                  <DatumBlok start={a.start} />
-                  <span className={kz.rijMidden}>
-                    <span className={kz.planningTitel}>{a.titel}</span>
-                    <span className={kz.planningDatum}>{hfd(fmtDag(a.start, true))}</span>
-                  </span>
-                  <CheckCircle2 size={18} color="#7AB54E" />
-                </li>
-              ))}
-            </ul>
-          </section>
-        </>
-      )}
     </>
   );
 }
@@ -426,13 +389,6 @@ function Fotos({ k }: Ctx) {
   const voor = k.fotos.find((f) => f.fase === "voor");
   const na = k.fotos.find((f) => f.fase === "na");
   const groepen: FotoFase[] = ["inspectie", "voor", "tijdens", "na", "klant"];
-  const uitleg: Record<FotoFase, string> = {
-    inspectie: "Wat ik zag tijdens het plaatsbezoek of een controle.",
-    voor: "Zo zag je dak eruit voor ik begon.",
-    tijdens: "Foto's van de werf, terwijl ik bezig was.",
-    na: "Het resultaat.",
-    klant: "Foto's die je zelf toevoegde.",
-  };
 
   return (
     <>
@@ -458,7 +414,6 @@ function Fotos({ k }: Ctx) {
               <h2 className={kz.kaartTitel}>{FOTO_FASE_LABEL[g]}</h2>
               <span className={kz.badge}>{lijst.length}</span>
             </div>
-            <p className={kz.sub} style={{ marginTop: 0, marginBottom: 12 }}>{uitleg[g]}</p>
             <FotoGalerij fotos={lijst} />
           </section>
         );
@@ -471,23 +426,9 @@ function Fotos({ k }: Ctx) {
 
 function Documenten({ k }: Ctx) {
   const labels = Object.fromEntries(k.documenten.map((d) => [d.id, { datum: fmtKort(d.datum), bedrag: d.bedrag ? fmtEuro(d.bedrag) : undefined }]));
-  const facturen = k.documenten.filter((d) => DOC_IS_FACTUUR(d.type) && d.bedrag);
-  const totaal = facturen.reduce((s, d) => s + (d.bedrag ?? 0), 0);
-  const betaald = facturen.filter((d) => d.status === "betaald").reduce((s, d) => s + (d.bedrag ?? 0), 0);
-  const open = totaal - betaald;
-
   return (
     <>
       <PaginaKop titel="Documenten" teller={k.documenten.length} sub="Alles op één plek. Tik op een document om het te bekijken of te downloaden." />
-      {totaal > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.betaalRij}>
-            <div><p className={kz.label} style={{ margin: 0 }}>Betaald</p><p className={kz.totaalBedrag} style={{ color: "#7AB54E" }}>{fmtEuro(betaald)}</p></div>
-            <div><p className={kz.label} style={{ margin: 0 }}>Nog te betalen</p><p className={kz.totaalBedrag} style={{ color: open ? "#B7791F" : undefined }}>{fmtEuro(open)}</p></div>
-          </div>
-          <div className={kz.geldBalk} aria-hidden="true"><div className={kz.geldBalkIn} style={{ width: `${(betaald / totaal) * 100}%` }} /></div>
-        </section>
-      )}
       {k.documenten.length === 0 && <Leeg>Je offerte, facturen en garantie verschijnen hier zodra ze klaar zijn.</Leeg>}
       {DOC_GROEPEN.map((g) => ({ ...g, lijst: k.documenten.filter((d) => g.types.includes(d.type)) }))
         .filter((g) => g.lijst.length).map((g) => (
@@ -496,7 +437,6 @@ function Documenten({ k }: Ctx) {
               <h2 className={kz.kaartTitel}>{g.titel}</h2>
               <span className={kz.badge}>{g.lijst.length}</span>
             </div>
-            {g.uitleg && <p className={kz.sub} style={{ marginTop: 0, marginBottom: 8 }}>{g.uitleg}</p>}
             <DocumentLijst documenten={g.lijst} labels={labels} />
           </section>
         ))}
@@ -512,20 +452,10 @@ function MijnDak({ k, controle }: Ctx) {
   const punten = (p.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
   const garantie = garantieStaat(k);
   const gevraagd = (soort: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === soort);
-  const kenmerken = [
-    { label: "Daktype", waarde: p.daktype },
-    { label: "Oppervlakte", waarde: p.oppervlakte ? `± ${p.oppervlakte} m²` : undefined },
-    { label: "Bouwjaar", waarde: p.bouwjaar },
-    { label: "Kleur", waarde: p.kleur },
-    { label: "Zonnepanelen", waarde: p.zonnepanelen === undefined ? undefined : p.zonnepanelen ? "Ja" : "Nee" },
-    { label: "Dakvensters", waarde: p.dakvensters !== undefined ? String(p.dakvensters) : undefined },
-    { label: "Dakgoten", waarde: p.goten },
-  ].filter((x) => x.waarde);
-  const inspectie = k.fotos.filter((f) => f.fase === "inspectie");
 
   return (
     <>
-      <PaginaKop titel="Mijn dak" sub="Wat belangrijk is aan je dak: wat ik zag, je garantie en wanneer ik terugkom." />
+      <PaginaKop titel="Mijn dak" sub="Wat ik zag, je garantie en wanneer ik terugkom." />
 
       {open.map((a) => (
         <section key={a.id} className={`${kz.kaart} ${kz.aanbeveling} ${a.prioriteit === "dringend" ? kz.aanbevelingDringend : ""}`}>
@@ -598,23 +528,6 @@ function MijnDak({ k, controle }: Ctx) {
         </section>
       )}
 
-      {kenmerken.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}>Over je dak</h2></div>
-          <dl className={kz.kenmerken}>
-            {kenmerken.map((x) => (
-              <div key={x.label} className={String(x.waarde).length > 22 ? kz.kenmerkBreed : undefined}><dt>{x.label}</dt><dd>{x.waarde}</dd></div>
-            ))}
-          </dl>
-        </section>
-      )}
-
-      {inspectie.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Camera size={18} /> Foto&apos;s van de inspectie</h2></div>
-          <FotoGalerij fotos={inspectie} />
-        </section>
-      )}
     </>
   );
 }
@@ -689,14 +602,10 @@ function Acties({ k, refUrl, burenVoordeel, acties }: Ctx) {
 function Logboek({ k }: Ctx) {
   const notities = k.notities ?? [];
   const behandelingen = k.behandelingen ?? [];
-  const perMaand = k.log.reduce<Record<string, typeof k.log>>((acc, l) => {
-    (acc[l.datum.slice(0, 7)] ??= []).push(l);
-    return acc;
-  }, {});
 
   return (
     <>
-      <PaginaKop titel="Logboek" sub="Mijn notities, de uitgevoerde werken en alles wat er gebeurde." />
+      <PaginaKop titel="Logboek" sub="Mijn notities en de werken die ik uitvoerde." />
 
       {notities.map((n) => (
         <article key={n.id} className={kz.notitie}>
@@ -728,22 +637,6 @@ function Logboek({ k }: Ctx) {
         </section>
       )}
 
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><NotebookPen size={18} /> Wat er gebeurde</h2></div>
-        {Object.entries(perMaand).map(([maand, items]) => (
-          <div key={maand}>
-            <p className={kz.maandKop}>{fmtMaand(`${maand}-01`)}</p>
-            <ol className={kz.tijdlijn}>
-              {items.map((l, i) => (
-                <li key={i} className={kz.tijdItem}>
-                  <p className={kz.tijdTekst}>{l.tekst}</p>
-                  <p className={kz.tijdDatum}>{fmtMoment(l.datum)}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        ))}
-      </section>
     </>
   );
 }
@@ -791,11 +684,11 @@ export default async function KlantPagina({
     agenda: k.afspraken.length > 0,
     fotos: true, // ook leeg tonen: de klant kan er zelf een foto toevoegen
     documenten: k.documenten.length > 0,
-    dak: (k.aanbevelingen ?? []).some((a) => a.status !== "gedaan") || !!p.aandachtspunten || !!p.daktype
-      || k.fotos.some((f) => f.fase === "inspectie") || !!k.garantie.vanaf || !!controle,
+    dak: (k.aanbevelingen ?? []).some((a) => a.status !== "gedaan" && a.status !== "nietnu") || !!p.aandachtspunten
+      || !!k.garantie.vanaf || !!controle,
     extras: true,
     acties: acties.length > 0 || k.fase === "klaar" || k.fase === "nazorg",
-    logboek: (k.notities ?? []).length > 0 || (k.behandelingen ?? []).length > 0 || k.log.length > 2,
+    logboek: (k.notities ?? []).length > 0 || (k.behandelingen ?? []).length > 0,
   };
   const tabs = TABS.filter((t) => zichtbaar[t.id]);
   // Op gsm: alles onderaan als het past (max. 5), anders de 4 hoofdonderdelen + "Meer"
@@ -882,10 +775,7 @@ export default async function KlantPagina({
           {tab === "acties" && <Acties {...ctx} />}
           {tab === "logboek" && <Logboek {...ctx} />}
 
-          <div className={kz.voet}>
-            <p>Bewaar deze link: hij blijft werken, ook lang na je werken.</p>
-            <p>Deel hem niet met anderen: wie de link heeft, ziet je dossier.</p>
-          </div>
+          <p className={kz.voet}>Bewaar deze link en deel hem niet met anderen.</p>
         </div>
       </div>
 
