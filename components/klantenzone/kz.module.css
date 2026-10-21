@@ -338,7 +338,7 @@ textarea.invoer { min-height: 80px; resize: vertical; }
   background: rgba(255,255,255,.96); backdrop-filter: blur(10px); border-top: 1px solid var(--lijn);
   padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
 }
-.onderNav ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); }
+.onderNav > ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); }
 .onderItem {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 2px;
   font-size: 11px; font-weight: 500; color: var(--muted); text-decoration: none; border-radius: 10px;
@@ -471,9 +471,9 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .kenmerken dd { margin: 4px 0 0; font-weight: 700; font-size: 15px; }
 
 /* 6 knoppen in de onderbalk */
-.onderNav ul { grid-template-columns: repeat(6, 1fr); }
+
 @media (max-width: 400px) {
-  .onderItem { font-size: 10px; letter-spacing: -0.01em; }
+  .onderItem { font-size: 11px; }
   .vinkLijst { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
@@ -880,3 +880,68 @@ a.volgendeStap:hover { border-color: var(--groen); }
 }
 
 @media (max-width: 360px) { .docKlik .rijTitel { font-size: 14px; } .docKlik { gap: 10px; } }
+
+/* ══ Eenvoudige indeling: overzicht, agenda, foto's, documenten + meer ═════ */
+.onderNav > ul { grid-template-columns: repeat(5, 1fr); }
+.onderNav button.onderItem { border: 0; background: none; width: 100%; font-family: inherit; cursor: pointer; }
+.navScheiding { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rand); }
+
+.statusBericht { display: flex; gap: 12px; align-items: flex-start; margin: 18px 0 0; padding: 14px; border-radius: 12px; background: var(--vlak); }
+.statusBericht img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.statusBericht p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--tekst); white-space: pre-line; }
+
+.planning li { gap: 14px; }
+.planning .datumBlok { flex-shrink: 0; }
+.planningUur { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 13.5px; font-weight: 600; color: var(--tekst); }
+.planningUur svg { color: var(--groen-d); }
+
+.kaartUitgelicht { border-color: #CFE5B8; box-shadow: 0 0 0 3px var(--groen-zacht); }
+
+.betaalRij { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.betaalRij > div { padding: 12px 14px; border-radius: 12px; background: var(--vlak); }
+
+.puntLijst { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.puntLijst li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.55; }
+.puntStip { width: 8px; height: 8px; border-radius: 50%; background: var(--groen); margin-top: 8px; flex-shrink: 0; }
+
+.tipLijst { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.tipLijst li { display: flex; gap: 14px; align-items: flex-start; }
+.tipNr { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: var(--groen-zacht); color: #5F8F38; font-weight: 800; font-size: 14px; font-family: var(--font-montserrat), system-ui, sans-serif; }
+.tipLijst .planningDatum { margin-top: 2px; line-height: 1.5; }
+
+.schadeRij { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+/* Extra's: gelijke kaarten in een raster */
+.extraRaster { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+.extra {
+  display: flex; flex-direction: column; gap: 6px; padding: 20px; background: #fff; border: 1px solid var(--rand);
+  border-radius: 16px; transition: border-color .15s, box-shadow .15s;
+}
+.extra:hover { border-color: #CFE5B8; box-shadow: 0 8px 22px -14px rgba(0,0,0,.25); }
+.extra .statIcoon { margin-bottom: 8px; }
+.extraNaam { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 17px; letter-spacing: -0.015em; }
+.extraTekst { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--muted); }
+.extraKnop { margin-top: auto; padding-top: 14px; }
+
+/* Meer-paneel op gsm */
+.meerLijst { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.meerItem { display: flex; align-items: center; gap: 14px; padding: 12px 8px; border-radius: 12px; color: var(--tekst); text-decoration: none; }
+.meerItem:hover, .meerItem[aria-current="page"] { background: var(--vlak); }
+.meerItem > svg { color: var(--muted); }
+
+@media (max-width: 1180px) { .extraRaster { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) {
+  .extraRaster { grid-template-columns: 1fr; gap: 10px; }
+  .betaalRij { gap: 8px; }
+}
+
+/* Over je dak: 3 per rij (2 op gsm), lange waarden over de volle breedte */
+.kenmerken { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 560px) { .kenmerken { grid-template-columns: 1fr 1fr; } }
+
+/* Meer-paneel buiten de onderbalk (anders knipt de balk het af) */
+.portaal { min-height: 0; padding: 0; background: none; position: fixed; inset: 0; z-index: 1000; }
+.portaal .modaalAchter { z-index: 1000; }
+.planning li { flex-wrap: wrap; }
+.planningActie { margin-left: auto; }
+@media (max-width: 560px) { .planningActie { flex-basis: 100%; margin-left: 62px; } }

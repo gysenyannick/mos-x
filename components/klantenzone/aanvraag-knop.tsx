@@ -19,11 +19,15 @@ type Props = {
   klein?: boolean;
   /** Al aangevraagd en nog niet behandeld */
   alGevraagd?: boolean;
+  /** Wordt vóór de opmerking gezet, bv. de naam van een extra dienst */
+  voorvoegsel?: string;
+  /** Tekst van de knop als het al gevraagd is */
+  alGevraagdTekst?: string;
 };
 
 /** Knop → klein venster met optionele opmerking → aanvraag komt bij Yannick binnen. */
 export default function AanvraagKnop({
-  klantId, soort, label, titel, uitleg, placeholder, aanbevelingId, licht, klein, alGevraagd,
+  klantId, soort, label, titel, uitleg, placeholder, aanbevelingId, licht, klein, alGevraagd, voorvoegsel, alGevraagdTekst,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [tekst, setTekst] = useState("");
@@ -34,7 +38,7 @@ export default function AanvraagKnop({
   if (alGevraagd && !open) {
     return (
       <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ padding: "8px 12px", fontSize: 13 }}>
-        <CheckCircle2 size={14} /> Aangevraagd, Yannick neemt contact op
+        <CheckCircle2 size={14} /> {alGevraagdTekst ?? "Aangevraagd, Yannick neemt contact op"}
       </span>
     );
   }
@@ -42,7 +46,7 @@ export default function AanvraagKnop({
   function verstuur() {
     setFout(null);
     start(async () => {
-      const r = await doeAanvraag(klantId, soort, tekst, aanbevelingId);
+      const r = await doeAanvraag(klantId, soort, voorvoegsel ? `${voorvoegsel}${tekst.trim() ? `: ${tekst.trim()}` : ""}` : tekst, aanbevelingId);
       if (r.ok) setKlaar(true);
       else setFout(r.fout ?? "Dat lukte niet.");
     });

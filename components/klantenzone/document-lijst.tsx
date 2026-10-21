@@ -1,7 +1,7 @@
 "use client";
 
 import { createElement, useEffect, useState } from "react";
-import { ClipboardCheck, Download, Eye, FileSearch, FileText, FlaskConical, Receipt, ShieldCheck, X } from "lucide-react";
+import { ClipboardCheck, Download, Eye, FileSearch, FileText, FlaskConical, Package, Receipt, ShieldCheck, X } from "lucide-react";
 import { DOC_TYPE_LABEL, type DocType, type Document } from "@/lib/klantenzone/types";
 
 const ICOON: Record<DocType, typeof FileText> = {
@@ -12,6 +12,7 @@ const ICOON: Record<DocType, typeof FileText> = {
   oplevering: ClipboardCheck,
   inspectie: FileSearch,
   fiche: FlaskConical,
+  product: Package,
   andere: FileText,
 };
 import kz from "./kz.module.css";

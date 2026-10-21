@@ -58,9 +58,10 @@ export type Afspraak = {
   info?: string;
 };
 
-export type FotoFase = "voor" | "tijdens" | "na" | "klant";
+export type FotoFase = "inspectie" | "voor" | "tijdens" | "na" | "klant";
 
 export const FOTO_FASE_LABEL: Record<FotoFase, string> = {
+  inspectie: "Inspectie",
   voor: "Voor",
   tijdens: "Tijdens",
   na: "Na",
@@ -78,7 +79,7 @@ export type Foto = {
 
 export type DocType =
   | "offerte" | "voorschot" | "factuur"
-  | "garantie" | "oplevering" | "inspectie" | "fiche"
+  | "garantie" | "oplevering" | "inspectie" | "fiche" | "product"
   | "andere";
 
 export const DOC_TYPE_LABEL: Record<DocType, string> = {
@@ -89,6 +90,7 @@ export const DOC_TYPE_LABEL: Record<DocType, string> = {
   oplevering: "Opleveringsverslag",
   inspectie: "Inspectierapport",
   fiche: "Technische fiche",
+  product: "Gebruikt product",
   andere: "Document",
 };
 
@@ -101,7 +103,7 @@ export const DOC_GROEPEN: { titel: string; uitleg: string; types: DocType[] }[] 
   { titel: "Garanties", uitleg: "Bewaar ze goed: hiermee ben je zwart op wit gedekt.", types: ["garantie"] },
   { titel: "Offertes", uitleg: "Wat we afspraken, met de prijs vooraf.", types: ["offerte"] },
   { titel: "Verslagen", uitleg: "Wat ik vaststelde bij inspecties en bij de oplevering.", types: ["oplevering", "inspectie"] },
-  { titel: "Technische fiches", uitleg: "De producten die op je dak gebruikt zijn.", types: ["fiche"] },
+  { titel: "Gebruikte producten", uitleg: "Technische fiches en foto's van de producten op je dak.", types: ["fiche", "product"] },
   { titel: "Andere documenten", uitleg: "", types: ["andere"] },
 ];
 
@@ -114,6 +116,7 @@ export const DOC_LOG_ZIN: Record<DocType, string> = {
   oplevering: "Het opleveringsverslag staat klaar.",
   inspectie: "Het inspectierapport staat klaar.",
   fiche: "De technische fiche van de gebruikte producten staat klaar.",
+  product: "Er staat een foto van een gebruikt product klaar.",
   andere: "Er staat een nieuw document klaar.",
 };
 
@@ -229,13 +232,14 @@ export type Aanbeveling = {
   fotoUrl?: string;
 };
 
-export type AanvraagSoort = "onderhoud" | "aanbeveling" | "dakzorg" | "schade" | "andere";
+export type AanvraagSoort = "onderhoud" | "aanbeveling" | "dakzorg" | "schade" | "extra" | "andere";
 
 export const AANVRAAG_LABEL: Record<AanvraagSoort, string> = {
   onderhoud: "Onderhoud inplannen",
   aanbeveling: "Aanbeveling laten uitvoeren",
   dakzorg: "Interesse in MOS-X Dakzorg",
   schade: "Schade melden",
+  extra: "Extra dienst",
   andere: "Vraag",
 };
 
@@ -337,3 +341,13 @@ export const AFSPRAAK_TIPS: Record<string, string> = {
 
 /** Hoe lang vooraf een klant een afspraak nog zelf mag verzetten. */
 export const VERZET_UREN = 48;
+
+/** Extra diensten die de klant er met één klik bij kan vragen. */
+export const EXTRAS = [
+  { id: "goten", naam: "Dakgoten reinigen", tekst: "Bladeren en vuil eruit, zodat het regenwater weer vlot weg kan." },
+  { id: "gevel", naam: "Gevelreiniging", tekst: "Groene aanslag en vuil van je gevel, zacht en zonder schade." },
+  { id: "oprit", naam: "Oprit en terras", tekst: "Mos en onkruid tussen de klinkers weg, je oprit weer als nieuw." },
+  { id: "velux", naam: "Velux reinigen", tekst: "Dakvensters proper, binnen en buiten, inclusief de randen." },
+  { id: "zonnepanelen", naam: "Zonnepanelen reinigen", tekst: "Schone panelen leveren meer op. Veilig gereinigd, zonder krassen." },
+  { id: "herstelling", naam: "Kleine herstellingen", tekst: "Een gebroken of verschoven pan? Ik leg ze terug of vervang ze." },
+] as const;

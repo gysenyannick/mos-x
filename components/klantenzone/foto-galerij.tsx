@@ -11,7 +11,7 @@ type Props = {
   onVerwijder?: (fotoId: string) => Promise<void>;
 };
 
-const VOLGORDE: FotoFase[] = ["voor", "tijdens", "na", "klant"];
+const VOLGORDE: FotoFase[] = ["inspectie", "voor", "tijdens", "na", "klant"];
 
 export default function FotoGalerij({ fotos, onVerwijder }: Props) {
   const fases = VOLGORDE.filter((f) => fotos.some((x) => x.fase === f));

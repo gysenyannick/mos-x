@@ -60,6 +60,7 @@ export function FotoUpload({ klantId }: { klantId: string }) {
       <div className={kz.veld}>
         <label htmlFor="fotofase">Fase</label>
         <select id="fotofase" className={kz.invoer} value={fase} onChange={(e) => setFase(e.target.value)}>
+          <option value="inspectie">Inspectie</option>
           <option value="voor">Voor</option>
           <option value="tijdens">Tijdens</option>
           <option value="na">Na</option>
@@ -106,6 +107,7 @@ export function DocumentUpload({ klantId }: { klantId: string }) {
             <option value="oplevering">Opleveringsverslag</option>
             <option value="inspectie">Inspectierapport</option>
             <option value="fiche">Technische fiche (producten)</option>
+            <option value="product">Foto van gebruikt product</option>
           </optgroup>
           <option value="andere">Ander document</option>
         </select>
