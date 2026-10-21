@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { ChevronRight, Lightbulb, MoreHorizontal, NotebookPen, Sparkles, TriangleAlert, X } from "lucide-react";
+import { ChevronRight, Home, MoreHorizontal, NotebookPen, Sparkles, Tag, X } from "lucide-react";
 import kz from "./kz.module.css";
 
 const ITEMS = [
-  { id: "aandachtspunten", label: "Aandachtspunten", uitleg: "Wat ik zag op je dak", icoon: TriangleAlert },
-  { id: "advies", label: "Advies", uitleg: "Onderhoud, garantie en Dakzorg", icoon: Lightbulb },
+  { id: "dak", label: "Mijn dak", uitleg: "Wat ik zag, garantie en controle", icoon: Home },
   { id: "extras", label: "Extra's", uitleg: "Goten, gevel, oprit en meer", icoon: Sparkles },
+  { id: "acties", label: "Acties", uitleg: "Kortingen en buurvoordeel", icoon: Tag },
   { id: "logboek", label: "Logboek", uitleg: "Alles wat er gebeurde", icoon: NotebookPen },
 ] as const;
 

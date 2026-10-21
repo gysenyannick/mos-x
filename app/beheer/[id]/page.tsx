@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, NotebookPen, Save, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getKlant } from "@/lib/klantenzone/store";
+import { effectief } from "@/lib/klantenzone/auto";
 import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
 import { DOC_IS_FACTUUR, DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
@@ -29,6 +30,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
   const { id } = await params;
   const k = await getKlant(id);
   if (!k) notFound();
+  const auto = effectief(k);
 
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "www.mos-x.be";
@@ -76,7 +78,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
           <form action={bewaar}>
             <div className={kz.velden}>
               <div className={`${kz.veld} ${kz.vol}`}>
-                <label htmlFor="fase">Stap</label>
+                <label htmlFor="fase">Stap {auto.fase !== k.fase && <span style={{ color: "#7AB54E", fontWeight: 600 }}>(nu automatisch: {FASE_LABEL[auto.fase]})</span>}</label>
                 <select id="fase" name="fase" defaultValue={k.fase} className={kz.invoer}>
                   {FASES.map((f) => <option key={f} value={f}>{FASE_LABEL[f]}</option>)}
                 </select>

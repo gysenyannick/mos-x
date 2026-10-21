@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  AppWindow, ArrowRight, Building2, CalendarDays, CalendarPlus, Camera, CheckCircle2, Clock, CloudLightning, Droplets,
-  FileText, Hammer, Info, LayoutDashboard, Leaf, Lightbulb, MessageCircle, NotebookPen, ShieldCheck, Sparkles,
-  Sun, TriangleAlert, UserRound, Users, Wallet, Wrench, Grid3x3,
+  AppWindow, ArrowRight, Building2, CalendarDays, CalendarPlus, Camera, CheckCircle2, Clock, Droplets,
+  FileText, Hammer, Home, Info, LayoutDashboard, Leaf, MessageCircle, NotebookPen, ShieldCheck, Sparkles,
+  Sun, Tag, UserRound, Users, Wallet, Wrench, Grid3x3,
 } from "lucide-react";
 import { headers } from "next/headers";
-import { getInstellingen, getKlant, getMomenten, zorgVoorRefCode } from "@/lib/klantenzone/store";
+import { getInstellingen, getKlant, getMomenten, zorgVoorRefCode, type Actie } from "@/lib/klantenzone/store";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
+import { effectief } from "@/lib/klantenzone/auto";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
   maandagVan, nuMs, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
-  AFSPRAAK_TIPS, DAKZORG_INBEGREPEN, DOC_GROEPEN, DOC_IS_FACTUUR, EXTRAS, FASES, FASE_KORT, FASE_LABEL, FOTO_FASE_LABEL,
+  AFSPRAAK_TIPS, DOC_GROEPEN, DOC_IS_FACTUUR, EXTRAS, FASES, FASE_KORT, FASE_LABEL, FOTO_FASE_LABEL,
   PRIORITEIT_LABEL, VERZET_UREN,
   type Afspraak, type FotoFase, type Klant, type VrijMoment,
 } from "@/lib/klantenzone/types";
@@ -45,9 +46,9 @@ const TABS = [
   { id: "agenda", label: "Agenda", icoon: CalendarDays },
   { id: "fotos", label: "Foto's", icoon: Camera },
   { id: "documenten", label: "Documenten", icoon: FileText },
-  { id: "aandachtspunten", label: "Aandachtspunten", icoon: TriangleAlert },
-  { id: "advies", label: "Advies", icoon: Lightbulb },
+  { id: "dak", label: "Mijn dak", icoon: Home },
   { id: "extras", label: "Extra's", icoon: Sparkles },
+  { id: "acties", label: "Acties", icoon: Tag },
   { id: "logboek", label: "Logboek", icoon: NotebookPen },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
@@ -104,7 +105,7 @@ function statusZin(k: Klant, volgende?: Afspraak): string {
 /** Wat is logisch de volgende stap voor deze klant? */
 function volgendeStap(k: Klant, volgende?: Afspraak, controle?: { datum: string } | null): string {
   const dringend = (k.aanbevelingen ?? []).find((a) => a.status === "open" && a.prioriteit === "dringend");
-  if (dringend) return `Bekijk je aandachtspunten: ${dringend.titel.toLowerCase()}.`;
+  if (dringend) return `Bekijk Mijn dak: ${dringend.titel.toLowerCase()}.`;
   if (volgende) return `${volgende.titel} op ${fmtDag(volgende.start)} om ${fmtUur(volgende.start)}.`;
   const open = k.documenten.filter((d) => d.status === "open");
   if (open.length) return `Er staat ${open.length === 1 ? "een factuur" : `${open.length} facturen`} klaar om te betalen.`;
@@ -191,6 +192,7 @@ type Ctx = {
   controle: { datum: string; reden: string } | null;
   refUrl: string;
   burenVoordeel?: string;
+  acties: Actie[];
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -502,12 +504,14 @@ function Documenten({ k }: Ctx) {
   );
 }
 
-/* ══ Aandachtspunten ═══════════════════════════════════════════════════════ */
+/* ══ Mijn dak: wat er belangrijk is aan je dak ═════════════════════════════ */
 
-function Aandachtspunten({ k }: Ctx) {
+function MijnDak({ k, controle }: Ctx) {
   const p = k.paspoort ?? {};
   const open = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
   const punten = (p.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
+  const garantie = garantieStaat(k);
+  const gevraagd = (soort: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === soort);
   const kenmerken = [
     { label: "Daktype", waarde: p.daktype },
     { label: "Oppervlakte", waarde: p.oppervlakte ? `± ${p.oppervlakte} m²` : undefined },
@@ -521,11 +525,7 @@ function Aandachtspunten({ k }: Ctx) {
 
   return (
     <>
-      <PaginaKop titel="Aandachtspunten" teller={open.length} sub="Wat ik zag op je dak, en waar ik verder op let." />
-
-      {open.length === 0 && punten.length === 0 && kenmerken.length === 0 && (
-        <Leeg>Na het plaatsbezoek schrijf ik hier wat me opviel op je dak.</Leeg>
-      )}
+      <PaginaKop titel="Mijn dak" sub="Wat belangrijk is aan je dak: wat ik zag, je garantie en wanneer ik terugkom." />
 
       {open.map((a) => (
         <section key={a.id} className={`${kz.kaart} ${kz.aanbeveling} ${a.prioriteit === "dringend" ? kz.aanbevelingDringend : ""}`}>
@@ -560,6 +560,44 @@ function Aandachtspunten({ k }: Ctx) {
         </section>
       )}
 
+      {garantie.length > 0 && (
+        <section className={kz.kaart}>
+          <div className={kz.kaartKop}>
+            <h2 className={kz.kaartTitel}><ShieldCheck size={18} /> Je garantie</h2>
+            {k.documenten.some((d) => d.type === "garantie") && <Link href="?tab=documenten" className={kz.meerLink}>Certificaat <ArrowRight size={14} /></Link>}
+          </div>
+          {garantie.map((g) => (
+            <div key={g.id} className={kz.garantieRegel}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <span className={kz.rijIcoon}><g.icoon size={18} /></span>
+                <div style={{ minWidth: 0 }}>
+                  <p className={kz.rijTitel}>{g.titel}</p>
+                  <p className={kz.rijSub}>{g.staat}</p>
+                </div>
+              </div>
+              {g.rest !== null && <div className={kz.balk} aria-hidden="true"><div className={kz.balkIn} style={{ width: `${g.rest}%` }} /></div>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {controle && (
+        <section className={kz.kaart}>
+          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Wrench size={18} /> Volgende controle</h2></div>
+          <p className={kz.groot} style={{ fontSize: 24 }}>{hfd(fmtMaand(controle.datum))}</p>
+          <p className={kz.sub}>{controle.reden}</p>
+          <div className={kz.rijKnoppen}>
+            <AanvraagKnop
+              klantId={k.id} soort="onderhoud" alGevraagd={gevraagd("onderhoud")}
+              label={<><CalendarPlus size={15} /> Plan mijn controle</>}
+              titel="Controle inplannen"
+              uitleg="Ik neem contact op om een moment af te spreken. Ik ken je dak al, je hoeft niets opnieuw uit te leggen."
+              placeholder="bv. Liefst in het voorjaar."
+            />
+          </div>
+        </section>
+      )}
+
       {kenmerken.length > 0 && (
         <section className={kz.kaart}>
           <div className={kz.kaartKop}><h2 className={kz.kaartTitel}>Over je dak</h2></div>
@@ -581,110 +619,10 @@ function Aandachtspunten({ k }: Ctx) {
   );
 }
 
-/* ══ Advies ════════════════════════════════════════════════════════════════ */
-
-const TIPS = [
-  { titel: "Kijk je goten na in de herfst", tekst: "Na de bladval lopen goten snel vol. Verstopte goten laten water over je gevel lopen." },
-  { titel: "Snoei overhangende takken", tekst: "Takken boven je dak zorgen voor schaduw en bladeren: daar groeit mos het snelst." },
-  { titel: "Kijk na een storm even naar je dak", tekst: "Zie je een verschoven pan of een stuk in de tuin? Meld het meteen, dan voorkom je lekken." },
-];
-
-function Advies({ k, controle }: Ctx) {
-  const garantie = garantieStaat(k);
-  const gevraagd = (soort: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === soort);
-
-  return (
-    <>
-      <PaginaKop titel="Advies" sub="Hoe je dak er zo lang mogelijk goed bij blijft liggen." />
-
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Wrench size={18} /> Volgende controle</h2></div>
-        <p className={kz.groot} style={{ fontSize: 24 }}>{controle ? hfd(fmtMaand(controle.datum)) : "Na je werken"}</p>
-        <p className={kz.sub}>{controle ? controle.reden : "Zodra je dak behandeld is, zie je hier wanneer een controle aangeraden is."}</p>
-        {controle && (
-          <div className={kz.rijKnoppen}>
-            <AanvraagKnop
-              klantId={k.id} soort="onderhoud" alGevraagd={gevraagd("onderhoud")}
-              label={<><CalendarPlus size={15} /> Plan mijn controle</>}
-              titel="Controle inplannen"
-              uitleg="Ik neem contact op om een moment af te spreken. Je hoeft niets opnieuw uit te leggen: ik ken je dak al."
-              placeholder="bv. Liefst in het voorjaar."
-            />
-          </div>
-        )}
-      </section>
-
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><ShieldCheck size={18} /> Je garantie</h2></div>
-        {garantie.length === 0 ? (
-          <p className={kz.leeg}>Je garantie verschijnt hier zodra je werken bevestigd zijn.</p>
-        ) : garantie.map((g) => (
-          <div key={g.id} className={kz.garantieRegel}>
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              <span className={kz.rijIcoon}><g.icoon size={18} /></span>
-              <div style={{ minWidth: 0 }}>
-                <p className={kz.rijTitel}>{g.titel}</p>
-                <p className={kz.rijSub}>{g.staat}</p>
-              </div>
-            </div>
-            {g.rest !== null && <div className={kz.balk} aria-hidden="true"><div className={kz.balkIn} style={{ width: `${g.rest}%` }} /></div>}
-            <p className={kz.sub} style={{ fontSize: 13.5 }}>{g.uitleg}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Lightbulb size={18} /> Tips van Yannick</h2></div>
-        <ul className={kz.tipLijst}>
-          {TIPS.map((t, i) => (
-            <li key={t.titel}>
-              <span className={kz.tipNr}>{i + 1}</span>
-              <span><span className={kz.planningTitel}>{t.titel}</span><span className={kz.planningDatum}>{t.tekst}</span></span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className={`${kz.kaart} ${kz.dakzorgKaart}`}>
-        <div className={kz.kaartKop}>
-          <h2 className={kz.kaartTitel}>MOS-X Dakzorg</h2>
-          {k.dakzorg?.actief && <span className={`${kz.badge} ${kz.badgeGroen}`}>Actief</span>}
-        </div>
-        <p className={kz.sub} style={{ marginTop: 0 }}>
-          {k.dakzorg?.actief
-            ? `Je dak wordt elk jaar opgevolgd${k.dakzorg.sinds ? `, sinds ${fmtKort(k.dakzorg.sinds)}` : ""}.`
-            : "Ik volg je dak elk jaar persoonlijk op. Zo blijft het resultaat, en vang ik kleine problemen op voor ze duur worden."}
-        </p>
-        <ul className={kz.vinkLijst}>{DAKZORG_INBEGREPEN.map((x) => <li key={x}><CheckCircle2 size={16} /> {x}</li>)}</ul>
-        {!k.dakzorg?.actief && (
-          <div className={kz.rijKnoppen}>
-            <AanvraagKnop klantId={k.id} soort="dakzorg" alGevraagd={gevraagd("dakzorg")} label="Ik heb interesse" titel="Interesse in MOS-X Dakzorg"
-              uitleg="Ik maak een voorstel op maat van jouw dak. Vrijblijvend, en opzeggen kan altijd." placeholder="Vraag of opmerking (optioneel)" />
-          </div>
-        )}
-      </section>
-
-      <section className={kz.kaart}>
-        <div className={kz.schadeRij}>
-          <span className={kz.rijIcoon}><CloudLightning size={18} /></span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p className={kz.rijTitel}>Schade gezien na een storm?</p>
-            <p className={kz.rijSub}>Meld het, dan kom ik kijken wat nodig is.</p>
-          </div>
-          <AanvraagKnop klantId={k.id} soort="schade" licht klein label="Schade melden" titel="Schade melden"
-            uitleg="Beschrijf kort wat je zag. Voeg gerust een foto toe bij Foto's." placeholder="bv. Er ligt een dakpan in de tuin." />
-        </div>
-      </section>
-    </>
-  );
-}
-
 /* ══ Extra's ═══════════════════════════════════════════════════════════════ */
 
-function Extras({ k, refUrl, burenVoordeel }: Ctx) {
+function Extras({ k }: Ctx) {
   const gevraagd = (naam: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "extra" && a.tekst.startsWith(naam));
-  const verwezen = (k.verwijzingen ?? []).length;
-
   return (
     <>
       <PaginaKop titel="Extra's" sub="Ben ik toch bij je? Dan neem ik dit er graag bij. Je krijgt eerst een prijs." />
@@ -708,14 +646,39 @@ function Extras({ k, refUrl, burenVoordeel }: Ctx) {
           );
         })}
       </div>
+    </>
+  );
+}
 
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Users size={18} /> Ook je buren een verzorgd dak?</h2></div>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 12 }}>
-          Deel je link met buren, familie of vrienden.{burenVoordeel ? ` ${burenVoordeel}` : ""} Werk ik in dezelfde straat, dan bespaar ik verplaatsingen, en dat merk je.
-        </p>
-        <DeelBuurlink url={refUrl} voornaam={k.voornaam} />
-        {verwezen > 0 && <p className={kz.ok}><CheckCircle2 size={15} style={{ verticalAlign: -3 }} /> {verwezen} {verwezen === 1 ? "persoon kwam" : "mensen kwamen"} via jouw link. Bedankt!</p>}
+/* ══ Acties: kortingen en het buurvoordeel ═════════════════════════════════ */
+
+function Acties({ k, refUrl, burenVoordeel, acties }: Ctx) {
+  const verwezen = (k.verwijzingen ?? []).length;
+  return (
+    <>
+      <PaginaKop titel="Acties" sub="Voordelen voor jou als klant van MOS-X." />
+
+      {acties.map((a) => (
+        <section key={a.id} className={`${kz.kaart} ${kz.actie}`}>
+          <span className={`${kz.statIcoon} ${kz.tintOranje}`}><Tag size={18} /></span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p className={kz.rijTitel} style={{ fontSize: 17 }}>{a.titel}</p>
+            <p className={kz.sub} style={{ marginTop: 4 }}>{a.tekst}</p>
+            {a.geldigTot && <p className={kz.tijdDatum}>Geldig tot {fmtKort(a.geldigTot)}</p>}
+          </div>
+        </section>
+      ))}
+
+      <section className={`${kz.kaart} ${kz.actie}`}>
+        <span className={`${kz.statIcoon} ${kz.tintGroen}`}><Users size={18} /></span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p className={kz.rijTitel} style={{ fontSize: 17 }}>Buurvoordeel</p>
+          <p className={kz.sub} style={{ marginTop: 4, marginBottom: 12 }}>
+            Deel je link met buren, familie of vrienden.{burenVoordeel ? ` ${burenVoordeel}` : " Werk ik in dezelfde straat, dan bespaar ik verplaatsingen, en dat merk je."}
+          </p>
+          <DeelBuurlink url={refUrl} voornaam={k.voornaam} />
+          {verwezen > 0 && <p className={kz.ok}><CheckCircle2 size={15} style={{ verticalAlign: -3 }} /> {verwezen} {verwezen === 1 ? "persoon kwam" : "mensen kwamen"} via jouw link. Bedankt!</p>}
+        </div>
       </section>
     </>
   );
@@ -795,9 +758,9 @@ export default async function KlantPagina({
 }) {
   const { token } = await params;
   const { tab: tabRuw } = await searchParams;
-  const k = await getKlant(token);
+  const ruw = await getKlant(token);
 
-  if (!k) {
+  if (!ruw) {
     return (
       <main className={kz.page}>
         <div className={kz.wrap} style={{ paddingTop: 80, textAlign: "center" }}>
@@ -815,6 +778,12 @@ export default async function KlantPagina({
     );
   }
 
+  // Wat vanzelf volgt uit de datums (stap, werken, garantie) wordt hier ingevuld
+  const k = effectief(ruw);
+  const instellingen = await getInstellingen();
+  const acties = (instellingen.acties ?? []).filter((a) => !a.geldigTot || a.geldigTot >= vandaag());
+  const controle = volgendeControle(k);
+
   // Het menu groeit mee: een onderdeel verschijnt pas als er iets in staat
   const p = k.paspoort ?? {};
   const zichtbaar: Record<TabId, boolean> = {
@@ -822,10 +791,10 @@ export default async function KlantPagina({
     agenda: k.afspraken.length > 0,
     fotos: true, // ook leeg tonen: de klant kan er zelf een foto toevoegen
     documenten: k.documenten.length > 0,
-    aandachtspunten: (k.aanbevelingen ?? []).some((a) => a.status !== "gedaan") || !!p.aandachtspunten || !!p.daktype
-      || k.fotos.some((f) => f.fase === "inspectie"),
-    advies: k.fase === "klaar" || k.fase === "nazorg" || (k.behandelingen ?? []).length > 0,
+    dak: (k.aanbevelingen ?? []).some((a) => a.status !== "gedaan") || !!p.aandachtspunten || !!p.daktype
+      || k.fotos.some((f) => f.fase === "inspectie") || !!k.garantie.vanaf || !!controle,
     extras: true,
+    acties: acties.length > 0 || k.fase === "klaar" || k.fase === "nazorg",
     logboek: (k.notities ?? []).length > 0 || (k.behandelingen ?? []).length > 0 || k.log.length > 2,
   };
   const tabs = TABS.filter((t) => zichtbaar[t.id]);
@@ -840,9 +809,10 @@ export default async function KlantPagina({
   const refCode = await zorgVoorRefCode(k);
   const ctx: Ctx = {
     k,
-    controle: volgendeControle(k),
+    controle,
     refUrl: `${proto}://${host}/buur/${refCode}`,
-    burenVoordeel: (await getInstellingen()).burenVoordeel,
+    burenVoordeel: instellingen.burenVoordeel,
+    acties,
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,
@@ -855,7 +825,8 @@ export default async function KlantPagina({
     agenda: ctx.komend.length ? { n: ctx.komend.length } : undefined,
     fotos: k.fotos.length ? { n: k.fotos.length } : undefined,
     documenten: openDocs ? { n: openDocs, amber: true } : k.documenten.length ? { n: k.documenten.length } : undefined,
-    aandachtspunten: openAanb.length ? { n: openAanb.length, amber: true } : undefined,
+    dak: openAanb.length ? { n: openAanb.length, amber: true } : undefined,
+    acties: acties.length ? { n: acties.length } : undefined,
   };
 
   return (
@@ -891,7 +862,6 @@ export default async function KlantPagina({
             </ul>
           </nav>
           <div className={kz.zijOnder}>
-            {k.dakzorg?.actief && <p className={kz.zijTip}><ShieldCheck size={15} /> MOS-X Dakzorg actief</p>}
             <div className={kz.zijKlant}>
               <span className={kz.avatar}>{k.voornaam.charAt(0)}{k.achternaam.charAt(0)}</span>
               <div style={{ minWidth: 0 }}>
@@ -907,9 +877,9 @@ export default async function KlantPagina({
           {tab === "agenda" && <Agenda {...ctx} />}
           {tab === "fotos" && <Fotos {...ctx} />}
           {tab === "documenten" && <Documenten {...ctx} />}
-          {tab === "aandachtspunten" && <Aandachtspunten {...ctx} />}
-          {tab === "advies" && <Advies {...ctx} />}
+          {tab === "dak" && <MijnDak {...ctx} />}
           {tab === "extras" && <Extras {...ctx} />}
+          {tab === "acties" && <Acties {...ctx} />}
           {tab === "logboek" && <Logboek {...ctx} />}
 
           <div className={kz.voet}>
@@ -931,7 +901,7 @@ export default async function KlantPagina({
             </li>
           ))}
           {tabs.some((t) => !onderaan.includes(t.id)) && (
-            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ aandachtspunten: openAanb.length }} /></li>
+            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ dak: openAanb.length }} /></li>
           )}
         </ul>
       </nav>

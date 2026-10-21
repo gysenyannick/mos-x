@@ -4,6 +4,7 @@ import {
 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
+import { effectief } from "@/lib/klantenzone/auto";
 import { listKlanten, opslagStatus } from "@/lib/klantenzone/store";
 import { fmtEuro, fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
 import { AANVRAAG_LABEL, FASE_LABEL } from "@/lib/klantenzone/types";
@@ -14,7 +15,8 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
   if (!(await isBeheerder())) return null;
   const opslag = opslagStatus();
   const klaar = opslag.data !== "ontbreekt";
-  const klanten = klaar ? await listKlanten() : [];
+  // Zelfde stap als de klant ziet: inclusief wat vanzelf volgt uit de datums
+  const klanten = klaar ? (await listKlanten()).map(effectief) : [];
 
   // Alles waar Yannick iets mee moet, over alle klanten heen
   type Taak = { klantId: string; naam: string; icoon: "bel" | "buur" | "controle"; tekst: string; datum: string };

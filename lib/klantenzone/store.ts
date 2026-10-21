@@ -236,9 +236,19 @@ export async function verwijderBestand(url: string): Promise<void> {
 const KEY_REF = (code: string) => `mx:ref:${code}`;
 const KEY_INSTELLINGEN = "mx:instellingen";
 
+/** Een actie of korting die Yannick aan alle klanten toont. */
+export type Actie = {
+  id: string;
+  titel: string;
+  tekst: string;
+  /** YYYY-MM-DD, leeg = geen einddatum */
+  geldigTot?: string;
+};
+
 export type Instellingen = {
   /** Wat buren en doorverwijzers krijgen, vrije tekst. Leeg = geen beloning vermelden. */
   burenVoordeel?: string;
+  acties?: Actie[];
 };
 
 /** Geeft de buurcode van een klant terug en maakt er een aan als die nog niet bestaat. */
@@ -269,4 +279,17 @@ export async function getInstellingen(): Promise<Instellingen> {
 
 export async function saveInstellingen(i: Instellingen): Promise<void> {
   await (await backend()).set(KEY_INSTELLINGEN, i);
+}
+
+/* ── Koppeling: klant terugvinden op een extern nummer (bv. uit Beavr) ─────── */
+
+const KEY_EXTERN = (id: string) => `mx:extern:${id}`;
+
+export async function klantVoorExternId(externId: string): Promise<Klant | null> {
+  const id = await (await backend()).get<string>(KEY_EXTERN(externId));
+  return id ? getKlant(id) : null;
+}
+
+export async function koppelExternId(externId: string, klantId: string): Promise<void> {
+  await (await backend()).set(KEY_EXTERN(externId), klantId);
 }

@@ -948,3 +948,12 @@ a.volgendeStap:hover { border-color: var(--groen); }
 
 /* Onderbalk: evenveel kolommen als er onderdelen zichtbaar zijn */
 .onderNav > ul { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 1fr; }
+
+/* Codevoorbeeld in instellingen */
+.code { margin: 0 0 12px; padding: 14px 16px; border-radius: 12px; background: #1A1A1A; color: #E8F3DC; font-size: 12.5px; line-height: 1.55; overflow-x: auto; white-space: pre; }
+.puntLijst code { font-size: 13px; background: var(--vlak); padding: 2px 6px; border-radius: 6px; word-break: break-all; }
+.actie { display: flex; gap: 16px; align-items: flex-start; }
+
+/* Bevestigingsregels: vinkje en tekst altijd naast elkaar */
+.ok { display: flex; gap: 6px; align-items: flex-start; }
+.ok svg { flex-shrink: 0; margin-top: 2px; vertical-align: 0 !important; }

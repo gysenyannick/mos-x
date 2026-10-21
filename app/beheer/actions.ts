@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE, controleerWachtwoord, vereisBeheerder } from "@/lib/klantenzone/auth";
 import {
-  deleteKlant, getKlant, getMomenten, herkoppelRefCode, nieuwId, saveInstellingen, saveKlant, saveMomenten,
+  deleteKlant, getInstellingen, getKlant, getMomenten, herkoppelRefCode, koppelExternId, nieuwId, saveInstellingen,
+  saveKlant, saveMomenten,
   verwijderBestand,
 } from "@/lib/klantenzone/store";
 import {
@@ -151,6 +152,7 @@ export async function nieuweLink(id: string) {
   await saveKlant(k);
   await deleteKlant(oudId);
   await herkoppelRefCode(k);
+  if (k.externId) await koppelExternId(k.externId, k.id);
   ververs(oudId);
   redirect(`/beheer/${k.id}`);
 }
@@ -376,7 +378,28 @@ export async function zetVerwijzingStatus(id: string, vId: string, status: Verwi
 
 export async function bewaarInstellingen(fd: FormData) {
   await vereisBeheerder();
-  await saveInstellingen({ burenVoordeel: s(fd, "burenVoordeel") || undefined });
+  const i = await getInstellingen();
+  await saveInstellingen({ ...i, burenVoordeel: s(fd, "burenVoordeel") || undefined });
+  revalidatePath("/beheer/instellingen");
+}
+
+/* ── Acties en kortingen (voor alle klanten) ──────────────────────────────── */
+
+export async function voegActieToe(fd: FormData) {
+  await vereisBeheerder();
+  const titel = s(fd, "titel");
+  if (!titel) return;
+  const i = await getInstellingen();
+  i.acties = [...(i.acties ?? []), { id: nieuwId(6), titel, tekst: s(fd, "tekst"), geldigTot: s(fd, "geldigTot") || undefined }];
+  await saveInstellingen(i);
+  revalidatePath("/beheer/instellingen");
+}
+
+export async function verwijderActie(actieId: string) {
+  await vereisBeheerder();
+  const i = await getInstellingen();
+  i.acties = (i.acties ?? []).filter((a) => a.id !== actieId);
+  await saveInstellingen(i);
   revalidatePath("/beheer/instellingen");
 }
 

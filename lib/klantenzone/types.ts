@@ -304,6 +304,8 @@ export type Klant = {
   documenten: Document[];
   garantie: Garantie;
   /* Velden hieronder kunnen ontbreken bij dossiers van vóór die functie */
+  /** Nummer in een ander systeem (bv. Beavr), voor de automatische koppeling */
+  externId?: string;
   werken?: Werk[];
   notities?: Notitie[];
   paspoort?: Paspoort;
