@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isBeheerder } from "@/lib/klantenzone/auth";
-import { bewaarBestand, getKlant, nieuwId, saveKlant } from "@/lib/klantenzone/store";
+import { bewaarBestand, getKlant, nieuwId, verwijderBestand, wijzigKlant } from "@/lib/klantenzone/store";
 import type { DocStatus, DocType, FotoFase } from "@/lib/klantenzone/types";
 
 export const runtime = "nodejs";
@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
     if (!(file instanceof Blob) || file.size === 0) return fout("Geen bestand ontvangen.");
     if (file.size > MAX_BYTES) return fout("Bestand is te groot (max. 4 MB).");
 
-    const k = await getKlant(klantId);
-    if (!k) return fout("Dossier niet gevonden.", 404);
+    const bestaand = await getKlant(klantId);
+    if (!bestaand) return fout("Dossier niet gevonden.", 404);
 
     const beheerder = await isBeheerder();
     const naam = file instanceof File ? file.name : "bestand";
@@ -34,39 +34,45 @@ export async function POST(req: NextRequest) {
     if (soort === "foto") {
       if (!file.type.startsWith("image/")) return fout("Dit is geen foto.");
       const fase = (beheerder ? String(fd.get("fase") || "tijdens") : "klant") as FotoFase;
-      if (!beheerder && k.fotos.filter((f) => f.fase === "klant").length >= MAX_KLANT_FOTOS) {
-        return fout("Je hebt het maximum aantal foto's bereikt.");
-      }
-      const url = await bewaarBestand(`${k.id}/fotos`, naam, file);
-      k.fotos.unshift({
-        id: nieuwId(6), url, fase, datum: nu,
-        bijschrift: String(fd.get("bijschrift") ?? "").trim().slice(0, 140) || undefined,
+      const url = await bewaarBestand(`${klantId}/fotos`, naam, file);
+      const r = await wijzigKlant(klantId, (k) => {
+        if (!beheerder && k.fotos.filter((f) => f.fase === "klant").length >= MAX_KLANT_FOTOS) return false;
+        k.fotos.unshift({
+          id: nieuwId(6), url, fase, datum: nu,
+          bijschrift: String(fd.get("bijschrift") ?? "").trim().slice(0, 140) || undefined,
+        });
+        if (beheerder) {
+          const alVandaag = k.log[0]?.tekst.startsWith("Nieuwe werffoto") && k.log[0].datum.slice(0, 10) === nu.slice(0, 10);
+          if (!alVandaag) k.log.unshift({ datum: nu, tekst: "Nieuwe werffoto's toegevoegd." });
+        }
+        return true;
       });
-      if (beheerder) {
-        const nieuweVanVandaag = k.log[0]?.tekst.startsWith("Nieuwe werffoto") && k.log[0].datum.slice(0, 10) === nu.slice(0, 10);
-        if (!nieuweVanVandaag) k.log.unshift({ datum: nu, tekst: "Nieuwe werffoto's toegevoegd." });
+      if (!r?.resultaat) {
+        await verwijderBestand(url);
+        return fout("Je hebt het maximum aantal foto's bereikt.");
       }
     } else if (soort === "document") {
       if (!beheerder) return fout("Niet toegestaan.", 403);
       if (file.type !== "application/pdf" && !file.type.startsWith("image/")) return fout("Enkel pdf of afbeelding.");
       const type = String(fd.get("type") || "andere") as DocType;
       const bedragRuw = String(fd.get("bedrag") ?? "").replace(",", ".").trim();
-      const url = await bewaarBestand(`${k.id}/documenten`, naam, file);
+      const url = await bewaarBestand(`${klantId}/documenten`, naam, file);
       const titel = String(fd.get("titel") ?? "").trim() || naam.replace(/\.[a-z0-9]+$/i, "");
-      k.documenten.unshift({
-        id: nieuwId(6), url, type, titel,
-        bedrag: bedragRuw ? Number(bedragRuw) : undefined,
-        status: String(fd.get("status") || (type === "offerte" ? "info" : "open")) as DocStatus,
-        datum: String(fd.get("datum") || nu.slice(0, 10)),
+      await wijzigKlant(klantId, (k) => {
+        k.documenten.unshift({
+          id: nieuwId(6), url, type, titel,
+          bedrag: bedragRuw ? Number(bedragRuw) : undefined,
+          status: String(fd.get("status") || (type === "offerte" ? "info" : "open")) as DocStatus,
+          datum: String(fd.get("datum") || nu.slice(0, 10)),
+        });
+        k.log.unshift({ datum: nu, tekst: `Nieuw document: ${titel}.` });
       });
-      k.log.unshift({ datum: nu, tekst: `Nieuw document: ${titel}.` });
     } else {
       return fout("Onbekend soort upload.");
     }
 
-    await saveKlant(k);
-    revalidatePath(`/klant/${k.id}`);
-    revalidatePath(`/beheer/${k.id}`);
+    revalidatePath(`/klant/${klantId}`);
+    revalidatePath(`/beheer/${klantId}`);
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("klantenzone upload", e);

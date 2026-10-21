@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarClock, LogOut, Users } from "lucide-react";
+import { CalendarClock, LogOut, Settings, Users } from "lucide-react";
 import { beheerActief, isBeheerder } from "@/lib/klantenzone/auth";
 import { LoginForm } from "@/components/klantenzone/beheer-client";
 import { logout } from "./actions";
@@ -42,6 +42,7 @@ export default async function BeheerLayout({ children }: { children: React.React
             <nav style={{ display: "flex", gap: 6 }}>
               <Link href="/beheer" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><Users size={15} /> <span className={kz.verbergMobiel}>Klanten</span></Link>
               <Link href="/beheer/momenten" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><CalendarClock size={15} /> <span className={kz.verbergMobiel}>Vrije momenten</span></Link>
+              <Link href="/beheer/instellingen" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><Settings size={15} /> <span className={kz.verbergMobiel}>Instellingen</span></Link>
             </nav>
           </div>
           <form action={logout}>

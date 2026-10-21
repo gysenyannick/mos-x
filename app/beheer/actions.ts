@@ -5,10 +5,12 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE, controleerWachtwoord, vereisBeheerder } from "@/lib/klantenzone/auth";
 import {
-  deleteKlant, getKlant, getMomenten, nieuwId, saveKlant, saveMomenten, verwijderBestand,
+  deleteKlant, getKlant, getMomenten, herkoppelRefCode, nieuwId, saveInstellingen, saveKlant, saveMomenten,
+  verwijderBestand,
 } from "@/lib/klantenzone/store";
 import {
-  FASES, FASE_LABEL, type DocStatus, type Fase, type Klant, type Precisie,
+  FASES, FASE_LABEL, type Aanbeveling, type DocStatus, type Fase, type Klant, type Precisie, type Prioriteit,
+  type Verwijzing,
 } from "@/lib/klantenzone/types";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
@@ -135,6 +137,7 @@ export async function nieuweLink(id: string) {
   k.id = nieuwId();
   await saveKlant(k);
   await deleteKlant(oudId);
+  await herkoppelRefCode(k);
   ververs(oudId);
   redirect(`/beheer/${k.id}`);
 }
@@ -244,4 +247,122 @@ export async function verwijderMoment(momentId: string) {
   await vereisBeheerder();
   await saveMomenten((await getMomenten()).filter((x) => x.id !== momentId));
   revalidatePath("/beheer/momenten");
+}
+
+/* ── Dakpaspoort, behandelingen en onderhoud ──────────────────────────────── */
+
+export async function bewaarPaspoort(id: string, fd: FormData) {
+  const k = await laad(id);
+  k.paspoort = {
+    daktype: s(fd, "daktype") || undefined,
+    oppervlakte: n(fd, "oppervlakte"),
+    bouwjaar: s(fd, "bouwjaar") || undefined,
+    kleur: s(fd, "kleur") || undefined,
+    zonnepanelen: s(fd, "zonnepanelen") === "ja" ? true : s(fd, "zonnepanelen") === "nee" ? false : undefined,
+    dakvensters: n(fd, "dakvensters"),
+    goten: s(fd, "goten") || undefined,
+    aandachtspunten: s(fd, "aandachtspunten") || undefined,
+  };
+  k.volgendeControle = s(fd, "volgendeControle") || undefined;
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function voegBehandelingToe(id: string, fd: FormData) {
+  const k = await laad(id);
+  const datum = s(fd, "datum");
+  const soort = s(fd, "soort");
+  if (!datum || !soort) return;
+  (k.behandelingen ??= []).push({
+    id: nieuwId(6), datum, soort,
+    producten: s(fd, "producten") || undefined,
+    opmerking: s(fd, "opmerking") || undefined,
+  });
+  k.behandelingen.sort((a, b) => b.datum.localeCompare(a.datum));
+  k.log.unshift({ datum: new Date().toISOString(), tekst: `${soort} toegevoegd aan je dakpaspoort.` });
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function verwijderBehandeling(id: string, behandelingId: string) {
+  const k = await laad(id);
+  k.behandelingen = (k.behandelingen ?? []).filter((x) => x.id !== behandelingId);
+  await saveKlant(k);
+  ververs(id);
+}
+
+/* ── Aanbevelingen (concrete vaststellingen) ───────────────────────────────── */
+
+export async function voegAanbevelingToe(id: string, fd: FormData) {
+  const k = await laad(id);
+  const titel = s(fd, "titel");
+  if (!titel) return;
+  const nu = new Date().toISOString();
+  (k.aanbevelingen ??= []).unshift({
+    id: nieuwId(6), datum: nu, titel,
+    tekst: s(fd, "tekst"),
+    prioriteit: (s(fd, "prioriteit") || "aanbevolen") as Prioriteit,
+    status: "open",
+    fotoUrl: s(fd, "fotoUrl") || undefined,
+  });
+  k.log.unshift({ datum: nu, tekst: `Nieuwe aanbeveling van Yannick: ${titel}.` });
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function zetAanbevelingStatus(id: string, abId: string, status: Aanbeveling["status"]) {
+  const k = await laad(id);
+  const ab = (k.aanbevelingen ?? []).find((x) => x.id === abId);
+  if (!ab) return;
+  ab.status = status;
+  if (status === "gedaan") k.log.unshift({ datum: new Date().toISOString(), tekst: `Uitgevoerd: ${ab.titel}.` });
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function verwijderAanbeveling(id: string, abId: string) {
+  const k = await laad(id);
+  k.aanbevelingen = (k.aanbevelingen ?? []).filter((x) => x.id !== abId);
+  await saveKlant(k);
+  ververs(id);
+}
+
+/* ── Dakzorg, aanvragen en doorverwijzingen ───────────────────────────────── */
+
+export async function bewaarDakzorg(id: string, fd: FormData) {
+  const k = await laad(id);
+  const actief = s(fd, "actief") === "ja";
+  if (actief && !k.dakzorg?.actief) {
+    k.log.unshift({ datum: new Date().toISOString(), tekst: "Welkom bij MOS-X Dakzorg! Je dak wordt vanaf nu jaarlijks opgevolgd." });
+  }
+  k.dakzorg = { actief, sinds: s(fd, "sinds") || (actief ? new Date().toISOString().slice(0, 10) : undefined), prijs: s(fd, "prijs") || undefined };
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function zetAanvraagStatus(id: string, aanvraagId: string, status: "nieuw" | "behandeld") {
+  const k = await laad(id);
+  const a = (k.aanvragen ?? []).find((x) => x.id === aanvraagId);
+  if (!a) return;
+  a.status = status;
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function zetVerwijzingStatus(id: string, vId: string, status: Verwijzing["status"]) {
+  const k = await laad(id);
+  const v = (k.verwijzingen ?? []).find((x) => x.id === vId);
+  if (!v) return;
+  if (status === "klant" && v.status !== "klant") {
+    k.log.unshift({ datum: new Date().toISOString(), tekst: `${v.naam.split(" ")[0]}, die je doorverwees, is klant geworden. Dankjewel!` });
+  }
+  v.status = status;
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function bewaarInstellingen(fd: FormData) {
+  await vereisBeheerder();
+  await saveInstellingen({ burenVoordeel: s(fd, "burenVoordeel") || undefined });
+  revalidatePath("/beheer/instellingen");
 }

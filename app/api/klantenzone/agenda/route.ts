@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     `DTEND:${ics(einde)}`,
     `SUMMARY:${esc(`MOS-X: ${a.titel}`)}`,
     `LOCATION:${esc(k.adres)}`,
-    `DESCRIPTION:${esc(`${a.info ?? ""}\n\nVragen? WhatsApp Yannick: +32 468 35 28 69`.trim())}`,
+    `DESCRIPTION:${esc(`${a.info || AFSPRAAK_TIPS[a.titel] || ""}\n\nVragen? WhatsApp Yannick: +32 468 35 28 69`.trim())}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");

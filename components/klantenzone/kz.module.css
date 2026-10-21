@@ -445,3 +445,43 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .totaalVak .label { font-size: 10px; letter-spacing: .03em; }
   .totaalBedrag { font-size: 15px; }
 }
+
+/* ══ Mijn dak ═════════════════════════════════════════════════════════════ */
+.dakStrook {
+  display: flex; align-items: center; gap: 14px; margin-top: 14px; padding: 14px 16px; border-radius: 16px;
+  background: var(--kaart); box-shadow: 0 2px 16px rgba(0,0,0,.07); color: var(--tekst); text-decoration: none;
+  border: 1px solid transparent; transition: border-color .2s, transform .2s;
+}
+.dakStrook:hover { border-color: var(--groen); transform: translateY(-1px); }
+.dakStrook:focus-visible { outline: 2px solid var(--groen); outline-offset: 2px; }
+.aanbeveling { border-left: 4px solid var(--groen); }
+.aanbevelingDringend { border-left-color: var(--amber); }
+.aanbevelingRij { display: flex; gap: 14px; }
+.aanbevelingFoto { width: 120px; height: 120px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
+.dakzorgKaart {
+  background: radial-gradient(90% 120% at 100% 0%, rgba(155,203,108,.16) 0%, rgba(155,203,108,0) 60%), var(--kaart);
+  border: 1px solid #DCEDCB;
+}
+.vinkLijst { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+.vinkLijst li { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+.vinkLijst svg { color: var(--groen-d); flex-shrink: 0; margin-top: 2px; }
+.kenmerken { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 0; }
+.kenmerken div { padding: 12px; border-radius: 12px; background: var(--zacht); }
+.kenmerken dt { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.kenmerken dd { margin: 4px 0 0; font-weight: 700; font-size: 15px; }
+
+/* 6 knoppen in de onderbalk */
+.onderNav ul { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 400px) {
+  .onderItem { font-size: 10px; letter-spacing: -0.01em; }
+  .vinkLijst { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .vinkLijst { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .aanbevelingRij { flex-direction: column; }
+  .aanbevelingFoto { width: 100%; height: 160px; }
+  .kenmerken { grid-template-columns: 1fr 1fr; }
+}

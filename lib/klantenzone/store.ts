@@ -51,6 +51,8 @@ type Backend = {
   sadd(key: string, member: string): Promise<void>;
   srem(key: string, member: string): Promise<void>;
   smembers(key: string): Promise<string[]>;
+  /** Zet alleen als de sleutel nog niet bestaat (slot), vervalt na ms. */
+  setnx(key: string, value: string, ms: number): Promise<boolean>;
 };
 
 let redisBackend: Backend | null = null;
@@ -68,6 +70,7 @@ async function backend(): Promise<Backend> {
         sadd: async (k, m) => { await r.sadd(k, m); },
         srem: async (k, m) => { await r.srem(k, m); },
         smembers: (k) => r.smembers(k),
+        setnx: async (k, v, ms) => (await r.set(k, v, { nx: true, px: ms })) === "OK",
       };
     }
     return redisBackend;
@@ -81,33 +84,50 @@ const LOKAAL_BESTAND = path.join(process.cwd(), ".data", "klantenzone.json");
 type LokaalDb = { kv: Record<string, unknown>; sets: Record<string, string[]> };
 
 async function leesLokaal(): Promise<LokaalDb> {
+  let tekst: string;
   try {
-    return JSON.parse(await fs.readFile(LOKAAL_BESTAND, "utf8"));
+    tekst = await fs.readFile(LOKAAL_BESTAND, "utf8");
   } catch {
-    return { kv: {}, sets: {} };
+    return { kv: {}, sets: {} }; // bestand bestaat nog niet
   }
+  // Bewust geen try/catch: een kapot bestand mag nooit als "leeg" behandeld en dan overschreven worden
+  return JSON.parse(tekst);
 }
 async function schrijfLokaal(db: LokaalDb) {
   await fs.mkdir(path.dirname(LOKAAL_BESTAND), { recursive: true });
-  await fs.writeFile(LOKAAL_BESTAND, JSON.stringify(db, null, 2));
+  // Eerst naar een tijdelijk bestand, dan vervangen: nooit een half geschreven bestand
+  const tmp = `${LOKAAL_BESTAND}.${process.pid}.tmp`;
+  await fs.writeFile(tmp, JSON.stringify(db, null, 2));
+  await fs.rename(tmp, LOKAAL_BESTAND);
+}
+
+/** Alle lokale lees- en schrijfacties na elkaar, zodat gelijktijdige verzoeken elkaar niet overschrijven. */
+let wachtrij: Promise<unknown> = Promise.resolve();
+function naElkaar<T>(werk: () => Promise<T>): Promise<T> {
+  const volgende = wachtrij.then(werk, werk);
+  wachtrij = volgende.catch(() => undefined);
+  return volgende;
+}
+function wijzig(fn: (db: LokaalDb) => void): Promise<void> {
+  return naElkaar(async () => { const db = await leesLokaal(); fn(db); await schrijfLokaal(db); });
 }
 
 const lokaalBackend: Backend = {
-  async get<T>(k: string) { return ((await leesLokaal()).kv[k] as T) ?? null; },
-  async set(k, v) { const db = await leesLokaal(); db.kv[k] = v; await schrijfLokaal(db); },
-  async del(k) { const db = await leesLokaal(); delete db.kv[k]; await schrijfLokaal(db); },
-  async sadd(k, m) {
-    const db = await leesLokaal();
-    db.sets[k] = Array.from(new Set([...(db.sets[k] ?? []), m]));
-    await schrijfLokaal(db);
-  },
-  async srem(k, m) {
-    const db = await leesLokaal();
-    db.sets[k] = (db.sets[k] ?? []).filter((x) => x !== m);
-    await schrijfLokaal(db);
-  },
-  async smembers(k) { return (await leesLokaal()).sets[k] ?? []; },
+  get: <T,>(k: string) => naElkaar(async () => ((await leesLokaal()).kv[k] as T) ?? null),
+  set: (k, v) => wijzig((db) => { db.kv[k] = v; }),
+  del: (k) => wijzig((db) => { delete db.kv[k]; }),
+  sadd: (k, m) => wijzig((db) => { db.sets[k] = Array.from(new Set([...(db.sets[k] ?? []), m])); }),
+  srem: (k, m) => wijzig((db) => { db.sets[k] = (db.sets[k] ?? []).filter((x) => x !== m); }),
+  smembers: (k) => naElkaar(async () => (await leesLokaal()).sets[k] ?? []),
+  setnx: (k, v, ms) => naElkaar(async () => {
+    const nu = Date.now();
+    const bestaand = sloten.get(k);
+    if (bestaand && bestaand > nu) return false;
+    sloten.set(k, nu + ms);
+    return true;
+  }),
 };
+const sloten = new Map<string, number>();
 
 export async function getKlant(id: string): Promise<Klant | null> {
   if (!/^[A-Za-z0-9_-]{16,64}$/.test(id)) return null;
@@ -119,6 +139,33 @@ export async function saveKlant(k: Klant): Promise<void> {
   k.bijgewerkt = new Date().toISOString();
   await b.set(KEY_KLANT(k.id), k);
   await b.sadd(KEY_KLANTEN, k.id);
+}
+
+/**
+ * Lees, wijzig en bewaar een dossier zonder dat een gelijktijdige wijziging
+ * (bv. klant uploadt een foto terwijl Yannick iets aanpast) verloren gaat.
+ * Geeft het bewaarde dossier terug, of null als het niet bestaat.
+ */
+export async function wijzigKlant<T = void>(
+  id: string, fn: (k: Klant) => T | Promise<T>,
+): Promise<{ klant: Klant; resultaat: T } | null> {
+  const b = await backend();
+  const slot = `mx:slot:${id}`;
+  const tot = Date.now() + 8000;
+  while (!(await b.setnx(slot, "1", 10_000))) {
+    if (Date.now() > tot) throw new Error("Dossier is even bezet. Probeer het opnieuw.");
+    await new Promise((r) => setTimeout(r, 60 + Math.random() * 60));
+  }
+  try {
+    const k = await getKlant(id);
+    if (!k) return null;
+    const resultaat = await fn(k);
+    await saveKlant(k);
+    return { klant: k, resultaat };
+  } finally {
+    if (b === lokaalBackend) sloten.delete(slot);
+    else await b.del(slot);
+  }
 }
 
 export async function deleteKlant(id: string): Promise<void> {
@@ -179,4 +226,44 @@ export async function verwijderBestand(url: string): Promise<void> {
   } catch {
     // Bestand al weg: geen probleem.
   }
+}
+
+/* ── Buurlinks en instellingen ────────────────────────────────────────────── */
+
+const KEY_REF = (code: string) => `mx:ref:${code}`;
+const KEY_INSTELLINGEN = "mx:instellingen";
+
+export type Instellingen = {
+  /** Wat buren en doorverwijzers krijgen, vrije tekst. Leeg = geen beloning vermelden. */
+  burenVoordeel?: string;
+};
+
+/** Geeft de buurcode van een klant terug en maakt er een aan als die nog niet bestaat. */
+export async function zorgVoorRefCode(k: Klant): Promise<string> {
+  if (k.refCode) return k.refCode;
+  const nieuw = nieuwId(5).replace(/[-_]/g, "x");
+  const r = await wijzigKlant(k.id, (x) => (x.refCode ??= nieuw));
+  const code = r?.resultaat ?? nieuw;
+  await (await backend()).set(KEY_REF(code), k.id);
+  k.refCode = code;
+  return code;
+}
+
+export async function klantVoorRefCode(code: string): Promise<Klant | null> {
+  if (!/^[A-Za-z0-9]{4,16}$/.test(code)) return null;
+  const id = await (await backend()).get<string>(KEY_REF(code));
+  return id ? getKlant(id) : null;
+}
+
+/** Na "nieuwe link" moet de buurcode naar het nieuwe dossier wijzen. */
+export async function herkoppelRefCode(k: Klant): Promise<void> {
+  if (k.refCode) await (await backend()).set(KEY_REF(k.refCode), k.id);
+}
+
+export async function getInstellingen(): Promise<Instellingen> {
+  return (await (await backend()).get<Instellingen>(KEY_INSTELLINGEN)) ?? {};
+}
+
+export async function saveInstellingen(i: Instellingen): Promise<void> {
+  await (await backend()).set(KEY_INSTELLINGEN, i);
 }

@@ -102,6 +102,103 @@ export type Notitie = {
   tekst: string;
 };
 
+/* ── Dakpaspoort ───────────────────────────────────────────────────────────── */
+
+export type Paspoort = {
+  daktype?: string;
+  /** m² */
+  oppervlakte?: number;
+  /** bv. "1985" of "jaren '80" */
+  bouwjaar?: string;
+  kleur?: string;
+  zonnepanelen?: boolean;
+  /** Aantal dakvensters (Velux) */
+  dakvensters?: number;
+  goten?: string;
+  /** Wat Yannick in het oog houdt, één per regel */
+  aandachtspunten?: string;
+};
+
+export const BEHANDELING_SOORTEN = [
+  "Dakreiniging", "Anti-mosbehandeling", "Dakcoating", "Gootreiniging", "Inspectie", "Herstelling", "Velux reiniging",
+] as const;
+
+export type Behandeling = {
+  id: string;
+  /** YYYY-MM-DD */
+  datum: string;
+  soort: string;
+  producten?: string;
+  opmerking?: string;
+};
+
+export type Prioriteit = "info" | "aanbevolen" | "dringend";
+
+export const PRIORITEIT_LABEL: Record<Prioriteit, string> = {
+  info: "Ter info",
+  aanbevolen: "Aanbevolen",
+  dringend: "Dringend",
+};
+
+/** Een concrete vaststelling van Yannick met een voorstel, nooit automatisch. */
+export type Aanbeveling = {
+  id: string;
+  datum: string;
+  titel: string;
+  tekst: string;
+  prioriteit: Prioriteit;
+  status: "open" | "aangevraagd" | "gedaan" | "nietnu";
+  fotoUrl?: string;
+};
+
+export type AanvraagSoort = "onderhoud" | "aanbeveling" | "dakzorg" | "schade" | "andere";
+
+export const AANVRAAG_LABEL: Record<AanvraagSoort, string> = {
+  onderhoud: "Onderhoud inplannen",
+  aanbeveling: "Aanbeveling laten uitvoeren",
+  dakzorg: "Interesse in MOS-X Dakzorg",
+  schade: "Schade melden",
+  andere: "Vraag",
+};
+
+/** Iets wat de klant via zijn pagina vraagt; komt bij Yannick binnen. */
+export type Aanvraag = {
+  id: string;
+  datum: string;
+  soort: AanvraagSoort;
+  tekst: string;
+  status: "nieuw" | "behandeld";
+};
+
+export type Dakzorg = {
+  actief: boolean;
+  /** YYYY-MM-DD */
+  sinds?: string;
+  /** Wat de klant betaalt, vrije tekst, bv. "€ 195 per jaar" */
+  prijs?: string;
+};
+
+/** Wat in MOS-X Dakzorg zit (zelfde lijst als op de website). */
+export const DAKZORG_INBEGREPEN = [
+  "Jaarlijkse inspectie door Yannick persoonlijk",
+  "Preventieve reiniging waar nodig",
+  "Gootcontrole en -reiniging",
+  "Foto-rapportage voor en na",
+  "Advies op maat voor jouw dak",
+  "Voorrang bij dringende interventies",
+];
+
+/** Iemand die via de buurlink van een klant binnenkwam. */
+export type Verwijzing = {
+  id: string;
+  datum: string;
+  naam: string;
+  telefoon: string;
+  adres: string;
+  bericht?: string;
+  status: "nieuw" | "gecontacteerd" | "klant" | "geen";
+};
+
 export type LogItem = {
   /** ISO-tijdstip */
   datum: string;
@@ -124,8 +221,18 @@ export type Klant = {
   fotos: Foto[];
   documenten: Document[];
   garantie: Garantie;
-  /** Kan ontbreken bij dossiers van vóór deze functie */
+  /* Velden hieronder kunnen ontbreken bij dossiers van vóór die functie */
   notities?: Notitie[];
+  paspoort?: Paspoort;
+  behandelingen?: Behandeling[];
+  /** YYYY-MM-DD: aanbevolen volgende controle (leeg = automatisch berekend) */
+  volgendeControle?: string;
+  aanbevelingen?: Aanbeveling[];
+  aanvragen?: Aanvraag[];
+  dakzorg?: Dakzorg;
+  /** Korte code voor de buurlink: mos-x.be/buur/<code> */
+  refCode?: string;
+  verwijzingen?: Verwijzing[];
   log: LogItem[];
   aangemaakt: string;
   bijgewerkt: string;

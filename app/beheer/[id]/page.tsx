@@ -7,6 +7,7 @@ import { getKlant } from "@/lib/klantenzone/store";
 import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
 import { DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
+import { BeheerAanvragen, BeheerDak } from "@/components/klantenzone/beheer-dak";
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
 import {
   bewaarKlant, nieuweLink, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
@@ -65,6 +66,8 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
           )}
         </div>
       </section>
+
+      <BeheerAanvragen k={k} />
 
       <div className={kz.grid2} style={{ alignItems: "start", marginTop: 14 }}>
         {/* ── Gegevens & status ── */}
@@ -196,6 +199,8 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
           </section>
         </div>
       </div>
+
+      <BeheerDak k={k} />
 
       {/* ── Notities ── */}
       <section className={kz.kaart}>
