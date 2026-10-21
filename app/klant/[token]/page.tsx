@@ -262,7 +262,7 @@ function Overzicht(ctx: Ctx) {
 
       <section className={kz.statusKaart}>
         <div className={kz.statusBoven}>
-          <span className={kz.statusStap}>{(k.dienst || "Dakwerken").split(" en ")[0]} · Stap {faseIndex + 1} van {FASES.length}</span>
+          <span className={kz.statusStap}><span className={kz.verbergMobiel}>{(k.dienst || "Dakwerken").split(" en ")[0]} · </span>Stap {faseIndex + 1} van {FASES.length}</span>
           <span className={kz.dossierNr}>{dossierNr(k)}</span>
         </div>
         <h2 className={kz.statusZin}>{statusZin(k, komend[0])}</h2>
