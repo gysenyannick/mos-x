@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { bewaarBestand, getKlant, nieuwId, verwijderBestand, wijzigKlant } from "@/lib/klantenzone/store";
-import type { DocStatus, DocType, FotoFase } from "@/lib/klantenzone/types";
+import { DOC_IS_FACTUUR, DOC_LOG_ZIN, type DocStatus, type DocType, type FotoFase } from "@/lib/klantenzone/types";
 
 export const runtime = "nodejs";
 
@@ -54,7 +54,8 @@ export async function POST(req: NextRequest) {
     } else if (soort === "document") {
       if (!beheerder) return fout("Niet toegestaan.", 403);
       if (file.type !== "application/pdf" && !file.type.startsWith("image/")) return fout("Enkel pdf of afbeelding.");
-      const type = String(fd.get("type") || "andere") as DocType;
+      const typeRuw = String(fd.get("type") || "andere");
+      const type = (typeRuw in DOC_LOG_ZIN ? typeRuw : "andere") as DocType;
       const bedragRuw = String(fd.get("bedrag") ?? "").replace(",", ".").trim();
       const url = await bewaarBestand(`${klantId}/documenten`, naam, file);
       const titel = String(fd.get("titel") ?? "").trim() || naam.replace(/\.[a-z0-9]+$/i, "");
@@ -62,16 +63,10 @@ export async function POST(req: NextRequest) {
         k.documenten.unshift({
           id: nieuwId(6), url, type, titel,
           bedrag: bedragRuw ? Number(bedragRuw) : undefined,
-          status: String(fd.get("status") || (type === "offerte" ? "info" : "open")) as DocStatus,
+          status: String(fd.get("status") || (DOC_IS_FACTUUR(type) ? "open" : "info")) as DocStatus,
           datum: String(fd.get("datum") || nu.slice(0, 10)),
         });
-        const zin: Record<DocType, string> = {
-          offerte: "Je offerte staat klaar.",
-          voorschot: "Je voorschotfactuur staat klaar.",
-          factuur: "Je factuur staat klaar.",
-          andere: `Nieuw document: ${titel}.`,
-        };
-        k.log.unshift({ datum: nu, tekst: zin[type] ?? zin.andere });
+        k.log.unshift({ datum: nu, tekst: DOC_LOG_ZIN[type] ?? DOC_LOG_ZIN.andere });
       });
     } else {
       return fout("Onbekend soort upload.");

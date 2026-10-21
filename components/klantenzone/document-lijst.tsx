@@ -1,8 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Download, Eye, FileText, X } from "lucide-react";
-import { DOC_TYPE_LABEL, type Document } from "@/lib/klantenzone/types";
+import { createElement, useEffect, useState } from "react";
+import { ClipboardCheck, Download, Eye, FileSearch, FileText, FlaskConical, Receipt, ShieldCheck, X } from "lucide-react";
+import { DOC_TYPE_LABEL, type DocType, type Document } from "@/lib/klantenzone/types";
+
+const ICOON: Record<DocType, typeof FileText> = {
+  offerte: FileText,
+  voorschot: Receipt,
+  factuur: Receipt,
+  garantie: ShieldCheck,
+  oplevering: ClipboardCheck,
+  inspectie: FileSearch,
+  fiche: FlaskConical,
+  andere: FileText,
+};
 import kz from "./kz.module.css";
 
 type Props = {
@@ -31,7 +42,7 @@ export default function DocumentLijst({ documenten, labels }: Props) {
         {documenten.map((d) => (
           <li key={d.id} className={kz.rij}>
             <button type="button" className={kz.docKlik} onClick={() => setOpen(d)} aria-label={`${d.titel} bekijken`}>
-              <span className={kz.rijIcoon}><FileText size={18} /></span>
+              <span className={kz.rijIcoon}>{createElement(ICOON[d.type] ?? FileText, { size: 18 })}</span>
               <span className={kz.rijMidden}>
                 <span className={kz.rijTitel} style={{ display: "block" }}>{d.titel}</span>
                 <span className={kz.rijSub} style={{ display: "block" }}>

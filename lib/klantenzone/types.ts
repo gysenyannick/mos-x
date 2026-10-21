@@ -70,13 +70,45 @@ export type Foto = {
   datum: string;
 };
 
-export type DocType = "offerte" | "voorschot" | "factuur" | "andere";
+export type DocType =
+  | "offerte" | "voorschot" | "factuur"
+  | "garantie" | "oplevering" | "inspectie" | "fiche"
+  | "andere";
 
 export const DOC_TYPE_LABEL: Record<DocType, string> = {
   offerte: "Offerte",
   voorschot: "Voorschotfactuur",
   factuur: "Factuur",
+  garantie: "Garantiecertificaat",
+  oplevering: "Opleveringsverslag",
+  inspectie: "Inspectierapport",
+  fiche: "Technische fiche",
   andere: "Document",
+};
+
+/** Documenten met een bedrag dat betaald moet worden */
+export const DOC_IS_FACTUUR = (t: DocType) => t === "voorschot" || t === "factuur";
+
+/** Hoe de documenten bij de klant gegroepeerd worden, in deze volgorde */
+export const DOC_GROEPEN: { titel: string; uitleg: string; types: DocType[] }[] = [
+  { titel: "Facturen", uitleg: "Voorschot en eindfactuur, met wat al betaald is.", types: ["voorschot", "factuur"] },
+  { titel: "Garanties", uitleg: "Bewaar ze goed: hiermee ben je zwart op wit gedekt.", types: ["garantie"] },
+  { titel: "Offertes", uitleg: "Wat we afspraken, met de prijs vooraf.", types: ["offerte"] },
+  { titel: "Verslagen", uitleg: "Wat ik vaststelde bij inspecties en bij de oplevering.", types: ["oplevering", "inspectie"] },
+  { titel: "Technische fiches", uitleg: "De producten die op je dak gebruikt zijn.", types: ["fiche"] },
+  { titel: "Andere documenten", uitleg: "", types: ["andere"] },
+];
+
+/** Zin in de tijdlijn als er een document bijkomt */
+export const DOC_LOG_ZIN: Record<DocType, string> = {
+  offerte: "Je offerte staat klaar.",
+  voorschot: "Je voorschotfactuur staat klaar.",
+  factuur: "Je factuur staat klaar.",
+  garantie: "Je garantiecertificaat staat klaar.",
+  oplevering: "Het opleveringsverslag staat klaar.",
+  inspectie: "Het inspectierapport staat klaar.",
+  fiche: "De technische fiche van de gebruikte producten staat klaar.",
+  andere: "Er staat een nieuw document klaar.",
 };
 
 export type DocStatus = "open" | "betaald" | "info";

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarClock, LogOut, Settings, Users } from "lucide-react";
+import { LogOut, Plus } from "lucide-react";
+import BeheerNav from "@/components/klantenzone/beheer-nav";
 import { beheerActief, isBeheerder } from "@/lib/klantenzone/auth";
 import { LoginForm } from "@/components/klantenzone/beheer-client";
 import { logout } from "./actions";
@@ -33,24 +34,38 @@ export default async function BeheerLayout({ children }: { children: React.React
   return (
     <main className={kz.page} style={{ paddingBottom: 60 }}>
       <header className={kz.topbar}>
-        <div className={`${kz.wrapBreed} ${kz.topbarIn}`}>
-          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            <Link href="/beheer">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/logo.avif" alt="MOS-X" className={kz.logo} />
-            </Link>
-            <nav style={{ display: "flex", gap: 6 }}>
-              <Link href="/beheer" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><Users size={15} /> <span className={kz.verbergMobiel}>Klanten</span></Link>
-              <Link href="/beheer/momenten" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><CalendarClock size={15} /> <span className={kz.verbergMobiel}>Vrije momenten</span></Link>
-              <Link href="/beheer/instellingen" className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}><Settings size={15} /> <span className={kz.verbergMobiel}>Instellingen</span></Link>
-            </nav>
-          </div>
-          <form action={logout}>
+        <div className={kz.topbarIn} style={{ maxWidth: 1180, margin: "0 auto", padding: "0 16px" }}>
+          <Link href="/beheer" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo.avif" alt="MOS-X" className={kz.logo} />
+            <span className={kz.topLabel}>Beheer</span>
+          </Link>
+          <form action={logout} className={kz.alleenMobiel}>
             <button className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`} aria-label="Uitloggen"><LogOut size={15} /></button>
           </form>
         </div>
       </header>
-      <div className={kz.wrapBreed}>{children}</div>
+      <div className={kz.alleenMobiel}><BeheerNav compact /></div>
+      <div className={kz.dash}>
+        <aside className={kz.zijbalk}>
+          <Link href="/beheer#nieuw" className={`${kz.knop} ${kz.knopPrimair} ${kz.zijKnop}`}><Plus size={18} /> Nieuwe klant</Link>
+          <BeheerNav />
+          <div className={kz.zijOnder}>
+            <div className={kz.zijKlant}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/Yannick%20foto%20op%20dak.JPEG" alt="" className={kz.avatar} style={{ objectFit: "cover" }} />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <p className={kz.zijNaam}>Yannick Gysen</p>
+                <p className={kz.zijAdres}>MOS-X</p>
+              </div>
+              <form action={logout}>
+                <button className={kz.icoonKnop} aria-label="Uitloggen" title="Uitloggen"><LogOut size={16} /></button>
+              </form>
+            </div>
+          </div>
+        </aside>
+        <div className={kz.inhoud}>{children}</div>
+      </div>
     </main>
   );
 }

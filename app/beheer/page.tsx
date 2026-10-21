@@ -1,14 +1,16 @@
 import Link from "next/link";
-import { Bell, Plus, Users, Wrench } from "lucide-react";
+import {
+  Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, FileText, Hammer, Plus, ShieldCheck, Users, Wrench,
+} from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { listKlanten, opslagStatus } from "@/lib/klantenzone/store";
-import { fmtDag, fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
+import { fmtEuro, fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
 import { AANVRAAG_LABEL, FASE_LABEL } from "@/lib/klantenzone/types";
 import { maakKlant } from "./actions";
 import kz from "@/components/klantenzone/kz.module.css";
 
-export default async function BeheerOverzicht() {
+export default async function BeheerOverzicht({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
   if (!(await isBeheerder())) return null;
   const opslag = opslagStatus();
   const klaar = opslag.data !== "ontbreekt";
@@ -32,6 +34,19 @@ export default async function BeheerOverzicht() {
   }
   taken.sort((a, b) => b.datum.localeCompare(a.datum));
 
+  // Cijferkaarten bovenaan; klikken filtert de tabel (zoals in Beavr)
+  const filters = [
+    { id: "alle", label: "Alle klanten", icoon: Users, tint: kz.tintPaars, lijst: klanten },
+    { id: "aanvraag", label: "Aanvraag", icoon: FileText, tint: kz.tintBlauw, lijst: klanten.filter((k) => k.fase === "aanvraag") },
+    { id: "gepland", label: "Gepland", icoon: CalendarDays, tint: kz.tintBlauw, lijst: klanten.filter((k) => k.fase === "gepland") },
+    { id: "bezig", label: "Aan het werk", icoon: Hammer, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "bezig") },
+    { id: "nazorg", label: "Nazorg", icoon: CheckCircle2, tint: kz.tintGroen, lijst: klanten.filter((k) => k.fase === "klaar" || k.fase === "nazorg") },
+    { id: "dakzorg", label: "Dakzorg-leden", icoon: ShieldCheck, tint: kz.tintOranje, lijst: klanten.filter((k) => k.dakzorg?.actief) },
+  ];
+  const gevraagd = (await searchParams).filter;
+  const filter = filters.some((f) => f.id === gevraagd) ? gevraagd! : "alle";
+  const zichtbaar = filters.find((f) => f.id === filter)!.lijst;
+
   return (
     <>
       {(opslag.data === "ontbreekt" || opslag.bestanden === "ontbreekt") && (
@@ -46,59 +61,83 @@ export default async function BeheerOverzicht() {
         <p className={kz.melding}>Testmodus: gegevens staan lokaal op deze pc (map .data).</p>
       )}
 
+      <div className={kz.dashKop}>
+        <h1 className={kz.dashTitel}>Klanten<span className={kz.telBol}>{klanten.length}</span></h1>
+        <div className={kz.dashActies}>
+          <Link href="/beheer/momenten" className={`${kz.knop} ${kz.knopLicht}`}><CalendarClock size={16} /> Vrije momenten</Link>
+          <Link href="#nieuw" className={`${kz.knop} ${kz.knopPrimair}`}><Plus size={16} /> Nieuwe klant</Link>
+        </div>
+      </div>
+
+      <div className={kz.statRij6}>
+        {filters.map((f) => (
+          <Link key={f.id} href={f.id === "alle" ? "/beheer" : `/beheer?filter=${f.id}`} scroll={false}
+            className={`${kz.stat} ${filter === f.id ? kz.statAan : ""}`} aria-current={filter === f.id ? "true" : undefined}>
+            <span className={kz.statTop}><span className={`${kz.statIcoon} ${f.tint}`}><f.icoon size={17} /></span><span className={kz.statGetal}>{f.lijst.length}</span></span>
+            <span className={kz.statLabel}>{f.label}</span>
+          </Link>
+        ))}
+      </div>
+
       {taken.length > 0 && (
-        <section className={kz.kaart} style={{ border: "1px solid #E9C98F" }}>
-          <h2 className={kz.kaartTitel} style={{ marginBottom: 12 }}><Bell size={18} /> Te doen ({taken.length})</h2>
+        <section className={kz.kaart} style={{ borderColor: "#E9C98F" }}>
+          <div className={kz.kaartKop}>
+            <h2 className={kz.kaartTitel}><Bell size={18} /> Te doen</h2>
+            <span className={`${kz.badge} ${kz.badgeAmber}`}>{taken.length}</span>
+          </div>
           <ul className={kz.lijst}>
             {taken.map((t, i) => (
               <li key={i} className={kz.rij}>
-                <span className={kz.rijIcoon}>{t.icoon === "bel" ? <Bell size={17} /> : t.icoon === "buur" ? <Users size={17} /> : <Wrench size={17} />}</span>
+                <span className={`${kz.statIcoon} ${t.icoon === "bel" ? kz.tintOranje : t.icoon === "buur" ? kz.tintBlauw : kz.tintGroen}`}>
+                  {t.icoon === "bel" ? <Bell size={16} /> : t.icoon === "buur" ? <Users size={16} /> : <Wrench size={16} />}
+                </span>
                 <div className={kz.rijMidden}>
                   <Link href={`/beheer/${t.klantId}`} className={kz.rijTitel} style={{ color: "inherit", textDecoration: "none" }}>{t.naam}</Link>
                   <p className={kz.rijSub}>{t.tekst}</p>
                 </div>
-                <span className={kz.rijSub}>{t.icoon === "controle" ? "" : fmtMoment(t.datum)}</span>
+                <span className={`${kz.rijSub} ${kz.verbergMobiel}`}>{t.icoon === "controle" ? "" : fmtMoment(t.datum)}</span>
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      <section className={`${kz.kaart} ${kz.balans}`}>
-        <div className={kz.kaartKop}>
-          <h1 className={kz.kaartTitel}>Klanten ({klanten.length})</h1>
-        </div>
-        {klanten.length === 0 ? (
-          <p className={kz.leeg}>Nog geen klanten. Maak hieronder je eerste dossier aan.</p>
+      <section className={kz.tabelKaart}>
+        {zichtbaar.length === 0 ? (
+          <p className={kz.leeg} style={{ margin: 16 }}>{klanten.length ? "Geen klanten in deze selectie." : "Nog geen klanten. Maak hieronder je eerste dossier aan."}</p>
         ) : (
           <div style={{ overflowX: "auto" }}>
             <table className={kz.tabel}>
               <thead>
                 <tr>
                   <th>Klant</th>
-                  <th>Stap</th>
+                  <th className={kz.verbergMobiel}>Dienst</th>
                   <th className={kz.verbergMobiel}>Start</th>
-                  <th className={kz.verbergMobiel}>Bijgewerkt</th>
+                  <th>Stap</th>
+                  <th className={kz.verbergMobiel} style={{ textAlign: "right" }}>Open</th>
+                  <th aria-label="Openen" />
                 </tr>
               </thead>
               <tbody>
-                {klanten.map((k) => (
-                  <tr key={k.id}>
-                    <td>
-                      <Link href={`/beheer/${k.id}`}>{k.voornaam} {k.achternaam}</Link>
-                      <div style={{ fontSize: 13, color: "#545454" }}>{k.dienst}</div>
-                      {k.adres && <div style={{ fontSize: 13, color: "#545454" }}>{k.adres}</div>}
-                    </td>
-                    <td>
-                      <span className={`${kz.badge} ${k.fase === "klaar" || k.fase === "nazorg" ? kz.badgeGroen : ""}`}>{FASE_LABEL[k.fase]}</span>
-                      {k.dakzorg?.actief && <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ marginLeft: 4 }}>Dakzorg</span>}
-                    </td>
-                    <td className={`${kz.verbergMobiel} ${kz.eerste}`}>
-                      {k.start ? (k.start.precisie === "dag" ? fmtDag(k.start.datum) : `± ${fmtKort(k.start.datum)}`) : "—"}
-                    </td>
-                    <td className={kz.verbergMobiel}>{fmtKort(k.bijgewerkt)}</td>
-                  </tr>
-                ))}
+                {zichtbaar.map((k) => {
+                  const open = k.documenten.filter((d) => d.status === "open").reduce((s, d) => s + (d.bedrag ?? 0), 0);
+                  return (
+                    <tr key={k.id}>
+                      <td>
+                        <Link href={`/beheer/${k.id}`} className={kz.tabelNaam}>{k.voornaam} {k.achternaam}</Link>
+                        <div className={kz.tabelSub}>{k.adres}</div>
+                      </td>
+                      <td className={kz.verbergMobiel}>{k.dienst}</td>
+                      <td className={kz.verbergMobiel} style={{ whiteSpace: "nowrap" }}>{k.start ? (k.start.precisie === "dag" ? fmtKort(k.start.datum) : `± ${fmtMaand(k.start.datum)}`) : "—"}</td>
+                      <td>
+                        <span className={`${kz.badge} ${k.fase === "bezig" ? kz.badgeGroen : ""}`}>{FASE_LABEL[k.fase]}</span>
+                        {k.dakzorg?.actief && <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ marginLeft: 4 }}>Dakzorg</span>}
+                      </td>
+                      <td className={kz.verbergMobiel} style={{ textAlign: "right", fontWeight: 600, whiteSpace: "nowrap" }}>{open ? fmtEuro(open) : "—"}</td>
+                      <td style={{ textAlign: "right" }}><Link href={`/beheer/${k.id}`} className={kz.icoonKnop} aria-label={`Open ${k.voornaam}`}><ChevronRight size={16} /></Link></td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -106,7 +145,7 @@ export default async function BeheerOverzicht() {
       </section>
 
       {klaar && (
-        <section className={`${kz.kaart} ${kz.balans}`}>
+        <section className={`${kz.kaart} ${kz.balans}`} id="nieuw">
           <h2 className={kz.kaartTitel} style={{ marginBottom: 14 }}><Plus size={18} /> Nieuwe klant</h2>
           <form action={maakKlant}>
             <div className={kz.velden}>

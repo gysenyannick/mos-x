@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  AlertTriangle, ArrowRight, CalendarDays, ClipboardList, CalendarPlus, Camera, CheckCircle2, Clock, CloudLightning, FileText, History,
+  AlertTriangle, ArrowRight, CalendarDays, ClipboardList, CalendarPlus, Camera, CheckCircle2, Clock, CloudLightning, FileText,
   Home, Info, LayoutDashboard, Leaf, Lightbulb, MapPin, MessageCircle, NotebookPen, ShieldCheck, Sparkles, Users, Wallet,
   Wrench,
 } from "lucide-react";
@@ -13,7 +13,7 @@ import {
   nuMs, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
-  AFSPRAAK_TIPS, DAKZORG_INBEGREPEN, FASES, FASE_KORT, FASE_LABEL, FASE_UITLEG, FOTO_FASE_LABEL, PRIORITEIT_LABEL, VERZET_UREN, WERK_STATUS_LABEL, WERK_UITLEG,
+  AFSPRAAK_TIPS, DAKZORG_INBEGREPEN, DOC_GROEPEN, DOC_IS_FACTUUR, FASES, FASE_KORT, FASE_LABEL, FASE_UITLEG, FOTO_FASE_LABEL, PRIORITEIT_LABEL, VERZET_UREN, WERK_STATUS_LABEL, WERK_UITLEG,
   type Afspraak, type FotoFase, type Klant, type VrijMoment,
 } from "@/lib/klantenzone/types";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
@@ -63,11 +63,16 @@ function WaIcoon({ size = 20 }: { size?: number }) {
   );
 }
 
-function PaginaKop({ titel, sub, rechts }: { titel: string; sub?: string; rechts?: React.ReactNode }) {
+/** Alleen de eerste zin, voor korte kaartjes (de volledige tekst staat elders) */
+function eersteZin(t: string): string {
+  return t.split(/(?<=[.!?])\s+/)[0];
+}
+
+function PaginaKop({ titel, sub, rechts, teller }: { titel: string; sub?: string; rechts?: React.ReactNode; teller?: number }) {
   return (
     <div className={kz.paginaKop}>
       <div>
-        <h1 className={kz.paginaTitel}>{titel}</h1>
+        <h1 className={kz.paginaTitel}>{titel}{teller !== undefined && <span className={kz.telBol}>{teller}</span>}</h1>
         {sub && <p className={kz.paginaSub}>{sub}</p>}
       </div>
       {rechts}
@@ -171,7 +176,7 @@ function Werken({ k }: { k: Klant }) {
   if (!werken.length) return null;
   const klaar = werken.filter((w) => w.status === "klaar").length;
   return (
-    <section className={kz.kaart}>
+    <section className={kz.kaart} id="werken">
       <div className={kz.kaartKop}>
         <h2 className={kz.kaartTitel}><ClipboardList size={18} /> Je werken</h2>
         <span className={`${kz.badge} ${klaar === werken.length ? kz.badgeGroen : ""}`}>{klaar} van {werken.length} klaar</span>
@@ -210,8 +215,7 @@ function Overzicht({ k, komend, controle }: Ctx) {
   const faseIndex = FASES.indexOf(k.fase);
   const stap = volgendeStap(k, komend[0], controle);
   const openAanb = (k.aanbevelingen ?? []).filter((a) => a.status === "open").length;
-  const start = startTekst(k);
-  const facturen = k.documenten.filter((d) => d.type !== "offerte" && d.bedrag);
+  const facturen = k.documenten.filter((d) => DOC_IS_FACTUUR(d.type) && d.bedrag);
   const open = facturen.filter((d) => d.status === "open").reduce((s, d) => s + (d.bedrag ?? 0), 0);
   const garantie = garantieStaat(k);
   const laatste = [...(k.notities ?? []).map((n) => ({ datum: n.datum, tekst: `Notitie: ${n.titel ?? n.tekst}` })), ...k.log]
@@ -220,29 +224,91 @@ function Overzicht({ k, komend, controle }: Ctx) {
 
   return (
     <>
-      {/* ── Kop ── */}
-      <section className={kz.hero}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/Betonpannen.jpg" alt="" className={kz.heroBeeld} aria-hidden="true" />
-        <div className={kz.heroInhoud}>
-          <p className={kz.heroGroet}>{groet()} {k.voornaam}</p>
-          <h1 className={kz.heroTitel}>Zo staat het met <em>je dak.</em></h1>
-          <div className={kz.heroMeta}>
-            {k.dienst && <span className={kz.pill}><Sparkles size={13} /> {k.dienst}</span>}
-            {k.adres && <span className={kz.pill}><MapPin size={13} /> {k.adres}</span>}
-          </div>
-          <div className={kz.heroVoortgang}>
-            <div className={kz.heroVoortgangKop}>
-              <span><span className={kz.pulse} /> {FASE_LABEL[k.fase]}</span>
-              <span>Stap {faseIndex + 1} van {FASES.length}</span>
-            </div>
-            <div className={kz.heroBalk}><div style={{ width: `${((faseIndex + 1) / FASES.length) * 100}%` }} /></div>
+      {/* ── Kop (Beavr-stijl: groet, grote titel, acties rechts) ── */}
+      <div className={kz.dashKop}>
+        <div style={{ minWidth: 0 }}>
+          <p className={kz.dashGroet}>{groet()} {k.voornaam}</p>
+          <h1 className={kz.dashTitel}>Zo staat het met je dak</h1>
+          <div className={kz.dashMeta}>
+            {k.dienst && <span><Sparkles size={14} /> {k.dienst}</span>}
+            {k.adres && <span><MapPin size={14} /> {k.adres}</span>}
           </div>
         </div>
-      </section>
+        <div className={kz.dashActies}>
+          <a className={`${kz.knop} ${kz.knopLicht}`} href="tel:+32468352869">Bellen</a>
+          <a className={`${kz.knop} ${kz.knopPrimair}`} href={waLink(k)} target="_blank" rel="noopener noreferrer"><WaIcoon size={16} /> WhatsApp Yannick</a>
+        </div>
+      </div>
 
-      {/* ── Stappen ── */}
+      {/* ── Wat de klant echt wil weten (geen losse cijfers) ── */}
+      <div className={kz.infoRij}>
+        <Link href="?tab=agenda" className={kz.info}>
+          <span className={kz.infoKop}><span className={`${kz.statIcoon} ${kz.tintBlauw}`}><CalendarDays size={16} /></span> Volgende afspraak</span>
+          {komend[0] ? (
+            <>
+              <p className={kz.infoTitel}>{komend[0].titel}</p>
+              <p className={kz.infoTekst}>{hfd(fmtDag(komend[0].start))}</p>
+              <p className={kz.infoTekst}>{fmtUur(komend[0].start)} tot {eindUur(komend[0].start, komend[0].duurMin)}</p>
+              {(komend[0].info || AFSPRAAK_TIPS[komend[0].titel]) && (
+                <p className={kz.infoTip}>{eersteZin(komend[0].info || AFSPRAAK_TIPS[komend[0].titel])}</p>
+              )}
+            </>
+          ) : (
+            <>
+              <p className={kz.infoTitel}>{naKlaar ? `Controle in ${fmtMaand(controle.datum)}` : "Nog niets gepland"}</p>
+              <p className={kz.infoTekst}>{naKlaar ? "Plan ze in via Mijn dak." : "Je krijgt een berichtje zodra er iets vastligt."}</p>
+            </>
+          )}
+          <span className={kz.infoMeer}>Naar de agenda <ArrowRight size={14} /></span>
+        </Link>
+
+        <Link href="?tab=fotos" className={`${kz.info} ${kz.infoFoto}`}>
+          {k.fotos[0] ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={k.fotos[0].url} alt={k.fotos[0].bijschrift ?? "Laatste werffoto"} className={kz.infoBeeld} />
+              <span className={kz.infoFotoTekst}>
+                <span className={kz.infoFotoLabel}>Laatste foto · {fmtKort(k.fotos[0].datum.slice(0, 10))}</span>
+                <span className={kz.infoFotoTitel}>{k.fotos[0].bijschrift ?? "Werffoto"}</span>
+              </span>
+            </>
+          ) : (
+            <span style={{ padding: 18 }}>
+              <span className={kz.infoKop}><span className={`${kz.statIcoon} ${kz.tintGroen}`}><Camera size={16} /></span> Werffoto&apos;s</span>
+              <p className={kz.infoTitel}>Nog geen foto&apos;s</p>
+              <p className={kz.infoTekst}>Zodra ik start, volg je hier je dak.</p>
+            </span>
+          )}
+        </Link>
+
+        <Link href="?tab=documenten" className={kz.info}>
+          <span className={kz.infoKop}><span className={`${kz.statIcoon} ${open ? kz.tintOranje : kz.tintGroen}`}><Wallet size={16} /></span> Betalingen</span>
+          {facturen.length === 0 ? (
+            <>
+              <p className={kz.infoTitel}>Nog geen factuur</p>
+              <p className={kz.infoTekst}>{k.documenten.some((d) => d.type === "offerte") ? "Je offerte staat bij Documenten." : "Je offerte volgt na het plaatsbezoek."}</p>
+            </>
+          ) : open ? (
+            <>
+              <p className={kz.infoTitel} style={{ color: "#B7791F" }}>{fmtEuro(open)} te betalen</p>
+              <p className={kz.infoTekst}>{facturen.filter((d) => d.status === "open").map((d) => d.titel).join(", ")}</p>
+            </>
+          ) : (
+            <>
+              <p className={kz.infoTitel} style={{ display: "flex", alignItems: "center", gap: 8 }}><CheckCircle2 size={20} color="#7AB54E" style={{ flexShrink: 0 }} /> Alles betaald</p>
+              <p className={kz.infoTekst}>{fmtEuro(facturen.reduce((s, d) => s + (d.bedrag ?? 0), 0))} betaald, bedankt!</p>
+            </>
+          )}
+          <span className={kz.infoMeer}>Naar je documenten <ArrowRight size={14} /></span>
+        </Link>
+      </div>
+
+      {/* ── Voortgang ── */}
       <section className={kz.stappenKaart}>
+        <div className={kz.kaartKop}>
+          <h2 className={kz.kaartTitel}>Waar je project staat</h2>
+          <span className={`${kz.badge} ${kz.badgeGroen}`}><span className={kz.pulseKlein} /> {FASE_LABEL[k.fase]}</span>
+        </div>
         <ol className={kz.stappen} aria-label="Waar je project staat">
           {FASES.map((f, i) => (
             <li key={f} className={`${kz.stap} ${i < faseIndex ? kz.stapKlaar : ""} ${i === faseIndex ? kz.stapNu : ""}`} aria-current={i === faseIndex ? "step" : undefined}>
@@ -275,41 +341,6 @@ function Overzicht({ k, komend, controle }: Ctx) {
       </Link>
 
       <Werken k={k} />
-
-      {/* ── Snelkoppelingen ── */}
-      <div className={kz.tegels}>
-        <Link href={naKlaar ? "?tab=dak" : "?tab=agenda"} className={kz.tegel}>
-          <span className={kz.tegelIcoon}>{naKlaar ? <Wrench size={18} /> : <CalendarDays size={18} />}</span>
-          <span className={kz.tegelLabel}>{naKlaar ? "Volgende controle" : "Start werken"}</span>
-          <p className={kz.tegelWaarde}>{naKlaar ? fmtMaand(controle.datum) : start.kort ?? start.waarde}</p>
-          <p className={kz.tegelSub}>{naKlaar ? "Plan ze in met één klik" : start.sub}</p>
-        </Link>
-        <Link href="?tab=fotos" className={kz.tegel}>
-          <span className={kz.tegelIcoon}><Camera size={18} /></span>
-          <span className={kz.tegelLabel}>Werffoto&apos;s</span>
-          <p className={kz.tegelWaarde}>{k.fotos.length ? `${k.fotos.length} foto${k.fotos.length > 1 ? "'s" : ""}` : "Nog geen"}</p>
-          {k.fotos.length > 0 ? (
-            <div className={kz.miniFotos}>
-              {k.fotos.slice(0, 4).map((f) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={f.id} src={f.url} alt="" />
-              ))}
-            </div>
-          ) : <p className={kz.tegelSub}>Volgen zodra ik start</p>}
-        </Link>
-        <Link href="?tab=documenten" className={kz.tegel}>
-          <span className={kz.tegelIcoon}><Wallet size={18} /></span>
-          <span className={kz.tegelLabel}>Te betalen</span>
-          <p className={kz.tegelWaarde}>{facturen.length ? (open ? fmtEuro(open) : "Alles betaald") : "Niets"}</p>
-          <p className={kz.tegelSub}>{k.documenten.length} document{k.documenten.length === 1 ? "" : "en"}</p>
-        </Link>
-        <Link href="?tab=logboek" className={kz.tegel}>
-          <span className={kz.tegelIcoon}><History size={18} /></span>
-          <span className={kz.tegelLabel}>Laatste nieuws</span>
-          <p className={kz.tegelNieuws}>{laatste[0]?.tekst ?? "Nog niets"}</p>
-          {laatste[0] && <p className={kz.tegelSub}>{fmtMoment(laatste[0].datum)}</p>}
-        </Link>
-      </div>
 
       <Link href="?tab=dak" className={kz.dakStrook}>
         <span className={kz.rijIcoon}><Home size={18} /></span>
@@ -356,6 +387,9 @@ function Overzicht({ k, komend, controle }: Ctx) {
               {g.rest !== null && <div className={kz.balk} aria-hidden="true"><div className={kz.balkIn} style={{ width: `${g.rest}%` }} /></div>}
             </div>
           ))}
+          {k.documenten.some((d) => d.type === "garantie") && (
+            <Link href="?tab=documenten" className={kz.meerLink} style={{ marginTop: 14 }}>Bekijk je garantiecertificaat <ArrowRight size={14} /></Link>
+          )}
         </section>
       </div>
 
@@ -501,6 +535,11 @@ function MijnDak({ k, controle, refUrl, burenVoordeel }: Ctx) {
             <span><strong>Waar Yannick op let</strong><br />{p.aandachtspunten.split("\n").filter(Boolean).map((r, i) => <span key={i} style={{ display: "block" }}>• {r}</span>)}</span>
           </div>
         )}
+        {k.documenten.some((d) => d.type === "garantie" || d.type === "fiche") && (
+          <Link href="?tab=documenten" className={kz.meerLink} style={{ marginTop: 14 }}>
+            Garantiecertificaat en technische fiches <ArrowRight size={14} />
+          </Link>
+        )}
         {garantie.length > 0 && (
           <div className={kz.rijKnoppen} style={{ marginTop: 14 }}>
             {garantie.map((g) => <span key={g.id} className={`${kz.badge} ${kz.badgeGroen}`} style={{ padding: "6px 10px", whiteSpace: "normal" }}><g.icoon size={13} /> {g.titel} · {g.staat.toLowerCase()}</span>)}
@@ -589,6 +628,7 @@ function Fotos({ k }: Ctx) {
     <>
       <PaginaKop
         titel="Werffoto's"
+        teller={k.fotos.length}
         sub={k.fotos.length ? `${k.fotos.length} foto's van je dak. Tik op een foto om ze groot te bekijken.` : "Hier volg je je dak: voor, tijdens en na de werken."}
         rechts={<UploadKnop klantId={k.id} soort="foto" label="Zelf een foto toevoegen" licht meerdere />}
       />
@@ -662,7 +702,7 @@ function Agenda(ctx: Ctx) {
   const start = startTekst(k);
   return (
     <>
-      <PaginaKop titel="Agenda" sub={`Al je afspraken op een rij. Tot ${VERZET_UREN} uur vooraf kies je zelf een ander moment.`} />
+      <PaginaKop titel="Agenda" teller={komend.length} sub={`Al je afspraken op een rij. Tot ${VERZET_UREN} uur vooraf kies je zelf een ander moment.`} />
 
       <section className={kz.kaart}>
         <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
@@ -716,9 +756,7 @@ function Agenda(ctx: Ctx) {
 
 function Documenten({ k }: Ctx) {
   const labels = Object.fromEntries(k.documenten.map((d) => [d.id, { datum: fmtKort(d.datum), bedrag: d.bedrag ? fmtEuro(d.bedrag) : undefined }]));
-  const offertes = k.documenten.filter((d) => d.type === "offerte");
-  const facturen = k.documenten.filter((d) => d.type === "voorschot" || d.type === "factuur");
-  const andere = k.documenten.filter((d) => d.type === "andere");
+  const facturen = k.documenten.filter((d) => DOC_IS_FACTUUR(d.type));
   const metBedrag = facturen.filter((d) => d.bedrag);
   const totaal = metBedrag.reduce((s, d) => s + (d.bedrag ?? 0), 0);
   const betaald = metBedrag.filter((d) => d.status === "betaald").reduce((s, d) => s + (d.bedrag ?? 0), 0);
@@ -726,7 +764,7 @@ function Documenten({ k }: Ctx) {
 
   return (
     <>
-      <PaginaKop titel="Documenten" sub="Je offertes en facturen op één plek. Tik op een document om het te bekijken." />
+      <PaginaKop titel="Documenten" teller={k.documenten.length} sub="Je offertes en facturen op één plek. Tik op een document om het te bekijken." />
 
       {totaal > 0 && (
         <section className={kz.kaart}>
@@ -746,14 +784,12 @@ function Documenten({ k }: Ctx) {
         <section className={kz.kaart}><p className={kz.leeg}>Je offerte en facturen verschijnen hier zodra ze klaar zijn. Je krijgt dan een berichtje.</p></section>
       )}
 
-      {[
-        { titel: "Facturen", lijst: facturen },
-        { titel: "Offertes", lijst: offertes },
-        { titel: "Andere documenten", lijst: andere },
-      ].filter((g) => g.lijst.length).map((g) => (
+      {DOC_GROEPEN.map((g) => ({ ...g, lijst: k.documenten.filter((d) => g.types.includes(d.type)) }))
+        .filter((g) => g.lijst.length).map((g) => (
         <div key={g.titel}>
           <SectieKop titel={`${g.titel} (${g.lijst.length})`} />
           <section className={kz.kaart} style={{ marginTop: 0 }}>
+            {g.uitleg && <p className={kz.sub} style={{ marginTop: 0, marginBottom: 12 }}>{g.uitleg}</p>}
             <DocumentLijst documenten={g.lijst} labels={labels} />
           </section>
         </div>
@@ -761,7 +797,7 @@ function Documenten({ k }: Ctx) {
 
       {k.documenten.length > 0 && (
         <p className={kz.sub} style={{ textAlign: "center", marginTop: 18 }}>
-          Vraag over een factuur of offerte? <a href={waLink(k, "een document")} target="_blank" rel="noopener noreferrer" style={{ color: "#7AB54E", fontWeight: 600 }}>Stuur me een berichtje</a>.
+          Vraag over een document? <a href={waLink(k, "een document")} target="_blank" rel="noopener noreferrer" style={{ color: "#7AB54E", fontWeight: 600 }}>Stuur me een berichtje</a>.
         </p>
       )}
     </>
@@ -777,7 +813,7 @@ function Logboek({ k }: Ctx) {
 
   return (
     <>
-      <PaginaKop titel="Logboek" sub="Notities van Yannick en alles wat er gebeurde in je dossier." />
+      <PaginaKop titel="Logboek" teller={k.log.length + (k.notities?.length ?? 0)} sub="Notities van Yannick en alles wat er gebeurde in je dossier." />
 
       <SectieKop titel={`Notities van Yannick (${notities.length})`} />
       {notities.length === 0 ? (
@@ -891,6 +927,9 @@ export default async function KlantPagina({
 
       <div className={kz.dash}>
         <aside className={kz.zijbalk}>
+          <a className={`${kz.knop} ${kz.knopPrimair} ${kz.zijKnop}`} href={waLink(k)} target="_blank" rel="noopener noreferrer">
+            <WaIcoon size={17} /> Vraag aan Yannick
+          </a>
           <nav aria-label="Klantenzone">
             <ul className={kz.navLijst}>
               {TABS.map((t) => (
@@ -903,16 +942,15 @@ export default async function KlantPagina({
               ))}
             </ul>
           </nav>
-          <div className={kz.zijKaart}>
-            <div className={kz.persoon}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={YANNICK_FOTO} alt="" className={kz.berichtFoto} />
-              <div>
-                <p className={kz.rijTitel}>Vraag voor Yannick?</p>
-                <p className={kz.rijSub}>Eén nummer, je krijgt mij.</p>
+          <div className={kz.zijOnder}>
+            {k.dakzorg?.actief && <p className={kz.zijTip}><ShieldCheck size={15} /> MOS-X Dakzorg actief</p>}
+            <div className={kz.zijKlant}>
+              <span className={kz.avatar}>{k.voornaam.charAt(0)}{k.achternaam.charAt(0)}</span>
+              <div style={{ minWidth: 0 }}>
+                <p className={kz.zijNaam}>{k.voornaam} {k.achternaam}</p>
+                <p className={kz.zijAdres}>{k.adres}</p>
               </div>
             </div>
-            <a className={kz.knop} style={{ background: "#25D366", width: "100%", marginTop: 12, boxSizing: "border-box" }} href={waLink(k)} target="_blank" rel="noopener noreferrer"><WaIcoon size={16} /> Stuur een WhatsApp</a>
           </div>
         </aside>
 
@@ -924,10 +962,10 @@ export default async function KlantPagina({
           {tab === "documenten" && <Documenten {...ctx} />}
           {tab === "logboek" && <Logboek {...ctx} />}
 
-          <p className={kz.voet}>
-            <Sparkles size={14} style={{ verticalAlign: -2, color: "#9BCB6C" }} /> Bewaar deze link: hij blijft werken, van je aanvraag tot lang na je werken.
-            <br />Deel hem niet met anderen, want wie de link heeft, ziet je dossier.
-          </p>
+          <div className={kz.voet}>
+            <p>Bewaar deze link: hij blijft werken, van je aanvraag tot lang na je werken.</p>
+            <p>Deel hem niet met anderen: wie de link heeft, ziet je dossier.</p>
+          </div>
         </div>
       </div>
 

@@ -95,10 +95,18 @@ export function DocumentUpload({ klantId }: { klantId: string }) {
       <div className={kz.veld}>
         <label htmlFor="doctype">Soort</label>
         <select id="doctype" className={kz.invoer} value={type}
-          onChange={(e) => { setType(e.target.value); setStatus(e.target.value === "offerte" ? "info" : "open"); }}>
-          <option value="offerte">Offerte</option>
-          <option value="voorschot">Voorschotfactuur</option>
-          <option value="factuur">Factuur</option>
+          onChange={(e) => { setType(e.target.value); setStatus(e.target.value === "voorschot" || e.target.value === "factuur" ? "open" : "info"); }}>
+          <optgroup label="Prijs en betaling">
+            <option value="offerte">Offerte</option>
+            <option value="voorschot">Voorschotfactuur</option>
+            <option value="factuur">Factuur</option>
+          </optgroup>
+          <optgroup label="Na de werken">
+            <option value="garantie">Garantiecertificaat</option>
+            <option value="oplevering">Opleveringsverslag</option>
+            <option value="inspectie">Inspectierapport</option>
+            <option value="fiche">Technische fiche (producten)</option>
+          </optgroup>
           <option value="andere">Ander document</option>
         </select>
       </div>

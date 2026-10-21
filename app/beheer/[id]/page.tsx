@@ -5,7 +5,7 @@ import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, NotebookPen
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getKlant } from "@/lib/klantenzone/store";
 import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
-import { DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
+import { DOC_IS_FACTUUR, DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
 import { BeheerAanvragen, BeheerDak } from "@/components/klantenzone/beheer-dak";
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
@@ -178,7 +178,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
                       <p className={kz.rijSub}>{DOC_TYPE_LABEL[d.type]} · {fmtKort(d.datum)}{d.bedrag ? ` · ${fmtEuro(d.bedrag)}` : ""}</p>
                     </div>
                     <div className={kz.rijRechts}>
-                      {d.type !== "offerte" && (
+                      {DOC_IS_FACTUUR(d.type) && (
                         d.status === "betaald" ? (
                           <form action={zetDocumentStatus.bind(null, k.id, d.id, "open")}>
                             <button className={`${kz.badge} ${kz.badgeGroen}`} style={{ border: 0, cursor: "pointer" }} title="Klik om terug op open te zetten">Betaald ✓</button>
