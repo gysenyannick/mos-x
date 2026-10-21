@@ -767,3 +767,114 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .infoFotoTitel { font-weight: 700; font-size: 15px; }
 @media (max-width: 1180px) and (min-width: 861px) { .infoRij { grid-template-columns: 1fr 1fr; } .infoFoto { grid-row: span 2; } }
 @media (max-width: 640px) { .infoRij { grid-template-columns: 1fr; gap: 10px; } .infoFoto { min-height: 200px; } }
+
+/* ══ Opvolgpagina (alles op één pagina) ═══════════════════════════════════ */
+.vakmanVideo { width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #111; object-fit: cover; display: block; }
+.waKaart {
+  display: flex; gap: 18px 24px; align-items: center; flex-wrap: wrap; margin-top: 30px; padding: 24px;
+  border-radius: 16px; background: var(--donker); color: #fff;
+  background-image: radial-gradient(90% 140% at 100% 0%, rgba(155,203,108,.22) 0%, rgba(155,203,108,0) 60%);
+}
+.waTitel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
+.waTekst { margin: 6px 0 0; font-size: 15px; line-height: 1.55; color: rgba(255,255,255,.75); max-width: 56ch; }
+.waKaart .knopLicht { background: transparent; color: #fff; border-color: rgba(255,255,255,.3); }
+.waKaart .knopLicht:hover { background: rgba(255,255,255,.08); }
+.faq { border-bottom: 1px solid var(--rand); }
+.faq:last-child { border-bottom: 0; }
+.faq summary {
+  list-style: none; cursor: pointer; padding: 16px 28px 16px 0; position: relative; font-weight: 600; font-size: 15.5px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 2px; top: 13px; font-size: 22px; color: var(--groen-d); font-weight: 400; transition: transform .2s; }
+.faq[open] summary::after { transform: rotate(45deg); }
+.faq summary:focus-visible { outline: 2px solid var(--groen); outline-offset: 2px; border-radius: 6px; }
+.faq p { margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+
+/* Uitlegpagina: vergelijking "bij veel dakwerkers" vs "bij MOS-X" */
+.vergelijk { border: 1px solid #E5E7EB; border-radius: 16px; overflow: hidden; background: #fff; }
+.vergelijkKop, .vergelijkRij { display: grid; grid-template-columns: 1fr 1fr; }
+.vergelijkKop span { padding: 14px 20px; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 15px; }
+.vergelijkKop span:first-child { background: #F7F8F6; color: #545454; }
+.vergelijkKop span:last-child { background: #EEF6E6; color: #1A1A1A; }
+.vergelijkRij { border-top: 1px solid #E5E7EB; }
+.vergelijkNee, .vergelijkJa { margin: 0; padding: 16px 20px; display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.55; }
+.vergelijkNee { color: #545454; background: #FCFCFB; }
+.vergelijkNee svg { color: #C9C7C1; flex-shrink: 0; margin-top: 2px; }
+.vergelijkJa { color: #1A1A1A; font-weight: 500; }
+.vergelijkJa svg { color: #7AB54E; flex-shrink: 0; margin-top: 2px; }
+@media (max-width: 680px) {
+  .vergelijkKop { display: none; }
+  .vergelijkRij { grid-template-columns: 1fr; }
+  .vergelijkNee { padding-bottom: 8px; }
+  .vergelijkJa { padding-top: 8px; }
+}
+
+/* ══ Startpagina als app (zoals Mijn Recotex): donkere band + statuskaart ═══ */
+.appKop {
+  margin: 0 0 0; padding: 28px 26px 74px; border-radius: 20px; color: #fff;
+  background: radial-gradient(90% 130% at 100% 0%, rgba(155,203,108,.25) 0%, rgba(155,203,108,0) 60%), var(--donker);
+}
+.appLabel { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--groen); }
+.appGroet { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 36px); letter-spacing: -0.025em; color: #fff; }
+.appStreep { display: block; width: 44px; height: 3px; border-radius: 3px; background: var(--groen); margin-top: 14px; }
+
+.statusKaart {
+  position: relative; margin: -52px 12px 0; padding: 20px; background: #fff; border-radius: 18px;
+  border: 1px solid var(--rand); box-shadow: 0 14px 34px -18px rgba(0,0,0,.35);
+}
+.statusBoven { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.statusStap { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3F3F3B; }
+.dossierNr { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 99px; background: var(--vlak); color: #4A4A46; letter-spacing: .02em; }
+.statusZin { margin: 14px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(20px, 2.4vw, 24px); line-height: 1.3; letter-spacing: -0.02em; color: var(--tekst); }
+.statusVolgende { margin: 10px 0 0; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.statusVolgende strong { color: var(--tekst); }
+
+.fasen { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 20px; }
+.fase { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
+.faseBalk { display: flex; gap: 4px; width: 100%; height: 6px; align-items: center; }
+.faseDeel { flex: 1; height: 6px; border-radius: 99px; background: #E3E1DC; }
+.faseDeelKlaar { background: var(--donker); }
+.faseDeelNu { background: linear-gradient(90deg, var(--groen) 50%, #E3E1DC 50%); }
+.faseStip { flex: 1; height: 6px; border-radius: 99px; background: #E3E1DC; }
+.faseStipKlaar { background: var(--donker); }
+.faseStipNu { background: var(--groen); box-shadow: 0 0 0 3px var(--groen-zacht); }
+.faseNaam { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.faseNaamNu { color: var(--tekst); font-weight: 700; }
+
+.statusFoto { position: relative; display: block; margin-top: 18px; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 9; background: var(--vlak); }
+.statusFoto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
+.statusFoto:hover img { transform: scale(1.03); }
+.statusFoto span {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 10px; color: #fff; font-size: 13px; font-weight: 600;
+  background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.6));
+}
+.statusPersoon { display: flex; align-items: center; gap: 12px; margin-top: 16px; text-decoration: none; color: var(--tekst); border-radius: 12px; }
+.statusPersoon img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--rand); }
+.statusPersoon > span:nth-child(2) { flex: 1; min-width: 0; display: grid; }
+.statusPersoonNaam { font-weight: 700; font-size: 16px; }
+.statusPersoonRol { font-size: 13.5px; color: var(--muted); }
+.statusWa { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #25D366; color: #fff; flex-shrink: 0; }
+.statusPersoon:hover .statusWa { background: #1EBE5B; }
+.statusPersoon:focus-visible { outline: 2px solid var(--groen); outline-offset: 4px; }
+
+.planning { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.planning li { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-top: 1px solid var(--rand); }
+.planning li:first-child { border-top: 0; padding-top: 0; }
+.planningIcoon { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--vlak); color: var(--tekst); flex-shrink: 0; }
+.planningTitel { display: block; font-weight: 600; font-size: 15.5px; }
+.planningDatum { display: block; font-size: 14px; color: var(--muted); margin-top: 1px; }
+
+.vakman { display: grid; grid-template-columns: minmax(0, 280px) 1fr; gap: 18px; align-items: center; }
+
+@media (max-width: 640px) {
+  .appKop { padding: 24px 20px 70px; border-radius: 18px; }
+  .statusKaart { margin: -52px 8px 0; padding: 18px 16px; }
+  .fasen { gap: 5px; }
+  .faseNaam { font-size: 10.5px; }
+  .vakman { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .statusStap { font-size: 11px; letter-spacing: .07em; }
+  .dossierNr { font-size: 11px; padding: 3px 8px; }
+}

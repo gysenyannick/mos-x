@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  CalendarDays, Camera, ChevronRight, Clock, FileText, Link2, ListChecks, MessageCircle, ShieldCheck,
+  CalendarDays, Camera, CheckCircle2, ChevronRight, Clock, FileText, Link2, ListChecks, MessageCircle, ShieldCheck, XCircle,
 } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import kz from "@/components/klantenzone/kz.module.css";
@@ -24,6 +24,23 @@ const wat = [
   { icoon: FileText, titel: "Offerte en factuur", tekst: "Al je documenten bij elkaar, met wat al betaald is en wat nog openstaat. Downloaden wanneer het jou past." },
   { icoon: Clock, titel: "Afspraken verzetten", tekst: "Past een afspraak toch niet? Tot 48 uur vooraf kies je zelf een ander vrij moment. Geen gebel nodig." },
   { icoon: ShieldCheck, titel: "Je garantie", tekst: "2 jaar mosvrij na reiniging, 10 jaar op je coating. Je ziet precies tot wanneer je gedekt bent." },
+];
+
+const VERGELIJK: [string, string][] = [
+  ["Je belt, krijgt de voicemail en wacht dagen op antwoord.", "Eén WhatsApp-nummer, en je krijgt mij. Geen doorverbinden, een echt antwoord."],
+  ["“We komen ergens in oktober.” Wanneer precies hoor je pas de dag ervoor.", "Je startdatum staat op je pagina zodra hij vastligt, en je krijgt een berichtje."],
+  ["Wat er op je dak gebeurt, zie je alleen als je zelf de ladder op gaat.", "Foto’s van voor, tijdens en na verschijnen op je pagina. Je volgt alles vanuit je zetel."],
+  ["Offerte, voorschot en factuur: verspreid over mails en papiertjes.", "Al je documenten op één plek, met wat betaald is en wat nog openstaat."],
+  ["Je weet niet wie er aanbelt, of er komt een onderaannemer.", "Je ziet op voorhand wie er komt: ik, Yannick. Ik doe het werk zelf."],
+  ["Een afspraak verzetten? Heen en weer bellen tot het past.", "Tot 48 uur vooraf kies je zelf een ander vrij moment op je pagina."],
+];
+
+const VRAGEN: [string, string][] = [
+  ["Moet ik een account aanmaken?", "Nee. Je krijgt een persoonlijke link via WhatsApp. Geen wachtwoord, geen app om te installeren."],
+  ["Wat als ik mijn link kwijt ben?", "Stuur me een WhatsApp, dan krijg je hem meteen opnieuw. Ik kan ook een nieuwe link maken als je de oude niet meer wil gebruiken."],
+  ["Kan iemand anders mijn pagina zien?", "Alleen wie je link heeft. Deel hem dus niet zomaar. De pagina wordt niet opgenomen in Google."],
+  ["Blijft mijn pagina bestaan na de werken?", "Ja. Je foto’s, documenten en garantie blijven er staan. Handig als je later je woning verkoopt of een controle wil plannen."],
+  ["Kost de klantenzone iets?", "Nee, elke klant van MOS-X krijgt ze gratis."],
 ];
 
 const stappen = [
@@ -146,8 +163,29 @@ export default function KlantenzoneInfo() {
         </div>
       </section>
 
-      {/* ── WhatsApp ── */}
+      {/* ── Herkenbaar? ── */}
       <section className={kz.balans} style={{ background: "#fff", padding: "90px 0" }}>
+        <div className="site-wrap">
+          <h2 style={{ ...H, fontSize: "clamp(1.8rem, 3.6vw, 2.6rem)", color: "#1A1A1A", margin: "0 0 10px", textAlign: "center" }}>
+            Herkenbaar? <span style={{ color: GROEN }}>Zo los ik het op.</span>
+          </h2>
+          <p style={{ textAlign: "center", color: "#545454", fontSize: 17, maxWidth: 600, margin: "0 auto 40px" }}>
+            Veel dakwerkers zijn sterk in het werk, maar minder in laten weten wat er gebeurt. Daar heb ik iets op gevonden.
+          </p>
+          <div className={kz.vergelijk}>
+            <div className={kz.vergelijkKop}><span>Bij veel dakwerkers</span><span>Bij MOS-X</span></div>
+            {VERGELIJK.map(([nee, ja]) => (
+              <div key={nee} className={kz.vergelijkRij}>
+                <p className={kz.vergelijkNee}><XCircle size={18} /> <span>{nee}</span></p>
+                <p className={kz.vergelijkJa}><CheckCircle2 size={18} /> <span>{ja}</span></p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WhatsApp ── */}
+      <section className={kz.balans} style={{ background: "#F7F8F6", padding: "90px 0" }}>
         <div className="site-wrap" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: 48, alignItems: "center" }}>
           <div>
             <h2 style={{ ...H, fontSize: "clamp(1.8rem, 3.6vw, 2.6rem)", color: "#1A1A1A", margin: "0 0 14px" }}>
@@ -169,6 +207,26 @@ export default function KlantenzoneInfo() {
             <div style={{ justifySelf: "start", background: "#fff", borderRadius: "14px 14px 14px 4px", padding: "10px 12px", fontSize: 14, maxWidth: "85%" }}>
               Dag Jan! Ik kom maandag 12 oktober om 8u. Op je pagina zie je alles staan, ook de foto&apos;s zodra ik begin. 👍<span className={kz.chatTijd}>09:43</span>
             </div>
+            <div style={{ justifySelf: "end", background: "#DCF8C6", borderRadius: "14px 14px 4px 14px", padding: "10px 12px", fontSize: 14, maxWidth: "85%" }}>
+              Super, tot dan!<span className={kz.chatTijd}>09:44</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Veelgestelde vragen ── */}
+      <section className={kz.balans} style={{ background: "#fff", padding: "90px 0" }}>
+        <div className="site-wrap" style={{ maxWidth: 820 }}>
+          <h2 style={{ ...H, fontSize: "clamp(1.8rem, 3.6vw, 2.6rem)", color: "#1A1A1A", margin: "0 0 28px", textAlign: "center" }}>
+            Veelgestelde vragen
+          </h2>
+          <div className={kz.kaart} style={{ padding: "6px 22px" }}>
+            {VRAGEN.map(([v, a]) => (
+              <details key={v} className={kz.faq}>
+                <summary>{v}</summary>
+                <p>{a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
