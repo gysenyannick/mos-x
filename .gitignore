@@ -44,3 +44,7 @@ next-env.d.ts
 
 # temporary screenshots (lokale werkbestanden)
 temporary screenshots/
+
+# klantenzone lokaal testen
+/.data/
+/public/_dev-uploads/

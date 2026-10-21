@@ -3,6 +3,7 @@ import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import MobileContactBar from "@/components/mobile-contact-bar";
 import CalculatorScroll from "@/components/calculator-scroll";
+import SiteChrome from "@/components/site-chrome";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body className="antialiased" style={{ overflowX: "hidden" }}>
         {children}
         <CalculatorScroll />
+        <SiteChrome>
         <MobileContactBar />
         <div className="hidden lg:block">
           <a
@@ -76,6 +78,7 @@ export default function RootLayout({
             </svg>
           </a>
         </div>
+        </SiteChrome>
       </body>
     </html>
   );
