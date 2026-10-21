@@ -945,3 +945,6 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .planning li { flex-wrap: wrap; }
 .planningActie { margin-left: auto; }
 @media (max-width: 560px) { .planningActie { flex-basis: 100%; margin-left: 62px; } }
+
+/* Onderbalk: evenveel kolommen als er onderdelen zichtbaar zijn */
+.onderNav > ul { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 1fr; }

@@ -14,10 +14,11 @@ const ITEMS = [
 ] as const;
 
 /** "Meer" in de onderbalk op gsm: opent een paneel met de overige onderdelen. */
-export default function MeerMenu({ actief, tellers }: { actief: string; tellers: Partial<Record<string, number>> }) {
+export default function MeerMenu({ actief, tellers, zichtbaar }: { actief: string; tellers: Partial<Record<string, number>>; zichtbaar: string[] }) {
   const [open, setOpen] = useState(false);
-  const isActief = ITEMS.some((i) => i.id === actief);
-  const totaal = ITEMS.reduce((s, i) => s + (tellers[i.id] ?? 0), 0);
+  const items = ITEMS.filter((i) => zichtbaar.includes(i.id));
+  const isActief = items.some((i) => i.id === actief);
+  const totaal = items.reduce((s, i) => s + (tellers[i.id] ?? 0), 0);
 
   useEffect(() => {
     if (!open) return;
@@ -42,7 +43,7 @@ export default function MeerMenu({ actief, tellers }: { actief: string; tellers:
               <button type="button" className={kz.icoonKnop} onClick={() => setOpen(false)} aria-label="Sluiten"><X size={18} /></button>
             </div>
             <ul className={kz.meerLijst}>
-              {ITEMS.map((i) => (
+              {items.map((i) => (
                 <li key={i.id}>
                   <Link href={`?tab=${i.id}`} className={kz.meerItem} onClick={() => setOpen(false)} aria-current={actief === i.id ? "page" : undefined}>
                     <span className={kz.planningIcoon}><i.icoon size={18} /></span>

@@ -266,7 +266,7 @@ function Overzicht(ctx: Ctx) {
       <section className={kz.kaart}>
         <div className={kz.kaartKop}>
           <h2 className={kz.kaartTitel}><CalendarDays size={18} /> Jouw planning</h2>
-          <Link href="?tab=agenda" className={kz.meerLink}>Agenda <ArrowRight size={14} /></Link>
+          {k.afspraken.length > 0 && <Link href="?tab=agenda" className={kz.meerLink}>Agenda <ArrowRight size={14} /></Link>}
         </div>
         {komend.length === 0 && !toonStart ? (
           <p className={kz.leeg}>Zodra je werken gepland zijn, zie je hier wanneer en hoe laat ik kom.</p>
@@ -317,8 +317,8 @@ function Overzicht(ctx: Ctx) {
         </div>
       </section>
 
-      {/* 4. Werffoto's */}
-      <section className={kz.kaart}>
+      {/* 4. Werffoto's (alleen als er foto's zijn) */}
+      {k.fotos.length > 0 && <section className={kz.kaart}>
         <div className={kz.kaartKop}>
           <h2 className={kz.kaartTitel}><Camera size={18} /> Werffoto&apos;s</h2>
           {k.fotos.length > 0 && <Link href="?tab=fotos" className={kz.meerLink}>Alle foto&apos;s <ArrowRight size={14} /></Link>}
@@ -328,21 +328,19 @@ function Overzicht(ctx: Ctx) {
             <VoorNa voor={voor.url} na={na.url} />
             <p className={kz.sub} style={{ fontSize: 13 }}>Voor en na: sleep de schuif naar links en rechts.</p>
           </>
-        ) : k.fotos.length ? (
-          <FotoGalerij fotos={k.fotos.slice(0, 6)} />
         ) : (
-          <p className={kz.leeg}>Ik fotografeer je dak voor, tijdens en na de werken. Zo volg je alles van thuis.</p>
+          <FotoGalerij fotos={k.fotos.slice(0, 6)} />
         )}
-      </section>
+      </section>}
 
-      {/* 5. Offertes en facturen */}
-      <section className={kz.kaart}>
+      {/* 5. Offertes en facturen (alleen als er zijn) */}
+      {prijsDocs.length > 0 && <section className={kz.kaart}>
         <div className={kz.kaartKop}>
           <h2 className={kz.kaartTitel}><Wallet size={18} /> Offertes en facturen</h2>
-          {k.documenten.length > 0 && <Link href="?tab=documenten" className={kz.meerLink}>Documenten <ArrowRight size={14} /></Link>}
+          <Link href="?tab=documenten" className={kz.meerLink}>Documenten <ArrowRight size={14} /></Link>
         </div>
-        {prijsDocs.length ? <DocumentLijst documenten={prijsDocs} labels={labels} /> : <p className={kz.leeg}>Je offerte en facturen verschijnen hier zodra ze klaar zijn.</p>}
-      </section>
+        <DocumentLijst documenten={prijsDocs} labels={labels} />
+      </section>}
 
       {/* 6. Veelgestelde vragen */}
       <section className={kz.kaart}>
@@ -817,7 +815,23 @@ export default async function KlantPagina({
     );
   }
 
-  const tab: TabId = TABS.some((t) => t.id === tabRuw) ? (tabRuw as TabId) : "overzicht";
+  // Het menu groeit mee: een onderdeel verschijnt pas als er iets in staat
+  const p = k.paspoort ?? {};
+  const zichtbaar: Record<TabId, boolean> = {
+    overzicht: true,
+    agenda: k.afspraken.length > 0,
+    fotos: true, // ook leeg tonen: de klant kan er zelf een foto toevoegen
+    documenten: k.documenten.length > 0,
+    aandachtspunten: (k.aanbevelingen ?? []).some((a) => a.status !== "gedaan") || !!p.aandachtspunten || !!p.daktype
+      || k.fotos.some((f) => f.fase === "inspectie"),
+    advies: k.fase === "klaar" || k.fase === "nazorg" || (k.behandelingen ?? []).length > 0,
+    extras: true,
+    logboek: (k.notities ?? []).length > 0 || (k.behandelingen ?? []).length > 0 || k.log.length > 2,
+  };
+  const tabs = TABS.filter((t) => zichtbaar[t.id]);
+  // Op gsm: alles onderaan als het past (max. 5), anders de 4 hoofdonderdelen + "Meer"
+  const onderaan: TabId[] = tabs.length <= 5 ? tabs.map((t) => t.id) : ONDERAAN.filter((id) => zichtbaar[id]);
+  const tab: TabId = tabs.some((t) => t.id === tabRuw) ? (tabRuw as TabId) : "overzicht";
   const grens = nuMs() + VERZET_UREN * 3_600_000;
   const vrijeMomenten = (await getMomenten()).filter((m) => brusselNaarDate(m.start).getTime() > grens).slice(0, 30);
   const h = await headers();
@@ -866,8 +880,8 @@ export default async function KlantPagina({
           </a>
           <nav aria-label="Klantenzone">
             <ul className={kz.navLijst}>
-              {TABS.map((t, i) => (
-                <li key={t.id} className={i === 4 ? kz.navScheiding : undefined}>
+              {tabs.map((t) => (
+                <li key={t.id} className={t.id === tabs.find((x) => !ONDERAAN.includes(x.id))?.id ? kz.navScheiding : undefined}>
                   <Link href={`?tab=${t.id}`} className={`${kz.navItem} ${tab === t.id ? kz.navItemAan : ""}`} aria-current={tab === t.id ? "page" : undefined}>
                     <t.icoon size={18} /> {t.label}
                     {teller[t.id] && <span className={`${kz.navTeller} ${teller[t.id]!.amber ? kz.navTellerAmber : ""}`}>{teller[t.id]!.n}</span>}
@@ -907,7 +921,7 @@ export default async function KlantPagina({
 
       <nav className={kz.onderNav} aria-label="Klantenzone">
         <ul>
-          {TABS.filter((t) => ONDERAAN.includes(t.id)).map((t) => (
+          {tabs.filter((t) => onderaan.includes(t.id)).map((t) => (
             <li key={t.id}>
               <Link href={`?tab=${t.id}`} className={`${kz.onderItem} ${tab === t.id ? kz.onderItemAan : ""}`} aria-current={tab === t.id ? "page" : undefined}>
                 <t.icoon size={21} />
@@ -916,7 +930,9 @@ export default async function KlantPagina({
               </Link>
             </li>
           ))}
-          <li><MeerMenu actief={tab} tellers={{ aandachtspunten: openAanb.length }} /></li>
+          {tabs.some((t) => !onderaan.includes(t.id)) && (
+            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ aandachtspunten: openAanb.length }} /></li>
+          )}
         </ul>
       </nav>
     </main>
