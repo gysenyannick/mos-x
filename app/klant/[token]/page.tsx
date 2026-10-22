@@ -395,9 +395,19 @@ function Documenten({ k }: Ctx) {
   );
 }
 
-/* ══ Mijn dak: opmerkingen, onderhoud en garantie ═════════════════════════ */
+/* ══ Mijn dak: dakdossier, opmerkingen, onderhoud en garantie ═════════════ */
 
 const ONDERHOUD_FOTO = "/images/Antimos%20op%20dak.jpg";
+
+function dakGegevens(k: Klant): { label: string; waarde: string }[] {
+  const p = k.paspoort ?? {};
+  const rijen: [string, string | undefined][] = [
+    ["Daktype", p.daktype],
+    ["Oppervlakte", p.oppervlakte ? `${p.oppervlakte} m²` : undefined],
+    ["Kleur", p.kleur],
+  ];
+  return rijen.filter((r): r is [string, string] => !!r[1]).map(([label, waarde]) => ({ label, waarde }));
+}
 
 function MijnDak({ k, controle }: Ctx) {
   const opm = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
@@ -407,7 +417,10 @@ function MijnDak({ k, controle }: Ctx) {
   const certificaat = k.documenten.find((d) => d.type === "garantie");
   const gevraagd = (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "onderhoud");
   const maanden = controle ? Math.max(0, Math.round(dagenTot(controle.datum) / 30.44)) : null;
-  const wanneer = maanden === null ? "" : maanden > 1 ? `over ${maanden} maanden` : maanden === 1 ? "volgende maand" : "nu";
+  const wanneer = maanden === null ? "" : maanden > 1 ? `Over ${maanden} maanden` : maanden === 1 ? "Volgende maand" : "Nu";
+  const gegevens = dakGegevens(k);
+  const historiek = k.behandelingen ?? [];
+  const dakfoto = (["na", "inspectie", "voor", "tijdens"] as const).map((f) => k.fotos.find((x) => x.fase === f)).find(Boolean);
 
   return (
     <>
@@ -420,7 +433,43 @@ function MijnDak({ k, controle }: Ctx) {
         </p>
       )}
 
-      {/* 1. Opmerkingen */}
+      {/* 1. Dakdossier */}
+      <section className={`${kz.dakBlok} ${kz.dakDossier} ${dakfoto ? "" : kz.dakDossierZonder}`}>
+        {dakfoto && (
+          <figure className={kz.dakDossierFoto}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={dakfoto.url} alt="Je dak" />
+            <figcaption>{fmtKort(dakfoto.datum)}</figcaption>
+          </figure>
+        )}
+        <div>
+          <h2 className={kz.dakTitel}>Dakdossier</h2>
+          {gegevens.length > 0 ? (
+            <dl className={kz.dakSpecs}>
+              {gegevens.map((g) => (
+                <div key={g.label}><dt>{g.label}</dt><dd>{g.waarde}</dd></div>
+              ))}
+            </dl>
+          ) : (
+            <p className={kz.rapportTekst}>Na het eerste bezoek vind je hier alles over je dak.</p>
+          )}
+          {historiek.length > 0 && (
+            <>
+              <h3 className={kz.dakSubtitel}>Uitgevoerde werken</h3>
+              <ul className={kz.dakHistoriek}>
+                {historiek.map((b) => (
+                  <li key={b.id}><span>{fmtKort(b.datum)}</span><strong>{b.soort}</strong></li>
+                ))}
+              </ul>
+            </>
+          )}
+          {k.fotos.length > 0 && (
+            <Link href="?tab=fotos" className={kz.rapportLink}>Alle foto&apos;s van je dak ({k.fotos.length})</Link>
+          )}
+        </div>
+      </section>
+
+      {/* 2. Opmerkingen */}
       <section className={kz.dakBlok}>
         <div className={kz.dakBlokKop}>
           <h2 className={kz.dakTitel}>Opmerkingen</h2>
@@ -445,9 +494,9 @@ function MijnDak({ k, controle }: Ctx) {
                   {a.tekst && <p className={kz.rapportTekst}>{a.tekst}</p>}
                   <div style={{ marginTop: 14 }}>
                     <AanvraagKnop
-                      klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Gevraagd, ik laat iets weten"
+                      klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd, we nemen contact op"
                       label="Vraag een prijs" titel={a.titel}
-                      uitleg="Ik laat je weten wat het kost en wanneer ik het kan doen. Je zit nergens aan vast."
+                      uitleg="Je krijgt eerst een prijs en een voorstel van datum. Je zit nergens aan vast."
                       placeholder="Vraag of opmerking (optioneel)"
                     />
                   </div>
@@ -458,70 +507,61 @@ function MijnDak({ k, controle }: Ctx) {
         )}
         {oog.length > 0 && (
           <div className={kz.dakOog} style={opm.length ? undefined : { marginTop: 0 }}>
-            <p className={kz.dakOogKop}>Om in het oog te houden</p>
+            <p className={kz.dakOogKop}>Aandachtspunten</p>
             <ul className={kz.rapportLijst}>{oog.map((r) => <li key={r}>{r}</li>)}</ul>
           </div>
         )}
       </section>
 
-      {/* 2. Onderhoud: een aanbod, geen verplichting */}
+      {/* 3. Onderhoud: een aanbod, geen verplichting */}
       <section className={kz.dakOnderhoud}>
         <div className={kz.dakOnderhoudBeeld}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={ONDERHOUD_FOTO} alt="Anti-mosbehandeling op een dak" />
-          {controle && (
-            <p className={kz.dakOnderhoudDatum}>
-              <span>Aangeraden</span>
-              <strong>{hfd(fmtMaand(controle.datum))}</strong>
-              <span>{wanneer}</span>
-            </p>
-          )}
         </div>
         <div className={kz.dakOnderhoudTekst}>
-          <p className={kz.dakEyebrow}>Onderhoud na je reiniging</p>
-          <h2 className={kz.dakTitelGroot}>Hou je dak jarenlang proper</h2>
+          <p className={kz.dakEyebrow}>Onderhoud</p>
+          <h2 className={kz.dakTitelGroot}>Hou je dak proper</h2>
           <p className={kz.rapportTekst}>
-            Je dak is gereinigd. Met een onderhoudsbeurt blijft het zo. Ik breng preventief een anti-mosbehandeling aan,
-            zodat nieuwe mos geen kans krijgt, en ik inspecteer meteen je dak.
+            Na de reiniging is je dak weer als nieuw. Met een onderhoudsbeurt blijft dat zo: je dak krijgt een preventieve
+            anti-mosbehandeling en een volledige inspectie.
           </p>
-          <dl className={kz.dakInbegrepen}>
-            <div><dt>Preventieve anti-mosbehandeling</dt><dd>Remt nieuwe mos en algen af, nog voor je ze ziet.</dd></div>
-            <div><dt>Inspectie van je dak</dt><dd>Ik kijk de pannen, de nok en de aansluitingen na en stuur je de foto&apos;s.</dd></div>
-          </dl>
+          <div className={kz.dakInbegrepen}>
+            <div><strong>Anti-mos</strong><span>Preventief</span></div>
+            <div><strong>Inspectie</strong><span>Met foto&apos;s</span></div>
+            <div><strong>{controle ? hfd(fmtMaand(controle.datum)) : "Later"}</strong><span>{controle ? wanneer : "Na je werken"}</span></div>
+          </div>
           <div className={kz.dakOnderhoudVoet}>
             <AanvraagKnop
-              klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, ik neem contact op"
-              label="Ja, plan mijn onderhoud"
+              klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, we nemen contact op"
+              label="Plan mijn onderhoud"
               titel="Onderhoud inplannen"
-              uitleg="Ik neem contact op om een moment af te spreken. Ik ken je dak al, je hoeft niets opnieuw uit te leggen."
+              uitleg="We nemen contact op om een moment af te spreken. Je dak is al gekend, je hoeft niets opnieuw uit te leggen."
               placeholder="bv. Liefst in het voorjaar."
             />
-            <span className={kz.rijSub}>Vrijblijvend. Je krijgt eerst een prijs.</span>
+            <span className={kz.rijSub}>Vrijblijvend, je krijgt eerst een prijs.</span>
           </div>
         </div>
       </section>
 
-      {/* 3. Garantie */}
+      {/* 4. Garantie */}
       {(garantie.length > 0 || certificaat) && (
         <section className={kz.dakBlok}>
           <div className={kz.dakBlokKop}>
             <h2 className={kz.dakTitel}>Garantie</h2>
             {certificaat && (
-              <a href={certificaat.url} target="_blank" rel="noopener noreferrer" className={kz.rapportLink} style={{ marginTop: 0 }}>Download het certificaat</a>
+              <a href={certificaat.url} target="_blank" rel="noopener noreferrer" className={kz.rapportLink} style={{ marginTop: 0 }}>Certificaat downloaden</a>
             )}
           </div>
           {garantie.length > 0 && (
             <div className={kz.dakGarantie}>
-              {garantie.map((g) => {
-                const [getal, ...rest] = g.titel.split(" jaar ");
-                return (
-                  <div key={g.id}>
-                    <p className={kz.dakGarantieGetal}>{getal} jaar</p>
-                    <p className={kz.dakGarantieWat}>{g.id === "coat" ? "Op je dakcoating" : hfd(rest.join(" jaar "))}</p>
-                    <p className={kz.rijSub}>{g.staat}</p>
-                  </div>
-                );
-              })}
+              {garantie.map((g) => (
+                <div key={g.id}>
+                  <p className={kz.dakGarantieGetal}>{g.titel.split(" jaar")[0]} jaar</p>
+                  <p className={kz.dakGarantieWat}>{g.id === "coat" ? "Op je dakcoating" : "Mosvrij"}</p>
+                  <p className={kz.rijSub}>{g.staat}</p>
+                </div>
+              ))}
             </div>
           )}
         </section>

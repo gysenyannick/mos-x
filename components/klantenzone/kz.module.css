@@ -1156,12 +1156,32 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .rapportOog { margin-top: 28px; padding-top: 28px; border-top: 1px dashed var(--rand); }
 .rapportDeel > .rapportLink { margin-top: 16px; }
 
-/* ══ Mijn dak v8: kaarten in huisstijl ══════════════════════════════════════ */
+/* ══ Mijn dak: kaarten in huisstijl ═════════════════════════════════════════ */
 .dakBlok { margin-top: 18px; background: #fff; border: 1px solid var(--rand); border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.05); padding: 28px 32px; }
 .dakBlokKop { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.dakBlokKop > a { margin-left: auto; }
+.dakBlokKop { flex-wrap: wrap; }
+.dakBlokKop > a { margin-left: auto; white-space: nowrap; }
 .dakTitel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.028em; color: var(--tekst); }
+.dakSubtitel { margin: 26px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
 .dakTeller { min-width: 26px; height: 26px; padding: 0 8px; border-radius: 999px; background: var(--groen-zacht); color: var(--groen-d); font-weight: 700; font-size: 13px; display: inline-grid; place-items: center; }
+
+/* Dakdossier */
+.dakDossier { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: start; }
+.dakDossierZonder { grid-template-columns: 1fr; }
+.dakDossierFoto { margin: 0; }
+.dakDossierFoto img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 12px; display: block; }
+.dakDossierFoto figcaption { margin-top: 8px; font-size: 13px; color: var(--muted); }
+.dakSpecs { margin: 18px 0 0; border-top: 1px solid var(--rand); }
+.dakSpecs > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rand); }
+.dakSpecs dt { font-size: 15px; color: var(--muted); }
+.dakSpecs dd { margin: 0; font-size: 15.5px; font-weight: 600; color: var(--tekst); text-align: right; }
+.dakHistoriek { list-style: none; margin: 10px 0 0; padding: 0; border-top: 1px solid var(--rand); }
+.dakHistoriek li { display: grid; grid-template-columns: 110px 1fr; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--rand); }
+.dakHistoriek span { font-size: 14px; color: var(--muted); white-space: nowrap; }
+.dakHistoriek strong { font-size: 15.5px; font-weight: 600; color: var(--tekst); }
+.dakDossier .rapportLink { margin-top: 18px; }
+
+/* Opmerkingen */
 .dakPunten { list-style: none; margin: 0; padding: 0; }
 .dakPunten > li { display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: start; padding: 24px 0; border-top: 1px solid var(--rand); }
 .dakPunten > li:first-child { padding-top: 0; border-top: 0; }
@@ -1176,37 +1196,36 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .dakOog .rapportLijst { margin-top: 6px; }
 .dakOog .rapportLijst li { font-size: 15px; }
 
+/* Onderhoud */
 .dakOnderhoud { margin-top: 18px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); background: #fff radial-gradient(circle at 100% 0%, rgba(155,203,108,0.10), transparent 55%); border: 1px solid var(--rand); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
 .dakOnderhoudBeeld { position: relative; min-height: 100%; }
 .dakOnderhoudBeeld img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.dakOnderhoudDatum { position: absolute; left: 18px; bottom: 18px; margin: 0; display: grid; gap: 2px; padding: 14px 18px; background: #fff; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.14); }
-.dakOnderhoudDatum span { font-size: 12.5px; color: var(--muted); }
-.dakOnderhoudDatum span:first-child { font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; color: var(--groen-d); }
-.dakOnderhoudDatum strong { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.028em; color: var(--tekst); white-space: nowrap; }
 .dakOnderhoudTekst { padding: 34px 36px; }
 .dakEyebrow { margin: 0 0 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--groen-d); }
 .dakTitelGroot { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.15; letter-spacing: -0.028em; color: var(--tekst); }
-.dakInbegrepen { margin: 20px 0 0; }
-.dakInbegrepen > div { padding: 14px 0 14px 18px; border-top: 1px solid var(--rand); position: relative; }
-.dakInbegrepen > div::before { content: ""; position: absolute; left: 0; top: 21px; width: 7px; height: 7px; border-radius: 50%; background: var(--groen); }
-.dakInbegrepen dt { font-weight: 700; font-size: 15.5px; color: var(--tekst); }
-.dakInbegrepen dd { margin: 2px 0 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.dakInbegrepen { margin: 22px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.dakInbegrepen > div { display: grid; gap: 4px; align-content: start; padding: 14px 16px; border-radius: 12px; background: var(--zacht); }
+.dakInbegrepen strong { font-size: 15px; font-weight: 700; color: var(--tekst); white-space: nowrap; }
+.dakInbegrepen span { font-size: 13.5px; color: var(--muted); white-space: nowrap; }
 .dakOnderhoudVoet { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
 
+/* Garantie */
 .dakGarantie { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
 .dakGarantie > div { padding: 20px 22px; border-radius: 12px; background: var(--zacht); }
 .dakGarantieGetal { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1; letter-spacing: -0.035em; color: var(--groen-d); white-space: nowrap; }
 .dakGarantieWat { margin: 8px 0 4px; font-weight: 700; font-size: 16px; color: var(--tekst); }
 
-@media (max-width: 860px) {
-  .dakOnderhoud { grid-template-columns: 1fr; }
-  .dakOnderhoudBeeld { min-height: 0; aspect-ratio: 16 / 9; }
+@media (max-width: 1100px) {
+  .dakOnderhoud, .dakDossier { grid-template-columns: 1fr; }
+  .dakDossierFoto img { aspect-ratio: 2 / 1; }
+  .dakOnderhoudBeeld { min-height: 0; aspect-ratio: 21 / 9; }
 }
 @media (max-width: 640px) {
   .dakBlok { padding: 22px 18px; }
+  .dakDossierFoto img, .dakOnderhoudBeeld { aspect-ratio: 16 / 10; }
   .dakPunten > li { grid-template-columns: 1fr; gap: 14px; }
   .dakOnderhoudTekst { padding: 24px 20px; }
   .dakTitelGroot { font-size: 24px; }
-  .dakOnderhoudDatum { left: 12px; bottom: 12px; padding: 10px 14px; }
-  .dakOnderhoudDatum strong { font-size: 20px; }
+  .dakInbegrepen { grid-template-columns: 1fr; }
+  .dakInbegrepen > div { grid-template-columns: 1fr auto; align-items: baseline; gap: 12px; }
 }

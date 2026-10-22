@@ -91,11 +91,14 @@ export function BeheerDak({ k }: { k: Klant }) {
       {/* ── Dakpaspoort ── */}
       <section className={kz.kaart}>
         <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Home size={18} /> Mijn dak</h2>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>De klant ziet dit bij &quot;Mijn dak&quot;.</p>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Het dakdossier: de klant ziet dit bij &quot;Mijn dak&quot;. Lege velden worden niet getoond.</p>
         <form action={bewaarPaspoort.bind(null, k.id)}>
           <div className={kz.velden}>
+            <div className={kz.veld}><label htmlFor="daktype">Daktype</label><input id="daktype" name="daktype" defaultValue={p.daktype ?? ""} className={kz.invoer} placeholder="bv. Betonpannen" /></div>
+            <div className={kz.veld}><label htmlFor="oppervlakte">Oppervlakte (m²)</label><input id="oppervlakte" name="oppervlakte" inputMode="decimal" defaultValue={p.oppervlakte ?? ""} className={kz.invoer} /></div>
+            <div className={kz.veld}><label htmlFor="kleur">Kleur</label><input id="kleur" name="kleur" defaultValue={p.kleur ?? ""} className={kz.invoer} placeholder="bv. Antraciet" /></div>
             <div className={`${kz.veld} ${kz.vol}`}>
-              <label htmlFor="aandachtspunten">Waar je op let (één per regel)</label>
+              <label htmlFor="aandachtspunten">Aandachtspunten (één per regel)</label>
               <textarea id="aandachtspunten" name="aandachtspunten" defaultValue={p.aandachtspunten ?? ""} className={kz.invoer} placeholder={"Noordkant: veel schaduw, mos komt sneller terug\nNok: mortel in het oog houden"} />
             </div>
             <div className={`${kz.veld} ${kz.vol}`}>
@@ -171,7 +174,7 @@ export function BeheerDak({ k }: { k: Klant }) {
                 <option value="info">Ter info</option><option value="aanbevolen">Aanbevolen</option><option value="dringend">Dringend</option>
               </select>
             </div>
-            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="atekst">Uitleg en voorstel</label><textarea id="atekst" name="tekst" className={kz.invoer} placeholder="bv. Het water kan niet weg en loopt over de gevel. Ik kan de goten reinigen bij mijn volgende passage in je straat." /></div>
+            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="atekst">Uitleg en voorstel</label><textarea id="atekst" name="tekst" className={kz.invoer} placeholder="bv. Het water kan niet weg en loopt over de gevel. De goten kunnen mee gereinigd worden bij de volgende passage." /></div>
             {k.fotos.length > 0 && (
               <div className={`${kz.veld} ${kz.vol}`}>
                 <label htmlFor="afoto">Foto erbij (optioneel)</label>
