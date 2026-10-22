@@ -972,3 +972,22 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .reviewSterren { display: flex; gap: 2px; color: #F5B301; }
 .reviewSterren svg { fill: currentColor; }
 @media (max-width: 560px) { .reviewKaart .knop { width: 100%; } }
+
+/* ══ Mijn dak: rijen zoals de planning ════════════════════════════════════ */
+.dakLijst { list-style: none; margin: 0; padding: 0; }
+.dakLijst li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-top: 1px solid var(--rand); }
+.dakLijst li:first-child { border-top: 0; padding-top: 0; }
+.dakLijst li:last-child { padding-bottom: 0; }
+.dakIcoon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; }
+.dakFoto { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+.dakActie { flex-shrink: 0; }
+.dakLijst .planningInfo { margin-top: 4px; }
+@media (max-width: 560px) {
+  .dakRijWrap { flex-wrap: wrap; }
+  .dakRijWrap .dakActie { flex-basis: 100%; padding-left: 58px; }
+}
+@media (max-width: 400px) { .dakLijst li { gap: 10px; } .dakIcoon, .dakFoto { width: 36px; height: 36px; border-radius: 10px; } .dakRijWrap .dakActie { padding-left: 46px; } .dakLijst .planningInfo { font-size: 13px; } }
+
+/* Naam en adres onderaan het menu: altijd op één regel */
+.page :is(.zijNaam, .zijAdres) { white-space: nowrap; text-wrap: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.zijKlant > div { min-width: 0; flex: 1; }
