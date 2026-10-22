@@ -991,3 +991,52 @@ a.volgendeStap:hover { border-color: var(--groen); }
 /* Naam en adres onderaan het menu: altijd op één regel */
 .page :is(.zijNaam, .zijAdres) { white-space: nowrap; text-wrap: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .zijKlant > div { min-width: 0; flex: 1; }
+
+/* ══ Mijn dak: onderhoud, wat ik zag, opmerkingen, tips ═══════════════════ */
+.melding2 { display: flex; gap: 14px; align-items: flex-start; margin-top: 14px; padding: 16px 18px; border-radius: 16px; background: #FFF8E8; border: 1px solid #F1D9A6; }
+.melding2Icoon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; background: #FDEBC4; color: #A8661A; }
+.melding2Tekst { margin: 4px 0 0; font-size: 15px; line-height: 1.55; color: var(--tekst); white-space: pre-line; }
+
+.onderhoud {
+  margin-top: 14px; padding: 26px; border-radius: 20px; color: #fff;
+  background: radial-gradient(90% 120% at 100% 0%, rgba(155,203,108,.28) 0%, rgba(155,203,108,0) 60%), var(--donker);
+}
+.onderhoudKop { display: flex; gap: 18px 24px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
+.onderhoudLabel { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--groen); }
+.onderhoudMaand { margin: 8px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(32px, 5vw, 46px); letter-spacing: -0.03em; line-height: 1.05; }
+.onderhoudSub { margin: 8px 0 0; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,.75); max-width: 52ch; }
+.onderhoudVraag { margin: 24px 0 12px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.onderhoudStappen { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.onderhoudStappen li { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: rgba(255,255,255,.06); }
+.onderhoudStapIcoon { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; background: rgba(155,203,108,.18); color: var(--groen); }
+.onderhoudStapTitel { display: block; font-weight: 700; font-size: 15px; }
+.onderhoudStapTekst { display: block; margin-top: 3px; font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,.7); }
+.onderhoudWaarom { margin: 16px 0 0; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,.75); }
+.onderhoudWaarom strong { color: #fff; }
+
+.zagRaster { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.zag { display: flex; flex-direction: column; border: 1px solid var(--rand); border-radius: 14px; overflow: hidden; background: #fff; }
+.zagFoto { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+.zagInhoud { display: flex; flex-direction: column; flex: 1; padding: 14px 16px 16px; }
+.zagKnop { margin-top: auto; padding-top: 12px; }
+
+.gesprek { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 10px; }
+.gesprekYannick, .gesprekKlant { display: flex; gap: 10px; align-items: flex-end; }
+.gesprekKlant { justify-content: flex-end; }
+.gesprekFoto { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.gesprekBallon { max-width: 78%; padding: 10px 14px; border-radius: 16px 16px 16px 4px; background: var(--vlak); }
+.gesprekKlant .gesprekBallon { border-radius: 16px 16px 4px 16px; background: var(--groen-zacht); }
+.gesprekBallon p { margin: 0; font-size: 15px; line-height: 1.5; white-space: pre-line; }
+.gesprekBallon span { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.opmerkingForm { display: grid; gap: 8px; }
+.opmerkingVoet { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+
+.tipRaster { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tip { padding: 16px; border-radius: 14px; background: var(--vlak); }
+
+@media (max-width: 640px) {
+  .onderhoud { padding: 22px 18px; }
+  .onderhoudKop .knop { width: 100%; }
+  .onderhoudStappen, .zagRaster, .tipRaster { grid-template-columns: 1fr; }
+  .gesprekBallon { max-width: 86%; }
+}

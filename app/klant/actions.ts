@@ -167,3 +167,22 @@ export async function meldBuurAan(code: string, _: unknown, fd: FormData): Promi
   ververs(k.id);
   return { ok: true };
 }
+
+/* ── Opmerking van de klant op Mijn dak ───────────────────────────────────── */
+
+export async function plaatsOpmerking(klantId: string, tekst: string): Promise<Uitkomst> {
+  const schoon = tekst.trim().slice(0, 1500);
+  if (schoon.length < 2) return { ok: false, fout: "Schrijf eerst je opmerking." };
+  const r = await wijzigKlant(klantId, (k) => {
+    const vandaagTeller = (k.opmerkingen ?? []).filter((o) => o.van === "klant" && o.datum.slice(0, 10) === new Date().toISOString().slice(0, 10)).length;
+    if (vandaagTeller >= 10) return false;
+    (k.opmerkingen ??= []).push({ id: nieuwId(6), datum: new Date().toISOString(), van: "klant", tekst: schoon, nieuw: true });
+    return true;
+  });
+  if (!r) return { ok: false, fout: "Dossier niet gevonden." };
+  if (!r.resultaat) return { ok: false, fout: "Je stuurde vandaag al veel opmerkingen. Stuur me gerust een WhatsApp." };
+  const k = r.klant;
+  await meldAanYannick(`💬 Opmerking van ${k.voornaam}`, `<p>${esc(schoon)}</p>${klantBlok(k)}`);
+  ververs(k.id);
+  return { ok: true };
+}

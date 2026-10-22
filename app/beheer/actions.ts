@@ -441,3 +441,30 @@ export async function verwijderWerk(id: string, werkId: string) {
   await saveKlant(k);
   ververs(id);
 }
+
+/* ── Opmerkingen op Mijn dak ──────────────────────────────────────────────── */
+
+export async function voegOpmerkingToe(id: string, fd: FormData) {
+  const k = await laad(id);
+  const tekst = s(fd, "tekst");
+  if (!tekst) return;
+  // Antwoorden betekent: de vragen van de klant zijn gezien
+  for (const o of k.opmerkingen ?? []) if (o.van === "klant") o.nieuw = false;
+  (k.opmerkingen ??= []).push({ id: nieuwId(6), datum: new Date().toISOString(), van: "yannick", tekst, belangrijk: s(fd, "belangrijk") === "ja" || undefined });
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function opmerkingGezien(id: string) {
+  const k = await laad(id);
+  for (const o of k.opmerkingen ?? []) if (o.van === "klant") o.nieuw = false;
+  await saveKlant(k);
+  ververs(id);
+}
+
+export async function verwijderOpmerking(id: string, opmerkingId: string) {
+  const k = await laad(id);
+  k.opmerkingen = (k.opmerkingen ?? []).filter((o) => o.id !== opmerkingId);
+  await saveKlant(k);
+  ververs(id);
+}

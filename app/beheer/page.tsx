@@ -26,6 +26,9 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
     for (const a of k.aanvragen ?? []) {
       if (a.status === "nieuw") taken.push({ klantId: k.id, naam, icoon: "bel", tekst: `${AANVRAAG_LABEL[a.soort]}${a.tekst ? `: ${a.tekst}` : ""}`, datum: a.datum });
     }
+    for (const o of k.opmerkingen ?? []) {
+      if (o.van === "klant" && o.nieuw) taken.push({ klantId: k.id, naam, icoon: "bel", tekst: `Opmerking: ${o.tekst}`, datum: o.datum });
+    }
     for (const v of k.verwijzingen ?? []) {
       if (v.status === "nieuw") taken.push({ klantId: k.id, naam, icoon: "buur", tekst: `Nieuwe buur: ${v.naam} (${v.telefoon})`, datum: v.datum });
     }

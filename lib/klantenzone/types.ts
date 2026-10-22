@@ -281,6 +281,19 @@ export type Verwijzing = {
   status: "nieuw" | "gecontacteerd" | "klant" | "geen";
 };
 
+/** Een opmerking op Mijn dak: van de klant, of van Yannick (eventueel als belangrijke melding). */
+export type Opmerking = {
+  id: string;
+  /** ISO-tijdstip */
+  datum: string;
+  van: "klant" | "yannick";
+  tekst: string;
+  /** Alleen bij Yannick: in het oog springende melding */
+  belangrijk?: boolean;
+  /** Alleen bij de klant: nog niet beantwoord of afgehandeld */
+  nieuw?: boolean;
+};
+
 export type LogItem = {
   /** ISO-tijdstip */
   datum: string;
@@ -308,6 +321,7 @@ export type Klant = {
   externId?: string;
   werken?: Werk[];
   notities?: Notitie[];
+  opmerkingen?: Opmerking[];
   paspoort?: Paspoort;
   behandelingen?: Behandeling[];
   /** YYYY-MM-DD: aanbevolen volgende controle (leeg = automatisch berekend) */

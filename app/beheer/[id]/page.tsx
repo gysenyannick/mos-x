@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, NotebookPen, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, MessagesSquare, NotebookPen, Save, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getInstellingen, getKlant } from "@/lib/klantenzone/store";
 import { effectief } from "@/lib/klantenzone/auto";
@@ -12,7 +12,8 @@ import { BeheerAanvragen, BeheerDak } from "@/components/klantenzone/beheer-dak"
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
 import {
   bewaarKlant, nieuweLink, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
-  verwijderNotitie, voegAfspraakToe, voegNotitieToe, zetDocumentStatus,
+  opmerkingGezien, verwijderNotitie, verwijderOpmerking, voegAfspraakToe, voegNotitieToe, voegOpmerkingToe,
+  zetDocumentStatus,
 } from "../actions";
 import kz from "@/components/klantenzone/kz.module.css";
 
@@ -210,6 +211,47 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
       </div>
 
       <BeheerDak k={k} />
+
+      {/* ── Opmerkingen (Mijn dak) ── */}
+      <section className={kz.kaart}>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><MessagesSquare size={18} /> Opmerkingen en meldingen</h2>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>
+          De klant ziet dit bij &quot;Mijn dak&quot;. Een belangrijke melding staat daar bovenaan, in het oog springend.
+        </p>
+        {(k.opmerkingen ?? []).length > 0 && (
+          <ul className={kz.gesprek}>
+            {(k.opmerkingen ?? []).map((o) => (
+              <li key={o.id} className={o.van === "klant" ? kz.gesprekYannick : kz.gesprekKlant}>
+                <div className={kz.gesprekBallon} style={o.belangrijk ? { background: "#FFF8E8", border: "1px solid #F1D9A6" } : undefined}>
+                  <p>{o.tekst}</p>
+                  <span>
+                    {o.van === "klant" ? k.voornaam : o.belangrijk ? "Jij · belangrijke melding" : "Jij"} · {fmtKort(o.datum)}
+                    {o.nieuw && <strong style={{ color: "#B7791F" }}> · nieuw</strong>}
+                  </span>
+                </div>
+                <BevestigKnop actie={verwijderOpmerking.bind(null, k.id, o.id)} vraag="Opmerking verwijderen?"><Trash2 size={13} /></BevestigKnop>
+              </li>
+            ))}
+          </ul>
+        )}
+        <form action={voegOpmerkingToe.bind(null, k.id)}>
+          <div className={kz.veld}>
+            <label htmlFor="optekst">Antwoord of melding</label>
+            <textarea id="optekst" name="tekst" required className={kz.invoer} placeholder="bv. Na de storm van gisteren heb ik je dak van op straat bekeken: alles ligt goed." />
+          </div>
+          <label style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 10, fontSize: 14 }}>
+            <input type="checkbox" name="belangrijk" value="ja" /> Belangrijke melding (bovenaan bij de klant)
+          </label>
+          <div className={kz.rijKnoppen}>
+            <button className={`${kz.knop} ${kz.knopKlein}`}>Versturen</button>
+          </div>
+        </form>
+        {(k.opmerkingen ?? []).some((o) => o.nieuw) && (
+          <form action={opmerkingGezien.bind(null, k.id)} style={{ marginTop: 8 }}>
+            <button className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}>Gezien, geen antwoord nodig</button>
+          </form>
+        )}
+      </section>
 
       {/* ── Notities ── */}
       <section className={kz.kaart}>
