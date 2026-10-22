@@ -1,10 +1,11 @@
-import { Plug, Settings, Tag, Trash2 } from "lucide-react";
+import { Lightbulb, Plug, Settings, Tag, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { REF_STANDAARD, getInstellingen } from "@/lib/klantenzone/store";
 import { EXTRAS } from "@/lib/klantenzone/types";
 import { fmtKort, vandaag } from "@/lib/klantenzone/tijd";
 import { BevestigKnop } from "@/components/klantenzone/beheer-client";
-import { bewaarInstellingen, verwijderActie, voegActieToe } from "../actions";
+import { bewaarInstellingen, verwijderActie, verwijderTip, voegActieToe } from "../actions";
+import TipForm from "@/components/klantenzone/tip-form";
 import kz from "@/components/klantenzone/kz.module.css";
 
 const VOORBEELD = `{
@@ -26,10 +27,32 @@ export default async function Instellingen() {
     <>
       <div className={kz.dashKop}><h1 className={kz.dashTitel}>Instellingen</h1></div>
 
+      {/* Eigen tips en advies */}
+      <section className={kz.kaart}>
+        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Lightbulb size={18} /> Tips en advies</h2></div>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>
+          Wat je hier toevoegt, zien alle klanten bovenaan bij &quot;Tips en advies&quot;. Voeg gerust een foto of een document toe, zoals een brochure of een fiche.
+        </p>
+        {(i.tips ?? []).length > 0 && (
+          <ul className={kz.lijst} style={{ marginBottom: 16 }}>
+            {(i.tips ?? []).map((t) => (
+              <li key={t.id} className={kz.rij}>
+                <div className={kz.rijMidden}>
+                  <p className={kz.rijTitel}>{t.titel}</p>
+                  <p className={kz.rijSub}>{t.onderwerp ? `${t.onderwerp} · ` : ""}{fmtKort(t.datum)}{t.fotoUrl ? " · met foto" : ""}{t.bestandUrl ? " · met document" : ""}</p>
+                </div>
+                <BevestigKnop actie={verwijderTip.bind(null, t.id)} vraag="Tip verwijderen?"><Trash2 size={14} /></BevestigKnop>
+              </li>
+            ))}
+          </ul>
+        )}
+        <TipForm />
+      </section>
+
       {/* Acties */}
       <section className={kz.kaart}>
         <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Tag size={18} /> Acties en kortingen</h2></div>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Klanten zien een actie bij &quot;Extra&apos;s&quot;, op de dienst waarvoor ze geldt. Verlopen acties verdwijnen vanzelf.</p>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Klanten zien een actie bij &quot;Diensten&quot;, op de dienst waarvoor ze geldt. Verlopen acties verdwijnen vanzelf.</p>
         {(i.acties ?? []).length > 0 && (
           <ul className={kz.lijst} style={{ marginBottom: 16 }}>
             {(i.acties ?? []).map((a) => (
@@ -92,6 +115,16 @@ export default async function Instellingen() {
             <div className={kz.veld}>
               <label htmlFor="refKorting">Korting voor de nieuwe klant (€)</label>
               <input id="refKorting" name="refKorting" inputMode="numeric" className={kz.invoer} defaultValue={i.refKorting ?? ""} placeholder={String(REF_STANDAARD)} />
+            </div>
+          </div>
+          <div className={kz.velden} style={{ marginBottom: 14 }}>
+            <div className={kz.veld}>
+              <label htmlFor="refBonusAantal">Bonus bij hoeveel buren?</label>
+              <input id="refBonusAantal" name="refBonusAantal" inputMode="numeric" className={kz.invoer} defaultValue={i.refBonusAantal ?? ""} placeholder="3" />
+            </div>
+            <div className={kz.veld}>
+              <label htmlFor="refBonusTekst">Wat is de bonus? (leeg = geen bonus)</label>
+              <input id="refBonusTekst" name="refBonusTekst" className={kz.invoer} defaultValue={i.refBonusTekst ?? "een gratis onderhoudsbeurt"} />
             </div>
           </div>
           <div className={kz.veld}>

@@ -405,6 +405,8 @@ export async function bewaarInstellingen(fd: FormData) {
     reviewNaam: s(fd, "reviewNaam") || undefined,
     refBeloning: bedrag(s(fd, "refBeloning")),
     refKorting: bedrag(s(fd, "refKorting")),
+    refBonusAantal: bedrag(s(fd, "refBonusAantal")),
+    refBonusTekst: fd.has("refBonusTekst") ? s(fd, "refBonusTekst") : i.refBonusTekst,
   });
   revalidatePath("/beheer/instellingen");
 }
@@ -417,6 +419,18 @@ export async function voegActieToe(fd: FormData) {
   if (!titel) return;
   const i = await getInstellingen();
   i.acties = [...(i.acties ?? []), { id: nieuwId(6), titel, tekst: s(fd, "tekst"), geldigTot: s(fd, "geldigTot") || undefined, extra: s(fd, "extra") || undefined }];
+  await saveInstellingen(i);
+  revalidatePath("/beheer/instellingen");
+}
+
+/** Een eigen tip verwijderen, met de bestanden erbij */
+export async function verwijderTip(tipId: string) {
+  await vereisBeheerder();
+  const i = await getInstellingen();
+  const t = (i.tips ?? []).find((x) => x.id === tipId);
+  if (t?.fotoUrl) await verwijderBestand(t.fotoUrl);
+  if (t?.bestandUrl) await verwijderBestand(t.bestandUrl);
+  i.tips = (i.tips ?? []).filter((x) => x.id !== tipId);
   await saveInstellingen(i);
   revalidatePath("/beheer/instellingen");
 }

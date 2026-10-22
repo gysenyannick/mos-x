@@ -259,6 +259,22 @@ export type Instellingen = {
   /** Doorverwijzen: wat de klant krijgt per buur die klant wordt, en de korting voor die buur (euro; 0 = uit) */
   refBeloning?: number;
   refKorting?: number;
+  /** Bonus bij een aantal buren die klant worden (leeg tekst = geen bonus) */
+  refBonusAantal?: number;
+  refBonusTekst?: string;
+  /** Tips en advies die Yannick zelf toevoegt */
+  tips?: EigenTip[];
+};
+
+export type EigenTip = {
+  id: string;
+  datum: string;
+  onderwerp?: string;
+  titel: string;
+  tekst: string;
+  fotoUrl?: string;
+  bestandUrl?: string;
+  bestandNaam?: string;
 };
 
 export const REF_STANDAARD = 50;

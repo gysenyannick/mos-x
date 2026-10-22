@@ -60,7 +60,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="nl" className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
-      <body className="antialiased" style={{ overflowX: "hidden" }}>
+      <body className="antialiased" style={{ overflowX: "clip" }}>
         {children}
         <CalculatorScroll />
         <SiteChrome>

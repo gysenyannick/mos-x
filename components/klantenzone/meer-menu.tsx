@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Camera, ChevronRight, FileText, Gift, Home, Lightbulb, MessagesSquare, MoreHorizontal, X } from "lucide-react";
+import { Camera, ChevronRight, FileText, Gift, Home, Lightbulb, MessagesSquare, MoreHorizontal, Tag, X } from "lucide-react";
 import kz from "./kz.module.css";
 
 const ITEMS = [
@@ -12,6 +12,7 @@ const ITEMS = [
   { id: "documenten", label: "Documenten", uitleg: "Offertes, facturen en garanties", icoon: FileText },
   { id: "dak", label: "Mijn dak", uitleg: "Dakdossier, onderhoud en garantie", icoon: Home },
   { id: "tips", label: "Tips en advies", uitleg: "Zo blijft je woning mooi", icoon: Lightbulb },
+  { id: "diensten", label: "Diensten", uitleg: "Diensten en acties", icoon: Tag },
   { id: "buren", label: "Buurvoordeel", uitleg: "Je cadeaubon", icoon: Gift },
 ] as const;
 

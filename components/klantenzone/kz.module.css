@@ -1392,3 +1392,8 @@ a.volgendeStap:hover { border-color: var(--groen); }
 @media (min-width: 861px) { .spoedRond { display: none; } }
 .topLabel { white-space: nowrap; }
 @media (max-width: 480px) { .topLabel { display: none; } }
+
+.burenVakBonus { background: #FFF1D6 !important; border: 1px dashed #E3B867 !important; color: #9A6A12 !important; }
+.burenVakVol.burenVakBonus { background: #E3A93B !important; border: 0 !important; color: #fff !important; }
+.burenBonus { margin: 12px 0 0; font-size: 14.5px; color: var(--muted); }
+.burenBonus strong { color: var(--tekst); }

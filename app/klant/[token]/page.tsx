@@ -3,10 +3,10 @@ import Link from "next/link";
 import {
   ArrowRight, CalendarDays, Camera, CheckCircle2, Clock,
   FileText, Home, LayoutDashboard, Leaf, ShieldCheck,
-  Gift, Lightbulb, MessagesSquare, Siren, Star, UserRound, Wallet,
+  Gift, Lightbulb, MessagesSquare, Siren, Star, Tag, UserRound, Wallet,
 } from "lucide-react";
 import { headers } from "next/headers";
-import { REF_STANDAARD, getInstellingen, getKlant, getMomenten, zorgVoorRefCode, type Actie } from "@/lib/klantenzone/store";
+import { REF_STANDAARD, getInstellingen, getKlant, getMomenten, zorgVoorRefCode, type Actie, type EigenTip } from "@/lib/klantenzone/store";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { effectief } from "@/lib/klantenzone/auto";
 import { dakGegevens, dakfoto, heeftDossier, onderhoudZinvol, werkdagen, type Werkdag } from "@/lib/klantenzone/dak";
@@ -53,6 +53,7 @@ const TABS = [
   { id: "documenten", label: "Documenten", icoon: FileText },
   { id: "dak", label: "Mijn dak", icoon: Home },
   { id: "tips", label: "Tips en advies", icoon: Lightbulb },
+  { id: "diensten", label: "Diensten", icoon: Tag },
   { id: "buren", label: "Buurvoordeel", icoon: Gift },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
@@ -186,6 +187,9 @@ type Ctx = {
   refCode: string;
   refBeloning: number;
   refKorting: number;
+  refBonusAantal: number;
+  refBonusTekst?: string;
+  eigenTips: EigenTip[];
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -335,19 +339,6 @@ function Overzicht(ctx: Ctx) {
         )}
       </section>}
 
-      {/* Na de werken: het onderhoud, want daar blijft je dak mooi door */}
-      {na_werken && onderhoudZinvol(k) && <OnderhoudAanbod k={k} controle={controle} />}
-
-      {na_werken && voor && na && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}>
-            <h2 className={kz.kaartTitel}><Camera size={18} /> Voor en na</h2>
-            <Link href="?tab=fotos" className={kz.meerLink}>Fotoverslag <ArrowRight size={14} /></Link>
-          </div>
-          <VoorNa voor={voor.url} na={na.url} />
-        </section>
-      )}
-
       {/* Je vakman */}
       <section className={kz.kaart}>
         <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><UserRound size={18} /> Je vakman</h2></div>
@@ -365,6 +356,19 @@ function Overzicht(ctx: Ctx) {
           </div>
         </div>
       </section>
+
+      {/* Na de werken: het onderhoud, want daar blijft je dak mooi door */}
+      {na_werken && onderhoudZinvol(k) && <OnderhoudAanbod k={k} controle={controle} />}
+
+      {na_werken && voor && na && (
+        <section className={kz.kaart}>
+          <div className={kz.kaartKop}>
+            <h2 className={kz.kaartTitel}><Camera size={18} /> Voor en na</h2>
+            <Link href="?tab=fotos" className={kz.meerLink}>Fotoverslag <ArrowRight size={14} /></Link>
+          </div>
+          <VoorNa voor={voor.url} na={na.url} />
+        </section>
+      )}
 
       {/* Offertes en facturen (na de werken enkel wat nog open staat) */}
       {prijsDocs.length > 0 && <section className={kz.kaart}>
@@ -456,8 +460,8 @@ function OnderhoudAanbod({ k, controle }: { k: Klant; controle: Ctx["controle"] 
         <p className={kz.dakEyebrow}>Onderhoud</p>
         <h2 className={kz.dakTitelGroot}>Hou je dak proper</h2>
         <p className={kz.rapportTekst}>
-          Mos komt na een tijd terug, eerst op de schaduwkant. Met een preventieve anti-mosbehandeling en een inspectie
-          blijft je dak zoals het nu is.
+          Na de reiniging is je dak weer als nieuw. Met een onderhoudsbeurt blijft dat zo: je dak krijgt een preventieve
+          anti-mosbehandeling en een volledige inspectie.
         </p>
         <div className={kz.dakInbegrepen}>
           <div><strong>Anti-mos</strong><span>Preventief</span></div>
@@ -643,20 +647,38 @@ function Berichten({ k }: Ctx) {
 
 /* ══ Tips en advies: gratis uitleg, en wat je kan laten doen ══════════════ */
 
-function TipsAdvies({ k, acties }: Ctx) {
-  const algemeen = acties.filter((a) => !a.extra || !EXTRAS.some((x) => x.id === a.extra));
+function TipsAdvies({ k, acties, eigenTips }: Ctx) {
   const gevraagdExtra = (naam: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "extra" && a.tekst.startsWith(naam));
   const gevraagdOnderhoud = (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "onderhoud");
   return (
     <>
       <PaginaKop titel="Tips en advies" sub="Hoe je dak en je woning er langer mooi bij liggen." />
-      {algemeen.map((a) => (
-        <section key={a.id} className={kz.actieBalk}>
-          <p><strong>{a.titel}</strong>{a.tekst ? ` ${a.tekst}` : ""}</p>
-          {a.geldigTot && <span>Tot {fmtKort(a.geldigTot)}</span>}
-        </section>
-      ))}
       <div className={kz.tipRaster2}>
+        {eigenTips.map((t) => (
+          <article key={t.id} className={kz.tipKaart}>
+            {t.fotoUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={t.fotoUrl} alt="" className={kz.tipFoto} />
+            )}
+            <div className={kz.tipInhoud}>
+              <div className={kz.tipKop}><span className={kz.dakEyebrow} style={{ margin: 0 }}>{t.onderwerp || "Van Yannick"}</span></div>
+              <h2 className={kz.tipTitel}>{t.titel}</h2>
+              {t.tekst.length > 220 ? (
+                <>
+                  <p className={kz.tipIntro}>{t.tekst.slice(0, t.tekst.lastIndexOf(" ", 200))}…</p>
+                  <details className={kz.tipMeer}><summary>Lees meer</summary><p style={{ whiteSpace: "pre-line" }}>{t.tekst}</p></details>
+                </>
+              ) : (
+                <p className={kz.tipIntro} style={{ whiteSpace: "pre-line" }}>{t.tekst}</p>
+              )}
+              {t.bestandUrl && (
+                <div className={kz.tipKnop}>
+                  <a className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`} href={t.bestandUrl} target="_blank" rel="noopener noreferrer"><FileText size={14} /> {t.bestandNaam || "Bekijk het document"}</a>
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
         {TIPS.map((t) => {
           const extra = t.aanvraag?.extra ? EXTRAS.find((x) => x.id === t.aanvraag!.extra) : undefined;
           const korting = t.aanvraag?.extra ? acties.find((a) => a.extra === t.aanvraag!.extra) : undefined;
@@ -703,16 +725,48 @@ function TipsAdvies({ k, acties }: Ctx) {
         })}
       </div>
 
+    </>
+  );
+}
+
+/* ══ Diensten en acties ═══════════════════════════════════════════════════ */
+
+function Diensten({ k, acties, controle }: Ctx) {
+  const algemeen = acties.filter((a) => !a.extra || !EXTRAS.some((x) => x.id === a.extra));
+  const gevraagdExtra = (naam: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "extra" && a.tekst.startsWith(naam));
+  const gevraagdOnderhoud = (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "onderhoud");
+  return (
+    <>
+      <PaginaKop titel="Diensten en acties" sub="Nog iets laten doen aan je woning? Je krijgt eerst een vrijblijvende prijs." />
+      {algemeen.map((a) => (
+        <section key={a.id} className={kz.actieBalk}>
+          <p><strong>{a.titel}</strong>{a.tekst ? ` ${a.tekst}` : ""}</p>
+          {a.geldigTot && <span>Tot {fmtKort(a.geldigTot)}</span>}
+        </section>
+      ))}
       <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}>Alle diensten</h2></div>
         <ul className={kz.diensten}>
+          {onderhoudZinvol(k) && (
+            <li>
+              <div>
+                <p className={kz.dienstNaam}>Onderhoud van je dak</p>
+                <p className={kz.dienstTekst}>Preventieve anti-mosbehandeling en inspectie{controle ? `, aangeraden in ${fmtMaand(controle.datum)}` : ""}.</p>
+              </div>
+              <AanvraagKnop
+                klantId={k.id} soort="onderhoud" klein alGevraagd={gevraagdOnderhoud} alGevraagdTekst="Aangevraagd"
+                label="Plan mijn onderhoud" titel="Onderhoud inplannen"
+                uitleg="Yannick neemt contact op om een moment af te spreken. Je krijgt eerst een prijs."
+                placeholder="bv. Liefst in het voorjaar."
+              />
+            </li>
+          )}
           {EXTRAS.map((x) => {
             const korting = acties.find((a) => a.extra === x.id);
             return (
               <li key={x.id}>
                 <div>
                   <p className={kz.dienstNaam}>{x.naam}{korting && <span className={kz.extraActie} style={{ marginLeft: 8, verticalAlign: 2 }}>{korting.titel}</span>}</p>
-                  <p className={kz.dienstTekst}>{x.tekst}</p>
+                  <p className={kz.dienstTekst}>{x.tekst}{korting?.geldigTot ? ` Korting tot ${fmtKort(korting.geldigTot)}.` : ""}</p>
                 </div>
                 <AanvraagKnop
                   klantId={k.id} soort="extra" voorvoegsel={x.naam} klein licht alGevraagd={gevraagdExtra(x.naam)} alGevraagdTekst="Aangevraagd"
@@ -733,11 +787,12 @@ function TipsAdvies({ k, acties }: Ctx) {
 
 const VERWIJZING_KLANT = { nieuw: "Aanvraag ontvangen", gecontacteerd: "Yannick nam contact op", klant: "Klant geworden", geen: "Geen klant geworden" } as const;
 
-function Buren({ k, refUrl, refCode, refBeloning, refKorting, burenVoordeel }: Ctx) {
+function Buren({ k, refUrl, refCode, refBeloning, refKorting, refBonusAantal, refBonusTekst, burenVoordeel }: Ctx) {
   const lijst = k.verwijzingen ?? [];
   const klanten = lijst.filter((v) => v.status === "klant").length;
   const tegoed = klanten * refBeloning;
-  const vakjes = Math.max(5, klanten + 1);
+  const vakjes = Math.max(5, refBonusTekst ? refBonusAantal : 0, klanten + 1);
+  const nogTeGaan = refBonusTekst ? refBonusAantal - klanten : 0;
   return (
     <>
       <PaginaKop titel="Buurvoordeel" sub={`€ ${refBeloning} voor jou, € ${refKorting} korting voor je buur.`} />
@@ -760,9 +815,16 @@ function Buren({ k, refUrl, refCode, refBeloning, refKorting, burenVoordeel }: C
         </div>
         <div className={kz.burenBalk} aria-label={`${klanten} buren klant geworden`}>
           {Array.from({ length: vakjes }, (_, i) => (
-            <span key={i} className={i < klanten ? kz.burenVakVol : undefined}>€ {refBeloning}</span>
+            <span key={i} className={`${i < klanten ? kz.burenVakVol : ""} ${refBonusTekst && i === refBonusAantal - 1 ? kz.burenVakBonus : ""}`}>{refBonusTekst && i === refBonusAantal - 1 ? "Bonus" : `€ ${refBeloning}`}</span>
           ))}
         </div>
+        {refBonusTekst && (
+          <p className={kz.burenBonus}>
+            {nogTeGaan > 0
+              ? <>Nog <strong>{nogTeGaan} {nogTeGaan === 1 ? "buur" : "buren"}</strong> en je krijgt er <strong>{refBonusTekst}</strong> bovenop.</>
+              : <>Bonus behaald: <strong>{refBonusTekst}</strong>. Bedankt!</>}
+          </p>
+        )}
         {lijst.length === 0 ? (
           <p className={kz.leeg}>Nog niemand via jouw link. Deel hem hierboven.</p>
         ) : (
@@ -851,6 +913,7 @@ export default async function KlantPagina({
     documenten: k.documenten.length > 0,
     dak: true,
     tips: k.fase !== "gepland",
+    diensten: k.fase !== "gepland",
     buren: naWerken,
   };
   const tabs = TABS.filter((t) => zichtbaar[t.id]);
@@ -875,6 +938,9 @@ export default async function KlantPagina({
     refCode,
     refBeloning: instellingen.refBeloning ?? REF_STANDAARD,
     refKorting: instellingen.refKorting ?? REF_STANDAARD,
+    refBonusAantal: instellingen.refBonusAantal ?? 3,
+    refBonusTekst: instellingen.refBonusTekst === undefined ? "een gratis onderhoudsbeurt" : instellingen.refBonusTekst || undefined,
+    eigenTips: instellingen.tips ?? [],
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,
@@ -887,7 +953,7 @@ export default async function KlantPagina({
     fotos: k.fotos.length ? { n: k.fotos.length } : undefined,
     documenten: openDocs ? { n: openDocs, amber: true } : k.documenten.length ? { n: k.documenten.length } : undefined,
     dak: openAanb.length ? { n: openAanb.length, amber: true } : undefined,
-    tips: acties.length ? { n: acties.length } : undefined,
+    diensten: acties.length ? { n: acties.length } : undefined,
   };
 
   return (
@@ -942,6 +1008,7 @@ export default async function KlantPagina({
           {tab === "dak" && <MijnDak {...ctx} />}
           {tab === "berichten" && <Berichten {...ctx} />}
           {tab === "tips" && <TipsAdvies {...ctx} />}
+          {tab === "diensten" && <Diensten {...ctx} />}
           {tab === "buren" && <Buren {...ctx} />}
 
           <p className={kz.voet}>Deze pagina is enkel voor jou. Deel de link niet met anderen.</p>
@@ -960,7 +1027,7 @@ export default async function KlantPagina({
             </li>
           ))}
           {tabs.some((t) => !onderaan.includes(t.id)) && (
-            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ dak: openAanb.length, tips: acties.length }} /></li>
+            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ dak: openAanb.length, diensten: acties.length }} /></li>
           )}
         </ul>
       </nav>
