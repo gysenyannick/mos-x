@@ -371,7 +371,12 @@ export async function zetVerwijzingStatus(id: string, vId: string, status: Verwi
 export async function bewaarInstellingen(fd: FormData) {
   await vereisBeheerder();
   const i = await getInstellingen();
-  await saveInstellingen({ ...i, burenVoordeel: s(fd, "burenVoordeel") || undefined });
+  const review = s(fd, "googleReviewUrl");
+  await saveInstellingen({
+    ...i,
+    burenVoordeel: s(fd, "burenVoordeel") || undefined,
+    googleReviewUrl: /^https:\/\/\S+$/.test(review) ? review : undefined,
+  });
   revalidatePath("/beheer/instellingen");
 }
 

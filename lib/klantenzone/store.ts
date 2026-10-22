@@ -249,6 +249,8 @@ export type Instellingen = {
   /** Wat buren en doorverwijzers krijgen, vrije tekst. Leeg = geen beloning vermelden. */
   burenVoordeel?: string;
   acties?: Actie[];
+  /** Link naar "review schrijven" van het Google-bedrijfsprofiel */
+  googleReviewUrl?: string;
 };
 
 /** Geeft de buurcode van een klant terug en maakt er een aan als die nog niet bestaat. */

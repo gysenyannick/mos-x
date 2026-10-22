@@ -966,3 +966,9 @@ a.volgendeStap:hover { border-color: var(--groen); }
 
 /* Praktische uitleg bij een afspraak in de planning */
 .planningInfo { display: block; margin-top: 6px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+
+/* Reviewvraag na de oplevering */
+.reviewKaart { display: flex; gap: 16px 20px; align-items: center; flex-wrap: wrap; background: #FFFBEF; border-color: #F3E3B5; }
+.reviewSterren { display: flex; gap: 2px; color: #F5B301; }
+.reviewSterren svg { fill: currentColor; }
+@media (max-width: 560px) { .reviewKaart .knop { width: 100%; } }

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, NotebookPen, Save, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
-import { getKlant } from "@/lib/klantenzone/store";
+import { getInstellingen, getKlant } from "@/lib/klantenzone/store";
 import { effectief } from "@/lib/klantenzone/auto";
 import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
 import { DOC_IS_FACTUUR, DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
@@ -31,6 +31,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
   const k = await getKlant(id);
   if (!k) notFound();
   const auto = effectief(k);
+  const reviewUrl = (await getInstellingen()).googleReviewUrl;
 
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "www.mos-x.be";
@@ -62,6 +63,12 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
                 href={`https://wa.me/${wa}?text=${encodeURIComponent(waTekst)}`}>Stuur link via WhatsApp</a>
               <a className={`${kz.knop} ${kz.knopLicht}`} target="_blank" rel="noopener noreferrer"
                 href={`https://wa.me/${wa}?text=${encodeURIComponent(waUpdate)}`}>Stuur update-berichtje</a>
+              {reviewUrl && (
+                <a className={`${kz.knop} ${kz.knopLicht}`} target="_blank" rel="noopener noreferrer"
+                  href={`https://wa.me/${wa}?text=${encodeURIComponent(`Dag ${k.voornaam}, bedankt om voor MOS-X te kiezen! Ben je tevreden over je dak? Een korte review helpt me enorm: ${reviewUrl}
+
+Groetjes, Yannick`)}`}>Vraag een review</a>
+              )}
             </>
           ) : (
             <p className={kz.sub} style={{ margin: 0 }}>Vul een gsm-nummer in om de link via WhatsApp te sturen.</p>

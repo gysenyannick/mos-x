@@ -55,8 +55,16 @@ export default async function Instellingen() {
 
       {/* Buurvoordeel */}
       <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Settings size={18} /> Buurvoordeel</h2></div>
+        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Settings size={18} /> Reviews en buurvoordeel</h2></div>
         <form action={bewaarInstellingen}>
+          <div className={kz.veld} style={{ marginBottom: 14 }}>
+            <label htmlFor="googleReviewUrl">Link om een Google-review te schrijven</label>
+            <input id="googleReviewUrl" name="googleReviewUrl" type="url" className={kz.invoer} defaultValue={i.googleReviewUrl ?? ""} placeholder="https://g.page/r/.../review" />
+            <p className={kz.sub} style={{ fontSize: 13, marginTop: 4 }}>
+              Te vinden in je Google-bedrijfsprofiel via &quot;Vraag om reviews&quot;. Na de oplevering vraagt de klantenzone dan
+              twee weken lang vanzelf om een review.
+            </p>
+          </div>
           <div className={kz.veld}>
             <label htmlFor="burenVoordeel">Wat buren en doorverwijzers krijgen</label>
             <textarea id="burenVoordeel" name="burenVoordeel" className={kz.invoer} defaultValue={i.burenVoordeel ?? ""}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   AppWindow, ArrowRight, Building2, CalendarDays, CalendarPlus, Camera, CheckCircle2, Clock, Droplets,
   FileText, Hammer, Home, Info, LayoutDashboard, Leaf, NotebookPen, ShieldCheck, Sparkles,
-  Sun, Tag, UserRound, Users, Wallet, Wrench, Grid3x3,
+  Star, Sun, Tag, UserRound, Users, Wallet, Wrench, Grid3x3,
 } from "lucide-react";
 import { headers } from "next/headers";
 import { getInstellingen, getKlant, getMomenten, zorgVoorRefCode, type Actie } from "@/lib/klantenzone/store";
@@ -177,6 +177,7 @@ type Ctx = {
   refUrl: string;
   burenVoordeel?: string;
   acties: Actie[];
+  reviewUrl?: string;
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -239,6 +240,18 @@ function Overzicht(ctx: Ctx) {
           </blockquote>
         )}
       </section>
+
+      {/* Review: vanzelf na de oplevering, zolang het dak er nog splinternieuw uitziet */}
+      {k.fase === "klaar" && ctx.reviewUrl && (
+        <section className={`${kz.kaart} ${kz.reviewKaart}`}>
+          <span className={kz.reviewSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={18} />)}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p className={kz.rijTitel} style={{ fontSize: 17 }}>Tevreden over je dak?</p>
+            <p className={kz.sub} style={{ marginTop: 4 }}>Een review op Google helpt me enorm. Het duurt maar een minuutje.</p>
+          </div>
+          <a className={`${kz.knop} ${kz.knopPrimair}`} href={ctx.reviewUrl} target="_blank" rel="noopener noreferrer">Schrijf een review</a>
+        </section>
+      )}
 
       {/* 2. Jouw planning */}
       <section className={kz.kaart}>
@@ -643,6 +656,7 @@ export default async function KlantPagina({
     refUrl: `${proto}://${host}/buur/${refCode}`,
     burenVoordeel: instellingen.burenVoordeel,
     acties,
+    reviewUrl: instellingen.googleReviewUrl,
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,
