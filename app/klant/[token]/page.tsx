@@ -190,6 +190,7 @@ type Ctx = {
   refBonusAantal: number;
   refBonusTekst?: string;
   eigenTips: EigenTip[];
+  dienstFotos: Record<string, string>;
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -731,7 +732,7 @@ function TipsAdvies({ k, acties, eigenTips }: Ctx) {
 
 /* ══ Diensten en acties ═══════════════════════════════════════════════════ */
 
-function Diensten({ k, acties, controle }: Ctx) {
+function Diensten({ k, acties, controle, dienstFotos }: Ctx) {
   const algemeen = acties.filter((a) => !a.extra || !EXTRAS.some((x) => x.id === a.extra));
   const gevraagdExtra = (naam: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "extra" && a.tekst.startsWith(naam));
   const gevraagdOnderhoud = (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "onderhoud");
@@ -744,42 +745,62 @@ function Diensten({ k, acties, controle }: Ctx) {
           {a.geldigTot && <span>Tot {fmtKort(a.geldigTot)}</span>}
         </section>
       ))}
-      <section className={kz.kaart}>
-        <ul className={kz.diensten}>
-          {onderhoudZinvol(k) && (
-            <li>
-              <div>
-                <p className={kz.dienstNaam}>Onderhoud van je dak</p>
-                <p className={kz.dienstTekst}>Preventieve anti-mosbehandeling en inspectie{controle ? `, aangeraden in ${fmtMaand(controle.datum)}` : ""}.</p>
-              </div>
-              <AanvraagKnop
-                klantId={k.id} soort="onderhoud" klein alGevraagd={gevraagdOnderhoud} alGevraagdTekst="Aangevraagd"
-                label="Plan mijn onderhoud" titel="Onderhoud inplannen"
-                uitleg="Yannick neemt contact op om een moment af te spreken. Je krijgt eerst een prijs."
-                placeholder="bv. Liefst in het voorjaar."
-              />
-            </li>
-          )}
-          {EXTRAS.map((x) => {
-            const korting = acties.find((a) => a.extra === x.id);
-            return (
-              <li key={x.id}>
-                <div>
-                  <p className={kz.dienstNaam}>{x.naam}{korting && <span className={kz.extraActie} style={{ marginLeft: 8, verticalAlign: 2 }}>{korting.titel}</span>}</p>
-                  <p className={kz.dienstTekst}>{x.tekst}{korting?.geldigTot ? ` Korting tot ${fmtKort(korting.geldigTot)}.` : ""}</p>
-                </div>
+      <div className={kz.dienstLijst}>
+        {onderhoudZinvol(k) && (
+          <article className={kz.dienst}>
+            <DienstFoto src={dienstFotos.onderhoud ?? ONDERHOUD_FOTO} naam="Onderhoud" />
+            <div className={kz.dienstInhoud}>
+              <h2 className={kz.dienstTitel}>Onderhoud van je dak</h2>
+              <p className={kz.dienstUitleg}>
+                Een preventieve anti-mosbehandeling en een volledige inspectie, zodat je dak blijft zoals na de reiniging.
+                {controle ? ` Aangeraden in ${fmtMaand(controle.datum)}.` : ""}
+              </p>
+              <div className={kz.dienstKnop}>
                 <AanvraagKnop
-                  klantId={k.id} soort="extra" voorvoegsel={x.naam} klein licht alGevraagd={gevraagdExtra(x.naam)} alGevraagdTekst="Aangevraagd"
-                  label="Vraag een prijs" titel={x.naam}
-                  uitleg="Je krijgt vrijblijvend een prijs en een voorstel van datum."
-                  placeholder="Iets wat Yannick moet weten? (optioneel)"
+                  klantId={k.id} soort="onderhoud" klein alGevraagd={gevraagdOnderhoud} alGevraagdTekst="Aangevraagd"
+                  label="Plan mijn onderhoud" titel="Onderhoud inplannen"
+                  uitleg="Yannick neemt contact op om een moment af te spreken. Je krijgt eerst een prijs."
+                  placeholder="bv. Liefst in het voorjaar."
                 />
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+              </div>
+            </div>
+          </article>
+        )}
+        {EXTRAS.map((x) => {
+          const korting = acties.find((a) => a.extra === x.id);
+          return (
+            <article key={x.id} className={kz.dienst}>
+              <DienstFoto src={dienstFotos[x.id] ?? x.foto} naam={x.naam} />
+              <div className={kz.dienstInhoud}>
+                {korting && <span className={kz.extraActie} style={{ marginBottom: 8 }}>{korting.titel}{korting.geldigTot ? ` · tot ${fmtKort(korting.geldigTot)}` : ""}</span>}
+                <h2 className={kz.dienstTitel}>{x.naam}</h2>
+                <p className={kz.dienstUitleg}>{x.tekst}</p>
+                <div className={kz.dienstKnop}>
+                  <AanvraagKnop
+                    klantId={k.id} soort="extra" voorvoegsel={x.naam} klein licht alGevraagd={gevraagdExtra(x.naam)} alGevraagdTekst="Aangevraagd"
+                    label="Vraag een prijs" titel={x.naam}
+                    uitleg="Je krijgt vrijblijvend een prijs en een voorstel van datum."
+                    placeholder="Iets wat Yannick moet weten? (optioneel)"
+                  />
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </>
+  );
+}
+
+/** Foto bij een dienst; zonder foto een rustig vlak met de naam. */
+function DienstFoto({ src, naam }: { src?: string; naam: string }) {
+  return src ? (
+    <div className={kz.dienstFoto}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={naam} />
+    </div>
+  ) : (
+    <div className={`${kz.dienstFoto} ${kz.dienstFotoLeeg}`} aria-hidden="true"><span>{naam}</span></div>
   );
 }
 
@@ -941,6 +962,7 @@ export default async function KlantPagina({
     refBonusAantal: instellingen.refBonusAantal ?? 3,
     refBonusTekst: instellingen.refBonusTekst === undefined ? "een gratis onderhoudsbeurt" : instellingen.refBonusTekst || undefined,
     eigenTips: instellingen.tips ?? [],
+    dienstFotos: instellingen.dienstFotos ?? {},
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,

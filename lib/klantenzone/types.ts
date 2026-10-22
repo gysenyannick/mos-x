@@ -365,11 +365,14 @@ export const AFSPRAAK_TIPS: Record<string, string> = {
 export const VERZET_UREN = 48;
 
 /** Extra diensten die de klant er met één klik bij kan vragen. */
-export const EXTRAS = [
-  { id: "goten", naam: "Dakgoten reinigen", tekst: "Bladeren en vuil eruit, zodat het regenwater weer vlot weg kan." },
-  { id: "gevel", naam: "Gevelreiniging", tekst: "Groene aanslag en vuil van je gevel, zacht en zonder schade." },
-  { id: "oprit", naam: "Oprit en terras", tekst: "Mos en onkruid tussen de klinkers weg, je oprit weer als nieuw." },
-  { id: "velux", naam: "Velux reinigen", tekst: "Dakvensters proper, binnen en buiten, inclusief de randen." },
-  { id: "zonnepanelen", naam: "Zonnepanelen reinigen", tekst: "Schone panelen leveren meer op. Veilig gereinigd, zonder krassen." },
-  { id: "herstelling", naam: "Kleine herstellingen", tekst: "Een gebroken of verschoven pan wordt teruggelegd of vervangen." },
-] as const;
+/** Diensten die een klant kan aanvragen. De foto kan Yannick vervangen via Instellingen. */
+export const EXTRAS: readonly { id: string; naam: string; tekst: string; foto?: string }[] = [
+  { id: "dak", naam: "Dakreiniging", tekst: "Ook je garage, carport of tuinhuis. Mos en algen eraf op lage druk, daarna een anti-mosbehandeling.", foto: "/images/Weer%20een%20dak%20ontmost.jpg" },
+  { id: "coating", naam: "Dakcoating", tekst: "Een beschermlaag op je pannen. Je dak krijgt zijn kleur terug en blijft langer proper, met tot 10 jaar garantie.", foto: "/images/IMG_4584%20Vooraanzicht%20dakcoating.JPEG" },
+  { id: "goten", naam: "Dakgoten reinigen", tekst: "Bladeren, mos en vuil eruit, zodat het regenwater weer vlot weg kan en niet langs je gevel loopt.", foto: "/images/Goot%20na.JPEG" },
+  { id: "velux", naam: "Velux reinigen", tekst: "Dakvensters proper, binnen en buiten, inclusief de randen waar mos en vuil blijven hangen.", foto: "/images/Velux%20na%201.0.png" },
+  { id: "herstelling", naam: "Kleine herstellingen", tekst: "Een gebroken of verschoven pan, losse nokpannen of verweerde voegen: snel hersteld voor er water binnenkomt.", foto: "/images/Dakpan%20herstelling.png" },
+  { id: "gevel", naam: "Gevelreiniging", tekst: "Groene aanslag en vuil van je gevel, zacht gereinigd en zonder schade aan steen of voegen." },
+  { id: "oprit", naam: "Oprit en terras", tekst: "Mos en onkruid tussen de klinkers weg, op lage druk, zodat het zand in de voegen blijft." },
+  { id: "zonnepanelen", naam: "Zonnepanelen reinigen", tekst: "Schone panelen leveren meer op. Gereinigd met zacht water, zonder krassen." },
+];

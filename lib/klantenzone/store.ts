@@ -264,6 +264,8 @@ export type Instellingen = {
   refBonusTekst?: string;
   /** Tips en advies die Yannick zelf toevoegt */
   tips?: EigenTip[];
+  /** Eigen foto per dienst (id uit EXTRAS → url) */
+  dienstFotos?: Record<string, string>;
 };
 
 export type EigenTip = {

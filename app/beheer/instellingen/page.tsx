@@ -1,4 +1,4 @@
-import { Lightbulb, Plug, Settings, Tag, Trash2 } from "lucide-react";
+import { Camera, Lightbulb, Plug, Settings, Tag, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { REF_STANDAARD, getInstellingen } from "@/lib/klantenzone/store";
 import { EXTRAS } from "@/lib/klantenzone/types";
@@ -6,6 +6,7 @@ import { fmtKort, vandaag } from "@/lib/klantenzone/tijd";
 import { BevestigKnop } from "@/components/klantenzone/beheer-client";
 import { bewaarInstellingen, verwijderActie, verwijderTip, voegActieToe } from "../actions";
 import TipForm from "@/components/klantenzone/tip-form";
+import DienstFotos from "@/components/klantenzone/dienst-fotos";
 import kz from "@/components/klantenzone/kz.module.css";
 
 const VOORBEELD = `{
@@ -47,6 +48,16 @@ export default async function Instellingen() {
           </ul>
         )}
         <TipForm />
+      </section>
+
+      {/* Foto's bij de diensten */}
+      <section className={kz.kaart}>
+        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Camera size={18} /> Foto&apos;s bij de diensten</h2></div>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Klanten zien deze foto naast elke dienst bij &quot;Diensten&quot;. Kies liefst een foto van je eigen werk.</p>
+        <DienstFotos diensten={[
+          { id: "onderhoud", naam: "Onderhoud", foto: i.dienstFotos?.onderhoud ?? "/images/Antimos%20op%20dak.jpg", eigen: !!i.dienstFotos?.onderhoud },
+          ...EXTRAS.map((x) => ({ id: x.id, naam: x.naam, foto: i.dienstFotos?.[x.id] ?? x.foto, eigen: !!i.dienstFotos?.[x.id] })),
+        ]} />
       </section>
 
       {/* Acties */}
