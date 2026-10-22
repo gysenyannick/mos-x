@@ -24,13 +24,13 @@ export default function OpmerkingForm({ klantId }: { klantId: string }) {
 
   return (
     <form onSubmit={verstuur} className={kz.opmerkingForm}>
-      <label htmlFor="opmerking" className={kz.label}>Iets gezien of een vraag over je dak?</label>
+      <label htmlFor="opmerking" className={kz.label}>Nieuw bericht</label>
       <textarea
         id="opmerking" className={kz.invoer} value={tekst} onChange={(e) => setTekst(e.target.value)}
-        placeholder="bv. Na de storm ligt er een pan scheef aan de achterkant." rows={3}
+        placeholder="bv. Moet ik de auto morgen van de oprit zetten?" rows={3}
       />
       <div className={kz.opmerkingVoet}>
-        <span className={kz.rijSub}>{klaar ? "Verstuurd! Ik laat snel iets weten." : "Ik krijg je opmerking meteen binnen."}</span>
+        <span className={kz.rijSub}>{klaar ? "Verstuurd. Yannick antwoordt zo snel mogelijk." : "Liever bellen? +32 468 35 28 69"}</span>
         <button className={`${kz.knop} ${kz.knopPrimair} ${kz.knopKlein}`} disabled={bezig || tekst.trim().length < 2}>
           <Send size={14} /> {bezig ? "Versturen…" : "Versturen"}
         </button>

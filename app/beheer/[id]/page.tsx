@@ -214,7 +214,7 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
 
       {/* ── Opmerkingen (Mijn dak) ── */}
       <section className={kz.kaart}>
-        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><MessagesSquare size={18} /> Opmerkingen en meldingen</h2>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><MessagesSquare size={18} /> Berichten met de klant</h2>
         <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>
           De klant ziet dit bij &quot;Mijn dak&quot;. Een belangrijke melding staat daar bovenaan, in het oog springend.
         </p>
@@ -255,14 +255,14 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
 
       {/* ── Notities ── */}
       <section className={kz.kaart}>
-        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><NotebookPen size={18} /> Notities voor de klant ({(k.notities ?? []).length})</h2>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><NotebookPen size={18} /> Dagverslag ({(k.notities ?? []).length})</h2>
         <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Verschijnen in het logboek van de klant: wat je zag op het dak, onderhoudstips, gemaakte afspraken.</p>
         <form action={voegNotitieToe.bind(null, k.id)}>
           <div className={kz.velden}>
             <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntitel">Titel (optioneel)</label><input id="ntitel" name="titel" className={kz.invoer} placeholder="bv. Twee gebroken pannen vervangen" /></div>
-            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntekst">Notitie</label><textarea id="ntekst" name="tekst" className={kz.invoer} required placeholder="bv. Aan de noordkant lagen twee pannen gebarsten. Die heb ik meteen vervangen, zonder extra kosten." /></div>
+            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntekst">Wat er gebeurde (de klant ziet dit bij Overzicht en Foto&apos;s)</label><textarea id="ntekst" name="tekst" className={kz.invoer} required placeholder="bv. Dag 1: het hele dak is gereinigd. Aan de noordkant lagen twee pannen gebarsten, die zijn vervangen." /></div>
           </div>
-          <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Notitie toevoegen</button></div>
+          <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Verslag toevoegen</button></div>
         </form>
         {(k.notities ?? []).length > 0 && (
           <ul className={kz.lijst} style={{ marginTop: 16 }}>

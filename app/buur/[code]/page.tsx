@@ -4,7 +4,7 @@ import { CheckCircle2, ShieldCheck, Star, UserRound } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import BuurFormulier from "@/components/klantenzone/buur-formulier";
 import { meldBuurAan } from "@/app/klant/actions";
-import { getInstellingen, klantVoorRefCode } from "@/lib/klantenzone/store";
+import { REF_STANDAARD, getInstellingen, klantVoorRefCode } from "@/lib/klantenzone/store";
 import kz from "@/components/klantenzone/kz.module.css";
 
 export const dynamic = "force-dynamic";
@@ -19,7 +19,9 @@ const H = { fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWei
 export default async function BuurPagina({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
   const k = await klantVoorRefCode(code);
-  const voordeel = (await getInstellingen()).burenVoordeel;
+  const inst = await getInstellingen();
+  const korting = inst.refKorting ?? REF_STANDAARD;
+  const voordeel = korting > 0 ? `€ ${korting} korting op je eerste werk, dankzij ${k?.voornaam ?? "je buur"}.` : undefined;
   const wie = k?.voornaam ?? "Een klant";
   const gemeente = k?.adres.match(/\d{4}\s+(.+)$/)?.[1];
 

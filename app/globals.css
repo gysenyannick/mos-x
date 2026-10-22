@@ -61,8 +61,9 @@
     font-family: var(--font-inter), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    overflow-x: clip; /* clip i.p.v. hidden: anders werkt position: sticky niet */
   }
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html { scroll-behavior: smooth; overflow-x: hidden; overflow-x: clip; }
 }
 
 /* -----------------------------------------------

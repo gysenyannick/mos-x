@@ -1271,3 +1271,124 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .extraKop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
 .extraKop .statIcoon { margin-bottom: 0; }
 .extraKop .extraActie { margin-bottom: 0; }
+
+/* ══ Werkdagen (wat er gebeurde) ═══════════════════════════════════════════ */
+.werkdagKop { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+.werkdagDatum { margin: 0 4px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--tekst); }
+.werkdagChip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; background: var(--groen-zacht); color: #4F7F2B; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.werkdagNotitie { margin-top: 12px; }
+.werkdagTitel { margin: 0; font-weight: 700; font-size: 15.5px; color: var(--tekst); }
+.werkdagTekst { margin: 4px 0 0; font-size: 15px; line-height: 1.65; color: #33332F; white-space: pre-line; max-width: 68ch; }
+.werkdagFotos { margin-top: 14px; }
+
+/* Belangrijke melding onder de statuskaart */
+.meldingBalk { display: block; margin-top: 18px; padding: 14px 18px; border-radius: 12px; border-left: 4px solid #C98A1C; background: #FBF6EA; color: var(--tekst); font-size: 15px; line-height: 1.55; text-decoration: none; }
+.meldingBalk strong { color: #9A6A12; margin-right: 6px; }
+.meldingBalk:hover { background: #F8F0DD; }
+
+/* Review: groot en opvallend */
+.reviewKaart2 { padding: 28px; background: linear-gradient(135deg, #FFF8E6 0%, #FFFDF6 100%); border: 1px solid #F1DCA5; box-shadow: 0 10px 30px -18px rgba(201,138,28,0.45); }
+.reviewKaart2 .reviewSterren { gap: 4px; }
+.reviewTitel { margin: 10px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.028em; color: var(--tekst); }
+.reviewKnop { padding: 13px 22px; font-size: 15.5px; }
+
+/* Doorverwijzen: teaser op het overzicht */
+.burenTeaser { display: flex; align-items: center; gap: 16px; margin-top: 18px; padding: 18px 20px; border-radius: 16px; background: #1A1A1A radial-gradient(circle at 100% 0%, rgba(155,203,108,0.35), transparent 60%); color: #fff; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+.burenTeaser:hover { transform: translateY(-1px); box-shadow: 0 12px 28px -16px rgba(0,0,0,.5); }
+.burenTeaser:focus-visible { outline: 2px solid var(--groen); outline-offset: 3px; }
+.burenTeaser > span:nth-child(2) { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.burenTeaser strong { font-size: 16px; }
+.burenTeaser > span:nth-child(2) > span { font-size: 14px; color: rgba(255,255,255,.75); }
+.burenTeaserBedrag { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 30px; letter-spacing: -0.03em; color: var(--groen); white-space: nowrap; }
+
+/* Berichten */
+.gesprekBelangrijk { background: #FBF6EA !important; border: 1px solid #F1DCA5; }
+.gesprekLabel { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #9A6A12; }
+.gesprek { margin-bottom: 20px; }
+
+/* Tips en advies */
+.tipRaster2 { margin-top: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.tipKaart { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--rand); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
+.tipFoto { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+.tipInhoud { flex: 1; display: flex; flex-direction: column; padding: 20px 22px 22px; }
+.tipKop { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px; }
+.tipTitel { margin: 8px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 19px; line-height: 1.25; letter-spacing: -0.02em; color: var(--tekst); }
+.tipIntro { margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: #33332F; }
+.tipMeer { margin-top: 10px; }
+.tipMeer summary { cursor: pointer; font-size: 14.5px; font-weight: 600; color: var(--groen-d); list-style: none; }
+.tipMeer summary::-webkit-details-marker { display: none; }
+.tipMeer summary::after { content: " \2193"; }
+.tipMeer[open] summary::after { content: " \2191"; }
+.tipMeer p { margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: #33332F; }
+.tipKnop { margin-top: auto; padding-top: 16px; }
+
+/* Buurvoordeel */
+.burenKaart { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.burenStappen { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 14px; }
+.burenStappen li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; }
+.burenStappen li > span { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--groen-zacht); color: var(--groen-d); font-weight: 800; font-size: 14px; }
+.burenStappen p { margin: 4px 0 0; font-size: 15px; line-height: 1.55; color: #33332F; }
+.burenStappen strong { color: var(--tekst); }
+.burenTotaal { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 24px; color: var(--groen-d); }
+.burenBalk { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; }
+.burenBalk span { display: grid; place-items: center; height: 38px; border-radius: 10px; background: var(--zacht); border: 1px dashed var(--rand); font-size: 13px; font-weight: 700; color: #A3A39E; white-space: nowrap; }
+.burenBalk .burenVakVol { background: var(--groen); border: 0; color: #fff; }
+.burenLijst { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--rand); }
+.burenLijst li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; padding: 12px 0; border-bottom: 1px solid var(--rand); font-size: 15px; color: var(--tekst); }
+.burenLijst li > span:last-child { font-size: 14px; color: var(--muted); }
+.burenLijst .burenPlus { color: var(--groen-d) !important; font-weight: 700; }
+
+/* De cadeaubon zelf */
+.bonZone { perspective: 900px; }
+.bon {
+  --rx: 0deg; --ry: 0deg; --gx: 50%; --gy: 0%;
+  position: relative; aspect-ratio: 1.6 / 1; border-radius: 18px; padding: 22px 24px; overflow: hidden; color: #fff;
+  display: flex; flex-direction: column; justify-content: space-between;
+  background: #16261A radial-gradient(120% 90% at 0% 100%, rgba(155,203,108,0.55), transparent 55%);
+  box-shadow: 0 24px 50px -24px rgba(22,38,26,0.75), inset 0 0 0 1px rgba(255,255,255,0.08);
+  transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .25s ease;
+}
+.bonGlans { position: absolute; inset: 0; background: radial-gradient(circle at var(--gx) var(--gy), rgba(255,255,255,0.22), transparent 45%); pointer-events: none; }
+.bonBoven { display: flex; justify-content: space-between; align-items: center; position: relative; }
+.bonMerk { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .02em; }
+.bonSoort { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.75); }
+.bonMidden { position: relative; }
+.bonLabel { margin: 0; font-size: 13px; color: rgba(255,255,255,.75); }
+.bonBedrag { margin: 2px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 46px; line-height: 1; letter-spacing: -0.03em; white-space: nowrap; }
+.bonSub { margin: 6px 0 0; font-size: 13px; color: rgba(255,255,255,.75); }
+.bonOnder { display: flex; justify-content: space-between; align-items: center; gap: 10px; position: relative; }
+.bonCodeLabel { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,.7); }
+.bonCode { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 10px; border: 1px dashed rgba(255,255,255,.45); background: rgba(255,255,255,.08); color: #fff; font: 700 15px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; cursor: pointer; }
+.bonCode:hover { background: rgba(255,255,255,.16); }
+.bonCode:focus-visible { outline: 2px solid var(--groen); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .bon { transition: none; transform: none; } }
+
+/* Spoed na een storm */
+.spoed { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #FDF1EE; border: 1px solid #F3C9BE; color: #8A2E1B; text-decoration: none; font-size: 13.5px; line-height: 1.35; }
+.spoed strong { display: block; font-size: 14.5px; }
+.spoed:hover { background: #FBE6E0; }
+.spoed:focus-visible, .spoedRond:focus-visible { outline: 2px solid #C2492F; outline-offset: 2px; }
+.spoedRond { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 999px; background: #FDF1EE; border: 1px solid #F3C9BE; color: #8A2E1B; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.spoedRond:hover { background: #FBE6E0; }
+
+/* Diensten (onder Tips en advies) */
+.diensten { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rand); }
+.diensten li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 20px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rand); }
+.diensten li:last-child { border-bottom: 0; padding-bottom: 0; }
+.dienstNaam { margin: 0; font-weight: 700; font-size: 15.5px; color: var(--tekst); }
+.dienstTekst { margin: 2px 0 0; font-size: 14.5px; color: var(--muted); }
+
+/* Zijbalk blijft staan, enkel de inhoud scrolt */
+.zijbalk { position: sticky; top: 60px; height: calc(100vh - 60px); min-height: 0; }
+
+@media (max-width: 760px) {
+  .tipRaster2, .burenKaart { grid-template-columns: 1fr; }
+  .burenKaart { gap: 22px; }
+  .reviewKaart2 { padding: 22px 18px; }
+  .bonBedrag { font-size: 40px; }
+  .diensten li { grid-template-columns: 1fr; gap: 8px; }
+}
+@media (max-width: 860px) { .spoedRond.alleenMobiel { display: inline-flex; } }
+@media (min-width: 861px) { .spoedRond { display: none; } }
+.topLabel { white-space: nowrap; }
+@media (max-width: 480px) { .topLabel { display: none; } }

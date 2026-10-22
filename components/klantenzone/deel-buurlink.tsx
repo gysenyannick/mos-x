@@ -5,9 +5,9 @@ import { Check, Copy, Share2 } from "lucide-react";
 import kz from "./kz.module.css";
 
 /** Persoonlijke buurlink kopiëren of delen (WhatsApp of het deelmenu van de gsm). */
-export default function DeelBuurlink({ url, voornaam }: { url: string; voornaam: string }) {
+export default function DeelBuurlink({ url, voornaam, korting }: { url: string; voornaam: string; korting?: number }) {
   const [ok, setOk] = useState(false);
-  const tekst = `Ik heb mijn dak laten doen door Yannick van MOS-X en ben er heel tevreden over. Via deze link vraag je een richtprijs aan: ${url}`;
+  const tekst = `Ik heb mijn dak laten doen door Yannick van MOS-X en ben er heel tevreden over. ${korting ? `Via deze link krijg je € ${korting} korting op je eerste werk: ` : "Via deze link vraag je een richtprijs aan: "}${url}`;
 
   async function deel() {
     if (navigator.share) {

@@ -180,9 +180,9 @@ export async function plaatsOpmerking(klantId: string, tekst: string): Promise<U
     return true;
   });
   if (!r) return { ok: false, fout: "Dossier niet gevonden." };
-  if (!r.resultaat) return { ok: false, fout: "Je stuurde vandaag al veel opmerkingen. Stuur me gerust een WhatsApp." };
+  if (!r.resultaat) return { ok: false, fout: "Je stuurde vandaag al veel berichten. Stuur Yannick gerust een WhatsApp." };
   const k = r.klant;
-  await meldAanYannick(`💬 Opmerking van ${k.voornaam}`, `<p>${esc(schoon)}</p>${klantBlok(k)}`);
+  await meldAanYannick(`💬 Bericht van ${k.voornaam}`, `<p>${esc(schoon)}</p>${klantBlok(k)}`);
   ververs(k.id);
   return { ok: true };
 }

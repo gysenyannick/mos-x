@@ -1,6 +1,6 @@
 import { Plug, Settings, Tag, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
-import { getInstellingen } from "@/lib/klantenzone/store";
+import { REF_STANDAARD, getInstellingen } from "@/lib/klantenzone/store";
 import { EXTRAS } from "@/lib/klantenzone/types";
 import { fmtKort, vandaag } from "@/lib/klantenzone/tijd";
 import { BevestigKnop } from "@/components/klantenzone/beheer-client";
@@ -84,11 +84,21 @@ export default async function Instellingen() {
               <input id="reviewNaam" name="reviewNaam" className={kz.invoer} defaultValue={i.reviewNaam ?? ""} placeholder="bv. Els uit Geel" />
             </div>
           </div>
+          <div className={kz.velden} style={{ marginBottom: 14 }}>
+            <div className={kz.veld}>
+              <label htmlFor="refBeloning">Klant krijgt per buur die klant wordt (€)</label>
+              <input id="refBeloning" name="refBeloning" inputMode="numeric" className={kz.invoer} defaultValue={i.refBeloning ?? ""} placeholder={String(REF_STANDAARD)} />
+            </div>
+            <div className={kz.veld}>
+              <label htmlFor="refKorting">Korting voor de nieuwe klant (€)</label>
+              <input id="refKorting" name="refKorting" inputMode="numeric" className={kz.invoer} defaultValue={i.refKorting ?? ""} placeholder={String(REF_STANDAARD)} />
+            </div>
+          </div>
           <div className={kz.veld}>
-            <label htmlFor="burenVoordeel">Wat buren en doorverwijzers krijgen</label>
+            <label htmlFor="burenVoordeel">Hoe krijgt de klant zijn tegoed? (optioneel)</label>
             <textarea id="burenVoordeel" name="burenVoordeel" className={kz.invoer} defaultValue={i.burenVoordeel ?? ""}
-              placeholder="bv. Wordt je buur klant? Dan krijgen jullie allebei € 50 korting op jullie volgende onderhoud." />
-            <p className={kz.sub} style={{ fontSize: 13, marginTop: 4 }}>Leeg laten = geen beloning beloven. Kies een bedrag dat je marge toelaat.</p>
+              placeholder="Leeg = Als korting op je volgende onderhoud of per overschrijving, zoals jij wil." />
+            <p className={kz.sub} style={{ fontSize: 13, marginTop: 4 }}>Leeg = € {REF_STANDAARD}. Zet 0 om het buurvoordeel uit te zetten. Het tegoed telt mee zodra je een doorverwezen buur op &quot;Klant geworden&quot; zet.</p>
           </div>
           <div className={kz.rijKnoppen}><button className={kz.knop}>Opslaan</button></div>
         </form>

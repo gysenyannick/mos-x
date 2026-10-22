@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { ChevronRight, Home, MoreHorizontal, NotebookPen, Sparkles, X } from "lucide-react";
+import { Camera, ChevronRight, FileText, Gift, Home, Lightbulb, MessagesSquare, MoreHorizontal, X } from "lucide-react";
 import kz from "./kz.module.css";
 
 const ITEMS = [
-  { id: "dak", label: "Mijn dak", uitleg: "Dakdossier, opmerkingen en garantie", icoon: Home },
-  { id: "extras", label: "Extra's", uitleg: "Diensten, kortingen en buurvoordeel", icoon: Sparkles },
-  { id: "logboek", label: "Berichten", uitleg: "Updates en verslagen van Yannick", icoon: NotebookPen },
+  { id: "berichten", label: "Berichten", uitleg: "Rechtstreeks met Yannick", icoon: MessagesSquare },
+  { id: "fotos", label: "Foto's", uitleg: "Het verslag per werkdag", icoon: Camera },
+  { id: "documenten", label: "Documenten", uitleg: "Offertes, facturen en garanties", icoon: FileText },
+  { id: "dak", label: "Mijn dak", uitleg: "Dakdossier, onderhoud en garantie", icoon: Home },
+  { id: "tips", label: "Tips en advies", uitleg: "Zo blijft je woning mooi", icoon: Lightbulb },
+  { id: "buren", label: "Buurvoordeel", uitleg: "Je cadeaubon", icoon: Gift },
 ] as const;
 
 /** "Meer" in de onderbalk op gsm: opent een paneel met de overige onderdelen. */

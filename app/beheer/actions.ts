@@ -1,5 +1,6 @@
 "use server";
 
+import { FROM_KLANT, esc, sendMail } from "@/lib/mail";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -385,6 +386,13 @@ export async function zetVerwijzingStatus(id: string, vId: string, status: Verwi
   ververs(id);
 }
 
+/** Bedrag in hele euro; leeg = standaard, 0 = uit */
+function bedrag(v: string): number | undefined {
+  if (v === "") return undefined;
+  const n = Math.round(Number(v.replace(",", ".")));
+  return Number.isFinite(n) && n >= 0 ? Math.min(n, 1000) : undefined;
+}
+
 export async function bewaarInstellingen(fd: FormData) {
   await vereisBeheerder();
   const i = await getInstellingen();
@@ -395,6 +403,8 @@ export async function bewaarInstellingen(fd: FormData) {
     googleReviewUrl: /^https:\/\/\S+$/.test(review) ? review : undefined,
     reviewCitaat: s(fd, "reviewCitaat") || undefined,
     reviewNaam: s(fd, "reviewNaam") || undefined,
+    refBeloning: bedrag(s(fd, "refBeloning")),
+    refKorting: bedrag(s(fd, "refKorting")),
   });
   revalidatePath("/beheer/instellingen");
 }
@@ -472,6 +482,22 @@ export async function voegOpmerkingToe(id: string, fd: FormData) {
   (k.opmerkingen ??= []).push({ id: nieuwId(6), datum: new Date().toISOString(), van: "yannick", tekst, belangrijk: s(fd, "belangrijk") === "ja" || undefined });
   await saveKlant(k);
   ververs(id);
+  // De klant krijgt een seintje, anders ziet hij het antwoord pas als hij zelf kijkt
+  const apiKey = process.env.RESEND_API_KEY;
+  if (apiKey && k.email) {
+    const link = `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mos-x.be"}/klant/${k.id}?tab=berichten`;
+    await sendMail(apiKey, {
+      from: FROM_KLANT,
+      to: [k.email],
+      reply_to: "info@mos-x.be",
+      subject: "Nieuw bericht van Yannick (MOS-X)",
+      html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1A1A1A">
+        <p>Dag ${esc(k.voornaam)},</p>
+        <p style="white-space:pre-line;padding:12px 16px;background:#F7F8F6;border-radius:10px">${esc(tekst)}</p>
+        <p><a href="${link}" style="display:inline-block;background:#9BCB6C;color:#fff;padding:11px 20px;border-radius:999px;text-decoration:none;font-weight:bold">Antwoorden</a></p>
+        <p>Yannick, MOS-X</p></div>`,
+    }).catch(() => undefined);
+  }
 }
 
 export async function opmerkingGezien(id: string) {

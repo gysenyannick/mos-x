@@ -216,7 +216,7 @@ export function BeheerDak({ k }: { k: Klant }) {
         {/* ── Doorverwijzingen ── */}
         <section className={kz.kaart}>
           <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Users size={18} /> Via de buurlink ({(k.verwijzingen ?? []).length})</h2>
-          {k.refCode && <p className={kz.sub} style={{ marginTop: 0 }}>Buurlink: /buur/{k.refCode}</p>}
+          {k.refCode && <p className={kz.sub} style={{ marginTop: 0 }}>Buurlink: /buur/{k.refCode} · {(k.verwijzingen ?? []).filter((v) => v.status === "klant").length} klant geworden, tegoed staat op de cadeaubon van {k.voornaam}.</p>}
           {(k.verwijzingen ?? []).length === 0 ? (
             <p className={kz.leeg}>Nog niemand via de buurlink van {k.voornaam}.</p>
           ) : (

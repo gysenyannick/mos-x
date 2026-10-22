@@ -256,7 +256,12 @@ export type Instellingen = {
   /** Een echte review van Google, getoond naast de reviewknop */
   reviewCitaat?: string;
   reviewNaam?: string;
+  /** Doorverwijzen: wat de klant krijgt per buur die klant wordt, en de korting voor die buur (euro; 0 = uit) */
+  refBeloning?: number;
+  refKorting?: number;
 };
+
+export const REF_STANDAARD = 50;
 
 /** Geeft de buurcode van een klant terug en maakt er een aan als die nog niet bestaat. */
 export async function zorgVoorRefCode(k: Klant): Promise<string> {
