@@ -1238,3 +1238,36 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .dakfotoKeuze:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 2px; }
 .dakfotoKeuzeAan { border-color: var(--groen-d); }
 .dakfotoKeuze span { position: absolute; left: 6px; bottom: 6px; padding: 2px 8px; border-radius: 999px; background: var(--groen-d); color: #fff; font-size: 11.5px; font-weight: 700; }
+
+/* ══ Overzicht na de werken, review, kortingen ═════════════════════════════ */
+.statusBericht > div { min-width: 0; }
+.statusBerichtDatum { margin-top: 4px !important; font-size: 12.5px !important; color: var(--muted) !important; }
+.jeDak { margin: 0; border-top: 1px solid var(--rand); }
+.jeDak > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--rand); }
+.jeDak dt { font-size: 15px; font-weight: 600; color: var(--tekst); }
+.jeDak dd { margin: 0; font-size: 14.5px; color: var(--muted); text-align: right; white-space: nowrap; }
+.jeDak + .rapportLink { margin-top: 14px; }
+
+.reviewKaart2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; background: #FFFBEF; border-color: #F3E3B5; }
+.reviewKaart2:has(> :only-child) { grid-template-columns: 1fr; }
+.reviewLinks .rijKnoppen { margin-top: 14px; }
+.reviewCitaat { margin: 0; padding: 18px 20px; border-radius: 12px; background: #fff; border: 1px solid #F3E3B5; }
+.reviewCitaat blockquote { margin: 0; font-size: 15px; line-height: 1.6; color: var(--tekst); font-style: italic; }
+.reviewCitaat figcaption { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
+
+.actieBalk { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-top: 18px; padding: 14px 18px; border-radius: 12px; background: #FFF6E5; border: 1px solid #F3DDB0; }
+.actieBalk p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--tekst); }
+.actieBalk span { font-size: 13px; font-weight: 600; color: #9A6A12; white-space: nowrap; }
+.extra { position: relative; }
+.extraMetActie { border-color: #F3DDB0; }
+.extraActie { align-self: flex-start; margin-bottom: 4px; padding: 3px 10px; border-radius: 999px; background: #FFF1D6; color: #9A6A12; font-size: 12px; font-weight: 700; line-height: 1.4; }
+.extraGeldig { margin: 6px 0 0; font-size: 13px; color: #9A6A12; }
+.dakVerschil { margin: 18px 0 0; padding: 14px 16px; border-radius: 12px; background: var(--zacht); font-size: 14px; line-height: 1.6; color: var(--muted); }
+.dakVerschil strong { color: var(--tekst); }
+
+@media (max-width: 640px) {
+  .reviewKaart2 { grid-template-columns: 1fr; }
+}
+.extraKop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.extraKop .statIcoon { margin-bottom: 0; }
+.extraKop .extraActie { margin-bottom: 0; }

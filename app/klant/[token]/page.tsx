@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   AppWindow, ArrowRight, Building2, CalendarDays, Camera, CheckCircle2, Clock, Droplets,
   FileText, Hammer, Home, LayoutDashboard, Leaf, NotebookPen, ShieldCheck, Sparkles,
-  Star, Sun, Tag, UserRound, Users, Wallet, Wrench, Grid3x3,
+  Star, Sun, UserRound, Users, Wallet, Grid3x3,
 } from "lucide-react";
 import { headers } from "next/headers";
 import { getInstellingen, getKlant, getMomenten, zorgVoorRefCode, type Actie } from "@/lib/klantenzone/store";
@@ -46,8 +46,7 @@ const TABS = [
   { id: "documenten", label: "Documenten", icoon: FileText },
   { id: "dak", label: "Mijn dak", icoon: Home },
   { id: "extras", label: "Extra's", icoon: Sparkles },
-  { id: "acties", label: "Acties", icoon: Tag },
-  { id: "logboek", label: "Logboek", icoon: NotebookPen },
+  { id: "logboek", label: "Berichten", icoon: NotebookPen },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 const ONDERAAN: TabId[] = ["overzicht", "fotos", "documenten", "dak"];
@@ -84,14 +83,14 @@ function statusZin(k: Klant, volgende?: Afspraak): string {
     case "gepland":
       if (k.start?.precisie === "dag") return `Je werken starten op ${fmtDag(k.start.datum)}. Yannick komt zelf.`;
       if (k.start) return `Je werken staan voorlopig gepland in ${k.start.precisie === "week" ? `de week van ${fmtDagMaand(maandagVan(k.start.datum))}` : fmtMaand(k.start.datum)}.`;
-      return "Je werken zijn bevestigd. Ik laat je zo snel mogelijk weten wanneer ik kom.";
+      return "Je werken zijn bevestigd. Je krijgt bericht zodra de datum vastligt.";
     case "bezig":
-      if (bezig) return `Ik ben nu bezig met de ${bezig.naam.toLowerCase()} van je dak.`;
+      if (bezig) return `Vandaag: ${bezig.naam.toLowerCase()}. Yannick is bij je aan het werk.`;
       return volgende ? `De werken lopen. Volgende stap: ${volgende.titel.toLowerCase()} op ${fmtDag(volgende.start)}.` : "De werken aan je dak zijn bezig.";
     case "klaar":
-      return "Je dak is klaar. Bekijk het verschil op de foto's, en je garantie loopt.";
+      return "Je dak is klaar en je garantie loopt.";
     default:
-      return "Je dak is in nazorg. Ik volg het verder op, jij hoeft niets te doen.";
+      return "Je dak is in nazorg. Yannick volgt het verder op, jij hoeft niets te doen.";
   }
 }
 
@@ -103,9 +102,9 @@ function volgendeStap(k: Klant, volgende?: Afspraak, controle?: { datum: string 
   const open = k.documenten.filter((d) => d.status === "open");
   if (open.length) return `Er staat ${open.length === 1 ? "een factuur" : `${open.length} facturen`} klaar om te betalen.`;
   if (k.fase === "klaar") return "Bekijk het resultaat bij je foto's.";
-  if (controle && controleBinnen(controle.datum) < 90) return `Je volgende controle, rond ${fmtMaand(controle.datum)}.`;
-  if (controle) return `Een controle in ${fmtMaand(controle.datum)}. Tot dan hoef je niets te doen.`;
-  return "Ik laat je weten wanneer ik kom.";
+  if (controle && controleBinnen(controle.datum) < 90) return `Je onderhoudsbeurt, rond ${fmtMaand(controle.datum)}.`;
+  if (controle) return `Onderhoud aangeraden in ${fmtMaand(controle.datum)}. Tot dan hoef je niets te doen.`;
+  return "Je krijgt bericht zodra de datum vastligt.";
 }
 
 function PaginaKop({ titel, sub, rechts, teller }: { titel: string; sub?: string; rechts?: React.ReactNode; teller?: number }) {
@@ -138,8 +137,8 @@ type GarantieRegel = { id: string; icoon: typeof Leaf; titel: string; uitleg: st
 function garantieStaat(k: Klant): GarantieRegel[] {
   const { mosvrijJaren, coatingJaren, vanaf } = k.garantie;
   const basis = [
-    mosvrijJaren > 0 ? { id: "mos", icoon: Leaf, titel: `${mosvrijJaren} jaar mosvrij`, jaren: mosvrijJaren, uitleg: "Komt er toch mos terug in die periode, dan kom ik kosteloos terug." } : null,
-    coatingJaren > 0 ? { id: "coat", icoon: ShieldCheck, titel: `${coatingJaren} jaar garantie op je coating`, jaren: coatingJaren, uitleg: "Je dakcoating blijft beschermen, zwart op wit." } : null,
+    mosvrijJaren > 0 ? { id: "mos", icoon: Leaf, titel: `${mosvrijJaren} jaar mosvrij`, jaren: mosvrijJaren, uitleg: "Komt er toch mos terug in die periode, dan wordt het kosteloos behandeld." } : null,
+    coatingJaren > 0 ? { id: "coat", icoon: ShieldCheck, titel: `${coatingJaren} jaar op je dakcoating`, jaren: coatingJaren, uitleg: "Je dakcoating blijft beschermen, zwart op wit." } : null,
   ].filter((x) => x !== null);
   return basis.map(({ jaren, ...x }) => {
     if (!vanaf) return { ...x, staat: "Gaat in bij de oplevering", rest: null };
@@ -178,6 +177,8 @@ type Ctx = {
   burenVoordeel?: string;
   acties: Actie[];
   reviewUrl?: string;
+  reviewCitaat?: string;
+  reviewNaam?: string;
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -194,7 +195,14 @@ function Overzicht(ctx: Ctx) {
   const toonStart = !!k.start && k.start.datum >= vandaag() && !komend.some((a) => a.titel === "Start werken");
   const voor = k.fotos.find((f) => f.fase === "voor");
   const na = k.fotos.find((f) => f.fase === "na");
-  const prijsDocs = k.documenten.filter((d) => DOC_IS_FACTUUR(d.type) || d.type === "offerte");
+  const na_werken = k.fase === "klaar" || k.fase === "nazorg";
+  // Na de werken: enkel nog wat open staat; de rest zit bij Documenten
+  const prijsDocs = k.documenten.filter((d) => (DOC_IS_FACTUUR(d.type) || d.type === "offerte") && (!na_werken || d.status === "open"));
+  // Wat vandaag al in de statuszin staat, hoeft niet nog eens als "volgende"
+  const bezigWerk = (k.werken ?? []).find((w) => w.status === "bezig");
+  const volgende = komend.find((a) => !(bezigWerk && a.start.slice(0, 10) === vandaag() && a.titel === bezigWerk.naam));
+  const berichtVers = !!k.bericht && (!k.berichtDatum || dagenTot(k.berichtDatum.slice(0, 10)) >= -7);
+  const garantie = garantieStaat(k);
   const labels = Object.fromEntries(k.documenten.map((d) => [d.id, { datum: fmtKort(d.datum), bedrag: d.bedrag ? fmtEuro(d.bedrag) : undefined }]));
 
   return (
@@ -208,10 +216,10 @@ function Overzicht(ctx: Ctx) {
 
       <section className={kz.statusKaart}>
         <div className={kz.statusBoven}>
-          <span className={kz.statusStap}><span className={kz.verbergMobiel}>{(k.dienst || "Dakwerken").split(" en ")[0]} · </span>Stap {faseIndex + 1} van {FASES.length}</span>
+          <span className={kz.statusStap}><span className={kz.verbergMobiel}>{k.dienst || "Dakwerken"} · </span>Stap {faseIndex + 1} van {FASES.length}</span>
         </div>
-        <h2 className={kz.statusZin}>{statusZin(k, komend[0])}</h2>
-        <p className={kz.statusVolgende}><strong>Volgende:</strong> {volgendeStap(k, komend[0], controle)}</p>
+        <h2 className={kz.statusZin}>{statusZin(k, volgende)}</h2>
+        <p className={kz.statusVolgende}><strong>Volgende:</strong> {volgendeStap(k, volgende, controle)}</p>
 
         <div className={kz.fasen} aria-label={`Stap ${faseIndex + 1} van ${FASES.length}: ${FASE_LABEL[k.fase]}`}>
           {FASES.map((f, i) => {
@@ -232,34 +240,42 @@ function Overzicht(ctx: Ctx) {
           })}
         </div>
 
-        {k.bericht && (
+        {berichtVers && (
           <blockquote className={kz.statusBericht}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={YANNICK_FOTO} alt="" />
-            <p>{k.bericht}</p>
+            <div>
+              <p>{k.bericht}</p>
+              {k.berichtDatum && <p className={kz.statusBerichtDatum}>Yannick · {fmtMoment(k.berichtDatum)}</p>}
+            </div>
           </blockquote>
         )}
       </section>
 
-      {/* Review: vanzelf na de oplevering, zolang het dak er nog splinternieuw uitziet */}
-      {k.fase === "klaar" && ctx.reviewUrl && (
-        <section className={`${kz.kaart} ${kz.reviewKaart}`}>
-          <span className={kz.reviewSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={18} />)}</span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p className={kz.rijTitel} style={{ fontSize: 17 }}>Tevreden over je dak?</p>
-            <p className={kz.sub} style={{ marginTop: 4 }}>Een review op Google helpt me enorm. Het duurt maar een minuutje.</p>
+      {k.fase === "klaar" && <ReviewKaart {...ctx} />}
+
+      {/* Na de werken: garantie, onderhoud en dakdossier in één oogopslag */}
+      {na_werken && (
+        <section className={kz.kaart}>
+          <div className={kz.kaartKop}>
+            <h2 className={kz.kaartTitel}><ShieldCheck size={18} /> Je dak</h2>
+            <Link href="?tab=dak" className={kz.meerLink}>Mijn dak <ArrowRight size={14} /></Link>
           </div>
-          <a className={`${kz.knop} ${kz.knopPrimair}`} href={ctx.reviewUrl} target="_blank" rel="noopener noreferrer">Schrijf een review</a>
+          <dl className={kz.jeDak}>
+            {garantie.map((g) => <div key={g.id}><dt>{hfd(g.titel)}</dt><dd>{g.staat}</dd></div>)}
+            {controle && <div><dt>Onderhoud aangeraden</dt><dd>{hfd(fmtMaand(controle.datum))}</dd></div>}
+          </dl>
+          {heeftDossier(k) && <a href={`/klant/${k.id}/dakdossier`} target="_blank" rel="noopener noreferrer" className={kz.rapportLink}>Download je dakdossier (PDF)</a>}
         </section>
       )}
 
-      {/* 2. Jouw planning */}
-      <section className={kz.kaart}>
+      {/* 2. Jouw planning (na de werken enkel als er nog iets gepland staat) */}
+      {(!na_werken || komend.length > 0) && <section className={kz.kaart}>
         <div className={kz.kaartKop}>
           <h2 className={kz.kaartTitel}><CalendarDays size={18} /> Jouw planning</h2>
         </div>
         {komend.length === 0 && !toonStart ? (
-          <p className={kz.leeg}>Zodra je werken gepland zijn, zie je hier wanneer en hoe laat ik kom.</p>
+          <p className={kz.leeg}>Zodra je werken gepland zijn, zie je hier wanneer en hoe laat Yannick komt.</p>
         ) : (
           <ul className={kz.planning}>
             {toonStart && (
@@ -289,11 +305,11 @@ function Overzicht(ctx: Ctx) {
             ))}
           </ul>
         )}
-      </section>
+      </section>}
 
-      {/* 3. Wie er komt */}
+      {/* 3. Wie er komt (na de werken: je vakman voor vragen) */}
       <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><UserRound size={18} /> Wie er komt</h2></div>
+        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><UserRound size={18} /> {na_werken ? "Je vakman" : "Wie er komt"}</h2></div>
         <div className={kz.vakman}>
           <video className={kz.vakmanVideo} src="/videos/yannick-hero.mp4" poster={YANNICK_FOTO} controls muted playsInline preload="none" />
           <div>
@@ -332,6 +348,7 @@ function Overzicht(ctx: Ctx) {
         <DocumentLijst documenten={prijsDocs} labels={labels} />
       </section>}
 
+      {k.fase === "nazorg" && <ReviewKaart {...ctx} />}
     </>
   );
 }
@@ -356,7 +373,7 @@ function Fotos({ k }: Ctx) {
           <VoorNa voor={voor.url} na={na.url} />
         </section>
       )}
-      {k.fotos.length === 0 && <Leeg>Zodra ik je dak bekijk of aan de slag ga, verschijnen hier de foto&apos;s.</Leeg>}
+      {k.fotos.length === 0 && <Leeg>Zodra je dak bekeken of behandeld wordt, verschijnen hier de foto&apos;s.</Leeg>}
       {groepen.map((g) => {
         const lijst = k.fotos.filter((f) => f.fase === g);
         if (!lijst.length) return null;
@@ -366,7 +383,7 @@ function Fotos({ k }: Ctx) {
               <h2 className={kz.kaartTitel}>{FOTO_FASE_LABEL[g]}</h2>
               <span className={kz.badge}>{lijst.length}</span>
             </div>
-            <FotoGalerij fotos={lijst} />
+            <FotoGalerij fotos={lijst} zonderLabel />
           </section>
         );
       })}
@@ -486,17 +503,17 @@ function MijnDak({ k, controle }: Ctx) {
                   </figure>
                 )}
                 <div>
-                  <p className={kz.dakPuntMeta}><span>{String(i + 1).padStart(2, "0")}</span>{fmtKort(a.datum)}</p>
+                  <p className={kz.dakPuntMeta}><span>{String(i + 1).padStart(2, "0")}</span>{fmtKort(a.datum)}{a.prioriteit === "info" && " · ter info"}</p>
                   <h3 className={kz.rapportSubkop}>{a.titel}</h3>
                   {a.tekst && <p className={kz.rapportTekst}>{a.tekst}</p>}
-                  <div style={{ marginTop: 14 }}>
+                  {a.prioriteit !== "info" && <div style={{ marginTop: 14 }}>
                     <AanvraagKnop
                       klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd, we nemen contact op"
                       label="Vraag een prijs" titel={a.titel}
                       uitleg="Je krijgt eerst een prijs en een voorstel van datum. Je zit nergens aan vast."
                       placeholder="Vraag of opmerking (optioneel)"
                     />
-                  </div>
+                  </div>}
                 </div>
               </li>
             ))}
@@ -538,6 +555,12 @@ function MijnDak({ k, controle }: Ctx) {
             />
             <span className={kz.rijSub}>Vrijblijvend, je krijgt eerst een prijs.</span>
           </div>
+          {k.fase === "nazorg" && (
+            <p className={kz.dakVerschil}>
+              <strong>Niet hetzelfde als het nazorgbezoek.</strong> Het nazorgbezoek is een gratis controle binnen je garantie.
+              Het onderhoud is een preventieve behandeling die je dak na de garantie mooi houdt.
+            </p>
+          )}
         </div>
       </section>}
 
@@ -568,26 +591,49 @@ function MijnDak({ k, controle }: Ctx) {
   );
 }
 
-/* ══ Extra's ═══════════════════════════════════════════════════════════════ */
+/* ══ Extra's: diensten, kortingen en het buurvoordeel ═════════════════════ */
 
-function Extras({ k }: Ctx) {
+function Extras({ k, refUrl, burenVoordeel, acties }: Ctx) {
   const gevraagd = (naam: string) => (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "extra" && a.tekst.startsWith(naam));
+  const algemeen = acties.filter((a) => !a.extra || !EXTRAS.some((x) => x.id === a.extra));
+  const verwezen = (k.verwijzingen ?? []).length;
+  const tijdensWerken = k.fase === "gepland" || k.fase === "bezig";
   return (
     <>
-      <PaginaKop titel="Extra's" sub="Ben ik toch bij je? Dan neem ik dit er graag bij. Je krijgt eerst een prijs." />
+      <PaginaKop
+        titel="Extra's"
+        sub={tijdensWerken
+          ? "Nu Yannick toch bij je is, kan dit er makkelijk bij. Je krijgt eerst een prijs."
+          : "Nog iets laten doen aan je woning? Je krijgt eerst een vrijblijvende prijs."}
+      />
+
+      {algemeen.map((a) => (
+        <section key={a.id} className={kz.actieBalk}>
+          <p><strong>{a.titel}</strong>{a.tekst ? ` ${a.tekst}` : ""}</p>
+          {a.geldigTot && <span>Tot {fmtKort(a.geldigTot)}</span>}
+        </section>
+      ))}
+
       <div className={kz.extraRaster}>
         {EXTRAS.map((x) => {
           const Icoon = EXTRA_ICOON[x.id];
+          const korting = acties.find((a) => a.extra === x.id);
           return (
-            <section key={x.id} className={kz.extra}>
-              <span className={`${kz.statIcoon} ${kz.tintGroen}`}><Icoon size={18} /></span>
+            <section key={x.id} className={`${kz.extra} ${korting ? kz.extraMetActie : ""}`}>
+              <div className={kz.extraKop}>
+                <span className={`${kz.statIcoon} ${kz.tintGroen}`}><Icoon size={18} /></span>
+                {korting && <span className={kz.extraActie}>{korting.titel}</span>}
+              </div>
               <h2 className={kz.extraNaam}>{x.naam}</h2>
               <p className={kz.extraTekst}>{x.tekst}</p>
+              {korting?.geldigTot && <p className={kz.extraGeldig}>Korting geldig tot {fmtKort(korting.geldigTot)}</p>}
               <div className={kz.extraKnop}>
                 <AanvraagKnop
                   klantId={k.id} soort="extra" voorvoegsel={x.naam} alGevraagd={gevraagd(x.naam)} alGevraagdTekst="Gevraagd"
                   label="Ik heb interesse" licht klein titel={x.naam}
-                  uitleg="Ik bezorg je vrijblijvend een prijs. Ben ik al in de buurt, dan combineer ik het met je andere werken."
+                  uitleg={tijdensWerken
+                    ? "Je krijgt vrijblijvend een prijs. Kan het samen met je andere werken, dan wordt het gecombineerd."
+                    : "Je krijgt vrijblijvend een prijs en een voorstel van datum."}
                   placeholder="bv. Ook de goten aan de achterkant."
                 />
               </div>
@@ -595,35 +641,13 @@ function Extras({ k }: Ctx) {
           );
         })}
       </div>
-    </>
-  );
-}
 
-/* ══ Acties: kortingen en het buurvoordeel ═════════════════════════════════ */
-
-function Acties({ k, refUrl, burenVoordeel, acties }: Ctx) {
-  const verwezen = (k.verwijzingen ?? []).length;
-  return (
-    <>
-      <PaginaKop titel="Acties" sub="Voordelen voor jou als klant van MOS-X." />
-
-      {acties.map((a) => (
-        <section key={a.id} className={`${kz.kaart} ${kz.actie}`}>
-          <span className={`${kz.statIcoon} ${kz.tintOranje}`}><Tag size={18} /></span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p className={kz.rijTitel} style={{ fontSize: 17 }}>{a.titel}</p>
-            <p className={kz.sub} style={{ marginTop: 4 }}>{a.tekst}</p>
-            {a.geldigTot && <p className={kz.tijdDatum}>Geldig tot {fmtKort(a.geldigTot)}</p>}
-          </div>
-        </section>
-      ))}
-
-      <section className={`${kz.kaart} ${kz.actie}`}>
+      <section className={`${kz.kaart} ${kz.actie}`} style={{ marginTop: 18 }}>
         <span className={`${kz.statIcoon} ${kz.tintGroen}`}><Users size={18} /></span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p className={kz.rijTitel} style={{ fontSize: 17 }}>Buurvoordeel</p>
           <p className={kz.sub} style={{ marginTop: 4, marginBottom: 12 }}>
-            Deel je link met buren, familie of vrienden.{burenVoordeel ? ` ${burenVoordeel}` : " Werk ik in dezelfde straat, dan bespaar ik verplaatsingen, en dat merk je."}
+            Tevreden? Deel je persoonlijke uitnodigingslink met buren, familie of vrienden.{burenVoordeel ? ` ${burenVoordeel}` : " Werkt Yannick in dezelfde straat, dan bespaart hij verplaatsingen, en dat merk je."}
           </p>
           <DeelBuurlink url={refUrl} voornaam={k.voornaam} />
           {verwezen > 0 && <p className={kz.ok}><CheckCircle2 size={15} style={{ verticalAlign: -3 }} /> {verwezen} {verwezen === 1 ? "persoon kwam" : "mensen kwamen"} via jouw link. Bedankt!</p>}
@@ -633,16 +657,13 @@ function Acties({ k, refUrl, burenVoordeel, acties }: Ctx) {
   );
 }
 
-/* ══ Logboek ═══════════════════════════════════════════════════════════════ */
+/* ══ Berichten: updates en verslagen van Yannick ══════════════════════════ */
 
 function Logboek({ k }: Ctx) {
   const notities = k.notities ?? [];
-  const behandelingen = k.behandelingen ?? [];
-
   return (
     <>
-      <PaginaKop titel="Logboek" sub="Mijn notities en de werken die ik uitvoerde." />
-
+      <PaginaKop titel="Berichten" sub="Updates en verslagen van Yannick. De uitgevoerde werken staan in je dakdossier bij Mijn dak." />
       {notities.map((n) => (
         <article key={n.id} className={kz.notitie}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -654,26 +675,31 @@ function Logboek({ k }: Ctx) {
           </div>
         </article>
       ))}
-
-      {behandelingen.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Wrench size={18} /> Uitgevoerde werken</h2></div>
-          <ul className={kz.planning}>
-            {behandelingen.map((b) => (
-              <li key={b.id}>
-                <DatumBlok start={b.datum} />
-                <span className={kz.rijMidden}>
-                  <span className={kz.planningTitel}>{b.soort}</span>
-                  {b.opmerking && <span className={kz.planningDatum}>{b.opmerking}</span>}
-                  {b.producten && <span className={kz.planningUur}>Gebruikt: {b.producten}</span>}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
     </>
+  );
+}
+
+/* ══ Review: een echte review erbij, en de knop ═══════════════════════════ */
+
+function ReviewKaart({ reviewUrl, reviewCitaat, reviewNaam }: Ctx) {
+  if (!reviewUrl) return null;
+  return (
+    <section className={`${kz.kaart} ${kz.reviewKaart2}`}>
+      <div className={kz.reviewLinks}>
+        <span className={kz.reviewSterren} aria-label="5 sterren">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={18} />)}</span>
+        <p className={kz.rijTitel} style={{ fontSize: 17, marginTop: 8 }}>Tevreden over je dak?</p>
+        <p className={kz.sub} style={{ marginTop: 4 }}>Een review op Google helpt enorm. Het duurt maar een minuutje.</p>
+        <div className={kz.rijKnoppen}>
+          <a className={`${kz.knop} ${kz.knopPrimair}`} href={reviewUrl} target="_blank" rel="noopener noreferrer">Schrijf een review</a>
+        </div>
+      </div>
+      {reviewCitaat && (
+        <figure className={kz.reviewCitaat}>
+          <blockquote>“{reviewCitaat}”</blockquote>
+          {reviewNaam && <figcaption>{reviewNaam} · op Google</figcaption>}
+        </figure>
+      )}
+    </section>
   );
 }
 
@@ -697,7 +723,7 @@ export default async function KlantPagina({
           <img src="/images/logo.avif" alt="MOS-X" className={kz.logo} style={{ margin: "0 auto 28px", height: 40 }} />
           <h1 className={kz.paginaTitel} style={{ justifyContent: "center" }}>Deze link werkt niet (meer)</h1>
           <p className={kz.sub} style={{ maxWidth: 420, margin: "12px auto 24px" }}>
-            Misschien is de link onvolledig gekopieerd, of kreeg je intussen een nieuwe. Stuur me een berichtje, dan krijg je meteen je juiste link.
+            Misschien is de link onvolledig gekopieerd, of kreeg je intussen een nieuwe. Stuur Yannick een berichtje, dan krijg je meteen je juiste link.
           </p>
           <a className={`${kz.knop} ${kz.knopPrimair}`} href={`https://wa.me/${WA_NUMMER}?text=${encodeURIComponent("Hallo Yannick, mijn link naar de klantenzone werkt niet. Kan je hem opnieuw sturen?")}`}>
             <WaIcoon size={18} /> Vraag je link op via WhatsApp
@@ -719,9 +745,8 @@ export default async function KlantPagina({
     fotos: k.fotos.length > 0,
     documenten: k.documenten.length > 0,
     dak: true, // opmerkingen, tips en onderhoud: altijd nuttig
-    extras: k.fase !== "gepland", // pas als ik ter plaatse ben, niet al bij de planning
-    acties: k.fase !== "gepland" && (acties.length > 0 || k.fase === "klaar" || k.fase === "nazorg"),
-    logboek: (k.notities ?? []).length > 0 || (k.behandelingen ?? []).length > 0,
+    extras: k.fase !== "gepland", // pas als Yannick ter plaatse is, niet al bij de planning
+    logboek: (k.notities ?? []).length > 0,
   };
   const tabs = TABS.filter((t) => zichtbaar[t.id]);
   // Op gsm: alles onderaan als het past (max. 5), anders de 4 hoofdonderdelen + "Meer"
@@ -740,6 +765,8 @@ export default async function KlantPagina({
     burenVoordeel: instellingen.burenVoordeel,
     acties,
     reviewUrl: instellingen.googleReviewUrl,
+    reviewCitaat: instellingen.reviewCitaat,
+    reviewNaam: instellingen.reviewNaam,
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,
@@ -752,7 +779,7 @@ export default async function KlantPagina({
     fotos: k.fotos.length ? { n: k.fotos.length } : undefined,
     documenten: openDocs ? { n: openDocs, amber: true } : k.documenten.length ? { n: k.documenten.length } : undefined,
     dak: openAanb.length ? { n: openAanb.length, amber: true } : undefined,
-    acties: acties.length ? { n: acties.length } : undefined,
+    extras: acties.length ? { n: acties.length } : undefined,
   };
 
   return (
@@ -801,10 +828,9 @@ export default async function KlantPagina({
           {tab === "documenten" && <Documenten {...ctx} />}
           {tab === "dak" && <MijnDak {...ctx} />}
           {tab === "extras" && <Extras {...ctx} />}
-          {tab === "acties" && <Acties {...ctx} />}
           {tab === "logboek" && <Logboek {...ctx} />}
 
-          <p className={kz.voet}>Bewaar deze link en deel hem niet met anderen.</p>
+          <p className={kz.voet}>Deze pagina is enkel voor jou. Deel de link niet met anderen.</p>
         </div>
       </div>
 

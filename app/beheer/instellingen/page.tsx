@@ -1,6 +1,7 @@
 import { Plug, Settings, Tag, Trash2 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getInstellingen } from "@/lib/klantenzone/store";
+import { EXTRAS } from "@/lib/klantenzone/types";
 import { fmtKort, vandaag } from "@/lib/klantenzone/tijd";
 import { BevestigKnop } from "@/components/klantenzone/beheer-client";
 import { bewaarInstellingen, verwijderActie, voegActieToe } from "../actions";
@@ -28,7 +29,7 @@ export default async function Instellingen() {
       {/* Acties */}
       <section className={kz.kaart}>
         <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Tag size={18} /> Acties en kortingen</h2></div>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Alle klanten zien deze acties bij &quot;Acties&quot;. Verlopen acties verdwijnen vanzelf.</p>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Klanten zien een actie bij &quot;Extra&apos;s&quot;, op de dienst waarvoor ze geldt. Verlopen acties verdwijnen vanzelf.</p>
         {(i.acties ?? []).length > 0 && (
           <ul className={kz.lijst} style={{ marginBottom: 16 }}>
             {(i.acties ?? []).map((a) => (
@@ -36,6 +37,7 @@ export default async function Instellingen() {
                 <div className={kz.rijMidden}>
                   <p className={kz.rijTitel}>{a.titel}</p>
                   <p className={kz.rijSub}>{a.tekst}</p>
+                  <p className={kz.rijSub}>Geldt voor: {EXTRAS.find((x) => x.id === a.extra)?.naam ?? "algemeen"}</p>
                   <p className={kz.rijSub}>{a.geldigTot ? `${a.geldigTot < vandaag() ? "Verlopen op" : "Geldig tot"} ${fmtKort(a.geldigTot)}` : "Geen einddatum"}</p>
                 </div>
                 <BevestigKnop actie={verwijderActie.bind(null, a.id)} vraag="Actie verwijderen?"><Trash2 size={14} /></BevestigKnop>
@@ -46,6 +48,13 @@ export default async function Instellingen() {
         <form action={voegActieToe}>
           <div className={kz.velden}>
             <div className={kz.veld}><label htmlFor="atitel">Titel</label><input id="atitel" name="titel" required className={kz.invoer} placeholder="bv. -15% op gootreiniging in november" /></div>
+            <div className={kz.veld}>
+              <label htmlFor="aextra">Geldt voor</label>
+              <select id="aextra" name="extra" className={kz.invoer} defaultValue="">
+                <option value="">Algemeen (bovenaan Extra&apos;s)</option>
+                {EXTRAS.map((x) => <option key={x.id} value={x.id}>{x.naam}</option>)}
+              </select>
+            </div>
             <div className={kz.veld}><label htmlFor="atot">Geldig tot (optioneel)</label><input id="atot" name="geldigTot" type="date" className={kz.invoer} /></div>
             <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="atekst">Uitleg</label><textarea id="atekst" name="tekst" className={kz.invoer} placeholder="bv. Na de bladval lopen goten snel vol. Boek je gootreiniging deze maand en krijg 15% korting." /></div>
           </div>
@@ -62,8 +71,18 @@ export default async function Instellingen() {
             <input id="googleReviewUrl" name="googleReviewUrl" type="url" className={kz.invoer} defaultValue={i.googleReviewUrl ?? ""} placeholder="https://g.page/r/.../review" />
             <p className={kz.sub} style={{ fontSize: 13, marginTop: 4 }}>
               Te vinden in je Google-bedrijfsprofiel via &quot;Vraag om reviews&quot;. Na de oplevering vraagt de klantenzone dan
-              twee weken lang vanzelf om een review.
+              vanzelf om een review.
             </p>
+          </div>
+          <div className={kz.velden} style={{ marginBottom: 14 }}>
+            <div className={`${kz.veld} ${kz.vol}`}>
+              <label htmlFor="reviewCitaat">Een echte review van Google (optioneel)</label>
+              <textarea id="reviewCitaat" name="reviewCitaat" className={kz.invoer} defaultValue={i.reviewCitaat ?? ""} placeholder="Plak hier een korte review die een klant op Google schreef." />
+            </div>
+            <div className={kz.veld}>
+              <label htmlFor="reviewNaam">Naam bij die review</label>
+              <input id="reviewNaam" name="reviewNaam" className={kz.invoer} defaultValue={i.reviewNaam ?? ""} placeholder="bv. Els uit Geel" />
+            </div>
           </div>
           <div className={kz.veld}>
             <label htmlFor="burenVoordeel">Wat buren en doorverwijzers krijgen</label>
@@ -100,7 +119,9 @@ export default async function Instellingen() {
           <li><span className={kz.puntStip} />Een werk met de datum van vandaag staat op &quot;Bezig&quot;, van gisteren op &quot;Klaar&quot;.</li>
           <li><span className={kz.puntStip} />Gestart = Uitvoering. Alle werken klaar = Oplevering. Twee weken later = Nazorg.</li>
           <li><span className={kz.puntStip} />Garantie en volgende controle starten vanaf de opleverdatum.</li>
-          <li><span className={kz.puntStip} />Afgewerkte werken komen vanzelf in de historiek van het dak.</li>
+          <li><span className={kz.puntStip} />Afgewerkte werken komen vanzelf in het dakdossier.</li>
+          <li><span className={kz.puntStip} />Een maand voor de onderhoudsmaand krijgt de klant één mail met           <li><span className={kz.puntStip} />Afgewerkte werken komen vanzelf in de historiek van het dak.</li>quot;Plan mijn onderhoud          <li><span className={kz.puntStip} />Afgewerkte werken komen vanzelf in de historiek van het dak.</li>quot;. Jij krijgt een overzicht.</li>
+          <li><span className={kz.puntStip} />Een persoonlijk bericht bovenaan verdwijnt na een week vanzelf.</li>
           <li><span className={kz.puntStip} />Loopt iets anders? Zet het zelf in het dossier: een latere stap blijft altijd staan.</li>
         </ul>
       </section>

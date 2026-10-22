@@ -241,6 +241,8 @@ export type Actie = {
   id: string;
   titel: string;
   tekst: string;
+  /** Dienst bij Extra's waarop de korting geldt (leeg = algemene actie) */
+  extra?: string;
   /** YYYY-MM-DD, leeg = geen einddatum */
   geldigTot?: string;
 };
@@ -251,6 +253,9 @@ export type Instellingen = {
   acties?: Actie[];
   /** Link naar "review schrijven" van het Google-bedrijfsprofiel */
   googleReviewUrl?: string;
+  /** Een echte review van Google, getoond naast de reviewknop */
+  reviewCitaat?: string;
+  reviewNaam?: string;
 };
 
 /** Geeft de buurcode van een klant terug en maakt er een aan als die nog niet bestaat. */

@@ -55,7 +55,7 @@ export default function VerzetKnop({ klantId, afspraakId, titel, momenten, dagLa
 
             {klaar ? (
               <>
-                <p className={kz.sub}>Gelukt! Je nieuwe moment staat op je pagina en ik heb een seintje gekregen.</p>
+                <p className={kz.sub}>Gelukt! Je nieuwe moment staat op je pagina en Yannick kreeg een seintje.</p>
                 <div className={kz.rijKnoppen}><button type="button" className={kz.knop} onClick={sluit}>Sluiten</button></div>
               </>
             ) : (

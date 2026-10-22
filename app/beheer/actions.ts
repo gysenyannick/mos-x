@@ -100,7 +100,9 @@ export async function bewaarKlant(id: string, fd: FormData) {
   k.email = s(fd, "email");
   k.adres = s(fd, "adres");
   k.dienst = s(fd, "dienst");
-  k.bericht = s(fd, "bericht") || undefined;
+  const bericht = s(fd, "bericht") || undefined;
+  if (bericht !== k.bericht) k.berichtDatum = bericht ? new Date().toISOString() : undefined;
+  k.bericht = bericht;
 
   const fase = s(fd, "fase") as Fase;
   if (FASES.includes(fase) && fase !== k.fase) {
@@ -391,6 +393,8 @@ export async function bewaarInstellingen(fd: FormData) {
     ...i,
     burenVoordeel: s(fd, "burenVoordeel") || undefined,
     googleReviewUrl: /^https:\/\/\S+$/.test(review) ? review : undefined,
+    reviewCitaat: s(fd, "reviewCitaat") || undefined,
+    reviewNaam: s(fd, "reviewNaam") || undefined,
   });
   revalidatePath("/beheer/instellingen");
 }
@@ -402,7 +406,7 @@ export async function voegActieToe(fd: FormData) {
   const titel = s(fd, "titel");
   if (!titel) return;
   const i = await getInstellingen();
-  i.acties = [...(i.acties ?? []), { id: nieuwId(6), titel, tekst: s(fd, "tekst"), geldigTot: s(fd, "geldigTot") || undefined }];
+  i.acties = [...(i.acties ?? []), { id: nieuwId(6), titel, tekst: s(fd, "tekst"), geldigTot: s(fd, "geldigTot") || undefined, extra: s(fd, "extra") || undefined }];
   await saveInstellingen(i);
   revalidatePath("/beheer/instellingen");
 }

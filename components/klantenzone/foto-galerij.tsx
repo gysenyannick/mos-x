@@ -11,11 +11,13 @@ type Props = {
   onVerwijder?: (fotoId: string) => Promise<void>;
   /** Geen filterknoppen (voor een korte selectie) */
   zonderFilter?: boolean;
+  /** Geen fase-label op elke foto (als ze al per groep staan) */
+  zonderLabel?: boolean;
 };
 
 const VOLGORDE: FotoFase[] = ["inspectie", "voor", "tijdens", "na", "klant"];
 
-export default function FotoGalerij({ fotos, onVerwijder, zonderFilter }: Props) {
+export default function FotoGalerij({ fotos, onVerwijder, zonderFilter, zonderLabel }: Props) {
   const fases = VOLGORDE.filter((f) => fotos.some((x) => x.fase === f));
   const [filter, setFilter] = useState<FotoFase | "alle">("alle");
   const [open, setOpen] = useState<number | null>(null);
@@ -61,7 +63,7 @@ export default function FotoGalerij({ fotos, onVerwijder, zonderFilter }: Props)
             <button type="button" className={kz.fotoTegel} onClick={() => setOpen(i)} aria-label={f.bijschrift ?? "Foto openen"}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={f.url} alt={f.bijschrift ?? ""} loading="lazy" />
-              <span className={kz.fotoFase}>{FOTO_FASE_LABEL[f.fase]}</span>
+              {!zonderLabel && <span className={kz.fotoFase}>{FOTO_FASE_LABEL[f.fase]}</span>}
             </button>
             {onVerwijder && (
               <button

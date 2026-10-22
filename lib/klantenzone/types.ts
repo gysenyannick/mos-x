@@ -34,10 +34,10 @@ export function normaliseerFase(f: string): Fase {
 
 /** Korte uitleg per fase, zoals de klant ze ziet. */
 export const FASE_UITLEG: Record<Fase, string> = {
-  gepland: "Je werken staan ingepland. Hieronder zie je wanneer ik kom.",
-  bezig: "Ik ben met je dak bezig. Foto's van de werf verschijnen hieronder.",
+  gepland: "Je werken staan ingepland. Hieronder zie je wanneer Yannick komt.",
+  bezig: "Yannick is met je dak bezig. Foto's van de werf verschijnen hieronder.",
   klaar: "Je dak is klaar. Je garantie loopt vanaf vandaag.",
-  nazorg: "Je dak is in nazorg. Vragen of iets gezien? Stuur me een berichtje.",
+  nazorg: "Je dak is in nazorg. Vragen of iets gezien? Stuur Yannick een berichtje.",
 };
 
 export type Precisie = "dag" | "week" | "maand";
@@ -102,7 +102,7 @@ export const DOC_GROEPEN: { titel: string; uitleg: string; types: DocType[] }[] 
   { titel: "Facturen", uitleg: "Voorschot en eindfactuur, met wat al betaald is.", types: ["voorschot", "factuur"] },
   { titel: "Garanties", uitleg: "Bewaar ze goed: hiermee ben je zwart op wit gedekt.", types: ["garantie"] },
   { titel: "Offertes", uitleg: "Wat we afspraken, met de prijs vooraf.", types: ["offerte"] },
-  { titel: "Verslagen", uitleg: "Wat ik vaststelde bij inspecties en bij de oplevering.", types: ["oplevering", "inspectie"] },
+  { titel: "Verslagen", uitleg: "Wat vastgesteld werd bij inspecties en bij de oplevering.", types: ["oplevering", "inspectie"] },
   { titel: "Technische fiches", uitleg: "De producten die op je dak gebruikt zijn.", types: ["fiche", "product"] },
   { titel: "Andere documenten", uitleg: "", types: ["andere"] },
 ];
@@ -314,6 +314,10 @@ export type Klant = {
   start?: Startdatum;
   /** Persoonlijk bericht van Yannick bovenaan de pagina */
   bericht?: string;
+  /** ISO-tijdstip waarop het bericht geschreven werd; na een week verdwijnt het vanzelf */
+  berichtDatum?: string;
+  /** Datum (YYYY-MM-DD) van de onderhoudsbeurt waarvoor de herinnering al vertrok */
+  herinnerdVoor?: string;
   afspraken: Afspraak[];
   fotos: Foto[];
   documenten: Document[];
@@ -349,12 +353,12 @@ export type VrijMoment = {
 
 /** Standaarduitleg per soort afspraak, als Yannick zelf niets invult. */
 export const AFSPRAAK_TIPS: Record<string, string> = {
-  "Plaatsbezoek": "Ik kom je dak bekijken en bespreek met jou wat het nodig heeft. Reken op een halfuurtje. Je hoeft niets voor te bereiden.",
-  "Start werken": "Zorg dat de oprit of het stuk voor je woning vrij is, en dat ik een buitenkraan kan gebruiken. Thuis zijn hoeft niet.",
+  "Plaatsbezoek": "Yannick bekijkt je dak en bespreekt met jou wat het nodig heeft. Reken op een halfuurtje. Je hoeft niets voor te bereiden.",
+  "Start werken": "Zorg dat de oprit of het stuk voor je woning vrij is en dat er een buitenkraan bruikbaar is. Thuis zijn hoeft niet.",
   "Dakreiniging": "Hou ramen en dakvensters dicht tijdens de werken. Een buitenkraan in de buurt is handig.",
-  "Dakcoating": "De coating heeft droog weer nodig. Is het nat, dan verschuif ik in overleg. Hou ramen en dakvensters dicht.",
-  "Oplevering": "We lopen samen het resultaat na en ik overloop je garantie. Reken op een kwartiertje.",
-  "Nazorgbezoek": "Ik kom kijken hoe je dak erbij ligt. Gratis, je hoeft niets te doen.",
+  "Dakcoating": "De coating heeft droog weer nodig. Is het nat, dan schuift de dag in overleg op. Hou ramen en dakvensters dicht.",
+  "Oplevering": "Samen het resultaat nalopen en je garantie overlopen. Reken op een kwartiertje.",
+  "Nazorgbezoek": "Gratis controle binnen je garantie: Yannick kijkt hoe je dak erbij ligt. Je hoeft niets te doen.",
 };
 
 /** Hoe lang vooraf een klant een afspraak nog zelf mag verzetten. */
@@ -367,5 +371,5 @@ export const EXTRAS = [
   { id: "oprit", naam: "Oprit en terras", tekst: "Mos en onkruid tussen de klinkers weg, je oprit weer als nieuw." },
   { id: "velux", naam: "Velux reinigen", tekst: "Dakvensters proper, binnen en buiten, inclusief de randen." },
   { id: "zonnepanelen", naam: "Zonnepanelen reinigen", tekst: "Schone panelen leveren meer op. Veilig gereinigd, zonder krassen." },
-  { id: "herstelling", naam: "Kleine herstellingen", tekst: "Een gebroken of verschoven pan? Ik leg ze terug of vervang ze." },
+  { id: "herstelling", naam: "Kleine herstellingen", tekst: "Een gebroken of verschoven pan wordt teruggelegd of vervangen." },
 ] as const;
