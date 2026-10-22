@@ -9,11 +9,13 @@ type Props = {
   fotos: Foto[];
   /** Enkel in beheer: server action om een foto te verwijderen */
   onVerwijder?: (fotoId: string) => Promise<void>;
+  /** Geen filterknoppen (voor een korte selectie) */
+  zonderFilter?: boolean;
 };
 
 const VOLGORDE: FotoFase[] = ["inspectie", "voor", "tijdens", "na", "klant"];
 
-export default function FotoGalerij({ fotos, onVerwijder }: Props) {
+export default function FotoGalerij({ fotos, onVerwijder, zonderFilter }: Props) {
   const fases = VOLGORDE.filter((f) => fotos.some((x) => x.fase === f));
   const [filter, setFilter] = useState<FotoFase | "alle">("alle");
   const [open, setOpen] = useState<number | null>(null);
@@ -36,7 +38,7 @@ export default function FotoGalerij({ fotos, onVerwijder }: Props) {
 
   return (
     <>
-      {fases.length > 1 && (
+      {!zonderFilter && fases.length > 1 && (
         <div className={kz.tabs} role="tablist">
           {(["alle", ...fases] as const).map((f) => (
             <button

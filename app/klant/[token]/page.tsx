@@ -19,7 +19,6 @@ import {
   type Afspraak, type FotoFase, type Klant, type VrijMoment,
 } from "@/lib/klantenzone/types";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
-import OpmerkingForm from "@/components/klantenzone/opmerking-form";
 import DeelBuurlink from "@/components/klantenzone/deel-buurlink";
 import DocumentLijst from "@/components/klantenzone/document-lijst";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
@@ -396,21 +395,16 @@ function Documenten({ k }: Ctx) {
   );
 }
 
-/* ══ Mijn dak: als een verzorgd rapport, niet als een app vol kaartjes ═════ */
-
-const DAK_TIPS = [
-  { titel: "Hou takken weg van je dak.", tekst: "In de schaduw blijft het vochtig, en daar komt mos het eerst terug." },
-  { titel: "Gebruik nooit een hogedrukreiniger.", tekst: "Te veel druk beschadigt de toplaag van je pannen. Daarna neemt mos sneller weer bezit." },
-  { titel: "Kijk na een storm even naar je dak.", tekst: "Zie je een scheve of gebroken pan, laat het me dan meteen weten." },
-];
+/* ══ Mijn dak: foto's, opmerkingen, garantie en onderhoud ═════════════════ */
 
 function MijnDak({ k, controle }: Ctx) {
-  const zag = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
-  const punten = (k.paspoort?.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
-  const opmerkingen = k.opmerkingen ?? [];
-  const gesprek = opmerkingen.filter((o) => !o.belangrijk);
-  const melding = [...opmerkingen].reverse().find((o) => o.belangrijk);
+  const opm = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
+  const oog = (k.paspoort?.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
+  const melding = [...(k.opmerkingen ?? [])].reverse().find((o) => o.belangrijk && o.van === "yannick");
   const garantie = garantieStaat(k);
+  const certificaat = k.documenten.find((d) => d.type === "garantie");
+  const voor = k.fotos.find((f) => f.fase === "voor");
+  const na = k.fotos.find((f) => f.fase === "na");
   const gevraagd = (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === "onderhoud");
   const maanden = controle ? Math.max(0, Math.round(dagenTot(controle.datum) / 30.44)) : null;
 
@@ -426,7 +420,82 @@ function MijnDak({ k, controle }: Ctx) {
           </p>
         )}
 
-        {/* Onderhoud */}
+        {/* 1. Foto's */}
+        <section className={kz.rapportDeel}>
+          <h2 className={kz.rapportKop}>Foto&apos;s van je dak</h2>
+          {k.fotos.length === 0 ? (
+            <p className={kz.rapportTekst} style={{ marginTop: 0 }}>Zodra ik je dak bekijk, verschijnen hier de foto&apos;s.</p>
+          ) : voor && na ? (
+            <VoorNa voor={voor.url} na={na.url} />
+          ) : (
+            <FotoGalerij zonderFilter fotos={(["na", "tijdens", "voor", "inspectie", "klant"] as const).flatMap((g) => k.fotos.filter((f) => f.fase === g)).slice(0, 3)} />
+          )}
+          {k.fotos.length > 0 && (
+            <Link href="?tab=fotos" className={kz.rapportLink}>Bekijk het fotodossier ({k.fotos.length})</Link>
+          )}
+        </section>
+
+        {/* 2. Opmerkingen */}
+        <section className={kz.rapportDeel}>
+          <h2 className={kz.rapportKop}>Opmerkingen</h2>
+          {opm.length === 0 && oog.length === 0 && (
+            <p className={kz.rapportTekst} style={{ marginTop: 0 }}>Geen opmerkingen. Je dak is in orde.</p>
+          )}
+          {opm.map((a, i) => (
+            <div key={a.id} className={`${kz.rapportVaststelling} ${a.fotoUrl ? "" : kz.rapportZonderFoto}`}>
+              {a.fotoUrl && (
+                <figure className={kz.rapportFiguur}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={a.fotoUrl} alt={a.titel} />
+                  <figcaption>{fmtKort(a.datum)}</figcaption>
+                </figure>
+              )}
+              <div>
+                <p className={kz.rapportNr}>{String(i + 1).padStart(2, "0")}</p>
+                <h3 className={kz.rapportSubkop}>{a.titel}</h3>
+                {a.tekst && <p className={kz.rapportTekst}>{a.tekst}</p>}
+                <div style={{ marginTop: 14 }}>
+                  <AanvraagKnop
+                    klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Gevraagd, ik laat iets weten"
+                    label="Vraag een prijs" titel={a.titel}
+                    uitleg="Ik laat je weten wat het kost en wanneer ik het kan doen. Je zit nergens aan vast."
+                    placeholder="Vraag of opmerking (optioneel)"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          {oog.length > 0 && (
+            <div className={opm.length ? kz.rapportOog : undefined}>
+              <h3 className={kz.rapportSubkop}>Om in het oog te houden</h3>
+              <ul className={kz.rapportLijst}>{oog.map((r) => <li key={r}>{r}</li>)}</ul>
+            </div>
+          )}
+        </section>
+
+        {/* 3. Garantie */}
+        {(garantie.length > 0 || certificaat) && (
+          <section className={kz.rapportDeel}>
+            <h2 className={kz.rapportKop}>Garantie</h2>
+            {garantie.length > 0 && (
+              <table className={kz.rapportTabel}>
+                <tbody>
+                  {garantie.map((g) => (
+                    <tr key={g.id}>
+                      <th scope="row">{g.titel}</th>
+                      <td>{g.staat}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+            {certificaat && (
+              <a href={certificaat.url} target="_blank" rel="noopener noreferrer" className={kz.rapportLink}>Download het garantiecertificaat</a>
+            )}
+          </section>
+        )}
+
+        {/* 4. Onderhoud */}
         <section className={kz.rapportDeel}>
           <h2 className={kz.rapportKop}>Volgende onderhoudsbeurt</h2>
           <div className={kz.rapportOnderhoud}>
@@ -453,91 +522,6 @@ function MijnDak({ k, controle }: Ctx) {
               )}
             </div>
           </div>
-        </section>
-
-        {/* Wat ik zag */}
-        {(zag.length > 0 || punten.length > 0) && (
-          <section className={kz.rapportDeel}>
-            <h2 className={kz.rapportKop}>Wat ik zag</h2>
-            {zag.map((a) => (
-              <div key={a.id} className={kz.rapportVaststelling}>
-                {a.fotoUrl && (
-                  <figure className={kz.rapportFiguur}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.fotoUrl} alt={a.titel} />
-                    <figcaption>{fmtKort(a.datum)}</figcaption>
-                  </figure>
-                )}
-                <div>
-                  <h3 className={kz.rapportSubkop}>{a.titel}</h3>
-                  {a.tekst && <p className={kz.rapportTekst}>{a.tekst}</p>}
-                  <div style={{ marginTop: 12 }}>
-                    <AanvraagKnop
-                      klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Gevraagd"
-                      label="Laat dit oplossen" titel={a.titel}
-                      uitleg="Ik laat je weten wat het kost en wanneer ik het kan doen. Je zit nergens aan vast."
-                      placeholder="Vraag of opmerking (optioneel)"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            {punten.length > 0 && (
-              <>
-                <h3 className={kz.rapportSubkop} style={{ marginTop: zag.length ? 28 : 0 }}>Waar ik op let</h3>
-                <ul className={kz.rapportLijst}>{punten.map((r) => <li key={r}>{r}</li>)}</ul>
-              </>
-            )}
-          </section>
-        )}
-
-        {/* Garantie */}
-        {garantie.length > 0 && (
-          <section className={kz.rapportDeel}>
-            <h2 className={kz.rapportKop}>Garantie</h2>
-            <table className={kz.rapportTabel}>
-              <tbody>
-                {garantie.map((g) => (
-                  <tr key={g.id}>
-                    <th scope="row">{g.titel}</th>
-                    <td>{g.staat}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {k.documenten.some((d) => d.type === "garantie") && (
-              <Link href="?tab=documenten" className={kz.rapportLink}>Bekijk het garantiecertificaat</Link>
-            )}
-          </section>
-        )}
-
-        {/* Tips */}
-        <section className={kz.rapportDeel}>
-          <h2 className={kz.rapportKop}>Tips</h2>
-          <ol className={kz.rapportTips}>
-            {DAK_TIPS.map((t, i) => (
-              <li key={t.titel}>
-                <span className={kz.rapportNr}>{String(i + 1).padStart(2, "0")}</span>
-                <p className={kz.rapportTekst}><strong>{t.titel}</strong> {t.tekst}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* Opmerkingen */}
-        <section className={kz.rapportDeel}>
-          <h2 className={kz.rapportKop}>Opmerkingen</h2>
-          {gesprek.length > 0 && (
-            <ul className={kz.rapportGesprek}>
-              {gesprek.map((o) => (
-                <li key={o.id}>
-                  <p className={kz.rapportWie}>{o.van === "klant" ? "Jij" : "Yannick"} <span>{fmtMoment(o.datum)}</span></p>
-                  <p className={kz.rapportTekst}>{o.tekst}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-          <OpmerkingForm klantId={k.id} />
         </section>
 
         <footer className={kz.rapportVoet}>
