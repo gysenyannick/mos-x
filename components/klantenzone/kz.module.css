@@ -1229,3 +1229,12 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .dakInbegrepen { grid-template-columns: 1fr; }
   .dakInbegrepen > div { grid-template-columns: 1fr auto; align-items: baseline; gap: 12px; }
 }
+
+/* Beheer: dakfoto kiezen */
+.dakfotoKiezer { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.dakfotoKeuze { position: relative; display: block; width: 100%; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: none; cursor: pointer; transition: border-color .15s ease; }
+.dakfotoKeuze img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.dakfotoKeuze:hover { border-color: var(--groen); }
+.dakfotoKeuze:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 2px; }
+.dakfotoKeuzeAan { border-color: var(--groen-d); }
+.dakfotoKeuze span { position: absolute; left: 6px; bottom: 6px; padding: 2px 8px; border-radius: 999px; background: var(--groen-d); color: #fff; font-size: 11.5px; font-weight: 700; }

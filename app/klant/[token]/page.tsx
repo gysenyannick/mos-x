@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import { getInstellingen, getKlant, getMomenten, zorgVoorRefCode, type Actie } from "@/lib/klantenzone/store";
 import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { effectief } from "@/lib/klantenzone/auto";
+import { dakGegevens, dakfoto, heeftDossier, onderhoudZinvol } from "@/lib/klantenzone/dak";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
   maandagVan, nuMs, plusJaren, vandaag,
@@ -399,16 +400,6 @@ function Documenten({ k }: Ctx) {
 
 const ONDERHOUD_FOTO = "/images/Antimos%20op%20dak.jpg";
 
-function dakGegevens(k: Klant): { label: string; waarde: string }[] {
-  const p = k.paspoort ?? {};
-  const rijen: [string, string | undefined][] = [
-    ["Daktype", p.daktype],
-    ["Oppervlakte", p.oppervlakte ? `${p.oppervlakte} m²` : undefined],
-    ["Kleur", p.kleur],
-  ];
-  return rijen.filter((r): r is [string, string] => !!r[1]).map(([label, waarde]) => ({ label, waarde }));
-}
-
 function MijnDak({ k, controle }: Ctx) {
   const opm = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
   const oog = (k.paspoort?.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
@@ -420,7 +411,8 @@ function MijnDak({ k, controle }: Ctx) {
   const wanneer = maanden === null ? "" : maanden > 1 ? `Over ${maanden} maanden` : maanden === 1 ? "Volgende maand" : "Nu";
   const gegevens = dakGegevens(k);
   const historiek = k.behandelingen ?? [];
-  const dakfoto = (["na", "inspectie", "voor", "tijdens"] as const).map((f) => k.fotos.find((x) => x.fase === f)).find(Boolean);
+  const foto = dakfoto(k);
+  const metOnderhoud = onderhoudZinvol(k);
 
   return (
     <>
@@ -434,16 +426,21 @@ function MijnDak({ k, controle }: Ctx) {
       )}
 
       {/* 1. Dakdossier */}
-      <section className={`${kz.dakBlok} ${kz.dakDossier} ${dakfoto ? "" : kz.dakDossierZonder}`}>
-        {dakfoto && (
+      <section className={`${kz.dakBlok} ${kz.dakDossier} ${foto ? "" : kz.dakDossierZonder}`}>
+        {foto && (
           <figure className={kz.dakDossierFoto}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={dakfoto.url} alt="Je dak" />
-            <figcaption>{fmtKort(dakfoto.datum)}</figcaption>
+            <img src={foto.url} alt="Je dak" />
+            <figcaption>{fmtKort(foto.datum)}</figcaption>
           </figure>
         )}
         <div>
-          <h2 className={kz.dakTitel}>Dakdossier</h2>
+          <div className={kz.dakBlokKop} style={{ marginBottom: 0 }}>
+            <h2 className={kz.dakTitel}>Dakdossier</h2>
+            {heeftDossier(k) && (
+              <a href={`/klant/${k.id}/dakdossier`} target="_blank" rel="noopener noreferrer" className={kz.rapportLink} style={{ marginTop: 0 }}>Download als PDF</a>
+            )}
+          </div>
           {gegevens.length > 0 ? (
             <dl className={kz.dakSpecs}>
               {gegevens.map((g) => (
@@ -513,8 +510,8 @@ function MijnDak({ k, controle }: Ctx) {
         )}
       </section>
 
-      {/* 3. Onderhoud: een aanbod, geen verplichting */}
-      <section className={kz.dakOnderhoud}>
+      {/* 3. Onderhoud: een aanbod, pas zinvol als het dak behandeld is */}
+      {metOnderhoud && <section className={kz.dakOnderhoud}>
         <div className={kz.dakOnderhoudBeeld}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={ONDERHOUD_FOTO} alt="Anti-mosbehandeling op een dak" />
@@ -542,7 +539,7 @@ function MijnDak({ k, controle }: Ctx) {
             <span className={kz.rijSub}>Vrijblijvend, je krijgt eerst een prijs.</span>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* 4. Garantie */}
       {(garantie.length > 0 || certificaat) && (
@@ -567,11 +564,6 @@ function MijnDak({ k, controle }: Ctx) {
         </section>
       )}
 
-      <footer className={kz.rapportVoet} style={{ paddingTop: 24 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={YANNICK_FOTO} alt="" />
-        <p><span className={kz.rapportHandtekening}>Yannick</span><span>MOS-X · dakreiniging en dakcoating</span></p>
-      </footer>
     </>
   );
 }

@@ -302,6 +302,8 @@ export type LogItem = {
 
 export type Klant = {
   id: string;
+  /** Foto die Yannick koos als overzichtsfoto van het dak (dakdossier) */
+  dakfotoId?: string;
   voornaam: string;
   achternaam: string;
   telefoon: string;

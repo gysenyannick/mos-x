@@ -1,9 +1,10 @@
 import { Bell, ClipboardList, Home, Lightbulb, Trash2, Users, Wrench } from "lucide-react";
 import {
   verwijderWerk, voegWerkToe, zetWerkStatus,
-  bewaarPaspoort, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
+  bewaarPaspoort, zetDakfoto, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
   zetAanbevelingStatus, zetAanvraagStatus, zetVerwijzingStatus,
 } from "@/app/beheer/actions";
+import { dakfoto } from "@/lib/klantenzone/dak";
 import { volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
 import {
@@ -44,6 +45,8 @@ export function BeheerAanvragen({ k }: { k: Klant }) {
 export function BeheerDak({ k }: { k: Klant }) {
   const p = k.paspoort ?? {};
   const auto = volgendeControle({ ...k, volgendeControle: undefined });
+  const gekozen = k.fotos.some((f) => f.id === k.dakfotoId) ? k.dakfotoId : undefined;
+  const huidig = dakfoto(k);
 
   return (
     <>
@@ -108,6 +111,26 @@ export function BeheerDak({ k }: { k: Klant }) {
           </div>
           <div className={kz.rijKnoppen}><button className={kz.knop}>Opslaan</button></div>
         </form>
+
+        {k.fotos.length > 0 && (
+          <div style={{ marginTop: 22 }}>
+            <p className={kz.label}>Dakfoto</p>
+            <p className={kz.sub} style={{ marginTop: 0, marginBottom: 10 }}>
+              De overzichtsfoto in het dakdossier. {gekozen ? "Klik opnieuw om automatisch te kiezen." : "Nu automatisch gekozen; kies zelf een mooie foto van het hele dak."}
+            </p>
+            <div className={kz.dakfotoKiezer}>
+              {k.fotos.map((f) => (
+                <form key={f.id} action={zetDakfoto.bind(null, k.id, f.id === gekozen ? null : f.id)}>
+                  <button className={`${kz.dakfotoKeuze} ${f.id === huidig?.id ? kz.dakfotoKeuzeAan : ""}`} aria-pressed={f.id === huidig?.id} title={f.id === gekozen ? "Gekozen als dakfoto" : "Kies als dakfoto"}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={f.url} alt="" />
+                    {f.id === huidig?.id && <span>{gekozen ? "Gekozen" : "Automatisch"}</span>}
+                  </button>
+                </form>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ── Behandelingen ── */}

@@ -216,6 +216,15 @@ export async function verwijderFoto(id: string, fotoId: string) {
   const f = k.fotos.find((x) => x.id === fotoId);
   if (f) await verwijderBestand(f.url);
   k.fotos = k.fotos.filter((x) => x.id !== fotoId);
+  if (k.dakfotoId === fotoId) k.dakfotoId = undefined;
+  await saveKlant(k);
+  ververs(id);
+}
+
+/** Kies (of wis) de overzichtsfoto van het dak voor het dakdossier. */
+export async function zetDakfoto(id: string, fotoId: string | null) {
+  const k = await laad(id);
+  k.dakfotoId = fotoId && k.fotos.some((x) => x.id === fotoId) ? fotoId : undefined;
   await saveKlant(k);
   ververs(id);
 }
