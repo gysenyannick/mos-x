@@ -110,10 +110,12 @@ export function beloningMag(k: Klant, v: Verwijzing, r: RefRegels): { mag: boole
 }
 
 /** Maakt de transactie voor een toegekende beloning. */
-export function beloningTransactie(v: Verwijzing, r: RefRegels, id: string, nu: string): TegoedTransactie {
+/** @param nummer de hoeveelste beloonde buur dit is (voor de bonus) */
+export function beloningTransactie(v: Verwijzing, r: RefRegels, id: string, nu: string, nummer = 1): TegoedTransactie {
+  const bonus = refBonus(nummer);
   return {
-    id, datum: nu, soort: "toegekend", bedrag: r.beloning,
-    omschrijving: `Omdat ${v.naam.split(" ")[0]} klant werd`,
+    id, datum: nu, soort: "toegekend", bedrag: r.beloning + bonus,
+    omschrijving: `Omdat ${v.naam.split(" ")[0]} klant werd${bonus ? ` (met ${bonus} bonuspunten)` : ""}`,
     sleutel: refSleutel(v),
     vervaltOp: r.geldigMaanden > 0 ? plusDagen(nu.slice(0, 10), Math.round(r.geldigMaanden * 30.44)) : undefined,
     door: "yannick",
@@ -236,8 +238,17 @@ export const PUNTEN = {
 /** Standaard: zoveel punten per buur die klant wordt, en zoveel cent per punt. */
 export const PUNTEN_PER_BUUR = 500;
 export const CENT_PER_PUNT = 10;
-/** Punten dekken nooit meer dan dit deel van een factuur: zo blijft een kleine opdracht haalbaar. */
-export const MAX_PCT_PUNTEN = 10;
+/** Waarvoor punten gebruikt worden, met een vaste maximumkorting per werk in euro. */
+export const PUNTEN_GEBRUIK = [
+  { dienst: "Dakgootreiniging", max: 25, uitleg: "Goten proper voor de herfst." },
+  { dienst: "Preventief onderhoud", max: 100, uitleg: "Een nieuwe anti-mosbehandeling." },
+  { dienst: "Terras en oprit", max: 50, uitleg: "Ook rond je huis alles proper." },
+  { dienst: "Nieuwe dakbehandeling", max: 150, uitleg: "Reiniging of coating van je dak." },
+] as const;
+
+/** Bonuspunten bovenop de vaste beloning: bij de 2de en de 3de buur die klant wordt. */
+export const REF_BONUS: Record<number, number> = { 2: 250, 3: 500 };
+export const refBonus = (nummer: number) => REF_BONUS[nummer] ?? 0;
 
 /** Waarde van punten in euro. */
 export function puntenInEuro(punten: number, centPerPunt = CENT_PER_PUNT): number {

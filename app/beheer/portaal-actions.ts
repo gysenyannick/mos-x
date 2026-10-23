@@ -7,7 +7,7 @@ import { getInstellingen, nieuwId, saveInstellingen, wijzigKlant, type Actie, ty
 import {
   AANVRAAG_LABEL, AANVRAAG_STATUSSEN, AANVRAAG_STATUS_LABEL, type AanvraagStatus, type Inspectie, type Klant, type VerwijzingStatus,
 } from "@/lib/klantenzone/types";
-import { PUNTEN, beloningMag, beloningTransactie, refRegels, voegTransactieToe } from "@/lib/klantenzone/voordeel";
+import { PUNTEN, aantalBeloningen, beloningMag, beloningTransactie, refRegels, voegTransactieToe } from "@/lib/klantenzone/voordeel";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 const getal = (fd: FormData, k: string) => {
@@ -132,7 +132,7 @@ export async function kenBeloningToe(id: string, vId: string): Promise<void> {
     const { mag } = beloningMag(k, v, regels);
     if (!mag) return null;
     const nu = new Date().toISOString();
-    const t = beloningTransactie(v, regels, nieuwId(8), nu);
+    const t = beloningTransactie(v, regels, nieuwId(8), nu, aantalBeloningen(k) + 1);
     if (!voegTransactieToe(k, t)) return null;
     v.status = "beloond";
     audit(k, `Beloning ${t.bedrag} punten toegekend voor doorverwijzing ${v.naam} (sleutel ${t.sleutel})`);
@@ -144,7 +144,7 @@ export async function kenBeloningToe(id: string, vId: string): Promise<void> {
     await meldKlant(r.klant, {
       soort: "beloning", sleutel: `beloning-${vId}`,
       onderwerp: "Je kreeg punten in je MOS-X spaarpot",
-      tekst: `Iemand die jij aanbracht, werd klant. Bedankt! Je kreeg ${regels.beloning} punten in je spaarpot.`,
+      tekst: `Iemand die jij aanbracht, werd klant. Bedankt! Je kreeg ${r.resultaat} punten in je spaarpot.`,
       knop: { label: "Bekijk je voordelen", tab: "voordelen" },
     });
   }
@@ -249,7 +249,6 @@ export async function bewaarRefRegels(fd: FormData) {
     ...i,
     refBeloning: heel("refBeloning"),
     reviewPunten: heel("reviewPunten"),
-    puntenMaxPct: heel("puntenMaxPct"),
     centPerPunt: heel("centPerPunt"),
     refKorting: heel("refKorting"),
     refMinOpdracht: heel("refMinOpdracht"),

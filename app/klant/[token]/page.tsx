@@ -13,7 +13,7 @@ import {
 import { effectief } from "@/lib/klantenzone/auto";
 import { dakfoto, heeftDossier, onderhoudZinvol, werkdagen, type Werkdag } from "@/lib/klantenzone/dak";
 import {
-  CENT_PER_PUNT, MAX_PCT_PUNTEN, PUNTEN, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
+  CENT_PER_PUNT, PUNTEN, PUNTEN_GEBRUIK, REF_BONUS, aantalBeloningen, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
 } from "@/lib/klantenzone/voordeel";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
@@ -197,7 +197,6 @@ type Ctx = {
   dienstFotos: Record<string, string>;
   centPerPunt: number;
   reviewPunten: number;
-  maxPct: number;
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -539,6 +538,12 @@ function Overzicht(ctx: Ctx) {
             <Link href="?tab=werken" className={kz.meerLink}>Fotoverslag <ArrowRight size={14} /></Link>
           </div>
           <VoorNa voor={voor.url} na={na.url} />
+          {refActief(ctx.regels) && (
+            <Link href="?tab=voordelen#buren" className={kz.deelTip}>
+              <span>Ook je buren zo&apos;n resultaat laten zien? Deel je MOS-X-link en spaar voor je volgende onderhoud.</span>
+              <ArrowRight size={16} />
+            </Link>
+          )}
         </section>
       )}
 
@@ -1015,12 +1020,12 @@ function Voordelen(ctx: Ctx) {
     { punten: PUNTEN.deelVoorNa, tekst: "Voor en na delen" },
     { punten: PUNTEN.welkom, tekst: "Welkom na je werken" },
   ].filter((x) => x !== null);
-  const pct = ctx.maxPct;
-  const voorbeeld = (bedrag: number) => Math.round((bedrag * pct) / 100);
+  const beloond = aantalBeloningen(k);
+  const ladder = [1, 2, 3].map((n) => ({ n, punten: regels.beloning + (REF_BONUS[n] ?? 0) }));
 
   return (
     <>
-      <PaginaKop titel="Mijn voordelen" sub="Exclusief voor klanten van MOS-X." />
+      <PaginaKop titel="MOS-X Club" sub="Tevreden over je dak? Help iemand anders aan hetzelfde resultaat en laat MOS-X meebetalen aan je volgende onderhoud." />
 
       <section className={`${kz.kaart} ${kz.burenKaart}`}>
         <Cadeaubon naam={`${k.voornaam} ${k.achternaam}`.trim()} code={refCode} punten={saldo} euro={euro} doel={mijlpaal.doel} procent={mijlpaal.procent} />
@@ -1040,18 +1045,20 @@ function Voordelen(ctx: Ctx) {
 
       <section className={kz.kaart}>
         <h2 className={kz.kringTitel}>Zo gebruik je je punten</h2>
-        <div className={kz.inwisRaster}>
-          <div><strong>€&nbsp;{puntenInEuro(100, ctx.centPerPunt)}</strong><span>per 100 punten</span></div>
-          <div><strong>{pct}%</strong><span>max. korting per werk</span></div>
-          <div><strong>100</strong><span>punten om te starten</span></div>
+        <p className={kz.sub} style={{ marginTop: 4 }}>100 punten = €&nbsp;{puntenInEuro(100, ctx.centPerPunt)} korting op een volgend werk. Per werk geldt een vast maximum.</p>
+        <div className={kz.gebruikRaster}>
+          {PUNTEN_GEBRUIK.map((g) => (
+            <div key={g.dienst}>
+              <span className={kz.gebruikDienst}>{g.dienst}</span>
+              <strong>tot €&nbsp;{g.max}</strong>
+              <span className={kz.gebruikUitleg}>{g.uitleg}</span>
+            </div>
+          ))}
         </div>
-        <p className={kz.inwisVoorbeeld}>
-          Op een dakreiniging van €&nbsp;1.500 is dat tot €&nbsp;{voorbeeld(1500)} korting, op een gootreiniging van €&nbsp;200 tot €&nbsp;{voorbeeld(200)}.
-        </p>
         <div className={kz.rijKnoppen}>
           {saldo >= 100 ? (
             <AanvraagKnop klantId={k.id} soort="andere" voorvoegsel={`Punten inwisselen (${saldo} punten)`} metFotos={false} klein alGevraagd={inwisselGevraagd} alGevraagdTekst="Inwisselen aangevraagd"
-              label="Punten inwisselen" titel="Punten inwisselen" uitleg={`Je ${saldo} punten (€ ${euro}) gaan af van je volgende factuur, tot ${pct}% van het bedrag. Yannick bevestigt het.`} placeholder="Voor welk werk wil je ze gebruiken? (optioneel)" />
+              label="Punten inwisselen" titel="Punten inwisselen" uitleg={`Je ${saldo} punten (€ ${euro}) gaan af van je volgende werk, tot het maximum van die dienst. Yannick bevestigt het.`} placeholder="Voor welk werk wil je ze gebruiken? (optioneel)" />
           ) : <span className={kz.rijSub}>Nog {100 - saldo} punten tot je eerste korting.</span>}
         </div>
       </section>
@@ -1080,8 +1087,18 @@ function Voordelen(ctx: Ctx) {
 
       {actief && (
         <>
-          <h2 className={kz.sectieTitel}>Breng een buur mee</h2>
+          <h2 className={kz.sectieTitel} id="buren">Breng een buur mee</h2>
           <section className={kz.kaart} style={{ marginTop: 0 }}>
+            <div className={kz.ladder}>
+              {ladder.map((l) => (
+                <div key={l.n} className={beloond >= l.n ? kz.ladderKlaar : beloond + 1 === l.n ? kz.ladderVolgende : undefined}>
+                  <span>{l.n === 1 ? "1ste buur" : l.n === 2 ? "2de buur" : "3de buur"}</span>
+                  <strong>€&nbsp;{puntenInEuro(l.punten, ctx.centPerPunt)}</strong>
+                  <em>{l.punten} punten{REF_BONUS[l.n] ? ` · incl. ${REF_BONUS[l.n]} bonus` : ""}</em>
+                </div>
+              ))}
+            </div>
+            <p className={kz.ladderNoot}>{beloond >= 3 ? `Elke volgende buur: ${regels.beloning} punten (€ ${puntenInEuro(regels.beloning, ctx.centPerPunt)}).` : beloond === 0 ? `Breng je eerste buur aan en verdien € ${puntenInEuro(regels.beloning, ctx.centPerPunt)}. Elke volgende buur levert meer op.` : `Je bracht al ${beloond} ${beloond === 1 ? "buur" : "buren"} aan. Na de 3de: ${regels.beloning} punten per buur.`}</p>
             <ol className={kz.burenStappen}>
               <li><span>1</span><p><strong>Deel je link of ledencode</strong> met buren, familie of vrienden.</p></li>
               <li><span>2</span><p><strong>Je buur vraagt een offerte aan.</strong>{regels.korting > 0 ? ` Hij krijgt € ${regels.korting} korting op zijn eerste opdracht.` : ""}</p></li>
@@ -1288,7 +1305,6 @@ export default async function KlantPagina({
     dienstFotos: instellingen.dienstFotos ?? {},
     centPerPunt: instellingen.centPerPunt ?? CENT_PER_PUNT,
     reviewPunten: instellingen.reviewPunten ?? 0,
-    maxPct: instellingen.puntenMaxPct || MAX_PCT_PUNTEN,
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,

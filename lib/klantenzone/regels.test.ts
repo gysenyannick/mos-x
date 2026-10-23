@@ -4,7 +4,7 @@ import type { Actie } from "./store";
 import { binnenMosGarantie, controle12, mosGarantieTot, volgendeControle } from "./onderhoud";
 import {
   actieVoorKlant, beloningMag, beloningTransactie, campagneMarge, campagneStaat, controleerVerwijzing,
-  refRegels, tegoedOverzicht, voegTransactieToe,
+  refBonus, refRegels, tegoedOverzicht, voegTransactieToe,
 } from "./voordeel";
 
 function klant(x: Partial<Klant> = {}): Klant {
@@ -119,5 +119,14 @@ describe("spaarpot", () => {
     const { puntenInEuro, volgendeMijlpaal } = await import("./voordeel");
     expect(puntenInEuro(575)).toBe(57);
     expect(volgendeMijlpaal(575)).toEqual({ doel: 750, procent: 30 });
+  });
+});
+
+describe("bonus bij meerdere buren", () => {
+  it("de 2de en 3de buur geven bonuspunten, daarna de gewone beloning", () => {
+    expect(refBonus(1)).toBe(0);
+    expect(beloningTransactie(buur(), regels, "a", "2026-01-01T00:00:00Z", 2).bedrag).toBe(regels.beloning + 250);
+    expect(beloningTransactie(buur(), regels, "b", "2026-01-01T00:00:00Z", 3).bedrag).toBe(regels.beloning + 500);
+    expect(beloningTransactie(buur(), regels, "c", "2026-01-01T00:00:00Z", 4).bedrag).toBe(regels.beloning);
   });
 });
