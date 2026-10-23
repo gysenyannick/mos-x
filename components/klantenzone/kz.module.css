@@ -1931,3 +1931,52 @@ div.planKop:hover { background: transparent; }
 @media (max-width: 640px) {
   .planKop > .planNu { display: none; }
 }
+
+/* ══ Punten: tabel en inwisselen ═══════════════════════════════════════════ */
+.puntenTabel { list-style: none; margin: 14px 0 0; padding: 0; border: 1px solid var(--rand); border-radius: 14px; overflow: hidden; }
+.puntenTabel li { display: grid; grid-template-columns: minmax(0, 1fr) 64px 56px; align-items: center; gap: 12px; padding: 11px 16px; border-top: 1px solid var(--rand); font-size: 15px; }
+.puntenTabel li:first-child { border-top: 0; }
+.puntenTabel li:nth-child(even) { background: #FBFBF9; }
+.page .puntenNaam { color: #33332F; text-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.puntenTabel strong { justify-self: end; color: #4F7F2B; font-weight: 800; }
+.puntenTabel em { justify-self: end; font-style: normal; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.inwisRaster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.inwisRaster > div { display: grid; gap: 2px; padding: 16px; border-radius: 14px; background: var(--zacht); text-align: center; }
+.inwisRaster strong { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: var(--tekst); }
+.inwisRaster span { font-size: 13.5px; color: var(--muted); }
+.inwisVoorbeeld { margin: 14px 0 0; font-size: 14.5px; line-height: 1.6; color: #4A4A46; }
+@media (max-width: 560px) {
+  .inwisRaster { gap: 8px; }
+  .inwisRaster > div { padding: 12px 6px; }
+  .inwisRaster strong { font-size: 20px; }
+  .inwisRaster span { font-size: 12px; }
+  .puntenTabel li { padding: 10px 12px; gap: 8px; grid-template-columns: minmax(0, 1fr) 52px 44px; }
+}
+
+/* ══ Reviewballon rechtsonder ══════════════════════════════════════════════ */
+.ballonPlek { position: fixed; right: 24px; bottom: 24px; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.ballon { position: relative; width: 300px; max-width: calc(100vw - 32px); padding: 18px 18px 14px; border-radius: 18px 18px 6px 18px; background: #fff; border: 1px solid var(--rand); box-shadow: 0 18px 40px -16px rgba(22,38,26,0.35), 0 2px 10px rgba(0,0,0,0.06); animation: ballonIn .35s cubic-bezier(.2,.8,.2,1); }
+.ballon::after { content: ""; position: absolute; right: 22px; bottom: -7px; width: 14px; height: 14px; background: #fff; border-right: 1px solid var(--rand); border-bottom: 1px solid var(--rand); transform: rotate(45deg); }
+@keyframes ballonIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+.ballonSluit { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--zacht); color: var(--muted); display: grid; place-items: center; cursor: pointer; transition: background-color .15s ease; }
+.ballonSluit:hover { background: #ECEAE5; }
+.ballonSluit:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 2px; }
+.ballonSterren { display: flex; gap: 2px; color: #E3A93B; }
+.ballonSterren svg { fill: currentColor; }
+.ballonTitel { margin: 8px 30px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 16.5px; line-height: 1.3; letter-spacing: -0.02em; color: var(--tekst); }
+.ballonTekst { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: #4A4A46; }
+.ballonTekst strong { color: #4F7F2B; }
+.ballonKnop { width: 100%; justify-content: center; margin-top: 14px; }
+.ballonNooit { display: block; margin: 8px auto 0; padding: 4px 8px; border: 0; background: none; font: inherit; font-size: 12.5px; color: #8E8E89; cursor: pointer; }
+.ballonNooit:hover { color: var(--tekst); text-decoration: underline; }
+.ballonFoto { position: relative; width: 58px; height: 58px; padding: 0; border-radius: 50%; border: 3px solid #fff; background: #fff; box-shadow: 0 8px 22px -8px rgba(22,38,26,0.5); cursor: pointer; transition: transform .15s ease; }
+.ballonFoto:hover { transform: translateY(-2px); }
+.ballonFoto:active { transform: none; }
+.ballonFoto:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 3px; }
+.ballonFoto img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+.ballonBadge { position: absolute; top: -4px; right: -4px; width: 22px; height: 22px; border-radius: 50%; background: #E3A93B; color: #fff; display: grid; place-items: center; border: 2px solid #fff; }
+.ballonBadge svg { fill: currentColor; }
+@media (max-width: 860px) {
+  .ballonPlek { right: 14px; bottom: 86px; }
+  .ballonFoto { width: 50px; height: 50px; }
+}

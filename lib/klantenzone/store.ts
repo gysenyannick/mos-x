@@ -304,6 +304,8 @@ export type Instellingen = {
   centPerPunt?: number;
   /** Punten voor een review (0 = uit). Let op: Google verbiedt beloonde reviews. */
   reviewPunten?: number;
+  /** Punten inwisselen: maximaal dit percentage van het factuurbedrag (standaard 10) */
+  puntenMaxPct?: number;
   /** Naam van de bon die de klant krijgt, bv. "Gratis dakgootreiniging" */
   refBeloningNaam?: string;
   refKorting?: number;

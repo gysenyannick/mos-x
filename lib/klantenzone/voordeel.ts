@@ -236,6 +236,8 @@ export const PUNTEN = {
 /** Standaard: zoveel punten per buur die klant wordt, en zoveel cent per punt. */
 export const PUNTEN_PER_BUUR = 500;
 export const CENT_PER_PUNT = 10;
+/** Punten dekken nooit meer dan dit deel van een factuur: zo blijft een kleine opdracht haalbaar. */
+export const MAX_PCT_PUNTEN = 10;
 
 /** Waarde van punten in euro. */
 export function puntenInEuro(punten: number, centPerPunt = CENT_PER_PUNT): number {

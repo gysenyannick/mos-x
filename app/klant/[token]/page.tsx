@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight, CalendarDays, Camera, Check, CheckCircle2, ChevronDown, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
-  Leaf, LifeBuoy, MessagesSquare, ShieldCheck, Siren, Star, Tag, UserRound, Wrench,
+  Leaf, LifeBuoy, MessagesSquare, ShieldCheck, Siren, Tag, UserRound, Wrench,
 } from "lucide-react";
 import { headers } from "next/headers";
 import QRCode from "qrcode";
@@ -13,7 +13,7 @@ import {
 import { effectief } from "@/lib/klantenzone/auto";
 import { dakfoto, heeftDossier, onderhoudZinvol, werkdagen, type Werkdag } from "@/lib/klantenzone/dak";
 import {
-  CENT_PER_PUNT, PUNTEN, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
+  CENT_PER_PUNT, MAX_PCT_PUNTEN, PUNTEN, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
 } from "@/lib/klantenzone/voordeel";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
@@ -24,14 +24,14 @@ import {
   FASE_LABEL, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, VERZET_UREN, WERK_UITLEG, aanvraagLoopt,
   type Afspraak, type Klant, type VrijMoment, type Werk,
 } from "@/lib/klantenzone/types";
-import { reviewWeg, zetChecklist, zetDeelVoorNa, zetMarketing } from "@/app/klant/actions";
+import { zetChecklist, zetDeelVoorNa, zetMarketing } from "@/app/klant/actions";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
 import Agenda, { type AgendaItem } from "@/components/klantenzone/agenda";
 import VoorstelKnop from "@/components/klantenzone/voorstel-knop";
 import Cadeaubon from "@/components/klantenzone/cadeaubon";
 import DeelBuurlink from "@/components/klantenzone/deel-buurlink";
 import DocumentLijst from "@/components/klantenzone/document-lijst";
-import FeedbackForm from "@/components/klantenzone/feedback-form";
+import ReviewBallon from "@/components/klantenzone/review-ballon";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
 import MeerMenu from "@/components/klantenzone/meer-menu";
 import OpmerkingForm from "@/components/klantenzone/opmerking-form";
@@ -197,6 +197,7 @@ type Ctx = {
   dienstFotos: Record<string, string>;
   centPerPunt: number;
   reviewPunten: number;
+  maxPct: number;
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -337,32 +338,6 @@ function Checklist({ k }: { k: Klant }) {
           );
         })}
       </ul>
-    </section>
-  );
-}
-
-function ReviewKaart({ k, reviewUrl, reviewCitaat, reviewNaam, reviewPunten }: Ctx) {
-  if (!reviewUrl || k.review?.weggeklikt) return null;
-  return (
-    <section className={`${kz.kaart} ${kz.reviewKaart2}`}>
-      <div className={kz.reviewLinks}>
-        <span className={kz.reviewSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={24} />)}</span>
-        <h2 className={kz.reviewTitel}>Hoe was je ervaring?{reviewPunten > 0 && <span className={kz.reviewPuntenBadge}>+{reviewPunten} punten</span>}</h2>
-        <p className={kz.sub} style={{ marginTop: 4 }}>Een eerlijke review op Google helpt andere woningeigenaars om een goede keuze te maken.</p>
-        <div className={kz.rijKnoppen}>
-          <a className={`${kz.knop} ${kz.knopPrimair} ${kz.reviewKnop}`} href={`/api/klantenzone/review?k=${encodeURIComponent(k.id)}`} target="_blank" rel="noopener noreferrer"><Star size={16} /> Schrijf een review</a>
-          <FeedbackForm klantId={k.id} />
-        </div>
-        <form action={reviewWeg.bind(null, k.id)} style={{ marginTop: 10 }}>
-          <button className={kz.tekstKnop}>Niet nu</button>
-        </form>
-      </div>
-      {reviewCitaat && (
-        <figure className={kz.reviewCitaat}>
-          <blockquote>“{reviewCitaat}”</blockquote>
-          {reviewNaam && <figcaption>{reviewNaam} · op Google</figcaption>}
-        </figure>
-      )}
     </section>
   );
 }
@@ -518,7 +493,6 @@ function Overzicht(ctx: Ctx) {
       </section>
 
 
-      {naWerken && <ReviewKaart {...ctx} />}
 
       {laatsteDag && (
         <section className={kz.kaart}>
@@ -1035,12 +1009,14 @@ function Voordelen(ctx: Ctx) {
   const buurtActies = acties.filter((a) => a.actie.type === "buurt");
   const inwisselGevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.tekst.startsWith("Punten inwisselen"));
   const verdienen = [
-    actief ? { punten: regels.beloning, tekst: "Een buur wordt dankzij jou klant" } : null,
-    ctx.reviewPunten > 0 ? { punten: ctx.reviewPunten, tekst: "Je laat een eerlijke review achter op Google" } : null,
-    { punten: PUNTEN.onderhoud, tekst: "Je laat een onderhoud uitvoeren" },
-    { punten: PUNTEN.deelVoorNa, tekst: "Je toont je voor en na aan je buren" },
-    { punten: PUNTEN.welkom, tekst: "Welkom, na de oplevering van je werken" },
+    actief ? { punten: regels.beloning, tekst: "Een buur wordt klant" } : null,
+    ctx.reviewPunten > 0 ? { punten: ctx.reviewPunten, tekst: "Review op Google" } : null,
+    { punten: PUNTEN.onderhoud, tekst: "Onderhoud laten doen" },
+    { punten: PUNTEN.deelVoorNa, tekst: "Voor en na delen" },
+    { punten: PUNTEN.welkom, tekst: "Welkom na je werken" },
   ].filter((x) => x !== null);
+  const pct = ctx.maxPct;
+  const voorbeeld = (bedrag: number) => Math.round((bedrag * pct) / 100);
 
   return (
     <>
@@ -1050,29 +1026,35 @@ function Voordelen(ctx: Ctx) {
         <Cadeaubon naam={`${k.voornaam} ${k.achternaam}`.trim()} code={refCode} punten={saldo} euro={euro} doel={mijlpaal.doel} procent={mijlpaal.procent} />
         <div>
           <h2 className={kz.kringTitel}>Zo spaar je punten</h2>
-          <ul className={kz.puntenLijst}>
-            {verdienen.map((v) => <li key={v.tekst}><span>+{v.punten}</span><span className={kz.puntenTekst}>{v.tekst}</span><em>€&nbsp;{puntenInEuro(v.punten, ctx.centPerPunt)}</em></li>)}
+          <ul className={kz.puntenTabel}>
+            {verdienen.map((v) => (
+              <li key={v.tekst}>
+                <span className={kz.puntenNaam}>{v.tekst}</span>
+                <strong>+{v.punten}</strong>
+                <em>€&nbsp;{puntenInEuro(v.punten, ctx.centPerPunt)}</em>
+              </li>
+            ))}
           </ul>
-          <p className={kz.sub} style={{ marginTop: 12 }}>100 punten = € {puntenInEuro(100, ctx.centPerPunt)} korting op een volgende factuur.</p>
-          <div className={kz.rijKnoppen}>
-            {saldo >= 100 ? (
-              <AanvraagKnop klantId={k.id} soort="andere" voorvoegsel={`Punten inwisselen (${saldo} punten)`} metFotos={false} klein alGevraagd={inwisselGevraagd} alGevraagdTekst="Inwisselen aangevraagd"
-                label="Punten inwisselen" titel="Punten inwisselen" uitleg={`Je ${saldo} punten (€ ${euro}) worden afgetrokken van je volgende factuur. Yannick bevestigt het.`} placeholder="Waarvoor wil je ze gebruiken? (optioneel)" />
-            ) : <span className={kz.rijSub}>Inwisselen kan vanaf 100 punten.</span>}
-          </div>
         </div>
       </section>
 
-      {ctx.reviewUrl && ctx.reviewPunten > 0 && !(k.tegoed ?? []).some((t) => t.sleutel === "review") && (
-        <section className={`${kz.kaart} ${kz.reviewRij}`}>
-          <span className={kz.reviewSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={18} />)}</span>
-          <div>
-            <p className={kz.rijTitel}>Laat een eerlijke review achter op Google</p>
-            <p className={kz.rijSub}>Je krijgt {ctx.reviewPunten} punten zodra Yannick je review gezien heeft.</p>
-          </div>
-          <a className={`${kz.knop} ${kz.knopPrimair} ${kz.knopKlein}`} href={`/api/klantenzone/review?k=${encodeURIComponent(k.id)}`} target="_blank" rel="noopener noreferrer">+{ctx.reviewPunten} punten</a>
-        </section>
-      )}
+      <section className={kz.kaart}>
+        <h2 className={kz.kringTitel}>Zo gebruik je je punten</h2>
+        <div className={kz.inwisRaster}>
+          <div><strong>€&nbsp;{puntenInEuro(100, ctx.centPerPunt)}</strong><span>per 100 punten</span></div>
+          <div><strong>{pct}%</strong><span>max. korting per werk</span></div>
+          <div><strong>100</strong><span>punten om te starten</span></div>
+        </div>
+        <p className={kz.inwisVoorbeeld}>
+          Op een dakreiniging van €&nbsp;1.500 is dat tot €&nbsp;{voorbeeld(1500)} korting, op een gootreiniging van €&nbsp;200 tot €&nbsp;{voorbeeld(200)}.
+        </p>
+        <div className={kz.rijKnoppen}>
+          {saldo >= 100 ? (
+            <AanvraagKnop klantId={k.id} soort="andere" voorvoegsel={`Punten inwisselen (${saldo} punten)`} metFotos={false} klein alGevraagd={inwisselGevraagd} alGevraagdTekst="Inwisselen aangevraagd"
+              label="Punten inwisselen" titel="Punten inwisselen" uitleg={`Je ${saldo} punten (€ ${euro}) gaan af van je volgende factuur, tot ${pct}% van het bedrag. Yannick bevestigt het.`} placeholder="Voor welk werk wil je ze gebruiken? (optioneel)" />
+          ) : <span className={kz.rijSub}>Nog {100 - saldo} punten tot je eerste korting.</span>}
+        </div>
+      </section>
 
       {transacties.length > 0 && (
         <details className={`${kz.kaart} ${kz.puntenHistoriek}`}>
@@ -1306,12 +1288,16 @@ export default async function KlantPagina({
     dienstFotos: instellingen.dienstFotos ?? {},
     centPerPunt: instellingen.centPerPunt ?? CENT_PER_PUNT,
     reviewPunten: instellingen.reviewPunten ?? 0,
+    maxPct: instellingen.puntenMaxPct || MAX_PCT_PUNTEN,
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,
     dagLabels: Object.fromEntries(vrijeMomenten.map((m) => [m.start.slice(0, 10), fmtDag(m.start)])),
     grens,
   };
+  const reviewAl = (k.tegoed ?? []).some((t) => t.sleutel === "review");
+  // De ballon verschijnt zodra de werken klaar zijn (in het voorbeelddossier altijd, om hem te tonen)
+  const toonBallon = !!ctx.reviewUrl && !k.review?.weggeklikt && !reviewAl && (k.fase === "klaar" || k.fase === "nazorg" || !!k.demo);
   const openAanb = (k.aanbevelingen ?? []).filter((a) => a.status === "open").length;
   const openDocs = k.documenten.filter((d) => d.status === "open").length;
   const nieuwVanYannick = (k.opmerkingen ?? []).filter((o) => o.van === "yannick" && dagenTot(o.datum.slice(0, 10)) >= -3).length;
@@ -1379,6 +1365,8 @@ export default async function KlantPagina({
           <p className={kz.voet}>Deze pagina is enkel voor jou. Deel de link niet met anderen.</p>
         </div>
       </div>
+
+      {toonBallon && <ReviewBallon klantId={k.id} voornaam={k.voornaam} foto={YANNICK_FOTO} punten={ctx.reviewPunten} euro={puntenInEuro(ctx.reviewPunten, ctx.centPerPunt)} />}
 
       <nav className={kz.onderNav} aria-label="Klantenzone">
         <ul>

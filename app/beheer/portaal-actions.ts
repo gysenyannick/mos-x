@@ -249,6 +249,7 @@ export async function bewaarRefRegels(fd: FormData) {
     ...i,
     refBeloning: heel("refBeloning"),
     reviewPunten: heel("reviewPunten"),
+    puntenMaxPct: heel("puntenMaxPct"),
     centPerPunt: heel("centPerPunt"),
     refKorting: heel("refKorting"),
     refMinOpdracht: heel("refMinOpdracht"),
