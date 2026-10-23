@@ -45,7 +45,7 @@ export default function Agenda({ items, vandaag }: { items: AgendaItem[]; vandaa
           const inhoud = (
             <>
               <span className={kz.agNr}>{d}</span>
-              {lijst.slice(0, 2).map((x) => <span key={x.titel} className={kz.agItem}>{x.uur ? `${x.uur.slice(0, 5)} ` : ""}{x.titel}</span>)}
+              {lijst.slice(0, 2).map((x) => <span key={x.titel} className={kz.agItem}>{x.titel}</span>)}
               {lijst.length > 0 && <span className={kz.agStip} aria-hidden="true" />}
             </>
           );
