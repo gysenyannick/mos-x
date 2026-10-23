@@ -771,9 +771,23 @@ function Dakdossier({ k, controle }: Ctx) {
   ];
   // Het meest recente inspectierapport krijgt een eigen knop
   const rapport = uitgevoerd.find((r) => r.rapport)?.rapport ?? k.documenten.find((d) => d.type === "inspectie")?.url;
+  // Onderhoud: hoe ver we zitten tussen de oplevering en de aangeraden datum
+  const vanaf = k.garantie.vanaf;
+  const ohProcent = controle && vanaf
+    ? Math.min(100, Math.max(0, Math.round((-dagenTot(vanaf) / Math.max(1, dagenTot(controle.datum) - dagenTot(vanaf))) * 100)))
+    : 0;
+  const ohMaanden = controle ? Math.max(0, Math.round(dagenTot(controle.datum) / 30.44)) : 0;
   const tegels = [
-    ...garantie.map((g) => ({ id: g.id, oog: "Garantie", waarde: `${g.jaren} jaar`, label: g.naam })),
-    controle ? { id: "oh", waarde: hfd(fmtMaand(controle.datum)).replace(/^(\S{3})\S*/, "$1"), oog: "Onderhoud", label: "Aangeraden" } : null,
+    ...garantie.map((g) => ({
+      id: g.id, soort: "garantie", titel: `Garantie ${g.naam.toLowerCase()}`, waarde: `${g.jaren} jaar`,
+      procent: g.tot ? Math.max(g.procent, 3) : 0,
+      sub: g.tot ? `${g.tekst} · tot ${fmtKort(g.tot)}` : "Start bij de oplevering",
+    })),
+    controle ? {
+      id: "oh", soort: "onderhoud", titel: "Onderhoud", waarde: hfd(fmtMaand(controle.datum)),
+      procent: Math.max(ohProcent, vanaf ? 3 : 0),
+      sub: `Aangeraden${ohMaanden > 0 ? ` · over ${ohMaanden} maanden` : ""}`,
+    } : null,
   ].filter((x) => x !== null);
 
   return (
@@ -806,15 +820,18 @@ function Dakdossier({ k, controle }: Ctx) {
       {tegels.length > 0 && (
         <div className={kz.dpTegels} style={{ gridTemplateColumns: `repeat(${tegels.length}, minmax(0, 1fr))` }}>
           {tegels.map((t) => (
-            <div key={t.id}>
-              <em>{t.oog === "Garantie" ? <ShieldCheck size={13} /> : <Leaf size={13} />} {t.oog}</em>
+            <div key={t.id} className={t.soort === "onderhoud" ? kz.dpTegelOh : undefined}>
+              <div className={kz.dpTegelKop}>
+                <span className={kz.dpTegelIcoon}>{t.soort === "garantie" ? <ShieldCheck size={17} /> : <Leaf size={17} />}</span>
+                <span className={kz.dpTegelTitel}>{t.titel}</span>
+              </div>
               <strong>{t.waarde}</strong>
-              <span>{t.label}</span>
+              <div className={kz.dpTegelBalk}><span style={{ width: `${t.procent}%` }} /></div>
+              <span className={kz.dpTegelSub}>{t.sub}</span>
             </div>
           ))}
         </div>
       )}
-      {garantie.some((g) => !g.tot) && <p className={kz.dpNoot}>Garantie vanaf de oplevering.</p>}
 
       {(punten.length > 0 || uitgevoerd.length > 0) && (
         <div className={kz.dpDuo}>
@@ -1409,15 +1426,6 @@ export default async function KlantPagina({
             </ul>
           </nav>
           <div className={kz.zijOnder}>
-            <div className={kz.spoedBlok}>
-              <p><Siren size={18} /> <strong>Storm of dringend?</strong></p>
-              <span>Yannick helpt je zo snel mogelijk.</span>
-              <div className={kz.spoedKnoppen}>
-                <a href={`tel:${SPOED_TEL}`}>Bel</a>
-                <a href={waLink(k, "iets dringends")} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-              </div>
-              <Link href="?tab=hulp#storm">Of meld het met foto&apos;s</Link>
-            </div>
             <div className={kz.zijKlant}>
               <span className={kz.avatar}>{k.voornaam.charAt(0)}{k.achternaam.charAt(0)}</span>
               <div style={{ minWidth: 0 }}>

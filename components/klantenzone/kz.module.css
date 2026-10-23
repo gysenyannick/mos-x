@@ -2361,3 +2361,23 @@ div.planKop:hover { background: transparent; }
 .agDag, .agLeeg { align-items: center; }
 .spoedKaart .knopMelden { width: 100%; justify-content: center; }
 @media (max-width: 420px) { .spoedRij .knop { flex: 1 1 100%; justify-content: center; } }
+
+/* ══ Dakdossier: tegels met balk ═══════════════════════════════════════════ */
+.dpTegels > div { justify-items: stretch; text-align: left; gap: 0; padding: 18px 20px 16px; }
+.dpTegelKop { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.dpTegelIcoon { flex: none; width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--groen-zacht); color: var(--groen-d); }
+.page .dpTegelTitel { font-size: 14px; font-weight: 700; color: #4A4A46; text-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dpTegels strong { margin-top: 14px; font-size: 26px; }
+.dpTegelBalk { height: 6px; margin-top: 12px; border-radius: 999px; background: #EEF0EA; overflow: hidden; }
+.dpTegelBalk span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #9BCB6C, #7AB54E); }
+.page .dpTegelSub { margin-top: 8px; font-size: 13px; color: var(--muted); }
+.dpTegelOh .dpTegelIcoon { background: #FFF1D6; color: #C98A1C; }
+.dpTegelOh .dpTegelBalk span { background: linear-gradient(90deg, #F1C46B, #E3A93B); }
+@media (max-width: 760px) {
+  .dpTegels { grid-template-columns: minmax(0, 1fr) !important; gap: 10px; }
+  .dpTegels > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "kop waarde" "balk balk" "sub sub"; align-items: center; padding: 14px 16px; }
+  .dpTegelKop { grid-area: kop; }
+  .dpTegels strong { grid-area: waarde; margin: 0; font-size: 20px; }
+  .dpTegelBalk { grid-area: balk; }
+  .dpTegelSub { grid-area: sub; }
+}
