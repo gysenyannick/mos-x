@@ -2055,3 +2055,5 @@ div.planKop:hover { background: transparent; }
 }
 @media (max-width: 420px) { .buurMunten { display: none; } }
 .buurDeel, .buurStappen, .buurLink { min-width: 0; }
+.ballonGoogle { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #4A4A46; }
+.ballonGoogle .ballonSterren { margin-left: 2px; }
