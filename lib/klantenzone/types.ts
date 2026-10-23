@@ -229,8 +229,14 @@ export type Aanbeveling = {
   tekst: string;
   prioriteit: Prioriteit;
   status: "open" | "aangevraagd" | "gedaan" | "nietnu";
+  /** Oud: één foto uit de werffoto's */
   fotoUrl?: string;
+  /** Foto's van de vaststelling, bv. takjes onder de zonnepanelen */
+  fotoUrls?: string[];
 };
+
+/** Alle foto's van een aanbeveling (oud en nieuw). */
+export const aanbevelingFotos = (a: Aanbeveling): string[] => [...(a.fotoUrls ?? []), ...(a.fotoUrl ? [a.fotoUrl] : [])];
 
 export type AanvraagSoort = "onderhoud" | "controle" | "aanbeveling" | "dakzorg" | "schade" | "extra" | "verzetten" | "andere";
 

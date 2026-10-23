@@ -1,16 +1,17 @@
 import { Bell, ClipboardList, Home, Lightbulb, Trash2, Wrench } from "lucide-react";
 import {
   verwijderWerk, voegWerkToe, zetWerkStatus,
-  bewaarPaspoort, zetDakfoto, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
+  bewaarPaspoort, zetDakfoto, verwijderAanbeveling, verwijderBehandeling, voegBehandelingToe,
   zetAanbevelingStatus, zetAanvraagStatus,
 } from "@/app/beheer/actions";
 import { dakfoto } from "@/lib/klantenzone/dak";
 import { volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
 import {
-  AANVRAAG_LABEL, BEHANDELING_SOORTEN, PRIORITEIT_LABEL, WERK_STATUS_LABEL, WERK_UITLEG, type Klant, type WerkStatus,
+  AANVRAAG_LABEL, BEHANDELING_SOORTEN, PRIORITEIT_LABEL, aanbevelingFotos, WERK_STATUS_LABEL, WERK_UITLEG, type Klant, type WerkStatus,
 } from "@/lib/klantenzone/types";
 import { BevestigKnop } from "./beheer-client";
+import AanbevelingForm from "./aanbeveling-form";
 import kz from "./kz.module.css";
 
 const AANBEVELING_STATUS = { open: "Open", aangevraagd: "Klant wil dit", gedaan: "Uitgevoerd", nietnu: "Klant: nu niet" } as const;
@@ -175,7 +176,7 @@ export function BeheerDak({ k }: { k: Klant }) {
               <li key={a.id} className={`${kz.rij} ${kz.rijWrap}`}>
                 <div className={kz.rijMidden}>
                   <p className={kz.rijTitel}>{a.titel}</p>
-                  <p className={kz.rijSub}>{PRIORITEIT_LABEL[a.prioriteit]} · {fmtKort(a.datum)} · <strong>{AANBEVELING_STATUS[a.status]}</strong></p>
+                  <p className={kz.rijSub}>{PRIORITEIT_LABEL[a.prioriteit]} · {fmtKort(a.datum)} · <strong>{AANBEVELING_STATUS[a.status]}</strong>{aanbevelingFotos(a).length ? ` · ${aanbevelingFotos(a).length} foto${aanbevelingFotos(a).length > 1 ? "'s" : ""}` : ""}</p>
                 </div>
                 <div className={kz.rijRechts}>
                   {a.status !== "gedaan" && (
@@ -187,28 +188,7 @@ export function BeheerDak({ k }: { k: Klant }) {
             ))}
           </ul>
         )}
-        <form action={voegAanbevelingToe.bind(null, k.id)}>
-          <div className={kz.velden}>
-            <div className={kz.veld}><label htmlFor="atitel">Wat zag je</label><input id="atitel" name="titel" required className={kz.invoer} placeholder="bv. Dakgoot achteraan vol bladeren" /></div>
-            <div className={kz.veld}>
-              <label htmlFor="aprio">Hoe dringend</label>
-              <select id="aprio" name="prioriteit" defaultValue="aanbevolen" className={kz.invoer}>
-                <option value="info">Ter info</option><option value="aanbevolen">Aanbevolen</option><option value="dringend">Dringend</option>
-              </select>
-            </div>
-            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="atekst">Uitleg en voorstel</label><textarea id="atekst" name="tekst" className={kz.invoer} placeholder="bv. Het water kan niet weg en loopt over de gevel. De goten kunnen mee gereinigd worden bij de volgende passage." /></div>
-            {k.fotos.length > 0 && (
-              <div className={`${kz.veld} ${kz.vol}`}>
-                <label htmlFor="afoto">Foto erbij (optioneel)</label>
-                <select id="afoto" name="fotoUrl" className={kz.invoer} defaultValue="">
-                  <option value="">Geen foto</option>
-                  {k.fotos.map((f, i) => <option key={f.id} value={f.url}>Foto {i + 1}: {f.bijschrift ?? f.fase} ({fmtKort(f.datum)})</option>)}
-                </select>
-              </div>
-            )}
-          </div>
-          <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Aanbeveling toevoegen</button></div>
-        </form>
+        <AanbevelingForm klantId={k.id} fotos={k.fotos.map((f, i) => ({ id: f.id, url: f.url, label: `Foto ${i + 1}: ${f.bijschrift ?? f.fase} (${fmtKort(f.datum)})` }))} />
       </section>
 
     </>

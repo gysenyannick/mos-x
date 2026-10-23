@@ -65,6 +65,18 @@ export async function POST(req: NextRequest) {
         return true;
       });
       if (!r?.resultaat) { await verwijderBestand(url); return fout("Aanvraag niet gevonden of al 5 foto's."); }
+    } else if (soort === "aanbevelingfoto") {
+      if (!beheerder) return fout("Niet toegestaan.", 403);
+      if (!file.type.startsWith("image/")) return fout("Dit is geen foto.");
+      const abId = String(fd.get("aanbevelingId") ?? "");
+      const url = await bewaarBestand(`${klantId}/aanbevelingen`, naam, file);
+      const r = await wijzigKlant(klantId, (k) => {
+        const a = (k.aanbevelingen ?? []).find((x) => x.id === abId);
+        if (!a || (a.fotoUrls ?? []).length >= 6) return false;
+        (a.fotoUrls ??= []).push(url);
+        return true;
+      });
+      if (!r?.resultaat) { await verwijderBestand(url); return fout("Aanbeveling niet gevonden of al 6 foto's."); }
     } else if (soort === "document") {
       if (!beheerder) return fout("Niet toegestaan.", 403);
       if (file.type !== "application/pdf" && !file.type.startsWith("image/")) return fout("Enkel pdf of afbeelding.");

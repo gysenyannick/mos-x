@@ -328,21 +328,24 @@ export async function verwijderBehandeling(id: string, behandelingId: string) {
 
 /* ── Aanbevelingen (concrete vaststellingen) ───────────────────────────────── */
 
-export async function voegAanbevelingToe(id: string, fd: FormData) {
+/** Geeft de id terug, zodat er meteen foto's aan gekoppeld kunnen worden. */
+export async function voegAanbevelingToe(id: string, fd: FormData): Promise<string | null> {
   const k = await laad(id);
   const titel = s(fd, "titel");
-  if (!titel) return;
+  if (!titel) return null;
+  const abId = nieuwId(6);
   const nu = new Date().toISOString();
   (k.aanbevelingen ??= []).unshift({
-    id: nieuwId(6), datum: nu, titel,
+    id: abId, datum: nu, titel,
     tekst: s(fd, "tekst"),
     prioriteit: (s(fd, "prioriteit") || "aanbevolen") as Prioriteit,
     status: "open",
-    fotoUrl: s(fd, "fotoUrl") || undefined,
+    fotoUrls: (fd.getAll("fotoUrl") as string[]).filter(Boolean).slice(0, 6),
   });
   k.log.unshift({ datum: nu, tekst: `Nieuwe aanbeveling van Yannick: ${titel}.` });
   await saveKlant(k);
   ververs(id);
+  return abId;
 }
 
 export async function zetAanbevelingStatus(id: string, abId: string, status: Aanbeveling["status"]) {
