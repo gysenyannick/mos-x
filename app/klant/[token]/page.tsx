@@ -762,7 +762,7 @@ function Dakdossier({ k, controle }: Ctx) {
 
   return (
     <>
-      <PaginaKop titel="Mijn dakdossier" sub="Alles over je dak, op één plek." />
+      <PaginaKop titel="Mijn dakdossier" />
 
       <div className={kz.dpBoven}>
           <section className={`${kz.dpKaart} ${kz.dpDak}`}>
@@ -792,13 +792,14 @@ function Dakdossier({ k, controle }: Ctx) {
                     <span className={kz.garIcoon}><ShieldCheck size={18} /></span>
                     <div>
                       <p className={kz.dpGarNaam}><strong>{g.jaren} jaar</strong> {g.naam.toLowerCase()}</p>
-                      <p className={kz.dpGarSub}>{g.tot ? `${g.tekst} · tot ${fmtKort(g.tot)}` : "Start bij de oplevering"}</p>
+                      {g.tot && <p className={kz.dpGarSub}>Tot {fmtKort(g.tot)}</p>}
                       {g.tot && <div className={kz.gbBalk} style={{ marginTop: 8 }}><span style={{ width: `${Math.max(g.procent, 3)}%` }} /></div>}
                     </div>
                   </li>
                 ))}
               </ul>
-            ) : <p className={kz.dpGarSub}>Na de werken vind je hier je garantie.</p>}
+            ) : <p className={kz.dpGarSub}>Volgt na de werken.</p>}
+            {garantie.some((g) => !g.tot) && <p className={kz.dpGarSub} style={{ marginTop: 10 }}>Start bij de oplevering.</p>}
             {controle && (
               <div className={kz.dpVolgend}>
                 <span>Volgend onderhoud</span>
@@ -816,38 +817,31 @@ function Dakdossier({ k, controle }: Ctx) {
           {(opm.length > 0 || oog.length > 0) && (
             <section className={kz.dpKaart}>
               <h2 className={kz.dpTitel}>Aandachtspunten</h2>
-              <ul className={kz.dosLijst}>
-                {opm.map((a) => (
-                  <li key={a.id}>
-                    <span className={`${kz.dosStip} ${a.prioriteit === "info" ? "" : kz.dosStipAmber}`} aria-hidden="true" />
-                    <div className={kz.dosTekst}>
-                      <p className={kz.dosTitel}>{a.titel}</p>
-                      {a.tekst && <p className={kz.dosSub}>{a.tekst}</p>}
-                      {a.prioriteit !== "info" && (
-                        <div className={kz.dosActie}>
-                          <AanvraagKnop
-                            klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd"
-                            label="Prijs aanvragen" titel={a.titel}
-                            uitleg="Je krijgt eerst een prijs en een voorstel van datum. Je zit nergens aan vast."
-                            placeholder="Vraag of opmerking (optioneel)"
-                          />
+              <ul className={kz.dpPunten}>
+                {[...opm.map((a) => ({ id: a.id, titel: a.titel, tekst: a.tekst, amber: a.prioriteit !== "info", a })),
+                  ...oog.map((r) => { const [kop, ...rest] = r.split(":"); return { id: r, titel: rest.length ? kop.trim() : r, tekst: rest.join(":").trim(), amber: false, a: undefined }; })]
+                  .map((x) => (
+                    <li key={x.id}>
+                      <details>
+                        <summary>
+                          <span className={`${kz.dosStip} ${x.amber ? kz.dosStipAmber : ""}`} aria-hidden="true" />
+                          <span className={kz.dpPuntTitel}>{x.titel}</span>
+                          <ChevronDown size={16} className={kz.dpPuntPijl} />
+                        </summary>
+                        <div className={kz.dpPuntOpen}>
+                          {x.tekst && <p className={kz.dosSub}>{x.tekst}</p>}
+                          {x.a && x.amber && (
+                            <AanvraagKnop
+                              klantId={k.id} soort="aanbeveling" aanbevelingId={x.a.id} klein licht alGevraagd={x.a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd"
+                              label="Prijs aanvragen" titel={x.titel}
+                              uitleg="Je krijgt eerst een prijs en een voorstel van datum. Je zit nergens aan vast."
+                              placeholder="Vraag of opmerking (optioneel)"
+                            />
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </li>
-                ))}
-                {oog.map((r) => {
-                  const [kop, ...rest] = r.split(":");
-                  return (
-                    <li key={r}>
-                      <span className={kz.dosStip} aria-hidden="true" />
-                      <div className={kz.dosTekst}>
-                        <p className={kz.dosTitel}>{rest.length ? kop.trim() : r}</p>
-                        {rest.length > 0 && <p className={kz.dosSub}>{rest.join(":").trim()}</p>}
-                      </div>
+                      </details>
                     </li>
-                  );
-                })}
+                  ))}
               </ul>
             </section>
           )}
@@ -861,7 +855,6 @@ function Dakdossier({ k, controle }: Ctx) {
                     <span className={kz.dpTijdStip} aria-hidden="true" />
                     <p className={kz.dpTijdDatum}>{fmtKort(r.datum)}</p>
                     <p className={kz.dosTitel}>{r.titel}</p>
-                    {r.sub && <p className={kz.dosSub}>{r.sub}</p>}
                   </li>
                 ))}
               </ol>

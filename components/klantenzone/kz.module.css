@@ -2207,3 +2207,17 @@ div.planKop:hover { background: transparent; }
   .dpBoven, .dpMidden { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 16px; }
   .dpDocs { margin-top: 16px; }
 }
+.dpPunten { list-style: none; margin: 4px 0 0; padding: 0; }
+.dpPunten li { border-top: 1px solid var(--rand); }
+.dpPunten li:first-child { border-top: 0; }
+.dpPunten summary { display: grid; grid-template-columns: 10px minmax(0, 1fr) 16px; gap: 12px; align-items: center; padding: 13px 0; cursor: pointer; list-style: none; }
+.dpPunten summary::-webkit-details-marker { display: none; }
+.dpPunten summary:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 2px; border-radius: 6px; }
+.dpPunten .dosStip { margin-top: 0; }
+.dpPuntTitel { font-weight: 600; font-size: 15px; color: var(--tekst); }
+.dpPuntPijl { color: #8E8E89; transition: transform .2s ease; }
+.dpPunten details[open] .dpPuntPijl { transform: rotate(180deg); }
+.dpPunten summary:hover .dpPuntTitel { color: #3F6B22; }
+.dpPuntOpen { display: grid; justify-items: start; gap: 10px; padding: 0 0 14px 22px; }
+.dpPuntOpen .dosSub { margin: 0; }
+.dpTijdlijn li { padding-bottom: 14px; }
