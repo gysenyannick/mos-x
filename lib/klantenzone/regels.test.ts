@@ -113,3 +113,11 @@ describe("bonnen", () => {
     expect(b.map((x) => x.staat)).toEqual(["beschikbaar", "gebruikt"]);
   });
 });
+
+describe("spaarpot", () => {
+  it("rekent punten om naar euro en toont de volgende mijlpaal", async () => {
+    const { puntenInEuro, volgendeMijlpaal } = await import("./voordeel");
+    expect(puntenInEuro(575)).toBe(57);
+    expect(volgendeMijlpaal(575)).toEqual({ doel: 750, procent: 30 });
+  });
+});

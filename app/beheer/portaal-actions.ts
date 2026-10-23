@@ -7,7 +7,7 @@ import { getInstellingen, nieuwId, saveInstellingen, wijzigKlant, type Actie, ty
 import {
   AANVRAAG_LABEL, AANVRAAG_STATUSSEN, AANVRAAG_STATUS_LABEL, type AanvraagStatus, type Inspectie, type Klant, type VerwijzingStatus,
 } from "@/lib/klantenzone/types";
-import { beloningMag, beloningTransactie, refRegels, voegTransactieToe } from "@/lib/klantenzone/voordeel";
+import { PUNTEN, beloningMag, beloningTransactie, refRegels, voegTransactieToe } from "@/lib/klantenzone/voordeel";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 const getal = (fd: FormData, k: string) => {
@@ -41,6 +41,9 @@ export async function zetAanvraagStatusV2(id: string, aanvraagId: string, status
     if (!a || a.status === status) return null;
     a.status = status;
     (a.historiek ??= []).push({ datum: new Date().toISOString(), status });
+    if (status === "uitgevoerd" && a.soort === "onderhoud") {
+      voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.onderhoud, omschrijving: "Onderhoud uitgevoerd", sleutel: `onderhoud-${a.id}`, door: "systeem" });
+    }
     return a;
   });
   ververs(id);
@@ -132,16 +135,16 @@ export async function kenBeloningToe(id: string, vId: string): Promise<void> {
     const t = beloningTransactie(v, regels, nieuwId(8), nu);
     if (!voegTransactieToe(k, t)) return null;
     v.status = "beloond";
-    audit(k, `Beloning € ${t.bedrag} toegekend voor doorverwijzing ${v.naam} (sleutel ${t.sleutel})`);
-    k.log.unshift({ datum: nu, tekst: `Je kreeg een bon (${regels.naam.toLowerCase()}) omdat iemand via jou klant werd. Bedankt!` });
+    audit(k, `Beloning ${t.bedrag} punten toegekend voor doorverwijzing ${v.naam} (sleutel ${t.sleutel})`);
+    k.log.unshift({ datum: nu, tekst: `Je kreeg ${t.bedrag} punten omdat iemand via jou klant werd. Bedankt!` });
     return t.bedrag;
   });
   ververs(id);
   if (r?.resultaat) {
     await meldKlant(r.klant, {
       soort: "beloning", sleutel: `beloning-${vId}`,
-      onderwerp: "Je kreeg een bon van de MOS-X Kring",
-      tekst: `Iemand die jij aanbracht, werd klant. Bedankt! Je kreeg een bon: ${regels.naam.toLowerCase()}.`,
+      onderwerp: "Je kreeg punten in je MOS-X spaarpot",
+      tekst: `Iemand die jij aanbracht, werd klant. Bedankt! Je kreeg ${regels.beloning} punten in je spaarpot.`,
       knop: { label: "Bekijk je voordelen", tab: "voordelen" },
     });
   }
@@ -232,7 +235,7 @@ export async function bewaarRefRegels(fd: FormData) {
   await saveInstellingen({
     ...i,
     refBeloning: heel("refBeloning"),
-    refBeloningNaam: s(fd, "refBeloningNaam") || undefined,
+    centPerPunt: heel("centPerPunt"),
     refKorting: heel("refKorting"),
     refMinOpdracht: heel("refMinOpdracht"),
     refMaxPerKlant: heel("refMaxPerKlant"),

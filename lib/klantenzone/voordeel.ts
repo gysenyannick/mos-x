@@ -62,7 +62,7 @@ export const REF_STANDAARD_BEDRAG = 50;
 
 export function refRegels(i: Instellingen): RefRegels {
   return {
-    beloning: i.refBeloning ?? REF_STANDAARD_BEDRAG,
+    beloning: i.refBeloning ?? 500,
     naam: i.refBeloningNaam || "Onderhoudsbon",
     korting: i.refKorting ?? REF_STANDAARD_BEDRAG,
     minOpdracht: i.refMinOpdracht ?? 0,
@@ -219,4 +219,31 @@ export function tegoedBonnen(k: Klant, op = vandaag()): Bon[] {
   }
   for (const b of bonnen) b.staat = b.rest <= 0 ? "gebruikt" : b.vervaltOp && b.vervaltOp < op ? "vervallen" : "beschikbaar";
   return bonnen.reverse();
+}
+
+/* ── Spaarpot: punten in plaats van euro ────────────────────────────────── */
+
+/**
+ * Het tegoed wordt bijgehouden in punten. Elke beweging blijft bewaard (zie TegoedTransactie);
+ * de klant ruilt punten in voor korting op een volgende factuur. Nooit punten voor reviews.
+ */
+export const PUNTEN = {
+  welkom: 50,
+  deelVoorNa: 25,
+  onderhoud: 100,
+} as const;
+
+/** Standaard: zoveel punten per buur die klant wordt, en zoveel cent per punt. */
+export const PUNTEN_PER_BUUR = 500;
+export const CENT_PER_PUNT = 10;
+
+/** Waarde van punten in euro. */
+export function puntenInEuro(punten: number, centPerPunt = CENT_PER_PUNT): number {
+  return Math.floor((punten * centPerPunt) / 100);
+}
+
+/** Volgende mijlpaal (elke 250 punten) en hoe ver de klant al is. */
+export function volgendeMijlpaal(punten: number, stap = 250): { doel: number; procent: number } {
+  const doel = (Math.floor(punten / stap) + 1) * stap;
+  return { doel, procent: Math.round(((punten % stap) / stap) * 100) };
 }

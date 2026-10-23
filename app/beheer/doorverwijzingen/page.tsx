@@ -25,7 +25,7 @@ export default async function Doorverwijzingen() {
         <div><span>Doorverwijzingen</span><strong>{rijen.length}</strong><em>&nbsp;</em></div>
         <div><span>Klant geworden</span><strong>{rijen.filter((x) => ["bevestigd", "uitgevoerd", "beloond", "klant"].includes(x.v.status)).length}</strong><em>&nbsp;</em></div>
         <div><span>Klaar om te belonen</span><strong>{teBelonen.length}</strong><em>Uitgevoerd en betaald</em></div>
-        <div><span>Openstaand tegoed</span><strong>€ {openTegoed}</strong><em>Bij alle klanten samen</em></div>
+        <div><span>Punten in omloop</span><strong>{openTegoed}</strong><em>Bij alle klanten samen</em></div>
       </div>
 
       <section className={kz.kaart}>
@@ -54,8 +54,8 @@ export default async function Doorverwijzingen() {
         </p>
         <form action={bewaarRefRegels}>
           <div className={kz.velden}>
-            <div className={kz.veld}><label htmlFor="rbn">Naam van de bon (wat de klant ziet)</label><input id="rbn" name="refBeloningNaam" defaultValue={i.refBeloningNaam ?? ""} placeholder="Onderhoudsbon" className={kz.invoer} /></div>
-            <div className={kz.veld}><label htmlFor="rb">Waarde van de bon (€, 0 = uit)</label><input id="rb" name="refBeloning" inputMode="numeric" defaultValue={i.refBeloning ?? ""} placeholder="50" className={kz.invoer} /></div>
+            <div className={kz.veld}><label htmlFor="rb">Punten per buur die klant wordt (0 = uit)</label><input id="rb" name="refBeloning" inputMode="numeric" defaultValue={i.refBeloning ?? ""} placeholder="500" className={kz.invoer} /></div>
+            <div className={kz.veld}><label htmlFor="rcp">Waarde van 1 punt (eurocent)</label><input id="rcp" name="centPerPunt" inputMode="numeric" defaultValue={i.centPerPunt ?? ""} placeholder="10 (100 punten = € 10)" className={kz.invoer} /></div>
             <div className={kz.veld}><label htmlFor="rk">Korting voor de nieuwe klant (€, 0 = geen)</label><input id="rk" name="refKorting" inputMode="numeric" defaultValue={i.refKorting ?? ""} placeholder="50" className={kz.invoer} /></div>
             <div className={kz.veld}><label htmlFor="rm">Minimumwaarde opdracht (€)</label><input id="rm" name="refMinOpdracht" inputMode="numeric" defaultValue={i.refMinOpdracht ?? ""} className={kz.invoer} /></div>
             <div className={kz.veld}><label htmlFor="rmax">Maximum beloningen per klant</label><input id="rmax" name="refMaxPerKlant" inputMode="numeric" defaultValue={i.refMaxPerKlant ?? ""} className={kz.invoer} placeholder="Leeg = geen maximum" /></div>

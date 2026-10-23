@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { FROM_INTERN, esc, sendMail } from "@/lib/mail";
 import { sendToBeavr } from "@/lib/beavr";
 import { getInstellingen, getMomenten, klantVoorRefCode, listKlanten, nieuwId, saveMomenten, wijzigKlant } from "@/lib/klantenzone/store";
-import { actieVoorKlant, controleerVerwijzing, interesseVoor } from "@/lib/klantenzone/voordeel";
+import { PUNTEN, actieVoorKlant, controleerVerwijzing, interesseVoor, voegTransactieToe } from "@/lib/klantenzone/voordeel";
 import { brusselNaarDate, fmtDag, fmtUur } from "@/lib/klantenzone/tijd";
 import { AANVRAAG_LABEL, CHECKLIST, VERZET_UREN, aanvraagLoopt, type AanvraagSoort, type Klant } from "@/lib/klantenzone/types";
 
@@ -228,7 +228,11 @@ export async function zetMarketing(klantId: string, aan: boolean): Promise<void>
 
 /** De klant kiest of zijn voor- en na-foto op zijn uitnodigingslink staan. */
 export async function zetDeelVoorNa(klantId: string, aan: boolean): Promise<void> {
-  const r = await wijzigKlant(klantId, (k) => { k.deelVoorNa = aan || undefined; });
+  const r = await wijzigKlant(klantId, (k) => {
+    k.deelVoorNa = aan || undefined;
+    // Eenmalig punten, ook als de klant het later weer uitzet
+    if (aan) voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.deelVoorNa, omschrijving: "Je deelt je voor en na met je buren", sleutel: "deel-voorna", door: "systeem" });
+  });
   if (r) ververs(klantId);
 }
 

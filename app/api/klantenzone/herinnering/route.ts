@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { FROM_INTERN, esc, sendMail } from "@/lib/mail";
-import { listKlanten } from "@/lib/klantenzone/store";
+import { listKlanten, nieuwId, wijzigKlant } from "@/lib/klantenzone/store";
+import { PUNTEN, voegTransactieToe } from "@/lib/klantenzone/voordeel";
 import { effectief } from "@/lib/klantenzone/auto";
 import { meldKlant } from "@/lib/klantenzone/meldingen";
 import { binnenMosGarantie, controle12, controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
@@ -28,6 +29,10 @@ export async function GET(req: Request) {
 
   for (const ruw of await listKlanten()) {
     const k = effectief(ruw);
+    // Welkomstpunten na de oplevering (ook zonder e-mailadres)
+    if ((k.fase === "klaar" || k.fase === "nazorg") && !k.demo && !proef && !(k.tegoed ?? []).some((t) => t.sleutel === "welkom")) {
+      await wijzigKlant(k.id, (x) => { voegTransactieToe(x, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.welkom, omschrijving: "Welkom in je spaarpot", sleutel: "welkom", door: "systeem" }); });
+    }
     if (!k.email || k.demo) continue;
     const naam = `${k.voornaam} ${k.achternaam}`.trim();
     const stuur = async (soort: Parameters<typeof meldKlant>[1]) => {

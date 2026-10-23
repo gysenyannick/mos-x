@@ -37,7 +37,7 @@ export default async function Cijfers() {
       <div className={kz.zorgStats}>
         <div><span>Doorverwijzingen</span><strong>{refs.length}</strong><em>{refKlant.length} werden klant</em></div>
         <div><span>Omzet via buren</span><strong>€ {Math.round(refOmzet)}</strong><em>Uitgevoerde opdrachten</em></div>
-        <div><span>Kost beloningen</span><strong>€ {beloningKost}</strong><em>€ {tegoedGebruikt} al verrekend</em></div>
+        <div><span>Kost beloningen</span><strong>€ {Math.round((beloningKost * (i.centPerPunt ?? 10)) / 100)}</strong><em>{beloningKost} punten, {tegoedGebruikt} al ingewisseld</em></div>
         <div><span>Herhaalklanten</span><strong>{herhaal}</strong><em>Tweede behandeling of onderhoud</em></div>
       </div>
 

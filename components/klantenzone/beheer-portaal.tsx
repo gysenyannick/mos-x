@@ -104,7 +104,7 @@ export function BeheerVerwijzingen({ k, instellingen }: { k: Klant; instellingen
                   {v.status !== "beloond" && (
                     <div style={{ marginTop: 8 }}>
                       {mag ? (
-                        <form action={kenBeloningToe.bind(null, k.id, v.id)}><button className={`${kz.knop} ${kz.knopKlein} ${kz.knopPrimair}`}><Gift size={14} /> Beloning toekennen (€ {regels.beloning})</button></form>
+                        <form action={kenBeloningToe.bind(null, k.id, v.id)}><button className={`${kz.knop} ${kz.knopKlein} ${kz.knopPrimair}`}><Gift size={14} /> Beloning toekennen ({regels.beloning} punten)</button></form>
                       ) : (
                         <p className={kz.rijSub}>Beloning nog niet mogelijk: {redenen.join(" ")}</p>
                       )}
@@ -160,13 +160,13 @@ export function BeheerZorg({ k }: { k: Klant }) {
       </section>
 
       <section className={kz.kaart}>
-        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Wallet size={18} /> Onderhoudstegoed: € {saldo}</h2>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 12 }}>Elke boeking blijft bewaard. Corrigeer met een nieuwe boeking, nooit door te wissen.{vervallen ? ` Vervallen: € ${vervallen}.` : ""}</p>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Wallet size={18} /> Spaarpot: {saldo} punten</h2>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 12 }}>Elke boeking blijft bewaard. Corrigeer met een nieuwe boeking, nooit door te wissen.{vervallen ? ` Vervallen: ${vervallen} punten.` : ""}</p>
         {regels.length > 0 && (
           <ul className={kz.lijst} style={{ marginBottom: 14 }}>
             {regels.map((t) => (
               <li key={t.id} className={kz.rij}>
-                <div className={kz.rijMidden}><p className={kz.rijTitel}>{t.bedrag > 0 ? "+" : ""}€ {t.bedrag} · {t.soort}</p><p className={kz.rijSub}>{t.omschrijving} · {fmtMoment(t.datum)} · {t.door}{t.vervaltOp ? ` · geldig tot ${fmtKort(t.vervaltOp)}` : ""}</p></div>
+                <div className={kz.rijMidden}><p className={kz.rijTitel}>{t.bedrag > 0 ? "+" : ""}{t.bedrag} punten · {t.soort}</p><p className={kz.rijSub}>{t.omschrijving} · {fmtMoment(t.datum)} · {t.door}{t.vervaltOp ? ` · geldig tot ${fmtKort(t.vervaltOp)}` : ""}</p></div>
               </li>
             ))}
           </ul>
@@ -181,7 +181,7 @@ export function BeheerZorg({ k }: { k: Klant }) {
                 <option value="geannuleerd">Geannuleerd (bv. terugbetaling)</option>
               </select>
             </div>
-            <div className={kz.veld}><label htmlFor="tbedrag">Bedrag (€)</label><input id="tbedrag" name="bedrag" inputMode="decimal" required className={kz.invoer} /></div>
+            <div className={kz.veld}><label htmlFor="tbedrag">Punten</label><input id="tbedrag" name="bedrag" inputMode="decimal" required className={kz.invoer} /></div>
             <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="tom">Reden</label><input id="tom" name="omschrijving" required className={kz.invoer} placeholder="bv. Verrekend op factuur 2026-118" /></div>
           </div>
           <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Boeken</button></div>

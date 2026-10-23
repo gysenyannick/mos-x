@@ -7,14 +7,15 @@ import kz from "./kz.module.css";
 type Props = {
   naam: string;
   code: string;
-  /** Jaar waarin de klant klant werd */
-  lidSinds: string;
-  /** Aantal bonnen die nog te gebruiken zijn */
-  bonnen: number;
+  punten: number;
+  euro: number;
+  /** Volgende mijlpaal en hoe ver de klant al is */
+  doel: number;
+  procent: number;
 };
 
-/** De ledenkaart van de MOS-X Kring: kantelt mee met je muis of vinger. */
-export default function Cadeaubon({ naam, code, lidSinds, bonnen }: Props) {
+/** De spaarpot als cadeaukaart: punten, hun waarde en de volgende mijlpaal. Kantelt mee met muis of vinger. */
+export default function Cadeaubon({ naam, code, punten, euro, doel, procent }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [gekopieerd, setGekopieerd] = useState(false);
 
@@ -42,12 +43,14 @@ export default function Cadeaubon({ naam, code, lidSinds, bonnen }: Props) {
         <div className={kz.bonGlans} aria-hidden="true" />
         <div className={kz.bonBoven}>
           <span className={kz.bonMerk}>MOS-X</span>
-          <span className={kz.bonSoort}>Kring</span>
+          <span className={kz.bonSoort}>Spaarpot</span>
         </div>
         <div className={kz.bonMidden}>
-          <p className={kz.bonLabel}>Lid sinds {lidSinds}</p>
-          <p className={kz.bonNaam}>{naam}</p>
-          <p className={kz.bonSub}>{bonnen === 0 ? "Exclusief voor klanten van MOS-X" : `${bonnen} ${bonnen === 1 ? "bon" : "bonnen"} te gebruiken`}</p>
+          <p className={kz.bonLabel}>{naam}</p>
+          <p className={kz.bonBedrag}>{punten} <span className={kz.bonEenheid}>punten</span></p>
+          <p className={kz.bonSub}>= €&nbsp;{euro} korting</p>
+          <div className={kz.bonBalk} aria-label={`${procent}% tot ${doel} punten`}><span style={{ width: `${procent}%` }} /></div>
+          <p className={kz.bonDoel}>Nog {doel - punten} punten tot {doel}</p>
         </div>
         <div className={kz.bonOnder}>
           <span className={kz.bonCodeLabel}>Ledencode</span>
