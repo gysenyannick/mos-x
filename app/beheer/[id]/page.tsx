@@ -5,7 +5,7 @@ import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, MessagesSqu
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getInstellingen, getKlant } from "@/lib/klantenzone/store";
 import { effectief } from "@/lib/klantenzone/auto";
-import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
+import { fmtDag, fmtEuro, fmtKort, fmtUur, vandaag } from "@/lib/klantenzone/tijd";
 import { DOC_IS_FACTUUR, DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
 import { BeheerDak } from "@/components/klantenzone/beheer-dak";
@@ -13,9 +13,10 @@ import { BeheerAanvragenV2, BeheerVerwijzingen, BeheerZorg } from "@/components/
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
 import {
   bewaarKlant, nieuweLink, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
-  opmerkingGezien, verwijderNotitie, verwijderOpmerking, voegAfspraakToe, voegNotitieToe, voegOpmerkingToe,
+  opmerkingGezien, verwijderNotitie, verwijderOpmerking, voegAfspraakToe, voegOpmerkingToe,
   zetDocumentStatus,
 } from "../actions";
+import DagverslagForm from "@/components/klantenzone/dagverslag-form";
 import kz from "@/components/klantenzone/kz.module.css";
 
 /** Belgisch gsm-nummer → internationaal formaat voor wa.me */
@@ -80,6 +81,27 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
       </section>
 
       <BeheerAanvragenV2 k={k} />
+
+      {/* ── Notities ── */}
+      <section className={kz.kaart}>
+        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><NotebookPen size={18} /> Notities en dagverslag ({(k.notities ?? []).length})</h2>
+        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Kies de dag, schrijf wat er gebeurde en voeg foto&apos;s toe. De klant ziet het bij Mijn werken, op die dag.</p>
+        <DagverslagForm klantId={k.id} vandaag={vandaag()} />
+        {(k.notities ?? []).length > 0 && (
+          <ul className={kz.lijst} style={{ marginTop: 16 }}>
+            {(k.notities ?? []).map((n) => (
+              <li key={n.id} className={kz.rij} style={{ alignItems: "flex-start" }}>
+                <div className={kz.rijMidden}>
+                  {n.titel && <p className={kz.rijTitel}>{n.titel}</p>}
+                  <p className={kz.notitieTekst} style={{ fontSize: 14, marginTop: n.titel ? 2 : 0 }}>{n.tekst}</p>
+                  <p className={kz.rijSub}>{fmtKort(n.datum)}</p>
+                </div>
+                <BevestigKnop actie={verwijderNotitie.bind(null, k.id, n.id)} vraag="Notitie verwijderen?"><Trash2 size={14} /></BevestigKnop>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <div className={kz.grid2} style={{ alignItems: "start", marginTop: 14 }}>
         {/* ── Gegevens & status ── */}
@@ -257,32 +279,6 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
         )}
       </section>
 
-      {/* ── Notities ── */}
-      <section className={kz.kaart}>
-        <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><NotebookPen size={18} /> Dagverslag ({(k.notities ?? []).length})</h2>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>Verschijnen in het logboek van de klant: wat je zag op het dak, onderhoudstips, gemaakte afspraken.</p>
-        <form action={voegNotitieToe.bind(null, k.id)}>
-          <div className={kz.velden}>
-            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntitel">Titel (optioneel)</label><input id="ntitel" name="titel" className={kz.invoer} placeholder="bv. Twee gebroken pannen vervangen" /></div>
-            <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ntekst">Wat er gebeurde (de klant ziet dit bij Overzicht en Foto&apos;s)</label><textarea id="ntekst" name="tekst" className={kz.invoer} required placeholder="bv. Dag 1: het hele dak is gereinigd. Aan de noordkant lagen twee pannen gebarsten, die zijn vervangen." /></div>
-          </div>
-          <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Verslag toevoegen</button></div>
-        </form>
-        {(k.notities ?? []).length > 0 && (
-          <ul className={kz.lijst} style={{ marginTop: 16 }}>
-            {(k.notities ?? []).map((n) => (
-              <li key={n.id} className={kz.rij} style={{ alignItems: "flex-start" }}>
-                <div className={kz.rijMidden}>
-                  {n.titel && <p className={kz.rijTitel}>{n.titel}</p>}
-                  <p className={kz.notitieTekst} style={{ fontSize: 14, marginTop: n.titel ? 2 : 0 }}>{n.tekst}</p>
-                  <p className={kz.rijSub}>{fmtKort(n.datum)}</p>
-                </div>
-                <BevestigKnop actie={verwijderNotitie.bind(null, k.id, n.id)} vraag="Notitie verwijderen?"><Trash2 size={14} /></BevestigKnop>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
 
       {/* ── Foto's ── */}
       <section className={kz.kaart}>

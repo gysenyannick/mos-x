@@ -204,9 +204,10 @@ export async function voegNotitieToe(id: string, fd: FormData) {
   const k = await laad(id);
   const tekst = s(fd, "tekst");
   if (!tekst) return;
+  const dag = s(fd, "datum");
   (k.notities ??= []).unshift({
     id: nieuwId(6),
-    datum: new Date().toISOString(),
+    datum: /^\d{4}-\d{2}-\d{2}$/.test(dag) && dag !== new Date().toISOString().slice(0, 10) ? `${dag}T15:00:00.000Z` : new Date().toISOString(),
     titel: s(fd, "titel") || undefined,
     tekst,
   });

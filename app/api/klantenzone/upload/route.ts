@@ -38,8 +38,10 @@ export async function POST(req: NextRequest) {
       const url = await bewaarBestand(`${klantId}/fotos`, naam, file);
       const r = await wijzigKlant(klantId, (k) => {
         if (!beheerder && k.fotos.filter((f) => f.fase === "klant").length >= MAX_KLANT_FOTOS) return false;
+        const dag = String(fd.get("datum") ?? "");
+        const fotoDatum = beheerder && /^\d{4}-\d{2}-\d{2}$/.test(dag) && dag !== nu.slice(0, 10) ? `${dag}T12:00:00.000Z` : nu;
         k.fotos.unshift({
-          id: nieuwId(6), url, fase, datum: nu,
+          id: nieuwId(6), url, fase, datum: fotoDatum,
           bijschrift: String(fd.get("bijschrift") ?? "").trim().slice(0, 140) || undefined,
         });
         if (beheerder) {

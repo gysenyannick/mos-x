@@ -632,16 +632,15 @@ function MijnWerken(ctx: Ctx) {
           <div className={kz.voortgangBalk} aria-hidden="true">
             {werken.map((w) => <span key={w.id} className={w.status === "klaar" ? kz.vgKlaar : w.status === "bezig" ? kz.vgNu : undefined} />)}
           </div>
-          <dl className={kz.voortgangInfo}>
-            <div><dt>Vandaag</dt><dd>{nu ? nu.naam : "Geen werken gepland"}</dd></div>
-            <div><dt>Volgende</dt><dd>{komend ? `${komend.titel}, ${fmtDag(komend.start)} om ${fmtUur(komend.start)}` : "Nog niets gepland"}</dd></div>
-          </dl>
+          <p className={kz.voortgangVolgende}>
+            {nu ? <><strong>Vandaag:</strong> {nu.naam.toLowerCase()}. </> : null}
+            <strong>Volgende stap:</strong> {komend ? `${komend.titel.toLowerCase()} op ${fmtDag(komend.start)} om ${fmtUur(komend.start)}` : klaar === werken.length ? "je werken zijn afgerond" : "de datum volgt"}.
+          </p>
         </section>
       )}
 
-      {(k.fase === "gepland" || k.fase === "bezig") && CHECKLIST.some((c) => !k.checklist?.[c.id]) && <Checklist k={k} />}
+      {k.fase === "gepland" && <Checklist k={k} />}
 
-      <h2 className={kz.sectieTitel}>Dag per dag</h2>
       {dagen.length === 0 && <Leeg>Zodra je werken ingepland zijn, zie je hier elke dag wat er gebeurt.</Leeg>}
       <ol className={kz.tijdlijn}>
         {dagen.map((d) => {
@@ -1273,8 +1272,6 @@ export default async function KlantPagina({
         </div>
       </header>
 
-      {k.demo && <p className={kz.demoBalk}>Voorbeelddossier met fictieve gegevens, enkel om de klantenzone te tonen.</p>}
-
       <div className={kz.dash}>
         <aside className={kz.zijbalk}>
           <nav aria-label="Klantenzone">
@@ -1292,7 +1289,7 @@ export default async function KlantPagina({
           <div className={kz.zijOnder}>
             <Link className={kz.spoed} href="?tab=hulp#storm">
               <Siren size={20} />
-              <span><strong>Stormschade of probleem?</strong>Meld het hier, of bel {SPOED_TOON}</span>
+              <span><strong>Stormschade?</strong>Meld het hier</span>
             </Link>
             <div className={kz.zijKlant}>
               <span className={kz.avatar}>{k.voornaam.charAt(0)}{k.achternaam.charAt(0)}</span>
@@ -1305,6 +1302,7 @@ export default async function KlantPagina({
         </aside>
 
         <div className={kz.inhoud}>
+          {k.demo && <p className={kz.demoBalk}>Voorbeelddossier met fictieve gegevens.</p>}
           {tab === "overzicht" && <Overzicht {...ctx} />}
           {tab === "werken" && <MijnWerken {...ctx} />}
           {tab === "dossier" && <Dakdossier {...ctx} />}
