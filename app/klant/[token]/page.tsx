@@ -20,7 +20,7 @@ import {
   maandagVan, nuMs, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
-  AANVRAAG_LABEL, AANVRAAG_STATUS_LABEL, AFSPRAAK_TIPS, CHECKLIST, DOC_GROEPEN, EXTRAS, FASES, FASE_KORT,
+  AFSPRAAK_TIPS, CHECKLIST, DOC_GROEPEN, EXTRAS, FASES, FASE_KORT,
   FASE_LABEL, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, VERZET_UREN, WERK_UITLEG, aanvraagLoopt,
   type Afspraak, type Klant, type VrijMoment, type Werk,
 } from "@/lib/klantenzone/types";
@@ -807,10 +807,6 @@ function Dakdossier({ k }: Ctx) {
           <div className={kz.opmRaster}>
             {opm.map((a) => (
               <article key={a.id} className={kz.opmKaart}>
-                {a.fotoUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={a.fotoUrl} alt="" className={kz.opmFoto} />
-                ) : <div className={`${kz.opmFoto} ${kz.opmFotoLeeg}`} aria-hidden="true"><Leaf size={26} /></div>}
                 <div className={kz.opmInhoud}>
                   <span className={`${kz.opmLabel} ${a.prioriteit === "info" ? kz.opmLabelInfo : ""}`}>{a.prioriteit === "info" ? "Ter info" : a.prioriteit === "dringend" ? "Dringend" : "Aanbevolen"}</span>
                   <h3 className={kz.opmTitel}>{a.titel}</h3>
@@ -927,29 +923,31 @@ function Dakzorg(ctx: Ctx) {
 
 function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
   const gevraagd = (soort: string, naam?: string) => (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.soort === soort && (!naam || a.tekst.startsWith(naam)));
-  const aanvragen = k.aanvragen ?? [];
   const diensten = EXTRAS.filter((x) => x.id !== "coating" || k.garantie.coatingJaren === 0);
+  const naWerken = k.fase === "klaar" || k.fase === "nazorg";
   return (
     <>
-      <PaginaKop titel="Diensten" sub="Nog iets laten doen? Je krijgt eerst een prijs, op maat van je woning." />
+      <PaginaKop titel="Diensten" sub="Exclusief voor klanten van MOS-X, doorheen het jaar." />
 
-      {aanvragen.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}>Mijn aanvragen</h2></div>
-          <ul className={kz.aanvraagLijst}>
-            {aanvragen.map((a) => (
-              <li key={a.id}>
-                <div>
-                  <p className={kz.rijTitel}>{AANVRAAG_LABEL[a.soort]}</p>
-                  {a.tekst && <p className={kz.rijSub}>{a.tekst}</p>}
-                  <p className={kz.rijSub}>{fmtKort(a.datum)}{a.fotos?.length ? ` · ${a.fotos.length} foto${a.fotos.length > 1 ? "'s" : ""}` : ""}</p>
-                </div>
-                <span className={`${kz.badge} ${aanvraagLoopt(a.status) ? kz.badgeAmber : kz.badgeGroen}`}>{AANVRAAG_STATUS_LABEL[a.status]}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <section className={kz.dienstHero}>
+        <span className={kz.buurOog}>Enkel voor klanten</span>
+        <p className={kz.buurTitel}>{naWerken ? "Nu je dak proper is, zorgen we ook voor de rest" : "Ook voor de rest van je woning"}</p>
+        <p className={kz.buurSub}>Dakgoten, gevel, oprit en terras. Yannick doet het zelf, en je krijgt altijd eerst een eerlijke prijs.</p>
+      </section>
+
+      <section id="combi" className={kz.combiKaart}>
+        <span className={kz.combiProcent}>−20%</span>
+        <div className={kz.combiTekst}>
+          <p className={kz.combiTitel}>Combineer twee diensten en krijg tot 20% korting</p>
+          <p className={kz.combiSub}>Bijvoorbeeld je dakgoten samen met je oprit of gevel. Alles op één dag, dus voordeliger voor jou.</p>
+        </div>
+        <div className={kz.combiKnop}>
+          <AanvraagKnop klantId={k.id} soort="extra" voorvoegsel="Combinatie van twee diensten" metFotos={false} klein alGevraagd={gevraagd("extra", "Combinatie")} alGevraagdTekst="Aangevraagd"
+            label="Combinatie aanvragen" titel="Twee diensten combineren" uitleg="Laat weten welke diensten je wil combineren. Je krijgt eerst een prijs, met tot 20% korting." placeholder="bv. Dakgoten en oprit." />
+        </div>
+      </section>
+
+      <h2 className={kz.sectieTitel}>Onze diensten</h2>
 
       <div className={kz.dienstLijst}>
         {onderhoudZinvol(k) && (
@@ -1049,6 +1047,16 @@ function Voordelen(ctx: Ctx) {
           )}
         </div>
       </section>
+
+      <h2 className={kz.sectieTitel}>Actie</h2>
+      <Link href="?tab=diensten#combi" className={`${kz.combiKaart} ${kz.combiLink}`}>
+        <span className={kz.combiProcent}>−20%</span>
+        <div className={kz.combiTekst}>
+          <p className={kz.combiTitel}>Combineer twee diensten en krijg tot 20% korting</p>
+          <p className={kz.combiSub}>Bijvoorbeeld je dakgoten samen met je oprit of gevel.</p>
+        </div>
+        <ArrowRight size={20} className={kz.combiPijl} />
+      </Link>
 
       {transacties.length > 0 && (
         <details className={`${kz.kaart} ${kz.puntenHistoriek}`}>
@@ -1184,7 +1192,13 @@ function Hulp({ k }: Ctx) {
         <OpmerkingForm klantId={k.id} />
       </section>
 
-      <section className={kz.kaart} id="storm">
+      <section className={`${kz.kaart} ${kz.spoedKaart}`} id="storm">
+        <h2 className={kz.kaartTitel}><Siren size={18} /> Storm of een dringende vraag?</h2>
+        <p className={kz.sub} style={{ marginTop: 4 }}>Bel Yannick of stuur een WhatsApp, dan helpt hij je zo snel mogelijk. Of meld het hieronder met foto&apos;s.</p>
+        <div className={kz.spoedRij}>
+          <a className={`${kz.knop} ${kz.knopPrimair}`} href={`tel:${SPOED_TEL}`}>Bel {SPOED_TOON}</a>
+          <a className={`${kz.knop} ${kz.knopLicht}`} href={waLink(k, "iets dringends")} target="_blank" rel="noopener noreferrer"><WaIcoon size={17} /> WhatsApp</a>
+        </div>
         <StormForm klantId={k.id} spoedTel={SPOED_TEL} spoedToon={SPOED_TOON} />
         {(k.stormMeldingen ?? []).length > 0 && (
           <ul className={kz.aanvraagLijst} style={{ marginTop: 18 }}>
@@ -1327,7 +1341,7 @@ export default async function KlantPagina({
           </Link>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span className={kz.topLabel}>Jouw klantenzone</span>
-            <Link className={`${kz.spoedRond} ${kz.alleenMobiel}`} href="?tab=hulp#storm" aria-label="Stormschade of probleem melden"><Siren size={15} /> Melden</Link>
+            <Link className={`${kz.spoedRond} ${kz.alleenMobiel}`} href="?tab=hulp#storm" aria-label="Storm of dringende vraag"><Siren size={15} /> Dringend</Link>
             <a className={kz.waRond} href={waLink(k)} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Yannick"><WaIcoon size={20} /></a>
           </div>
         </div>
@@ -1348,10 +1362,15 @@ export default async function KlantPagina({
             </ul>
           </nav>
           <div className={kz.zijOnder}>
-            <Link className={kz.spoed} href="?tab=hulp#storm">
-              <Siren size={20} />
-              <span><strong>Stormschade?</strong>Meld het hier</span>
-            </Link>
+            <div className={kz.spoedBlok}>
+              <p><Siren size={18} /> <strong>Storm of dringend?</strong></p>
+              <span>Yannick helpt je zo snel mogelijk.</span>
+              <div className={kz.spoedKnoppen}>
+                <a href={`tel:${SPOED_TEL}`}>Bel</a>
+                <a href={waLink(k, "iets dringends")} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+              </div>
+              <Link href="?tab=hulp#storm">Of meld het met foto&apos;s</Link>
+            </div>
             <div className={kz.zijKlant}>
               <span className={kz.avatar}>{k.voornaam.charAt(0)}{k.achternaam.charAt(0)}</span>
               <div style={{ minWidth: 0 }}>
