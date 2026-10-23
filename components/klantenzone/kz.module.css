@@ -210,8 +210,6 @@
 .balkIn { height: 100%; background: var(--groen); border-radius: 99px; }
 
 /* ── Tijdlijn ──────────────────────────────────────────── */
-.tijdlijn { list-style: none; margin: 0; padding: 0 0 0 18px; position: relative; }
-.tijdlijn::before { content: ""; position: absolute; left: 4px; top: 6px; bottom: 6px; width: 2px; background: var(--lijn); }
 .tijdItem { position: relative; padding: 0 0 14px; }
 .tijdItem::before {
   content: ""; position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%;

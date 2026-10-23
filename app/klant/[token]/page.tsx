@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowRight, CalendarDays, Camera, CheckCircle2, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
+  ArrowRight, CalendarDays, Camera, Check, CheckCircle2, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
   Leaf, LifeBuoy, MessagesSquare, ShieldCheck, Siren, Star, Tag, UserRound, Wallet, Wrench,
 } from "lucide-react";
 import { headers } from "next/headers";
@@ -651,7 +651,7 @@ function MijnWerken(ctx: Ctx) {
           const info = d.afspraken.map((a) => a.info || AFSPRAAK_TIPS[a.titel]).filter(Boolean) as string[];
           return (
             <li key={d.dag} className={staat === "vandaag" ? kz.tlVandaag : staat === "gedaan" ? kz.tlGedaan : undefined}>
-              <span className={kz.tlPunt} aria-hidden="true">{staat === "gedaan" ? <CheckCircle2 size={16} /> : null}</span>
+              <span className={kz.tlPunt} aria-hidden="true">{staat === "gedaan" ? <Check size={15} strokeWidth={3} /> : null}</span>
               <div className={kz.tlKaart}>
                 <div className={kz.tlKop}>
                   <div>
