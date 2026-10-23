@@ -429,7 +429,6 @@ function Overzicht(ctx: Ctx) {
   const volgende = komend.find((a) => !(bezigWerk && a.start.slice(0, 10) === vandaag() && a.titel === bezigWerk.naam));
   const stap = volgendeStap(k, volgende);
   const berichtVers = !!k.bericht && (!k.berichtDatum || dagenTot(k.berichtDatum.slice(0, 10)) >= -7);
-  const melding = [...(k.opmerkingen ?? [])].reverse().find((o) => o.belangrijk && o.van === "yannick" && dagenTot(o.datum.slice(0, 10)) >= -14);
   const periode = werkPeriode(k);
   const laatsteDag = k.fase === "bezig" || k.fase === "klaar" ? werkdagen(k).find((d) => !!periode.van && d.dag >= periode.van && (!periode.tot || d.dag <= periode.tot)) : undefined;
   const behandeling = laatsteBehandeling(k);
@@ -453,7 +452,6 @@ function Overzicht(ctx: Ctx) {
         <h2 className={kz.statusZin}>{statusZin(k, volgende)}</h2>
         <p className={kz.statusVolgende}>
           <strong>Volgende:</strong> {stap.tekst}
-          {stap.link && <> <Link href={`?tab=${stap.link.tab}`} className={kz.statusLink}>{stap.link.label} <ArrowRight size={13} /></Link></>}
         </p>
 
         <div className={kz.fasen} aria-label={`Stap ${faseIndex + 1} van ${FASES.length}: ${FASE_LABEL[k.fase]}`}>
@@ -487,9 +485,6 @@ function Overzicht(ctx: Ctx) {
         )}
       </section>
 
-      {melding && (
-        <Link href="?tab=hulp" className={kz.meldingBalk}><strong>Belangrijk</strong> {melding.tekst}</Link>
-      )}
 
       {naWerken && <ReviewKaart {...ctx} />}
 
@@ -627,8 +622,6 @@ function MijnWerken(ctx: Ctx) {
   const dagen = tijdlijn(k);
   // Enkel echte werkdagen krijgen een nummer, de oplevering niet
   const nummers = new Map(dagen.filter((d) => d.werken.length || d.verslag).map((d, i) => [d.dag, i + 1]));
-  const voor = k.fotos.find((f) => f.fase === "voor");
-  const na = k.fotos.find((f) => f.fase === "na");
   const ongedateerd = werken.filter((w) => !w.datum);
 
   return (
@@ -638,7 +631,7 @@ function MijnWerken(ctx: Ctx) {
       {werken.length > 0 && (
         <section className={kz.kaart}>
           <div className={kz.voortgangKop}>
-            <p className={kz.voortgangGetal}><strong>{klaar}</strong> van {werken.length} werken klaar</p>
+            <p className={kz.voortgangGetal}>{klaar === werken.length ? <strong className={kz.voortgangKlaar}>Alle werken zijn afgerond</strong> : klaar === 0 ? <strong className={kz.voortgangKlaar}>Je werken zijn ingepland</strong> : <><strong>{klaar}</strong> van de {werken.length} werken afgerond</>}</p>
             <span className={`${kz.badge} ${klaar === werken.length ? kz.badgeGroen : kz.badgeAmber}`}>{klaar === werken.length ? "Afgerond" : FASE_LABEL[k.fase]}</span>
           </div>
           <div className={kz.voortgangBalk} aria-hidden="true">
@@ -715,12 +708,6 @@ function MijnWerken(ctx: Ctx) {
         ))}
       </ol>
 
-      {voor && na && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}>Voor en na</h2></div>
-          <VoorNa voor={voor.url} na={na.url} />
-        </section>
-      )}
     </>
   );
 }

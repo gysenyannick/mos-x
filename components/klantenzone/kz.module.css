@@ -1651,3 +1651,4 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .page .zijOnder { margin-top: auto; }
   .page .topbarIn { max-width: none !important; padding: 0 24px; }
 }
+.voortgangGetal strong.voortgangKlaar { font-size: 22px; margin-right: 0; }
