@@ -104,8 +104,8 @@ export function beloningMag(k: Klant, v: Verwijzing, r: RefRegels): { mag: boole
   if (r.beloning <= 0) redenen.push("Er is geen beloning ingesteld.");
   if (v.status !== "uitgevoerd") redenen.push("De opdracht is nog niet als uitgevoerd aangeduid.");
   if (!v.betaald) redenen.push("De opdracht is nog niet volledig betaald.");
-  if (v.werk === "klein" && !v.opdrachtWaarde) redenen.push("Vul de opdrachtwaarde in: bij een klein werk is de beloning een percentage.");
-  if (r.minOpdracht > 0 && v.werk !== "klein" && (v.opdrachtWaarde ?? 0) < r.minOpdracht) redenen.push(`De opdrachtwaarde is lager dan € ${r.minOpdracht}.`);
+  if (v.werk === "ander") redenen.push("Enkel een dakreiniging geeft een beloning.");
+  if (r.minOpdracht > 0 && (v.opdrachtWaarde ?? 0) < r.minOpdracht) redenen.push(`De opdrachtwaarde is lager dan € ${r.minOpdracht}.`);
   if (r.maxPerKlant > 0 && aantalBeloningen(k) >= r.maxPerKlant) redenen.push(`Het maximum van ${r.maxPerKlant} beloningen is bereikt.`);
   if ((k.tegoed ?? []).some((t) => t.sleutel === refSleutel(v))) redenen.push("De beloning werd al toegekend.");
   if ((v.controle ?? []).some((c) => c.startsWith("Blokkeert:"))) redenen.push("Een controle blokkeert deze doorverwijzing.");
@@ -113,21 +113,13 @@ export function beloningMag(k: Klant, v: Verwijzing, r: RefRegels): { mag: boole
 }
 
 /** Maakt de transactie voor een toegekende beloning. */
-/** Soort werk van de buur. Dak en gevel: vaste beloning. Kleinere werken (goten, oprit, terras): een percentage. */
-export type RefWerk = "dak" | "gevel" | "klein";
-export const REF_WERK_LABEL: Record<RefWerk, string> = { dak: "Dakreiniging of dakcoating", gevel: "Gevelreiniging", klein: "Dakgoten, oprit of terras" };
-export const REF_PCT_KLEIN = 10;
-
-/** De beloning in punten voor deze buur. Bij een klein werk zonder opdrachtwaarde: 0. */
-export function refBeloningPunten(v: Verwijzing, r: RefRegels): number {
-  if (v.werk !== "klein") return r.beloning;
-  const euro = ((v.opdrachtWaarde ?? 0) * REF_PCT_KLEIN) / 100;
-  return Math.round((euro * 100) / r.centPerPunt);
-}
+/** Soort werk van de buur: enkel een dakreiniging geeft een beloning. */
+export type RefWerk = "dak" | "ander";
+export const REF_WERK_LABEL: Record<RefWerk, string> = { dak: "Dakreiniging", ander: "Ander werk (geen beloning)" };
 
 export function beloningTransactie(v: Verwijzing, r: RefRegels, id: string, nu: string): TegoedTransactie {
   return {
-    id, datum: nu, soort: "toegekend", bedrag: refBeloningPunten(v, r),
+    id, datum: nu, soort: "toegekend", bedrag: r.beloning,
     omschrijving: `Omdat ${v.naam.split(" ")[0]} klant werd`,
     sleutel: refSleutel(v),
     vervaltOp: r.geldigMaanden > 0 ? plusDagen(nu.slice(0, 10), Math.round(r.geldigMaanden * 30.44)) : undefined,

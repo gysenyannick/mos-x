@@ -115,7 +115,7 @@ export async function bewaarVerwijzing(id: string, vId: string, fd: FormData) {
     if (v.status !== "beloond" && VERWIJZING_FLOW.includes(status)) v.status = status;
     v.opdrachtWaarde = getal(fd, "opdrachtWaarde");
     const werk = s(fd, "werk");
-    v.werk = werk === "gevel" || werk === "klein" ? werk : "dak";
+    v.werk = werk === "ander" ? "ander" : "dak";
     v.betaald = s(fd, "betaald") === "ja";
     v.reden = s(fd, "reden") || undefined;
     const nieuw = JSON.stringify({ st: v.status, w: v.opdrachtWaarde, b: v.betaald, werk: v.werk });

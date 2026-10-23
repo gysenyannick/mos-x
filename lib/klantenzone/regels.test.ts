@@ -4,7 +4,7 @@ import type { Actie } from "./store";
 import { binnenMosGarantie, controle12, mosGarantieTot, volgendeControle } from "./onderhoud";
 import {
   actieVoorKlant, beloningMag, beloningTransactie, campagneMarge, campagneStaat, controleerVerwijzing,
-  refBeloningPunten, refRegels, tegoedOverzicht, voegTransactieToe,
+  refRegels, tegoedOverzicht, voegTransactieToe,
 } from "./voordeel";
 
 function klant(x: Partial<Klant> = {}): Klant {
@@ -122,15 +122,10 @@ describe("spaarpot", () => {
   });
 });
 
-describe("beloning per soort werk", () => {
-  it("dak en gevel geven de vaste beloning, een klein werk 10% van de opdracht", () => {
-    expect(refBeloningPunten(buur({ werk: "dak" }), regels)).toBe(regels.beloning);
-    expect(refBeloningPunten(buur({ werk: "gevel" }), regels)).toBe(regels.beloning);
-    expect(refBeloningPunten(buur({ werk: "klein", opdrachtWaarde: 200 }), regels)).toBe(200); // € 20 = 200 punten
-  });
-  it("een klein werk zonder opdrachtwaarde kan niet beloond worden", () => {
-    const { mag, redenen } = beloningMag(klant(), buur({ werk: "klein", status: "uitgevoerd", betaald: true }), regels);
+describe("enkel een dakreiniging wordt beloond", () => {
+  it("een ander werk geeft geen beloning", () => {
+    const { mag, redenen } = beloningMag(klant(), buur({ werk: "ander", status: "uitgevoerd", betaald: true, opdrachtWaarde: 900 }), regels);
     expect(mag).toBe(false);
-    expect(redenen.join(" ")).toContain("opdrachtwaarde");
+    expect(redenen.join(" ")).toContain("dakreiniging");
   });
 });

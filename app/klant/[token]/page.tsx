@@ -13,7 +13,7 @@ import {
 import { effectief } from "@/lib/klantenzone/auto";
 import { dakfoto, heeftDossier, onderhoudZinvol, werkdagen, type Werkdag } from "@/lib/klantenzone/dak";
 import {
-  CENT_PER_PUNT, REF_PCT_KLEIN, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
+  CENT_PER_PUNT, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
 } from "@/lib/klantenzone/voordeel";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
@@ -1015,10 +1015,9 @@ function Voordelen(ctx: Ctx) {
   const inwisselGevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && (a.tekst.startsWith("Punten inwisselen") || a.tekst.startsWith("Tegoed gebruiken")));
   const buurEuro = puntenInEuro(regels.beloning, ctx.centPerPunt);
   const verdienen = [
-    actief ? { kop: "Een buur wordt klant voor" } : null,
-    actief ? { tekst: "Dak reinigen of coaten", punten: `+${regels.beloning}`, waarde: `€ ${buurEuro}` } : null,
-    actief ? { tekst: "Gevel reinigen", punten: `+${regels.beloning}`, waarde: `€ ${buurEuro}` } : null,
-    actief ? { tekst: "Goten, oprit, terras", punten: "", waarde: `${REF_PCT_KLEIN}%` } : null,
+    actief ? { kop: "Een buur laat zijn dak reinigen" } : null,
+    actief ? { tekst: "Jij krijgt", punten: `+${regels.beloning}`, waarde: `€ ${buurEuro}` } : null,
+    actief && regels.korting > 0 ? { tekst: "Je buur krijgt", punten: "", waarde: `€ ${regels.korting}` } : null,
     ctx.reviewPunten > 0 ? { kop: "Zelf" } : null,
     ctx.reviewPunten > 0 ? { tekst: "Review op Google", punten: `+${ctx.reviewPunten}`, waarde: `€ ${puntenInEuro(ctx.reviewPunten, ctx.centPerPunt)}` } : null,
   ].filter((x) => x !== null);
@@ -1078,8 +1077,8 @@ function Voordelen(ctx: Ctx) {
           <section className={kz.kaart} style={{ marginTop: 0 }}>
             <ol className={kz.burenStappen}>
               <li><span>1</span><p><strong>Deel je link of ledencode</strong> met buren, familie of vrienden.</p></li>
-              <li><span>2</span><p><strong>Je buur vraagt een offerte aan.</strong>{regels.korting > 0 ? ` Hij krijgt € ${regels.korting} korting op zijn eerste opdracht.` : ""}</p></li>
-              <li><span>3</span><p><strong>Is zijn opdracht uitgevoerd en betaald,</strong> dan krijg jij € {puntenInEuro(regels.beloning, ctx.centPerPunt)} voor een dak of gevel, of {REF_PCT_KLEIN}% van het werk bij goten, oprit of terras.</p></li>
+              <li><span>2</span><p><strong>Je buur vraagt een offerte aan voor een dakreiniging.</strong>{regels.korting > 0 ? ` Hij krijgt € ${regels.korting} korting op zijn eerste opdracht.` : ""}</p></li>
+              <li><span>3</span><p><strong>Is zijn opdracht uitgevoerd en betaald,</strong> dan krijg jij € {puntenInEuro(regels.beloning, ctx.centPerPunt)}. Dit geldt voor een dakreiniging.</p></li>
             </ol>
             <DeelBuurlink url={refUrl} voornaam={k.voornaam} korting={regels.korting} />
             <div className={kz.qrRij}>

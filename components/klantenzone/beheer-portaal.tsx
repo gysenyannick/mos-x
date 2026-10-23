@@ -8,7 +8,7 @@ import { fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
 import {
   AANVRAAG_LABEL, AANVRAAG_STATUSSEN, AANVRAAG_STATUS_LABEL, CHECKLIST, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, aanvraagLoopt, type Klant,
 } from "@/lib/klantenzone/types";
-import { REF_PCT_KLEIN, REF_WERK_LABEL, beloningMag, refRegels, tegoedOverzicht, type RefWerk } from "@/lib/klantenzone/voordeel";
+import { REF_WERK_LABEL, beloningMag, refRegels, tegoedOverzicht, type RefWerk } from "@/lib/klantenzone/voordeel";
 import { BevestigKnop } from "./beheer-client";
 import kz from "./kz.module.css";
 
@@ -95,7 +95,7 @@ export function BeheerVerwijzingen({ k, instellingen }: { k: Klant; instellingen
                       <div className={kz.veld}>
                         <label htmlFor={`werk-${v.id}`}>Soort werk</label>
                         <select id={`werk-${v.id}`} name="werk" defaultValue={v.werk ?? "dak"} className={kz.invoer}>
-                          {(Object.keys(REF_WERK_LABEL) as RefWerk[]).map((w) => <option key={w} value={w}>{REF_WERK_LABEL[w]}{w === "klein" ? ` (${REF_PCT_KLEIN}%)` : ""}</option>)}
+                          {(Object.keys(REF_WERK_LABEL) as RefWerk[]).map((w) => <option key={w} value={w}>{REF_WERK_LABEL[w]}</option>)}
                         </select>
                       </div>
                       <div className={kz.veld}><label htmlFor={`w-${v.id}`}>Opdrachtwaarde (€)</label><input id={`w-${v.id}`} name="opdrachtWaarde" inputMode="decimal" defaultValue={v.opdrachtWaarde ?? ""} className={kz.invoer} /></div>
