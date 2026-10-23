@@ -20,7 +20,7 @@ import {
   maandagVan, nuMs, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
-  AFSPRAAK_TIPS, CHECKLIST, DOC_GROEPEN, EXTRAS, FASES, FASE_KORT,
+  AFSPRAAK_TIPS, CHECKLIST, EXTRAS, FASES, FASE_KORT,
   FASE_LABEL, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, VERZET_UREN, WERK_UITLEG, aanvraagLoopt,
   type Afspraak, type Klant, type VrijMoment, type Werk,
 } from "@/lib/klantenzone/types";
@@ -780,39 +780,42 @@ function Dakdossier({ k }: Ctx) {
       </section>
 
       {garantie.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}>
-            <h2 className={kz.kaartTitel}><ShieldCheck size={18} /> Garantie</h2>
+        <>
+          <div className={kz.dosKop}>
+            <h2 className={kz.sectieTitel}>Garantie</h2>
             {certificaat && <a href={certificaat.url} target="_blank" rel="noopener noreferrer" className={kz.meerLink}>Certificaat <ArrowRight size={14} /></a>}
           </div>
-          <div className={kz.garantieBalken}>
+          <div className={kz.garTegels}>
             {garantie.map((g) => (
               <div key={g.id}>
-                <div className={kz.gbKop}>
-                  <span><strong>{g.jaren} jaar</strong> {g.naam.toLowerCase()}</span>
-                  <span className={kz.gbRest}>{g.tekst}</span>
+                <div className={kz.garBoven}>
+                  <span className={kz.garIcoon}><ShieldCheck size={18} /></span>
+                  <span className={kz.garNaam}>{g.naam}</span>
+                  <span className={kz.garStatus}>{g.tot ? g.tekst : "Start bij oplevering"}</span>
                 </div>
+                <p className={kz.garJaren}>{g.jaren} jaar</p>
                 <div className={kz.gbBalk}><span style={{ width: `${Math.max(g.procent, g.tot ? 3 : 0)}%` }} /></div>
-                {g.tot && <p className={kz.gbTot}>Geldig tot {fmtKort(g.tot)}</p>}
+                <p className={kz.garTot}>{g.tot ? `Geldig tot ${fmtKort(g.tot)}` : "Loopt vanaf de dag van de oplevering"}</p>
               </div>
             ))}
           </div>
-          {garantie.some((g) => !g.tot) && <p className={kz.gbTot} style={{ marginTop: 12 }}>Je garantie start op de dag van de oplevering.</p>}
-        </section>
+        </>
       )}
 
-      {opm.length > 0 && (
+      {(opm.length > 0 || oog.length > 0) && (
         <>
-          <h2 className={kz.sectieTitel}>Opmerkingen</h2>
-          <div className={kz.opmRaster}>
-            {opm.map((a) => (
-              <article key={a.id} className={kz.opmKaart}>
-                <div className={kz.opmInhoud}>
-                  <span className={`${kz.opmLabel} ${a.prioriteit === "info" ? kz.opmLabelInfo : ""}`}>{a.prioriteit === "info" ? "Ter info" : a.prioriteit === "dringend" ? "Dringend" : "Aanbevolen"}</span>
-                  <h3 className={kz.opmTitel}>{a.titel}</h3>
-                  {a.tekst && <p className={kz.opmTekst}>{a.tekst}</p>}
+          <h2 className={kz.sectieTitel}>Aandachtspunten</h2>
+          <section className={`${kz.kaart} ${kz.dosKaart}`}>
+            <ul className={kz.dosLijst}>
+              {opm.map((a) => (
+                <li key={a.id}>
+                  <span className={`${kz.dosStip} ${a.prioriteit === "info" ? "" : kz.dosStipAmber}`} aria-hidden="true" />
+                  <div className={kz.dosTekst}>
+                    <p className={kz.dosTitel}>{a.titel}<span className={`${kz.dosLabel} ${a.prioriteit === "info" ? "" : kz.dosLabelAmber}`}>{a.prioriteit === "info" ? "Ter info" : a.prioriteit === "dringend" ? "Dringend" : "Aanbevolen"}</span></p>
+                    {a.tekst && <p className={kz.dosSub}>{a.tekst}</p>}
+                  </div>
                   {a.prioriteit !== "info" && (
-                    <div className={kz.opmKnop}>
+                    <div className={kz.dosActie}>
                       <AanvraagKnop
                         klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd"
                         label="Prijs aanvragen" titel={a.titel}
@@ -821,53 +824,54 @@ function Dakdossier({ k }: Ctx) {
                       />
                     </div>
                   )}
-                </div>
-              </article>
-            ))}
-          </div>
+                </li>
+              ))}
+              {oog.map((r) => {
+                const [kop, ...rest] = r.split(":");
+                return (
+                  <li key={r}>
+                    <span className={kz.dosStip} aria-hidden="true" />
+                    <div className={kz.dosTekst}>
+                      <p className={kz.dosTitel}>{rest.length ? kop.trim() : r}<span className={kz.dosLabel}>Opvolgen</span></p>
+                      {rest.length > 0 && <p className={kz.dosSub}>{rest.join(":").trim()}</p>}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
         </>
       )}
 
-      {oog.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Leaf size={18} /> Om in het oog te houden</h2></div>
-          <ul className={kz.oogLijst}>
-            {oog.map((r) => {
-              const [kop, ...rest] = r.split(":");
-              return <li key={r}>{rest.length ? <><strong>{kop.trim()}</strong><span>{rest.join(":").trim()}</span></> : <span>{r}</span>}</li>;
-            })}
-          </ul>
-        </section>
-      )}
-
       {(historiek.length > 0 || inspecties.length > 0) && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><CheckCircle2 size={18} /> Uitgevoerd aan je dak</h2></div>
-          <ul className={kz.dossierLijst}>
-            {[...historiek.map((b) => ({ id: b.id, datum: b.datum, titel: b.soort, sub: b.producten ?? b.opmerking })),
-              ...inspecties.map((i) => ({ id: i.id, datum: i.datum, titel: INSPECTIE_LABEL[i.soort], sub: i.bevindingen }))]
-              .sort((a, b) => b.datum.localeCompare(a.datum))
-              .map((r) => (
-                <li key={r.id}>
-                  <DatumBlok start={r.datum} />
-                  <div><p className={kz.ohPuntTitel}>{r.titel}</p>{r.sub && <p className={kz.rijSub}>{r.sub}</p>}</div>
-                </li>
-              ))}
-          </ul>
-        </section>
+        <>
+          <h2 className={kz.sectieTitel}>Uitgevoerd aan je dak</h2>
+          <section className={`${kz.kaart} ${kz.dosKaart}`}>
+            <ul className={kz.dosHistoriek}>
+              {[...historiek.map((b) => ({ id: b.id, datum: b.datum, titel: b.soort, sub: b.producten ?? b.opmerking })),
+                ...inspecties.map((i) => ({ id: i.id, datum: i.datum, titel: INSPECTIE_LABEL[i.soort], sub: i.bevindingen }))]
+                .sort((a, b) => b.datum.localeCompare(a.datum))
+                .map((r) => (
+                  <li key={r.id}>
+                    <span className={kz.dosDatum}>{fmtKort(r.datum)}</span>
+                    <div className={kz.dosTekst}>
+                      <p className={kz.dosTitel}>{r.titel}</p>
+                      {r.sub && <p className={kz.dosSub}>{r.sub}</p>}
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </section>
+        </>
       )}
 
       {k.documenten.length > 0 && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><FolderOpen size={18} /> Documenten</h2></div>
-          {DOC_GROEPEN.map((g) => ({ ...g, lijst: k.documenten.filter((d) => g.types.includes(d.type)) }))
-            .filter((g) => g.lijst.length).map((g) => (
-              <div key={g.titel} className={kz.docGroep}>
-                <p className={kz.ohOogKop}>{g.titel}</p>
-                <DocumentLijst documenten={g.lijst} labels={labels} />
-              </div>
-            ))}
-        </section>
+        <>
+          <h2 className={kz.sectieTitel}>Documenten</h2>
+          <section className={`${kz.kaart} ${kz.dosKaart}`}>
+            <DocumentLijst documenten={[...k.documenten].sort((a, b) => b.datum.localeCompare(a.datum))} labels={labels} />
+          </section>
+        </>
       )}
     </>
   );
