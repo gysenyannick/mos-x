@@ -166,6 +166,19 @@ export async function boekTegoed(id: string, fd: FormData) {
   ververs(id);
 }
 
+/** Reviewpunten toekennen, nadat Yannick de review zelf gezien heeft. Maar één keer per klant. */
+export async function kenReviewPuntenToe(id: string) {
+  await vereisBeheerder();
+  const punten = (await getInstellingen()).reviewPunten ?? 0;
+  if (punten <= 0) return;
+  await wijzigKlant(id, (k) => {
+    if (voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: punten, omschrijving: "Bedankt voor je review", sleutel: "review", door: "yannick" })) {
+      audit(k, `Reviewpunten toegekend: ${punten}`);
+    }
+  });
+  ververs(id);
+}
+
 export async function zetDemo(id: string, aan: boolean) {
   await vereisBeheerder();
   await wijzigKlant(id, (k) => { k.demo = aan || undefined; });
@@ -235,6 +248,7 @@ export async function bewaarRefRegels(fd: FormData) {
   await saveInstellingen({
     ...i,
     refBeloning: heel("refBeloning"),
+    reviewPunten: heel("reviewPunten"),
     centPerPunt: heel("centPerPunt"),
     refKorting: heel("refKorting"),
     refMinOpdracht: heel("refMinOpdracht"),

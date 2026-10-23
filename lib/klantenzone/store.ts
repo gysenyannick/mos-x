@@ -302,6 +302,8 @@ export type Instellingen = {
   refBeloning?: number;
   /** Waarde van één punt in eurocent (standaard 10: 100 punten = € 10) */
   centPerPunt?: number;
+  /** Punten voor een review (0 = uit). Let op: Google verbiedt beloonde reviews. */
+  reviewPunten?: number;
   /** Naam van de bon die de klant krijgt, bv. "Gratis dakgootreiniging" */
   refBeloningNaam?: string;
   refKorting?: number;

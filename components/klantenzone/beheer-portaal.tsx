@@ -1,6 +1,6 @@
 import { Bell, ClipboardCheck, Gift, ShieldCheck, Siren, Star, Trash2, Users, Wallet } from "lucide-react";
 import {
-  bewaarVerwijzing, boekTegoed, kenBeloningToe, verwijderInspectie, voegInspectieToe, zetAanvraagStatusV2, zetDemo, zetStormStatus,
+  bewaarVerwijzing, boekTegoed, kenBeloningToe, kenReviewPuntenToe, verwijderInspectie, voegInspectieToe, zetAanvraagStatusV2, zetDemo, zetStormStatus,
 } from "@/app/beheer/portaal-actions";
 import { controle12 } from "@/lib/klantenzone/onderhoud";
 import type { Instellingen } from "@/lib/klantenzone/store";
@@ -196,6 +196,11 @@ export function BeheerZorg({ k }: { k: Klant }) {
           <div><dt><Star size={13} style={{ verticalAlign: -2 }} /> Review</dt><dd>{k.review?.geklikt ? `Op de knop geklikt ${fmtKort(k.review.geklikt)}` : k.review?.weggeklikt ? `Weggeklikt ${fmtKort(k.review.weggeklikt)}` : "Nog niets"}</dd></div>
         </dl>
         {(k.review?.feedback ?? []).map((f) => <p key={f.datum} className={kz.rijSub} style={{ marginTop: 8 }}>Feedback {fmtKort(f.datum)}: &quot;{f.tekst}&quot;</p>)}
+        {!(k.tegoed ?? []).some((t) => t.sleutel === "review") && (
+          <form action={kenReviewPuntenToe.bind(null, k.id)} style={{ marginTop: 12 }}>
+            <button className={`${kz.knop} ${kz.knopKlein} ${kz.knopLicht}`}>Reviewpunten toekennen (als je de review gezien hebt)</button>
+          </form>
+        )}
         <form action={zetDemo.bind(null, k.id, !k.demo)} style={{ marginTop: 12 }}>
           <button className={`${kz.knop} ${kz.knopKlein} ${kz.knopLicht}`}>{k.demo ? "Geen voorbeelddossier meer" : "Markeer als voorbeelddossier"}</button>
         </form>

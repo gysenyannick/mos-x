@@ -1770,3 +1770,24 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .ohMaand { font-size: 30px; }
   .ohIntro { font-size: 14.5px; }
 }
+
+/* Klikbare agenda */
+.agendaKopRij { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 8px; }
+.agendaKopRij .agendaMaand { margin: 0; }
+.agendaPijl { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--rand); background: #fff; display: grid; place-items: center; cursor: pointer; color: var(--tekst); }
+.agendaPijl:hover { border-color: #CFE5B8; }
+.agendaPijl:focus-visible, .agendaDag:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 1px; }
+button.agendaDag { border: 0; background: none; font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; padding: 0; }
+button.agendaDag:hover { background: #E8E8E3; }
+button.agendaDag.agendaGepland { background: var(--groen); color: #fff; }
+button.agendaDag.agendaGepland.agendaVoorbij { background: #CFE5B8; }
+button.agendaDag.agendaGepland.agendaVandaag { background: #E3A93B; }
+.agendaGekozen { box-shadow: 0 0 0 2px var(--tekst) !important; }
+.agendaDetail { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rand); min-height: 44px; }
+.agendaDetailDag { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.agendaItem { margin: 4px 0 0; font-size: 13.5px; color: var(--tekst); }
+.agendaNiets { margin: 4px 0 0; font-size: 13.5px; color: #A3A39E; }
+
+.reviewPuntenBadge { display: inline-block; margin-left: 10px; padding: 3px 10px; border-radius: 999px; background: var(--groen); color: #fff; font-size: 13px; font-weight: 800; letter-spacing: 0; vertical-align: 4px; }
+.reviewRij { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; background: linear-gradient(135deg, #FFF8E6 0%, #FFFDF6 100%); border: 1px solid #F1DCA5; }
+@media (max-width: 560px) { .reviewRij { grid-template-columns: 1fr; } }

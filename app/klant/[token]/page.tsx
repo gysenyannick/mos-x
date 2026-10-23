@@ -26,6 +26,7 @@ import {
 } from "@/lib/klantenzone/types";
 import { reviewWeg, zetChecklist, zetDeelVoorNa, zetMarketing } from "@/app/klant/actions";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
+import Agenda, { type AgendaItem } from "@/components/klantenzone/agenda";
 import Cadeaubon from "@/components/klantenzone/cadeaubon";
 import DeelBuurlink from "@/components/klantenzone/deel-buurlink";
 import DocumentLijst from "@/components/klantenzone/document-lijst";
@@ -194,6 +195,7 @@ type Ctx = {
   reviewNaam?: string;
   dienstFotos: Record<string, string>;
   centPerPunt: number;
+  reviewPunten: number;
 };
 
 function kanVerzetten(a: Afspraak, ctx: Ctx) {
@@ -225,39 +227,19 @@ function WerkdagBlok({ dag, nummer }: { dag: Werkdag; nummer?: number }) {
 }
 
 
-/** Een kleine maandkalender met de geplande dagen in het groen. */
-function Agenda({ dagen }: { dagen: string[] }) {
-  const vandaagStr = vandaag();
-  const eerste = [...dagen].sort().find((d) => d >= vandaagStr) ?? vandaagStr;
-  const jaar = Number(eerste.slice(0, 4));
-  const maand = Number(eerste.slice(5, 7)) - 1;
-  const aantal = new Date(Date.UTC(jaar, maand + 1, 0)).getUTCDate();
-  const startDag = (new Date(Date.UTC(jaar, maand, 1)).getUTCDay() + 6) % 7; // maandag = 0
-  const gepland = new Set(dagen);
-  const cellen: (number | null)[] = [...Array(startDag).fill(null), ...Array.from({ length: aantal }, (_, i) => i + 1)];
-  const iso = (d: number) => `${jaar}-${String(maand + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-  return (
-    <div className={kz.agenda} aria-hidden="true">
-      <p className={kz.agendaMaand}>{hfd(fmtMaand(iso(1)))}</p>
-      <div className={kz.agendaRooster}>
-        {["ma", "di", "wo", "do", "vr", "za", "zo"].map((d) => <span key={d} className={kz.agendaKop}>{d}</span>)}
-        {cellen.map((d, i) => d === null ? <span key={`l${i}`} /> : (
-          <span key={d} className={`${kz.agendaDag} ${gepland.has(iso(d)) ? kz.agendaGepland : ""} ${iso(d) === vandaagStr ? kz.agendaVandaag : ""} ${iso(d) < vandaagStr ? kz.agendaVoorbij : ""}`}>{d}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function Planning(ctx: Ctx) {
   const { k, komend } = ctx;
   const start = startTekst(k);
   const toonStart = !!k.start && k.start.datum >= vandaag() && !komend.some((a) => a.titel === "Start werken");
   if (komend.length === 0 && !toonStart) return <p className={kz.leeg}>Zodra de datum vastligt, zie je hier wanneer Yannick komt.</p>;
-  const dagen = [...komend.map((a) => a.start.slice(0, 10)), ...(k.werken ?? []).map((w) => w.datum).filter((d): d is string => !!d), ...(toonStart ? [k.start!.datum] : [])];
+  const agendaItems: AgendaItem[] = [
+    ...komend.map((a) => ({ dag: a.start.slice(0, 10), titel: a.titel, uur: `${fmtUur(a.start)} tot ${eindUur(a.start, a.duurMin)}` })),
+    ...(k.werken ?? []).filter((w) => w.datum && !komend.some((a) => a.start.slice(0, 10) === w.datum && a.titel === w.naam)).map((w) => ({ dag: w.datum!, titel: w.naam })),
+    ...(toonStart ? [{ dag: k.start!.datum, titel: "Start van je werken" }] : []),
+  ];
   return (
     <div className={kz.planningRaster}>
-    <Agenda dagen={dagen} />
+    <Agenda items={agendaItems} vandaag={vandaag()} />
     <ul className={kz.planning}>
       {toonStart && (
         <li>
@@ -339,13 +321,13 @@ function Checklist({ k }: { k: Klant }) {
   );
 }
 
-function ReviewKaart({ k, reviewUrl, reviewCitaat, reviewNaam }: Ctx) {
+function ReviewKaart({ k, reviewUrl, reviewCitaat, reviewNaam, reviewPunten }: Ctx) {
   if (!reviewUrl || k.review?.weggeklikt) return null;
   return (
     <section className={`${kz.kaart} ${kz.reviewKaart2}`}>
       <div className={kz.reviewLinks}>
         <span className={kz.reviewSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={24} />)}</span>
-        <h2 className={kz.reviewTitel}>Hoe was je ervaring?</h2>
+        <h2 className={kz.reviewTitel}>Hoe was je ervaring?{reviewPunten > 0 && <span className={kz.reviewPuntenBadge}>+{reviewPunten} punten</span>}</h2>
         <p className={kz.sub} style={{ marginTop: 4 }}>Een eerlijke review op Google helpt andere woningeigenaars om een goede keuze te maken.</p>
         <div className={kz.rijKnoppen}>
           <a className={`${kz.knop} ${kz.knopPrimair} ${kz.reviewKnop}`} href={`/api/klantenzone/review?k=${encodeURIComponent(k.id)}`} target="_blank" rel="noopener noreferrer"><Star size={16} /> Schrijf een review</a>
@@ -1038,6 +1020,7 @@ function Voordelen(ctx: Ctx) {
     { punten: PUNTEN.onderhoud, tekst: "Je laat een onderhoud uitvoeren" },
     { punten: PUNTEN.welkom, tekst: "Welkom, na de oplevering van je werken" },
     { punten: PUNTEN.deelVoorNa, tekst: "Je toont je voor en na aan je buren" },
+    ctx.reviewPunten > 0 ? { punten: ctx.reviewPunten, tekst: "Je laat een eerlijke review achter op Google" } : null,
   ].filter((x) => x !== null);
 
   return (
@@ -1060,6 +1043,17 @@ function Voordelen(ctx: Ctx) {
           </div>
         </div>
       </section>
+
+      {ctx.reviewUrl && ctx.reviewPunten > 0 && !(k.tegoed ?? []).some((t) => t.sleutel === "review") && (
+        <section className={`${kz.kaart} ${kz.reviewRij}`}>
+          <span className={kz.reviewSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={18} />)}</span>
+          <div>
+            <p className={kz.rijTitel}>Laat een eerlijke review achter op Google</p>
+            <p className={kz.rijSub}>Je krijgt {ctx.reviewPunten} punten zodra Yannick je review gezien heeft.</p>
+          </div>
+          <a className={`${kz.knop} ${kz.knopPrimair} ${kz.knopKlein}`} href={`/api/klantenzone/review?k=${encodeURIComponent(k.id)}`} target="_blank" rel="noopener noreferrer">+{ctx.reviewPunten} punten</a>
+        </section>
+      )}
 
       {transacties.length > 0 && (
         <details className={`${kz.kaart} ${kz.puntenHistoriek}`}>
@@ -1129,7 +1123,7 @@ function Voordelen(ctx: Ctx) {
                 {regels.eind && <li>Doorverwijzingen tot en met {fmtKort(regels.eind)}.</li>}
                 <li>Niet voor jezelf, je eigen adres of iemand die al klant of aanvrager was.</li>
                 <li>{regels.combineerbaar ? "Combineerbaar met andere acties." : "Niet combineerbaar met andere acties."}</li>
-                <li>Punten zijn niet inwisselbaar voor geld en worden niet gegeven voor reviews.</li>
+                <li>Punten zijn niet inwisselbaar voor geld.{ctx.reviewPunten > 0 ? " Reviewpunten krijg je voor elke eerlijke review, positief of negatief." : ""}</li>
                 {burenVoordeel && <li>{burenVoordeel}</li>}
                 {regels.voorwaarden && <li style={{ whiteSpace: "pre-line" }}>{regels.voorwaarden}</li>}
               </ul>
@@ -1292,6 +1286,7 @@ export default async function KlantPagina({
     reviewNaam: instellingen.reviewNaam,
     dienstFotos: instellingen.dienstFotos ?? {},
     centPerPunt: instellingen.centPerPunt ?? CENT_PER_PUNT,
+    reviewPunten: instellingen.reviewPunten ?? 0,
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
     vrijeMomenten,
