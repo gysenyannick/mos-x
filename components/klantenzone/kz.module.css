@@ -2381,4 +2381,3 @@ div.planKop:hover { background: transparent; }
   .dpTegelBalk { grid-area: balk; }
   .dpTegelSub { grid-area: sub; }
 }
-.ballonBedankt { margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--groen-zacht); color: #3F6B22; font-size: 13.5px; font-weight: 700; }

@@ -31,7 +31,7 @@ function GoogleG({ wit = false }: { wit?: boolean }) {
  * Een tekstballon van Yannick rechtsonder, op elke pagina. Dichtgeklapt blijft zijn foto staan,
  * en na een paar paginawissels komt de ballon terug: reviews zijn belangrijk.
  */
-export default function ReviewBallon({ klantId, voornaam, foto, euro }: { klantId: string; voornaam: string; foto: string; euro: number }) {
+export default function ReviewBallon({ klantId, voornaam, foto }: { klantId: string; voornaam: string; foto: string }) {
   const [open, setOpen] = useState(false);
   const [zichtbaar, setZichtbaar] = useState(false);
 
@@ -71,7 +71,6 @@ export default function ReviewBallon({ klantId, voornaam, foto, euro }: { klantI
           </span>
           <p className={kz.ballonTitel}>Tevreden over je dak, {voornaam}?</p>
           <p className={kz.ballonTekst}>Laat een review achter op Google. Het duurt maar een minuutje en helpt Yannick enorm.</p>
-          {euro > 0 && <p className={kz.ballonBedankt}>Als bedankje: €&nbsp;{euro} korting op een volgend werk</p>}
           <a className={`${kz.knop} ${kz.knopPrimair} ${kz.ballonKnop}`} href={`/api/klantenzone/review?k=${encodeURIComponent(klantId)}`} target="_blank" rel="noopener noreferrer" onClick={sluit}>
             <GoogleG wit /> Schrijf je review op Google
           </a>

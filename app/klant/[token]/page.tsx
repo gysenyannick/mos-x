@@ -1451,7 +1451,7 @@ export default async function KlantPagina({
         </div>
       </div>
 
-      {toonBallon && <ReviewBallon key={tab} klantId={k.id} voornaam={k.voornaam} foto={YANNICK_FOTO} euro={puntenInEuro(ctx.reviewPunten, ctx.centPerPunt)} />}
+      {toonBallon && <ReviewBallon key={tab} klantId={k.id} voornaam={k.voornaam} foto={YANNICK_FOTO} />}
 
       <nav className={kz.onderNav} aria-label="Klantenzone">
         <ul>
