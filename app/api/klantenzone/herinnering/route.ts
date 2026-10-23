@@ -1,19 +1,21 @@
 import { NextResponse } from "next/server";
-import { FROM_INTERN, FROM_KLANT, esc, sendMail } from "@/lib/mail";
-import { listKlanten, wijzigKlant } from "@/lib/klantenzone/store";
+import { FROM_INTERN, esc, sendMail } from "@/lib/mail";
+import { listKlanten } from "@/lib/klantenzone/store";
 import { effectief } from "@/lib/klantenzone/auto";
-import { onderhoudZinvol } from "@/lib/klantenzone/dak";
-import { volgendeControle } from "@/lib/klantenzone/onderhoud";
-import { dagenTot, fmtMaand } from "@/lib/klantenzone/tijd";
+import { meldKlant } from "@/lib/klantenzone/meldingen";
+import { binnenMosGarantie, controle12, controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
+import { fmtMaand } from "@/lib/klantenzone/tijd";
 
 /**
- * Dagelijkse herinnering voor het onderhoud (Vercel Cron, zie vercel.json).
- * Een maand voor de aangeraden onderhoudsmaand krijgt de klant één mail met een
- * knop naar zijn klantenzone. Per onderhoudsdatum vertrekt er maar één mail.
+ * Dagelijkse automatische meldingen (Vercel Cron, zie vercel.json). Elke melding heeft een vaste
+ * sleutel en vertrekt dus maar één keer per klant:
+ * - oplevering: de klant krijgt zijn foto's, garantie en dakdossier (operationeel);
+ * - 12-maandencontrole komt eraan, een maand op voorhand (operationeel);
+ * - onderhoudsvoorstel, een maand voor de aangeraden maand en nooit tijdens de mosgarantie (marketing:
+ *   enkel als de klant dat niet uitzette, met afmeldlink).
+ * ?proef=1 toont wat er zou vertrekken, zonder te versturen.
  */
 export const dynamic = "force-dynamic";
-
-const VOORAF_DAGEN = 30;
 
 export async function GET(req: Request) {
   const geheim = process.env.CRON_SECRET;
@@ -21,53 +23,57 @@ export async function GET(req: Request) {
   if (!dev && (!geheim || req.headers.get("authorization") !== `Bearer ${geheim}`)) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
-  const apiKey = process.env.RESEND_API_KEY;
-  const basis = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(req.url).origin;
-  const proef = new URL(req.url).searchParams.get("proef") === "1"; // enkel tonen, niets versturen
+  const proef = new URL(req.url).searchParams.get("proef") === "1";
+  const lijst: string[] = [];
 
-  const verstuurd: string[] = [];
   for (const ruw of await listKlanten()) {
     const k = effectief(ruw);
-    if (!onderhoudZinvol(k) || !k.email) continue;
-    const controle = volgendeControle(k);
-    if (!controle || k.herinnerdVoor === controle.datum) continue;
-    const dagen = dagenTot(controle.datum);
-    if (dagen > VOORAF_DAGEN || dagen < -60) continue;
+    if (!k.email || k.demo) continue;
+    const naam = `${k.voornaam} ${k.achternaam}`.trim();
+    const stuur = async (soort: Parameters<typeof meldKlant>[1]) => {
+      if ((k.meldingen ?? []).some((m) => m.sleutel === soort.sleutel)) return;
+      lijst.push(`${naam}: ${soort.onderwerp}`);
+      if (!proef) await meldKlant(k, soort);
+    };
 
-    verstuurd.push(`${k.voornaam} ${k.achternaam} (${fmtMaand(controle.datum)})`);
-    if (proef || !apiKey) continue;
+    if ((k.fase === "klaar" || k.fase === "nazorg") && k.garantie.vanaf) {
+      await stuur({
+        soort: "oplevering", sleutel: "oplevering",
+        onderwerp: "Je dakwerken zijn afgerond",
+        tekst: "Je dak is klaar. In je klantenzone vind je de voor- en nafoto's, je garantie en je dakdossier.",
+        knop: { label: "Bekijk je dak", tab: "werken" },
+      });
+    }
 
-    const link = `${basis}/klant/${k.id}?tab=dak`;
-    const r = await sendMail(apiKey, {
-      from: FROM_KLANT,
-      to: [k.email],
-      reply_to: "info@mos-x.be",
-      subject: "Tijd voor het onderhoud van je dak",
-      html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1A1A1A">
-        <p>Dag ${esc(k.voornaam)},</p>
-        <p>Het onderhoud van je dak is aangeraden in <strong>${esc(fmtMaand(controle.datum))}</strong>.
-        Met een preventieve anti-mosbehandeling en een inspectie blijft je dak mooi, zonder dat het opnieuw grondig gereinigd moet worden.</p>
-        <p>Wil je het laten doen? Met één klik plan je het in. Je krijgt eerst een prijs, je zit nergens aan vast.</p>
-        <p><a href="${link}" style="display:inline-block;background:#9BCB6C;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:bold">Plan mijn onderhoud</a></p>
-        <p>Groeten,<br>Yannick, MOS-X</p>
-      </div>`,
-    }, `herinnering-${k.id}-${controle.datum}`);
-    if (!r.ok) { console.warn("Herinnering niet verstuurd:", r.error); continue; }
+    const c12 = controle12(k);
+    if (c12 && !c12.gedaan && controleBinnen(c12.datum) <= 30 && controleBinnen(c12.datum) >= -30) {
+      await stuur({
+        soort: "controle", sleutel: `c12-${c12.datum}`,
+        onderwerp: "Je gratis dakcontrole komt eraan",
+        tekst: `Rond ${fmtMaand(c12.datum)} komt Yannick je dak gratis nakijken, 12 maanden na je werken. Je krijgt nog een voorstel van datum.`,
+        knop: { label: "Bekijk je dakzorg", tab: "dakzorg" },
+      });
+    }
 
-    await wijzigKlant(k.id, (x) => {
-      x.herinnerdVoor = controle.datum;
-      x.log.unshift({ datum: new Date().toISOString(), tekst: `Herinnering voor het onderhoud verstuurd (${fmtMaand(controle.datum)}).` });
-    });
+    const onderhoud = volgendeControle(k);
+    if (onderhoud && !binnenMosGarantie(k, onderhoud.datum) && controleBinnen(onderhoud.datum) <= 30 && controleBinnen(onderhoud.datum) >= -60) {
+      await stuur({
+        soort: "onderhoud", sleutel: `onderhoud-${onderhoud.datum}`,
+        onderwerp: "Tijd voor het onderhoud van je dak",
+        tekst: `Het onderhoud van je dak is aangeraden in ${fmtMaand(onderhoud.datum)}. Met een preventieve anti-mosbehandeling en een inspectie blijft je dak proper. Je krijgt eerst een prijs, je zit nergens aan vast.`,
+        knop: { label: "Plan mijn onderhoud", tab: "dakzorg" },
+      });
+    }
   }
 
-  if (verstuurd.length && apiKey && !proef) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (lijst.length && apiKey && !proef) {
     await sendMail(apiKey, {
       from: FROM_INTERN,
       to: [process.env.CONTACT_EMAIL ?? "info@mos-x.be"],
-      subject: `Onderhoudsherinnering verstuurd naar ${verstuurd.length} ${verstuurd.length === 1 ? "klant" : "klanten"}`,
-      html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5"><p>Vandaag kregen deze klanten een herinnering voor hun onderhoud:</p><ul>${verstuurd.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div>`,
+      subject: `Klantenzone: ${lijst.length} automatische ${lijst.length === 1 ? "melding" : "meldingen"} verstuurd`,
+      html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5"><ul>${lijst.map((v) => `<li>${esc(v)}</li>`).join("")}</ul></div>`,
     });
   }
-
-  return NextResponse.json({ ok: true, proef, aantal: verstuurd.length, klanten: verstuurd });
+  return NextResponse.json({ ok: true, proef, aantal: lijst.length, meldingen: lijst });
 }

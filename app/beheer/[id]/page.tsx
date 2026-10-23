@@ -8,7 +8,8 @@ import { effectief } from "@/lib/klantenzone/auto";
 import { fmtDag, fmtEuro, fmtKort, fmtUur } from "@/lib/klantenzone/tijd";
 import { DOC_IS_FACTUUR, DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
-import { BeheerAanvragen, BeheerDak } from "@/components/klantenzone/beheer-dak";
+import { BeheerDak } from "@/components/klantenzone/beheer-dak";
+import { BeheerAanvragenV2, BeheerVerwijzingen, BeheerZorg } from "@/components/klantenzone/beheer-portaal";
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
 import {
   bewaarKlant, nieuweLink, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
@@ -32,7 +33,8 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
   const k = await getKlant(id);
   if (!k) notFound();
   const auto = effectief(k);
-  const reviewUrl = (await getInstellingen()).googleReviewUrl;
+  const instellingen = await getInstellingen();
+  const reviewUrl = instellingen.googleReviewUrl;
 
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "www.mos-x.be";
@@ -77,7 +79,7 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
         </div>
       </section>
 
-      <BeheerAanvragen k={k} />
+      <BeheerAanvragenV2 k={k} />
 
       <div className={kz.grid2} style={{ alignItems: "start", marginTop: 14 }}>
         {/* ── Gegevens & status ── */}
@@ -211,6 +213,8 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
       </div>
 
       <BeheerDak k={k} />
+      <BeheerZorg k={k} />
+      <BeheerVerwijzingen k={k} instellingen={instellingen} />
 
       {/* ── Opmerkingen (Mijn dak) ── */}
       <section className={kz.kaart}>

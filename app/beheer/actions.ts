@@ -1,6 +1,8 @@
 "use server";
 
 import { FROM_KLANT, esc, sendMail } from "@/lib/mail";
+import { meldKlant } from "@/lib/klantenzone/meldingen";
+import { fmtDag, fmtUur } from "@/lib/klantenzone/tijd";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -180,6 +182,13 @@ export async function voegAfspraakToe(id: string, fd: FormData) {
   k.log.unshift({ datum: new Date().toISOString(), tekst: `Nieuwe afspraak: ${s(fd, "titel") || "Afspraak"}.` });
   await saveKlant(k);
   ververs(id);
+  const titel = s(fd, "titel") || "Afspraak";
+  await meldKlant(k, {
+    soort: "afspraak", sleutel: `afspraak-${datum}T${uur}-${titel}`,
+    onderwerp: `Ingepland: ${titel.toLowerCase()} op ${fmtDag(`${datum}T${uur}`)}`,
+    tekst: `${titel} staat gepland op ${fmtDag(`${datum}T${uur}`)} om ${fmtUur(`${datum}T${uur}`)}. In je klantenzone zie je wat je eventueel kan voorbereiden.`,
+    knop: { label: "Bekijk je planning", tab: "werken" },
+  }).catch(() => undefined);
 }
 
 export async function verwijderAfspraak(id: string, afspraakId: string) {
@@ -386,29 +395,15 @@ export async function zetVerwijzingStatus(id: string, vId: string, status: Verwi
   ververs(id);
 }
 
-/** Bedrag in hele euro; leeg = standaard, 0 = uit */
-function bedrag(v: string): number | undefined {
-  if (v === "") return undefined;
-  const n = Math.round(Number(v.replace(",", ".")));
-  return Number.isFinite(n) && n >= 0 ? Math.min(n, 1000) : undefined;
-}
-
 export async function bewaarInstellingen(fd: FormData) {
   await vereisBeheerder();
   const i = await getInstellingen();
   const review = s(fd, "googleReviewUrl");
   await saveInstellingen({
     ...i,
-    burenVoordeel: s(fd, "burenVoordeel") || undefined,
     googleReviewUrl: /^https:\/\/\S+$/.test(review) ? review : undefined,
     reviewCitaat: s(fd, "reviewCitaat") || undefined,
     reviewNaam: s(fd, "reviewNaam") || undefined,
-    refBeloning: bedrag(s(fd, "refBeloning")),
-    refKorting: bedrag(s(fd, "refKorting")),
-    refBonusAantal: bedrag(s(fd, "refBonusAantal")),
-    refDubbelDagen: bedrag(s(fd, "refDubbelDagen")),
-    refOnderhoudExtra: bedrag(s(fd, "refOnderhoudExtra")),
-    refBonusTekst: fd.has("refBonusTekst") ? s(fd, "refBonusTekst") : i.refBonusTekst,
   });
   revalidatePath("/beheer/instellingen");
 }

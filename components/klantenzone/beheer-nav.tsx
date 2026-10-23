@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarClock, Settings, Users } from "lucide-react";
+import { BarChart3, CalendarClock, Gift, Settings, Tag, Users } from "lucide-react";
 import kz from "./kz.module.css";
 
 const ITEMS = [
   { href: "/beheer", label: "Klanten", icoon: Users },
   { href: "/beheer/momenten", label: "Vrije momenten", icoon: CalendarClock },
+  { href: "/beheer/acties", label: "Acties", icoon: Tag },
+  { href: "/beheer/doorverwijzingen", label: "Burenvoordeel", icoon: Gift },
+  { href: "/beheer/cijfers", label: "Cijfers", icoon: BarChart3 },
   { href: "/beheer/instellingen", label: "Instellingen", icoon: Settings },
 ];
 
@@ -15,7 +18,7 @@ const ITEMS = [
 export default function BeheerNav({ compact }: { compact?: boolean }) {
   const pad = usePathname() ?? "";
   const actief = (href: string) =>
-    href === "/beheer" ? pad === "/beheer" || /^\/beheer\/(?!momenten|instellingen)/.test(pad) : pad.startsWith(href);
+    href === "/beheer" ? pad === "/beheer" || /^\/beheer\/(?!momenten|instellingen|acties|doorverwijzingen|cijfers)/.test(pad) : pad.startsWith(href);
 
   if (compact) {
     return (

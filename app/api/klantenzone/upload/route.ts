@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { bewaarBestand, getKlant, nieuwId, verwijderBestand, wijzigKlant } from "@/lib/klantenzone/store";
+import { meldKlant } from "@/lib/klantenzone/meldingen";
 import { DOC_IS_FACTUUR, DOC_LOG_ZIN, type DocStatus, type DocType, type FotoFase } from "@/lib/klantenzone/types";
 
 export const runtime = "nodejs";
@@ -51,6 +52,17 @@ export async function POST(req: NextRequest) {
         await verwijderBestand(url);
         return fout("Je hebt het maximum aantal foto's bereikt.");
       }
+    } else if (soort === "aanvraagfoto") {
+      if (!file.type.startsWith("image/")) return fout("Dit is geen foto.");
+      const aanvraagId = String(fd.get("aanvraagId") ?? "");
+      const url = await bewaarBestand(`${klantId}/aanvragen`, naam, file);
+      const r = await wijzigKlant(klantId, (k) => {
+        const a = (k.aanvragen ?? []).find((x) => x.id === aanvraagId);
+        if (!a || (a.fotos ?? []).length >= 5) return false;
+        (a.fotos ??= []).push(url);
+        return true;
+      });
+      if (!r?.resultaat) { await verwijderBestand(url); return fout("Aanvraag niet gevonden of al 5 foto's."); }
     } else if (soort === "document") {
       if (!beheerder) return fout("Niet toegestaan.", 403);
       if (file.type !== "application/pdf" && !file.type.startsWith("image/")) return fout("Enkel pdf of afbeelding.");
@@ -74,6 +86,19 @@ export async function POST(req: NextRequest) {
 
     revalidatePath(`/klant/${klantId}`);
     revalidatePath(`/beheer/${klantId}`);
+
+    if (beheerder && (soort === "foto" || soort === "document")) {
+      const k = await getKlant(klantId);
+      if (k) {
+        const type = String(fd.get("type") || "andere");
+        await meldKlant(k, soort === "foto"
+          ? { soort: "fotos", sleutel: `fotos-${nu.slice(0, 10)}`, onderwerp: "Nieuwe foto's van je dak", tekst: "Er staan nieuwe foto's van je dak in je klantenzone.", knop: { label: "Bekijk het fotoverslag", tab: "werken" } }
+          : type === "garantie"
+            ? { soort: "garantie", sleutel: `garantie-${nu.slice(0, 10)}`, onderwerp: "Je garantiebewijs staat klaar", tekst: "Je garantiebewijs staat in je dakdossier. Bewaar het goed.", knop: { label: "Bekijk je dakdossier", tab: "dossier" } }
+            : { soort: "document", sleutel: `doc-${type}-${nu.slice(0, 10)}`, onderwerp: "Een nieuw document in je klantenzone", tekst: "Er staat een nieuw document voor je klaar in je dakdossier.", knop: { label: "Bekijk je documenten", tab: "dossier" } },
+        ).catch(() => undefined);
+      }
+    }
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("klantenzone upload", e);

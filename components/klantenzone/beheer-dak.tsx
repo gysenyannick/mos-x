@@ -1,8 +1,8 @@
-import { Bell, ClipboardList, Home, Lightbulb, Trash2, Users, Wrench } from "lucide-react";
+import { Bell, ClipboardList, Home, Lightbulb, Trash2, Wrench } from "lucide-react";
 import {
   verwijderWerk, voegWerkToe, zetWerkStatus,
   bewaarPaspoort, zetDakfoto, verwijderAanbeveling, verwijderBehandeling, voegAanbevelingToe, voegBehandelingToe,
-  zetAanbevelingStatus, zetAanvraagStatus, zetVerwijzingStatus,
+  zetAanbevelingStatus, zetAanvraagStatus,
 } from "@/app/beheer/actions";
 import { dakfoto } from "@/lib/klantenzone/dak";
 import { volgendeControle } from "@/lib/klantenzone/onderhoud";
@@ -13,7 +13,6 @@ import {
 import { BevestigKnop } from "./beheer-client";
 import kz from "./kz.module.css";
 
-const VERWIJZING_LABEL = { nieuw: "Nieuw", gecontacteerd: "Gecontacteerd", klant: "Klant geworden", geen: "Geen interesse" } as const;
 const AANBEVELING_STATUS = { open: "Open", aangevraagd: "Klant wil dit", gedaan: "Uitgevoerd", nietnu: "Klant: nu niet" } as const;
 
 /** Aanvragen van de klant: bovenaan, want daar moet Yannick iets mee. */
@@ -212,36 +211,6 @@ export function BeheerDak({ k }: { k: Klant }) {
         </form>
       </section>
 
-      <div style={{ marginTop: 14 }}>
-        {/* ── Doorverwijzingen ── */}
-        <section className={kz.kaart}>
-          <h2 className={kz.kaartTitel} style={{ marginBottom: 6 }}><Users size={18} /> Via de buurlink ({(k.verwijzingen ?? []).length})</h2>
-          {k.refCode && <p className={kz.sub} style={{ marginTop: 0 }}>Buurlink: /buur/{k.refCode} · {(k.verwijzingen ?? []).filter((v) => v.status === "klant").length} klant geworden, tegoed staat op de cadeaubon van {k.voornaam}.</p>}
-          {(k.verwijzingen ?? []).length === 0 ? (
-            <p className={kz.leeg}>Nog niemand via de buurlink van {k.voornaam}.</p>
-          ) : (
-            <ul className={kz.lijst}>
-              {(k.verwijzingen ?? []).map((v) => (
-                <li key={v.id} className={`${kz.rij} ${kz.rijWrap}`}>
-                  <div className={kz.rijMidden}>
-                    <p className={kz.rijTitel}>{v.naam}</p>
-                    <p className={kz.rijSub}><a href={`tel:${v.telefoon}`} style={{ color: "inherit" }}>{v.telefoon}</a>{v.adres ? ` · ${v.adres}` : ""}</p>
-                    {v.bericht && <p className={kz.rijSub}>&quot;{v.bericht}&quot;</p>}
-                    <p className={kz.rijSub}>{fmtMoment(v.datum)}</p>
-                  </div>
-                  <div className={kz.rijKnoppen} style={{ marginTop: 6 }}>
-                    {(["gecontacteerd", "klant", "geen"] as const).map((st) => (
-                      <form key={st} action={zetVerwijzingStatus.bind(null, k.id, v.id, st)}>
-                        <button className={`${kz.knop} ${kz.knopKlein} ${v.status === st ? "" : kz.knopLicht}`}>{VERWIJZING_LABEL[st]}</button>
-                      </form>
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </div>
     </>
   );
 }

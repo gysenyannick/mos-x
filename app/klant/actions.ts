@@ -3,11 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { FROM_INTERN, esc, sendMail } from "@/lib/mail";
 import { sendToBeavr } from "@/lib/beavr";
-import { getMomenten, klantVoorRefCode, nieuwId, saveMomenten, wijzigKlant } from "@/lib/klantenzone/store";
+import { getInstellingen, getMomenten, klantVoorRefCode, listKlanten, nieuwId, saveMomenten, wijzigKlant } from "@/lib/klantenzone/store";
+import { actieVoorKlant, controleerVerwijzing, interesseVoor } from "@/lib/klantenzone/voordeel";
 import { brusselNaarDate, fmtDag, fmtUur } from "@/lib/klantenzone/tijd";
-import { AANVRAAG_LABEL, VERZET_UREN, type AanvraagSoort, type Klant } from "@/lib/klantenzone/types";
+import { AANVRAAG_LABEL, CHECKLIST, VERZET_UREN, aanvraagLoopt, type AanvraagSoort, type Klant } from "@/lib/klantenzone/types";
 
-type Uitkomst = { ok: boolean; fout?: string };
+type Uitkomst = { ok: boolean; fout?: string; id?: string };
 
 function ververs(id: string) {
   revalidatePath(`/klant/${id}`);
@@ -78,16 +79,26 @@ export async function verzetAfspraak(klantId: string, afspraakId: string, moment
 /* ── Aanvragen van de klant (onderhoud, aanbeveling, Dakzorg, schade) ─────── */
 
 export async function doeAanvraag(
-  klantId: string, soort: AanvraagSoort, tekst: string, aanbevelingId?: string,
+  klantId: string, soort: AanvraagSoort, tekst: string, aanbevelingId?: string, campagneId?: string,
 ): Promise<Uitkomst> {
   if (!(soort in AANVRAAG_LABEL)) return { ok: false, fout: "Onbekende aanvraag." };
   const schoon = tekst.trim().slice(0, 1000);
+  // Een actie moet echt lopen en voor deze klant gelden; het maximum telt over alle klanten
+  let actieTitel: string | undefined;
+  if (campagneId) {
+    const [i, alle] = await Promise.all([getInstellingen(), listKlanten()]);
+    const c = (i.acties ?? []).find((x) => x.id === campagneId);
+    const k0 = alle.find((x) => x.id === klantId);
+    if (!c || !k0 || !actieVoorKlant(c, k0, interesseVoor(c, alle))) return { ok: false, fout: "Deze actie loopt niet (meer)." };
+    actieTitel = c.titel;
+  }
 
   const r = await wijzigKlant(klantId, (k): Uitkomst & { omschrijving?: string } => {
     // Onderhoud of Dakzorg al gevraagd en nog niet behandeld? Dan niet dubbel
-    if ((soort === "onderhoud" || soort === "dakzorg") && (k.aanvragen ?? []).some((a) => a.status === "nieuw" && a.soort === soort)) {
+    if ((soort === "onderhoud" || soort === "dakzorg") && (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.soort === soort)) {
       return { ok: true };
     }
+    if (campagneId && (k.aanvragen ?? []).some((a) => a.campagneId === campagneId && aanvraagLoopt(a.status))) return { ok: true };
     let omschrijving = schoon;
     if (soort === "aanbeveling") {
       const ab = (k.aanbevelingen ?? []).find((x) => x.id === aanbevelingId);
@@ -97,13 +108,16 @@ export async function doeAanvraag(
       omschrijving = `${ab.titel}${schoon ? ` · ${schoon}` : ""}`;
     }
     const nu = new Date().toISOString();
-    (k.aanvragen ??= []).unshift({ id: nieuwId(6), datum: nu, soort, tekst: omschrijving, status: "nieuw" });
+    if (actieTitel) omschrijving = `${actieTitel}${omschrijving ? ` · ${omschrijving}` : ""}`;
+    const id = nieuwId(6);
+    (k.aanvragen ??= []).unshift({ id, datum: nu, soort, tekst: omschrijving, status: "nieuw", campagneId, historiek: [{ datum: nu, status: "nieuw" }] });
     k.log.unshift({ datum: nu, tekst: `Je vroeg: ${AANVRAAG_LABEL[soort].toLowerCase()}. Yannick neemt contact op.` });
-    return { ok: true, omschrijving };
+    return { ok: true, omschrijving, id };
   });
   if (!r) return { ok: false, fout: "Dossier niet gevonden." };
   const { klant: k, resultaat } = r;
   if (!resultaat.ok || resultaat.omschrijving === undefined) return { ok: resultaat.ok, fout: resultaat.fout };
+  const aanvraagId = (resultaat as { id?: string }).id;
 
   const omschrijving = resultaat.omschrijving;
   await Promise.all([
@@ -118,7 +132,7 @@ export async function doeAanvraag(
   ]);
 
   ververs(k.id);
-  return { ok: true };
+  return { ok: true, id: aanvraagId };
 }
 
 export async function nietNu(klantId: string, aanbevelingId: string): Promise<void> {
@@ -140,10 +154,12 @@ export async function meldBuurAan(code: string, _: unknown, fd: FormData): Promi
   if (!naam || !telefoon) return { fout: "Vul je naam en gsm-nummer in." };
 
   const vandaag = new Date().toISOString().slice(0, 10);
+  const controle = controleerVerwijzing(aanbrenger, { telefoon, adres }, await listKlanten());
+  if (controle.some((c) => c.startsWith("Blokkeert: zelfde"))) return { fout: "Je kan jezelf niet doorverwijzen. Vraag gerust rechtstreeks een prijs aan." };
   const r = await wijzigKlant(aanbrenger.id, (k) => {
     if ((k.verwijzingen ?? []).filter((x) => x.datum.slice(0, 10) === vandaag).length >= 10) return false;
     const nu = new Date().toISOString();
-    (k.verwijzingen ??= []).unshift({ id: nieuwId(6), datum: nu, naam, telefoon, adres, bericht: bericht || undefined, status: "nieuw" });
+    (k.verwijzingen ??= []).unshift({ id: nieuwId(6), datum: nu, naam, telefoon, adres, bericht: bericht || undefined, status: "nieuw", controle: controle.length ? controle : undefined });
     k.log.unshift({ datum: nu, tekst: "Iemand uit je buurt vroeg een richtprijs aan via jouw link. Bedankt!" });
     return true;
   });
@@ -155,6 +171,7 @@ export async function meldBuurAan(code: string, _: unknown, fd: FormData): Promi
   await Promise.all([
     meldAanYannick(`🏠 Nieuwe buur via ${k.voornaam}: ${naam}`, `<p><strong>${esc(naam)}</strong><br/>${esc(telefoon)}<br/>${esc(adres)}</p>
       ${bericht ? `<p>${esc(bericht)}</p>` : ""}<p>Aangebracht door: ${esc(door)} (${esc(k.adres)})</p>
+      ${controle.length ? `<p><strong>Controle:</strong><br/>${controle.map(esc).join("<br/>")}</p>` : ""}
       <p><a href="https://www.mos-x.be/beheer/${encodeURIComponent(k.id)}">Open dossier van ${esc(k.voornaam)}</a></p>`),
     sendToBeavr({
       name: naam, phone: telefoon, address: adres, note: bericht,
@@ -166,6 +183,45 @@ export async function meldBuurAan(code: string, _: unknown, fd: FormData): Promi
 
   ververs(k.id);
   return { ok: true };
+}
+
+/* ── Voorbereiding, review en voorkeuren ───────────────────────────────── */
+
+/** De klant vinkt een punt van de voorbereiding aan of af. */
+export async function zetChecklist(klantId: string, punt: string, aan: boolean): Promise<void> {
+  if (!CHECKLIST.some((c) => c.id === punt)) return;
+  const r = await wijzigKlant(klantId, (k) => {
+    k.checklist ??= {};
+    if (aan) k.checklist[punt] = new Date().toISOString();
+    else delete k.checklist[punt];
+  });
+  if (r) ververs(klantId);
+}
+
+/** De klant klikt het reviewverzoek weg. */
+export async function reviewWeg(klantId: string): Promise<void> {
+  const r = await wijzigKlant(klantId, (k) => { (k.review ??= {}).weggeklikt = new Date().toISOString(); });
+  if (r) ververs(klantId);
+}
+
+/** Rechtstreekse feedback aan MOS-X (los van Google, en zonder dat het een review vervangt). */
+export async function reviewFeedback(klantId: string, tekst: string): Promise<Uitkomst> {
+  const schoon = tekst.trim().slice(0, 2000);
+  if (schoon.length < 2) return { ok: false, fout: "Schrijf eerst je feedback." };
+  const r = await wijzigKlant(klantId, (k) => { ((k.review ??= {}).feedback ??= []).push({ datum: new Date().toISOString(), tekst: schoon }); });
+  if (!r) return { ok: false, fout: "Dossier niet gevonden." };
+  await meldAanYannick(`📝 Feedback van ${r.klant.voornaam}`, `<p>${esc(schoon)}</p>${klantBlok(r.klant)}`);
+  ververs(klantId);
+  return { ok: true };
+}
+
+/** Voorkeur voor acties en voorstellen per mail. Operationele berichten gaan altijd. */
+export async function zetMarketing(klantId: string, aan: boolean): Promise<void> {
+  const r = await wijzigKlant(klantId, (k) => {
+    k.voorkeuren = { marketing: aan, sinds: new Date().toISOString(), bron: "Klantenzone: keuze van de klant" };
+    k.log.unshift({ datum: k.voorkeuren.sinds, tekst: aan ? "Je koos voor mails met acties en voorstellen." : "Je koos voor geen mails met acties en voorstellen meer." });
+  });
+  if (r) ververs(klantId);
 }
 
 /* ── Opmerking van de klant op Mijn dak ───────────────────────────────────── */

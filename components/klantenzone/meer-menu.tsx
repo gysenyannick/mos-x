@@ -3,17 +3,16 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Camera, ChevronRight, FileText, Gift, Home, Lightbulb, MessagesSquare, MoreHorizontal, Tag, X } from "lucide-react";
+import { CalendarDays, ChevronRight, FolderOpen, Gift, Leaf, LifeBuoy, MoreHorizontal, Wrench, X } from "lucide-react";
 import kz from "./kz.module.css";
 
 const ITEMS = [
-  { id: "berichten", label: "Berichten", uitleg: "Rechtstreeks met Yannick", icoon: MessagesSquare },
-  { id: "fotos", label: "Foto's", uitleg: "Het verslag per werkdag", icoon: Camera },
-  { id: "documenten", label: "Documenten", uitleg: "Offertes, facturen en garanties", icoon: FileText },
-  { id: "dak", label: "Mijn dak", uitleg: "Dakdossier, onderhoud en garantie", icoon: Home },
-  { id: "tips", label: "Tips en advies", uitleg: "Zo blijft je woning mooi", icoon: Lightbulb },
-  { id: "diensten", label: "Diensten", uitleg: "Diensten en acties", icoon: Tag },
-  { id: "buren", label: "Buurvoordeel", uitleg: "Je cadeaubon", icoon: Gift },
+  { id: "werken", label: "Mijn werken", uitleg: "Planning en fotoverslag", icoon: CalendarDays },
+  { id: "dossier", label: "Mijn dakdossier", uitleg: "Documenten, garantie en controles", icoon: FolderOpen },
+  { id: "dakzorg", label: "Dakzorg", uitleg: "Onderhoud, aandachtspunten en tips", icoon: Leaf },
+  { id: "diensten", label: "Diensten", uitleg: "Aanvragen en hun status", icoon: Wrench },
+  { id: "voordelen", label: "Mijn voordelen", uitleg: "Tegoed, burenvoordeel en acties", icoon: Gift },
+  { id: "hulp", label: "Hulp en contact", uitleg: "Berichten, stormschade en profiel", icoon: LifeBuoy },
 ] as const;
 
 /** "Meer" in de onderbalk op gsm: opent een paneel met de overige onderdelen. */

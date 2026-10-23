@@ -232,16 +232,39 @@ export type Aanbeveling = {
   fotoUrl?: string;
 };
 
-export type AanvraagSoort = "onderhoud" | "aanbeveling" | "dakzorg" | "schade" | "extra" | "andere";
+export type AanvraagSoort = "onderhoud" | "controle" | "aanbeveling" | "dakzorg" | "schade" | "extra" | "andere";
 
 export const AANVRAAG_LABEL: Record<AanvraagSoort, string> = {
   onderhoud: "Onderhoud inplannen",
+  controle: "Dakcontrole",
   aanbeveling: "Aanbeveling laten uitvoeren",
   dakzorg: "Interesse in MOS-X Dakzorg",
-  schade: "Schade melden",
+  schade: "Stormschade of probleem",
   extra: "Extra dienst",
   andere: "Vraag",
 };
+
+/** Statussen van een aanvraag, zoals de klant ze ziet. "behandeld" is van vroeger en telt als afgesloten. */
+export type AanvraagStatus = "nieuw" | "beoordeling" | "offerte" | "goedgekeurd" | "ingepland" | "uitgevoerd" | "afgesloten" | "behandeld";
+
+export const AANVRAAG_STATUS_LABEL: Record<AanvraagStatus, string> = {
+  nieuw: "Ontvangen",
+  beoordeling: "In beoordeling",
+  offerte: "Offerte verstuurd",
+  goedgekeurd: "Goedgekeurd",
+  ingepland: "Ingepland",
+  uitgevoerd: "Uitgevoerd",
+  afgesloten: "Afgesloten",
+  behandeld: "Afgesloten",
+};
+
+/** Volgorde in het beheer (zonder het oude "behandeld"). */
+export const AANVRAAG_STATUSSEN: AanvraagStatus[] = ["nieuw", "beoordeling", "offerte", "goedgekeurd", "ingepland", "uitgevoerd", "afgesloten"];
+
+/** Nog lopend = Yannick moet er iets mee of het staat nog niet vast. */
+export function aanvraagLoopt(s: AanvraagStatus): boolean {
+  return s !== "afgesloten" && s !== "behandeld" && s !== "uitgevoerd";
+}
 
 /** Iets wat de klant via zijn pagina vraagt; komt bij Yannick binnen. */
 export type Aanvraag = {
@@ -249,7 +272,12 @@ export type Aanvraag = {
   datum: string;
   soort: AanvraagSoort;
   tekst: string;
-  status: "nieuw" | "behandeld";
+  status: AanvraagStatus;
+  /** Foto's die de klant meestuurde */
+  fotos?: string[];
+  /** Via welke actie of buurtactie */
+  campagneId?: string;
+  historiek?: { datum: string; status: AanvraagStatus }[];
 };
 
 export type Dakzorg = {
@@ -270,6 +298,20 @@ export const DAKZORG_INBEGREPEN = [
   "Voorrang bij dringende interventies",
 ];
 
+/** Status van een doorverwijzing. "gecontacteerd" en "klant" zijn van vroeger. */
+export type VerwijzingStatus = "nieuw" | "offerte" | "bevestigd" | "uitgevoerd" | "beloond" | "geen" | "gecontacteerd" | "klant";
+
+export const VERWIJZING_STATUS_LABEL: Record<VerwijzingStatus, string> = {
+  nieuw: "Aanvraag ontvangen",
+  offerte: "Offerte in behandeling",
+  bevestigd: "Opdracht bevestigd",
+  uitgevoerd: "Opdracht uitgevoerd",
+  beloond: "Beloning beschikbaar",
+  geen: "Niet in aanmerking gekomen",
+  gecontacteerd: "Offerte in behandeling",
+  klant: "Opdracht bevestigd",
+};
+
 /** Iemand die via de buurlink van een klant binnenkwam. */
 export type Verwijzing = {
   id: string;
@@ -278,8 +320,79 @@ export type Verwijzing = {
   telefoon: string;
   adres: string;
   bericht?: string;
-  status: "nieuw" | "gecontacteerd" | "klant" | "geen";
+  status: VerwijzingStatus;
+  /** Waarde van de opdracht incl. btw, om de minimumwaarde te controleren */
+  opdrachtWaarde?: number;
+  /** Volledig betaald (voorwaarde voor de beloning) */
+  betaald?: boolean;
+  /** Waarom niet in aanmerking, of wat de controle vond */
+  controle?: string[];
+  reden?: string;
 };
+
+/** Een fysieke controle of inspectie van het dak. */
+export type Inspectie = {
+  id: string;
+  /** YYYY-MM-DD */
+  datum: string;
+  soort: "12maanden" | "controle" | "plaatsbezoek";
+  bevindingen: string;
+  verslagUrl?: string;
+};
+
+export const INSPECTIE_LABEL: Record<Inspectie["soort"], string> = {
+  "12maanden": "Controle na 12 maanden",
+  controle: "Dakcontrole",
+  plaatsbezoek: "Plaatsbezoek",
+};
+
+/** Eén beweging op het onderhoudstegoed. Het saldo is de som; er wordt nooit iets overschreven. */
+export type TegoedTransactie = {
+  id: string;
+  datum: string;
+  soort: "toegekend" | "gebruikt" | "correctie" | "geannuleerd";
+  /** Positief = erbij, negatief = eraf */
+  bedrag: number;
+  omschrijving: string;
+  /** Voorkomt dat dezelfde beloning twee keer wordt toegekend */
+  sleutel?: string;
+  /** YYYY-MM-DD; enkel bij toegekend tegoed met een geldigheidsduur */
+  vervaltOp?: string;
+  door: "systeem" | "yannick";
+};
+
+export type StormMelding = {
+  id: string;
+  datum: string;
+  type: string;
+  tekst: string;
+  fotos: string[];
+  status: "nieuw" | "behandeld";
+};
+
+/** Wat de klant over de review deed (enkel wat we zeker weten: klikken, niet of er een review kwam). */
+export type ReviewStatus = { getoond?: string; geklikt?: string; weggeklikt?: string; feedback?: { datum: string; tekst: string }[] };
+
+/** Communicatievoorkeuren. Operationele berichten (afspraken, documenten) gaan altijd. */
+export type Voorkeuren = {
+  /** Acties, tips, buurtacties, burenvoordeel per mail */
+  marketing: boolean;
+  /** Wanneer en hoe de keuze vastgelegd werd */
+  sinds: string;
+  bron: string;
+};
+
+/** Verstuurde mail, om dubbels en te veel berichten te vermijden. */
+export type MeldingLog = { datum: string; soort: string; sleutel: string; marketing: boolean };
+
+/** Voorbereiding vóór de werken, die de klant zelf afvinkt. */
+export const CHECKLIST = [
+  { id: "toegang", tekst: "De toegang tot het dak is vrij (oprit, tuinpad, ladderplek)." },
+  { id: "wagens", tekst: "Wagens staan niet onder de dakrand." },
+  { id: "kraan", tekst: "Er is een buitenkraan die gebruikt mag worden." },
+  { id: "ramen", tekst: "Ramen en dakvensters zijn dicht tijdens de werken." },
+  { id: "dieren", tekst: "Huisdieren blijven binnen." },
+] as const;
 
 /** Een opmerking op Mijn dak: van de klant, of van Yannick (eventueel als belangrijke melding). */
 export type Opmerking = {
@@ -340,6 +453,18 @@ export type Klant = {
   /** Korte code voor de buurlink: mos-x.be/buur/<code> */
   refCode?: string;
   verwijzingen?: Verwijzing[];
+  /** Voorbereiding: checklist-id → wanneer bevestigd */
+  checklist?: Record<string, string>;
+  inspecties?: Inspectie[];
+  tegoed?: TegoedTransactie[];
+  stormMeldingen?: StormMelding[];
+  review?: ReviewStatus;
+  voorkeuren?: Voorkeuren;
+  meldingen?: MeldingLog[];
+  /** Voorbeelddossier: duidelijk als demo getoond */
+  demo?: boolean;
+  /** Wie wat veranderde aan tegoed of doorverwijzingen (enkel toevoegen, nooit wijzigen) */
+  audit?: { datum: string; wie: string; wat: string }[];
   log: LogItem[];
   aangemaakt: string;
   bijgewerkt: string;

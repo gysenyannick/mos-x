@@ -3,11 +3,12 @@ import {
   Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, Hammer, Plus, Users, Wrench,
 } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
-import { controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
+import { controle12, controleBinnen, volgendeControle } from "@/lib/klantenzone/onderhoud";
+import { beloningMag, refRegels } from "@/lib/klantenzone/voordeel";
 import { effectief } from "@/lib/klantenzone/auto";
-import { listKlanten, opslagStatus } from "@/lib/klantenzone/store";
+import { getInstellingen, listKlanten, opslagStatus } from "@/lib/klantenzone/store";
 import { fmtEuro, fmtKort, fmtMaand, fmtMoment } from "@/lib/klantenzone/tijd";
-import { AANVRAAG_LABEL, FASE_LABEL } from "@/lib/klantenzone/types";
+import { AANVRAAG_LABEL, FASE_LABEL, aanvraagLoopt } from "@/lib/klantenzone/types";
 import { maakKlant } from "./actions";
 import kz from "@/components/klantenzone/kz.module.css";
 
@@ -21,10 +22,11 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
   // Alles waar Yannick iets mee moet, over alle klanten heen
   type Taak = { klantId: string; naam: string; icoon: "bel" | "buur" | "controle"; tekst: string; datum: string };
   const taken: Taak[] = [];
+  const regels = refRegels(await getInstellingen());
   for (const k of klanten) {
     const naam = `${k.voornaam} ${k.achternaam}`.trim();
     for (const a of k.aanvragen ?? []) {
-      if (a.status === "nieuw") taken.push({ klantId: k.id, naam, icoon: "bel", tekst: `${AANVRAAG_LABEL[a.soort]}${a.tekst ? `: ${a.tekst}` : ""}`, datum: a.datum });
+      if (a.status === "nieuw" || a.status === "beoordeling") taken.push({ klantId: k.id, naam, icoon: "bel", tekst: `${AANVRAAG_LABEL[a.soort]}${a.tekst ? `: ${a.tekst}` : ""}`, datum: a.datum });
     }
     for (const o of k.opmerkingen ?? []) {
       if (o.van === "klant" && o.nieuw) taken.push({ klantId: k.id, naam, icoon: "bel", tekst: `Opmerking: ${o.tekst}`, datum: o.datum });
@@ -32,8 +34,18 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
     for (const v of k.verwijzingen ?? []) {
       if (v.status === "nieuw") taken.push({ klantId: k.id, naam, icoon: "buur", tekst: `Nieuwe buur: ${v.naam} (${v.telefoon})`, datum: v.datum });
     }
+    for (const m of k.stormMeldingen ?? []) {
+      if (m.status === "nieuw") taken.push({ klantId: k.id, naam, icoon: "bel", tekst: `Melding: ${m.type}. ${m.tekst}`, datum: m.datum });
+    }
+    for (const v of k.verwijzingen ?? []) {
+      if (beloningMag(k, v, regels).mag) taken.push({ klantId: k.id, naam, icoon: "buur", tekst: `Beloning toekennen: ${v.naam} werd klant en betaalde`, datum: v.datum });
+    }
+    const c12 = controle12(k);
+    if (c12 && !c12.gedaan && controleBinnen(c12.datum) <= 30) {
+      taken.push({ klantId: k.id, naam, icoon: "controle", tekst: `Gratis 12-maandencontrole rond ${fmtMaand(c12.datum)}`, datum: c12.datum });
+    }
     const c = volgendeControle(k);
-    if (c && controleBinnen(c.datum) <= 30 && !(k.aanvragen ?? []).some((a) => a.soort === "onderhoud" && a.status === "nieuw")) {
+    if (c && controleBinnen(c.datum) <= 30 && !(k.aanvragen ?? []).some((a) => a.soort === "onderhoud" && aanvraagLoopt(a.status))) {
       taken.push({ klantId: k.id, naam, icoon: "controle", tekst: `Controle ${controleBinnen(c.datum) < 0 ? "was" : "is"} aangeraden in ${fmtMaand(c.datum)}`, datum: c.datum });
     }
   }

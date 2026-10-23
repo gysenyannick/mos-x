@@ -236,15 +236,57 @@ export async function verwijderBestand(url: string): Promise<void> {
 const KEY_REF = (code: string) => `mx:ref:${code}`;
 const KEY_INSTELLINGEN = "mx:instellingen";
 
-/** Een actie of korting die Yannick aan alle klanten toont. */
+export type CampagneType = "seizoen" | "combinatie" | "persoonlijk" | "klanten" | "dakzorg" | "capaciteit" | "buurt";
+
+export const CAMPAGNE_TYPE_LABEL: Record<CampagneType, string> = {
+  seizoen: "Seizoensactie",
+  combinatie: "Combinatieactie",
+  persoonlijk: "Persoonlijke klantactie",
+  klanten: "Voordeel voor bestaande klanten",
+  dakzorg: "Dakzorg-ledenactie",
+  capaciteit: "Vrije plaats in de planning",
+  buurt: "Buurtactie",
+};
+
+/**
+ * Een actie of campagne. Oudere acties hebben enkel id, titel, tekst, extra en geldigTot;
+ * alle andere velden zijn optioneel zodat die blijven werken.
+ */
 export type Actie = {
   id: string;
   titel: string;
   tekst: string;
-  /** Dienst bij Extra's waarop de korting geldt (leeg = algemene actie) */
+  /** Dienst waarop de actie geldt (leeg = algemeen) */
   extra?: string;
   /** YYYY-MM-DD, leeg = geen einddatum */
   geldigTot?: string;
+  type?: CampagneType;
+  /** YYYY-MM-DD, leeg = meteen */
+  start?: string;
+  /** concept en gepauzeerd zijn niet zichtbaar; afgelopen volgt uit de einddatum */
+  status?: "concept" | "actief" | "gepauzeerd";
+  foto?: string;
+  /** Doelgroep: welke fases (leeg = alle klanten na de werken) */
+  fases?: ("gepland" | "bezig" | "klaar" | "nazorg")[];
+  /** Regio: postcodes (bv. 2200, 2440). Leeg = overal */
+  postcodes?: string[];
+  /** Voor een buurtactie: de geplande werkdag of periode, zoals ze echt in de planning staat */
+  werkdag?: string;
+  /** Groepsactie: vanaf hoeveel geïnteresseerde woningen het voordeel geldt */
+  minInteresse?: number;
+  /** Maximumaantal aanvragen (leeg = geen maximum) */
+  maxAanvragen?: number;
+  voorwaarden?: string;
+  /** Mag samen met andere acties of het burenvoordeel */
+  combineerbaar?: boolean;
+  /** Yannick bevestigt dat de voorwaarden en prijzen nagekeken zijn */
+  nagekeken?: boolean;
+  /** Voor de margeberekening (euro, alles optioneel) */
+  opdrachtWaarde?: number;
+  kosten?: number;
+  verplaatsing?: number;
+  korting?: number;
+  andereKosten?: number;
 };
 
 export type Instellingen = {
@@ -268,6 +310,17 @@ export type Instellingen = {
   refOnderhoudExtra?: number;
   /** Tips en advies die Yannick zelf toevoegt */
   tips?: EigenTip[];
+  /** Burenvoordeel: regels */
+  refMinOpdracht?: number;
+  refDiensten?: string;
+  refMaxPerKlant?: number;
+  refGeldigMaanden?: number;
+  refCombineerbaar?: boolean;
+  refStart?: string;
+  refEind?: string;
+  refVoorwaarden?: string;
+  /** Minimale brutomarge (%) waaronder een actie een waarschuwing krijgt */
+  minMarge?: number;
   /** Eigen foto per dienst (id uit EXTRAS → url) */
   dienstFotos?: Record<string, string>;
 };
