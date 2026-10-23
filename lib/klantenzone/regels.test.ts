@@ -4,7 +4,7 @@ import type { Actie } from "./store";
 import { binnenMosGarantie, controle12, mosGarantieTot, volgendeControle } from "./onderhoud";
 import {
   actieVoorKlant, beloningMag, beloningTransactie, campagneMarge, campagneStaat, controleerVerwijzing,
-  refBonus, refRegels, tegoedOverzicht, voegTransactieToe,
+  refBeloningPunten, refRegels, tegoedOverzicht, voegTransactieToe,
 } from "./voordeel";
 
 function klant(x: Partial<Klant> = {}): Klant {
@@ -122,11 +122,15 @@ describe("spaarpot", () => {
   });
 });
 
-describe("bonus bij meerdere buren", () => {
-  it("de 2de en 3de buur geven bonuspunten, daarna de gewone beloning", () => {
-    expect(refBonus(1)).toBe(0);
-    expect(beloningTransactie(buur(), regels, "a", "2026-01-01T00:00:00Z", 2).bedrag).toBe(regels.beloning + 250);
-    expect(beloningTransactie(buur(), regels, "b", "2026-01-01T00:00:00Z", 3).bedrag).toBe(regels.beloning + 500);
-    expect(beloningTransactie(buur(), regels, "c", "2026-01-01T00:00:00Z", 4).bedrag).toBe(regels.beloning);
+describe("beloning per soort werk", () => {
+  it("dak en gevel geven de vaste beloning, een klein werk 10% van de opdracht", () => {
+    expect(refBeloningPunten(buur({ werk: "dak" }), regels)).toBe(regels.beloning);
+    expect(refBeloningPunten(buur({ werk: "gevel" }), regels)).toBe(regels.beloning);
+    expect(refBeloningPunten(buur({ werk: "klein", opdrachtWaarde: 200 }), regels)).toBe(200); // € 20 = 200 punten
+  });
+  it("een klein werk zonder opdrachtwaarde kan niet beloond worden", () => {
+    const { mag, redenen } = beloningMag(klant(), buur({ werk: "klein", status: "uitgevoerd", betaald: true }), regels);
+    expect(mag).toBe(false);
+    expect(redenen.join(" ")).toContain("opdrachtwaarde");
   });
 });

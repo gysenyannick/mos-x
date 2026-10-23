@@ -231,7 +231,7 @@ export async function zetDeelVoorNa(klantId: string, aan: boolean): Promise<void
   const r = await wijzigKlant(klantId, (k) => {
     k.deelVoorNa = aan || undefined;
     // Eenmalig punten, ook als de klant het later weer uitzet
-    if (aan) voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.deelVoorNa, omschrijving: "Je deelt je voor en na met je buren", sleutel: "deel-voorna", door: "systeem" });
+    if (aan && PUNTEN.deelVoorNa > 0) voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.deelVoorNa, omschrijving: "Je deelt je voor en na met je buren", sleutel: "deel-voorna", door: "systeem" });
   });
   if (r) ververs(klantId);
 }

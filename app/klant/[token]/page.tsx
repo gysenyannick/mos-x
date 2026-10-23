@@ -13,7 +13,7 @@ import {
 import { effectief } from "@/lib/klantenzone/auto";
 import { dakfoto, heeftDossier, onderhoudZinvol, werkdagen, type Werkdag } from "@/lib/klantenzone/dak";
 import {
-  CENT_PER_PUNT, PUNTEN, PUNTEN_GEBRUIK, REF_BONUS, aantalBeloningen, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
+  CENT_PER_PUNT, REF_PCT_KLEIN, actieVoorKlant, interesseVoor, puntenInEuro, refActief, refRegels, tegoedOverzicht, volgendeMijlpaal, type RefRegels,
 } from "@/lib/klantenzone/voordeel";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
@@ -1012,16 +1012,16 @@ function Voordelen(ctx: Ctx) {
   const actief = refActief(regels);
   const gewoneActies = acties.filter((a) => a.actie.type !== "buurt");
   const buurtActies = acties.filter((a) => a.actie.type === "buurt");
-  const inwisselGevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.tekst.startsWith("Punten inwisselen"));
+  const inwisselGevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && (a.tekst.startsWith("Punten inwisselen") || a.tekst.startsWith("Tegoed gebruiken")));
+  const buurEuro = puntenInEuro(regels.beloning, ctx.centPerPunt);
   const verdienen = [
-    actief ? { punten: regels.beloning, tekst: "Een buur wordt klant" } : null,
-    ctx.reviewPunten > 0 ? { punten: ctx.reviewPunten, tekst: "Review op Google" } : null,
-    { punten: PUNTEN.onderhoud, tekst: "Onderhoud laten doen" },
-    { punten: PUNTEN.deelVoorNa, tekst: "Voor en na delen" },
-    { punten: PUNTEN.welkom, tekst: "Welkom na je werken" },
+    actief ? { kop: "Een buur wordt klant voor" } : null,
+    actief ? { tekst: "Dak reinigen of coaten", punten: `+${regels.beloning}`, waarde: `€ ${buurEuro}` } : null,
+    actief ? { tekst: "Gevel reinigen", punten: `+${regels.beloning}`, waarde: `€ ${buurEuro}` } : null,
+    actief ? { tekst: "Goten, oprit, terras", punten: "", waarde: `${REF_PCT_KLEIN}%` } : null,
+    ctx.reviewPunten > 0 ? { kop: "Zelf" } : null,
+    ctx.reviewPunten > 0 ? { tekst: "Review op Google", punten: `+${ctx.reviewPunten}`, waarde: `€ ${puntenInEuro(ctx.reviewPunten, ctx.centPerPunt)}` } : null,
   ].filter((x) => x !== null);
-  const beloond = aantalBeloningen(k);
-  const ladder = [1, 2, 3].map((n) => ({ n, punten: regels.beloning + (REF_BONUS[n] ?? 0) }));
 
   return (
     <>
@@ -1030,36 +1030,23 @@ function Voordelen(ctx: Ctx) {
       <section className={`${kz.kaart} ${kz.burenKaart}`}>
         <Cadeaubon naam={`${k.voornaam} ${k.achternaam}`.trim()} code={refCode} punten={saldo} euro={euro} doel={mijlpaal.doel} procent={mijlpaal.procent} />
         <div>
-          <h2 className={kz.kringTitel}>Zo spaar je punten</h2>
+          <h2 className={kz.kringTitel}>Zo spaar je</h2>
           <ul className={kz.puntenTabel}>
-            {verdienen.map((v) => (
+            {verdienen.map((v) => "kop" in v ? <li key={v.kop} className={kz.puntenKop}>{v.kop}</li> : (
               <li key={v.tekst}>
                 <span className={kz.puntenNaam}>{v.tekst}</span>
-                <strong>+{v.punten}</strong>
-                <em>€&nbsp;{puntenInEuro(v.punten, ctx.centPerPunt)}</em>
+                <strong>{v.punten}</strong>
+                <em>{v.waarde}</em>
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      <section className={kz.kaart}>
-        <h2 className={kz.kringTitel}>Zo gebruik je je punten</h2>
-        <p className={kz.sub} style={{ marginTop: 4 }}>100 punten = €&nbsp;{puntenInEuro(100, ctx.centPerPunt)} korting op een volgend werk. Per werk geldt een vast maximum.</p>
-        <div className={kz.gebruikRaster}>
-          {PUNTEN_GEBRUIK.map((g) => (
-            <div key={g.dienst}>
-              <span className={kz.gebruikDienst}>{g.dienst}</span>
-              <strong>tot €&nbsp;{g.max}</strong>
-              <span className={kz.gebruikUitleg}>{g.uitleg}</span>
+          <p className={kz.puntenNoot}>Je tegoed is korting op elk werk van MOS-X.</p>
+          {saldo > 0 && (
+            <div className={kz.rijKnoppen}>
+              <AanvraagKnop klantId={k.id} soort="andere" voorvoegsel={`Tegoed gebruiken (€ ${euro})`} metFotos={false} klein alGevraagd={inwisselGevraagd} alGevraagdTekst="Aangevraagd"
+                label="Tegoed gebruiken" titel="Tegoed gebruiken" uitleg={`Je € ${euro} gaat af van je volgende werk. Yannick bevestigt het.`} placeholder="Voor welk werk? (optioneel)" />
             </div>
-          ))}
-        </div>
-        <div className={kz.rijKnoppen}>
-          {saldo >= 100 ? (
-            <AanvraagKnop klantId={k.id} soort="andere" voorvoegsel={`Punten inwisselen (${saldo} punten)`} metFotos={false} klein alGevraagd={inwisselGevraagd} alGevraagdTekst="Inwisselen aangevraagd"
-              label="Punten inwisselen" titel="Punten inwisselen" uitleg={`Je ${saldo} punten (€ ${euro}) gaan af van je volgende werk, tot het maximum van die dienst. Yannick bevestigt het.`} placeholder="Voor welk werk wil je ze gebruiken? (optioneel)" />
-          ) : <span className={kz.rijSub}>Nog {100 - saldo} punten tot je eerste korting.</span>}
+          )}
         </div>
       </section>
 
@@ -1089,20 +1076,10 @@ function Voordelen(ctx: Ctx) {
         <>
           <h2 className={kz.sectieTitel} id="buren">Breng een buur mee</h2>
           <section className={kz.kaart} style={{ marginTop: 0 }}>
-            <div className={kz.ladder}>
-              {ladder.map((l) => (
-                <div key={l.n} className={beloond >= l.n ? kz.ladderKlaar : beloond + 1 === l.n ? kz.ladderVolgende : undefined}>
-                  <span>{l.n === 1 ? "1ste buur" : l.n === 2 ? "2de buur" : "3de buur"}</span>
-                  <strong>€&nbsp;{puntenInEuro(l.punten, ctx.centPerPunt)}</strong>
-                  <em>{l.punten} punten{REF_BONUS[l.n] ? ` · incl. ${REF_BONUS[l.n]} bonus` : ""}</em>
-                </div>
-              ))}
-            </div>
-            <p className={kz.ladderNoot}>{beloond >= 3 ? `Elke volgende buur: ${regels.beloning} punten (€ ${puntenInEuro(regels.beloning, ctx.centPerPunt)}).` : beloond === 0 ? `Breng je eerste buur aan en verdien € ${puntenInEuro(regels.beloning, ctx.centPerPunt)}. Elke volgende buur levert meer op.` : `Je bracht al ${beloond} ${beloond === 1 ? "buur" : "buren"} aan. Na de 3de: ${regels.beloning} punten per buur.`}</p>
             <ol className={kz.burenStappen}>
               <li><span>1</span><p><strong>Deel je link of ledencode</strong> met buren, familie of vrienden.</p></li>
               <li><span>2</span><p><strong>Je buur vraagt een offerte aan.</strong>{regels.korting > 0 ? ` Hij krijgt € ${regels.korting} korting op zijn eerste opdracht.` : ""}</p></li>
-              <li><span>3</span><p><strong>Is zijn opdracht uitgevoerd en betaald,</strong> dan krijg jij {regels.beloning} punten (€ {puntenInEuro(regels.beloning, ctx.centPerPunt)}).</p></li>
+              <li><span>3</span><p><strong>Is zijn opdracht uitgevoerd en betaald,</strong> dan krijg jij € {puntenInEuro(regels.beloning, ctx.centPerPunt)} voor een dak of gevel, of {REF_PCT_KLEIN}% van het werk bij goten, oprit of terras.</p></li>
             </ol>
             <DeelBuurlink url={refUrl} voornaam={k.voornaam} korting={regels.korting} />
             <div className={kz.qrRij}>
@@ -1122,7 +1099,7 @@ function Voordelen(ctx: Ctx) {
             {voor && na && (
               <div className={kz.voorkeur}>
                 <div>
-                  <p className={kz.rijTitel}>Toon je voor en na op je uitnodiging (+{PUNTEN.deelVoorNa} punten)</p>
+                  <p className={kz.rijTitel}>Toon je voor en na op je uitnodiging</p>
                   <p className={kz.rijSub}>Je buur ziet alleen je voornaam en je gemeente.</p>
                 </div>
                 <form action={zetDeelVoorNa.bind(null, k.id, !k.deelVoorNa)}>

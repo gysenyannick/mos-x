@@ -56,6 +56,7 @@ export type RefRegels = {
   diensten?: string;
   combineerbaar: boolean;
   voorwaarden?: string;
+  centPerPunt: number;
 };
 
 export const REF_STANDAARD_BEDRAG = 50;
@@ -73,6 +74,7 @@ export function refRegels(i: Instellingen): RefRegels {
     diensten: i.refDiensten || undefined,
     combineerbaar: i.refCombineerbaar ?? false,
     voorwaarden: i.refVoorwaarden || undefined,
+    centPerPunt: i.centPerPunt ?? CENT_PER_PUNT,
   };
 }
 
@@ -102,7 +104,8 @@ export function beloningMag(k: Klant, v: Verwijzing, r: RefRegels): { mag: boole
   if (r.beloning <= 0) redenen.push("Er is geen beloning ingesteld.");
   if (v.status !== "uitgevoerd") redenen.push("De opdracht is nog niet als uitgevoerd aangeduid.");
   if (!v.betaald) redenen.push("De opdracht is nog niet volledig betaald.");
-  if (r.minOpdracht > 0 && (v.opdrachtWaarde ?? 0) < r.minOpdracht) redenen.push(`De opdrachtwaarde is lager dan € ${r.minOpdracht}.`);
+  if (v.werk === "klein" && !v.opdrachtWaarde) redenen.push("Vul de opdrachtwaarde in: bij een klein werk is de beloning een percentage.");
+  if (r.minOpdracht > 0 && v.werk !== "klein" && (v.opdrachtWaarde ?? 0) < r.minOpdracht) redenen.push(`De opdrachtwaarde is lager dan € ${r.minOpdracht}.`);
   if (r.maxPerKlant > 0 && aantalBeloningen(k) >= r.maxPerKlant) redenen.push(`Het maximum van ${r.maxPerKlant} beloningen is bereikt.`);
   if ((k.tegoed ?? []).some((t) => t.sleutel === refSleutel(v))) redenen.push("De beloning werd al toegekend.");
   if ((v.controle ?? []).some((c) => c.startsWith("Blokkeert:"))) redenen.push("Een controle blokkeert deze doorverwijzing.");
@@ -110,12 +113,22 @@ export function beloningMag(k: Klant, v: Verwijzing, r: RefRegels): { mag: boole
 }
 
 /** Maakt de transactie voor een toegekende beloning. */
-/** @param nummer de hoeveelste beloonde buur dit is (voor de bonus) */
-export function beloningTransactie(v: Verwijzing, r: RefRegels, id: string, nu: string, nummer = 1): TegoedTransactie {
-  const bonus = refBonus(nummer);
+/** Soort werk van de buur. Dak en gevel: vaste beloning. Kleinere werken (goten, oprit, terras): een percentage. */
+export type RefWerk = "dak" | "gevel" | "klein";
+export const REF_WERK_LABEL: Record<RefWerk, string> = { dak: "Dakreiniging of dakcoating", gevel: "Gevelreiniging", klein: "Dakgoten, oprit of terras" };
+export const REF_PCT_KLEIN = 10;
+
+/** De beloning in punten voor deze buur. Bij een klein werk zonder opdrachtwaarde: 0. */
+export function refBeloningPunten(v: Verwijzing, r: RefRegels): number {
+  if (v.werk !== "klein") return r.beloning;
+  const euro = ((v.opdrachtWaarde ?? 0) * REF_PCT_KLEIN) / 100;
+  return Math.round((euro * 100) / r.centPerPunt);
+}
+
+export function beloningTransactie(v: Verwijzing, r: RefRegels, id: string, nu: string): TegoedTransactie {
   return {
-    id, datum: nu, soort: "toegekend", bedrag: r.beloning + bonus,
-    omschrijving: `Omdat ${v.naam.split(" ")[0]} klant werd${bonus ? ` (met ${bonus} bonuspunten)` : ""}`,
+    id, datum: nu, soort: "toegekend", bedrag: refBeloningPunten(v, r),
+    omschrijving: `Omdat ${v.naam.split(" ")[0]} klant werd`,
     sleutel: refSleutel(v),
     vervaltOp: r.geldigMaanden > 0 ? plusDagen(nu.slice(0, 10), Math.round(r.geldigMaanden * 30.44)) : undefined,
     door: "yannick",
@@ -229,26 +242,16 @@ export function tegoedBonnen(k: Klant, op = vandaag()): Bon[] {
  * Het tegoed wordt bijgehouden in punten. Elke beweging blijft bewaard (zie TegoedTransactie);
  * de klant ruilt punten in voor korting op een volgende factuur. Nooit punten voor reviews.
  */
-export const PUNTEN = {
-  welkom: 50,
-  deelVoorNa: 50,
-  onderhoud: 100,
-} as const;
+/** Vaste punten. Voorlopig uit (0): Yannick beslist later wat hier komt. */
+export const PUNTEN: { welkom: number; deelVoorNa: number; onderhoud: number } = {
+  welkom: 0,
+  deelVoorNa: 0,
+  onderhoud: 0,
+};
 
 /** Standaard: zoveel punten per buur die klant wordt, en zoveel cent per punt. */
 export const PUNTEN_PER_BUUR = 500;
 export const CENT_PER_PUNT = 10;
-/** Waarvoor punten gebruikt worden, met een vaste maximumkorting per werk in euro. */
-export const PUNTEN_GEBRUIK = [
-  { dienst: "Dakgootreiniging", max: 25, uitleg: "Goten proper voor de herfst." },
-  { dienst: "Preventief onderhoud", max: 100, uitleg: "Een nieuwe anti-mosbehandeling." },
-  { dienst: "Terras en oprit", max: 50, uitleg: "Ook rond je huis alles proper." },
-  { dienst: "Nieuwe dakbehandeling", max: 150, uitleg: "Reiniging of coating van je dak." },
-] as const;
-
-/** Bonuspunten bovenop de vaste beloning: bij de 2de en de 3de buur die klant wordt. */
-export const REF_BONUS: Record<number, number> = { 2: 250, 3: 500 };
-export const refBonus = (nummer: number) => REF_BONUS[nummer] ?? 0;
 
 /** Waarde van punten in euro. */
 export function puntenInEuro(punten: number, centPerPunt = CENT_PER_PUNT): number {

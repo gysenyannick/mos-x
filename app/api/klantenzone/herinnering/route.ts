@@ -31,7 +31,7 @@ export async function GET(req: Request) {
     const k = effectief(ruw);
     // Welkomstpunten na de oplevering (ook zonder e-mailadres)
     if ((k.fase === "klaar" || k.fase === "nazorg") && !k.demo && !proef && !(k.tegoed ?? []).some((t) => t.sleutel === "welkom")) {
-      await wijzigKlant(k.id, (x) => { voegTransactieToe(x, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.welkom, omschrijving: "Welkom in je spaarpot", sleutel: "welkom", door: "systeem" }); });
+      if (PUNTEN.welkom > 0) await wijzigKlant(k.id, (x) => { voegTransactieToe(x, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.welkom, omschrijving: "Welkom in je spaarpot", sleutel: "welkom", door: "systeem" }); });
     }
     if (!k.email || k.demo) continue;
     const naam = `${k.voornaam} ${k.achternaam}`.trim();

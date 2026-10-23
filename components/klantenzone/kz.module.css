@@ -2012,3 +2012,10 @@ div.planKop:hover { background: transparent; }
   .ladder span { font-size: 11.5px; }
   .ladder em { font-size: 11px; }
 }
+.puntenTabel li { grid-template-columns: minmax(0, 1fr) 56px 92px; }
+.puntenNoot { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+@media (max-width: 560px) { .puntenTabel li { grid-template-columns: minmax(0, 1fr) 48px 84px; } }
+.puntenTabel li.puntenKop { display: block; padding: 8px 16px; background: var(--zacht); font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.puntenTabel li:nth-child(even):not(.puntenKop) { background: #fff; }
+.puntenTabel li { grid-template-columns: minmax(0, 1fr) 56px 56px; }
+@media (max-width: 560px) { .puntenTabel li { grid-template-columns: minmax(0, 1fr) 48px 48px; } .puntenTabel li.puntenKop { padding: 8px 12px; } }

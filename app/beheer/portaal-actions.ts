@@ -7,7 +7,7 @@ import { getInstellingen, nieuwId, saveInstellingen, wijzigKlant, type Actie, ty
 import {
   AANVRAAG_LABEL, AANVRAAG_STATUSSEN, AANVRAAG_STATUS_LABEL, type AanvraagStatus, type Inspectie, type Klant, type VerwijzingStatus,
 } from "@/lib/klantenzone/types";
-import { PUNTEN, aantalBeloningen, beloningMag, beloningTransactie, refRegels, voegTransactieToe } from "@/lib/klantenzone/voordeel";
+import { PUNTEN, beloningMag, beloningTransactie, refRegels, voegTransactieToe } from "@/lib/klantenzone/voordeel";
 
 const s = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 const getal = (fd: FormData, k: string) => {
@@ -42,7 +42,7 @@ export async function zetAanvraagStatusV2(id: string, aanvraagId: string, status
     a.status = status;
     (a.historiek ??= []).push({ datum: new Date().toISOString(), status });
     if (status === "uitgevoerd" && a.soort === "onderhoud") {
-      voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.onderhoud, omschrijving: "Onderhoud uitgevoerd", sleutel: `onderhoud-${a.id}`, door: "systeem" });
+      if (PUNTEN.onderhoud > 0) voegTransactieToe(k, { id: nieuwId(8), datum: new Date().toISOString(), soort: "toegekend", bedrag: PUNTEN.onderhoud, omschrijving: "Onderhoud uitgevoerd", sleutel: `onderhoud-${a.id}`, door: "systeem" });
     }
     return a;
   });
@@ -110,13 +110,15 @@ export async function bewaarVerwijzing(id: string, vId: string, fd: FormData) {
   await wijzigKlant(id, (k) => {
     const v = (k.verwijzingen ?? []).find((x) => x.id === vId);
     if (!v) return;
-    const oud = JSON.stringify({ st: v.status, w: v.opdrachtWaarde, b: v.betaald });
+    const oud = JSON.stringify({ st: v.status, w: v.opdrachtWaarde, b: v.betaald, werk: v.werk });
     // Een toegekende beloning blijft: de status gaat dan niet meer terug
     if (v.status !== "beloond" && VERWIJZING_FLOW.includes(status)) v.status = status;
     v.opdrachtWaarde = getal(fd, "opdrachtWaarde");
+    const werk = s(fd, "werk");
+    v.werk = werk === "gevel" || werk === "klein" ? werk : "dak";
     v.betaald = s(fd, "betaald") === "ja";
     v.reden = s(fd, "reden") || undefined;
-    const nieuw = JSON.stringify({ st: v.status, w: v.opdrachtWaarde, b: v.betaald });
+    const nieuw = JSON.stringify({ st: v.status, w: v.opdrachtWaarde, b: v.betaald, werk: v.werk });
     if (oud !== nieuw) audit(k, `Doorverwijzing ${v.naam}: ${oud} → ${nieuw}`);
   });
   ververs(id);
@@ -132,7 +134,7 @@ export async function kenBeloningToe(id: string, vId: string): Promise<void> {
     const { mag } = beloningMag(k, v, regels);
     if (!mag) return null;
     const nu = new Date().toISOString();
-    const t = beloningTransactie(v, regels, nieuwId(8), nu, aantalBeloningen(k) + 1);
+    const t = beloningTransactie(v, regels, nieuwId(8), nu);
     if (!voegTransactieToe(k, t)) return null;
     v.status = "beloond";
     audit(k, `Beloning ${t.bedrag} punten toegekend voor doorverwijzing ${v.naam} (sleutel ${t.sleutel})`);

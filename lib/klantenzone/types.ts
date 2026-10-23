@@ -324,6 +324,8 @@ export type Verwijzing = {
   status: VerwijzingStatus;
   /** Waarde van de opdracht incl. btw, om de minimumwaarde te controleren */
   opdrachtWaarde?: number;
+  /** Soort werk: dak en gevel geven de vaste beloning, een klein werk een percentage */
+  werk?: "dak" | "gevel" | "klein";
   /** Volledig betaald (voorwaarde voor de beloning) */
   betaald?: boolean;
   /** Waarom niet in aanmerking, of wat de controle vond */
