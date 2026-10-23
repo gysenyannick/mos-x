@@ -229,7 +229,7 @@ export function tegoedBonnen(k: Klant, op = vandaag()): Bon[] {
  */
 export const PUNTEN = {
   welkom: 50,
-  deelVoorNa: 25,
+  deelVoorNa: 50,
   onderhoud: 100,
 } as const;
 

@@ -17,7 +17,7 @@ import {
 } from "@/lib/klantenzone/voordeel";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
-  maandagVan, nuMs, plusJaren, vandaag,
+  maandagVan, nuMs, plusDagen, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
   AANVRAAG_LABEL, AANVRAAG_STATUS_LABEL, AFSPRAAK_TIPS, CHECKLIST, DOC_GROEPEN, EXTRAS, FASES, FASE_KORT,
@@ -26,7 +26,7 @@ import {
 } from "@/lib/klantenzone/types";
 import { reviewWeg, zetChecklist, zetDeelVoorNa, zetMarketing } from "@/app/klant/actions";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
-import Agenda, { type AgendaItem } from "@/components/klantenzone/agenda";
+import VoorstelKnop from "@/components/klantenzone/voorstel-knop";
 import Cadeaubon from "@/components/klantenzone/cadeaubon";
 import DeelBuurlink from "@/components/klantenzone/deel-buurlink";
 import DocumentLijst from "@/components/klantenzone/document-lijst";
@@ -227,47 +227,71 @@ function WerkdagBlok({ dag, nummer }: { dag: Werkdag; nummer?: number }) {
 }
 
 
+const KORTE_DAG = ["zo", "ma", "di", "wo", "do", "vr", "za"];
+
 function Planning(ctx: Ctx) {
   const { k, komend } = ctx;
+  const vandaagStr = vandaag();
   const start = startTekst(k);
-  const toonStart = !!k.start && k.start.datum >= vandaag() && !komend.some((a) => a.titel === "Start werken");
+  const toonStart = !!k.start && k.start.datum >= vandaagStr && !komend.some((a) => a.titel === "Start werken");
   if (komend.length === 0 && !toonStart) return <p className={kz.leeg}>Zodra de datum vastligt, zie je hier wanneer Yannick komt.</p>;
-  const agendaItems: AgendaItem[] = [
-    ...komend.map((a) => ({ dag: a.start.slice(0, 10), titel: a.titel, uur: `${fmtUur(a.start)} tot ${eindUur(a.start, a.duurMin)}` })),
-    ...(k.werken ?? []).filter((w) => w.datum && !komend.some((a) => a.start.slice(0, 10) === w.datum && a.titel === w.naam)).map((w) => ({ dag: w.datum!, titel: w.naam })),
-    ...(toonStart ? [{ dag: k.start!.datum, titel: "Start van je werken" }] : []),
-  ];
+
+  // Twee weken vanaf de maandag van de week met de eerste afspraak
+  const eerste = toonStart ? k.start!.datum : komend[0].start.slice(0, 10);
+  const maandag = maandagVan(eerste < vandaagStr ? vandaagStr : eerste);
+  const dagen = Array.from({ length: 14 }, (_, i) => plusDagen(maandag, i));
+  const gepland = new Set([...komend.map((a) => a.start.slice(0, 10)), ...(toonStart ? [k.start!.datum] : [])]);
+  const dagDeel = (d: string) => new Date(`${d}T12:00:00Z`);
+
   return (
-    <div className={kz.planningRaster}>
-    <Agenda items={agendaItems} vandaag={vandaag()} />
-    <ul className={kz.planning}>
-      {toonStart && (
-        <li>
-          <DatumBlok start={k.start!.datum} />
-          <span className={kz.rijMidden}>
-            <span className={kz.planningTitel}>{start.zeker ? "Start van je werken" : "Voorlopige start"}</span>
-            <span className={kz.planningDatum}>{start.waarde}</span>
-          </span>
-        </li>
-      )}
-      {komend.map((a) => (
-        <li key={a.id}>
-          <DatumBlok start={a.start} />
-          <span className={kz.rijMidden}>
-            <span className={kz.planningTitel}>{a.titel}</span>
-            <span className={kz.planningDatum}>{hfd(fmtDag(a.start))}</span>
-            <span className={kz.planningUur}><Clock size={13} /> {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)} · Yannick</span>
-            {(a.info || AFSPRAAK_TIPS[a.titel]) && <span className={kz.planningInfo}>{a.info || AFSPRAAK_TIPS[a.titel]}</span>}
-          </span>
-          {kanVerzetten(a, ctx) && (
-            <span className={kz.planningActie}>
-              <VerzetKnop klantId={k.id} afspraakId={a.id} titel={`${a.titel}, nu op ${fmtDag(a.start)} om ${fmtUur(a.start)}`} momenten={ctx.vrijeMomenten} dagLabels={ctx.dagLabels} />
-            </span>
-          )}
-        </li>
-      ))}
-    </ul>
-    </div>
+    <>
+      <div className={kz.dagStrook} role="list" aria-label="De komende twee weken">
+        {dagen.map((d) => {
+          const g = gepland.has(d);
+          const inhoud = (
+            <>
+              <span className={kz.dsDag}>{KORTE_DAG[dagDeel(d).getUTCDay()]}</span>
+              <span className={kz.dsNr}>{dagDeel(d).getUTCDate()}</span>
+            </>
+          );
+          const klasse = `${kz.dsCel} ${g ? kz.dsGepland : ""} ${d === vandaagStr ? kz.dsVandaag : ""} ${d < vandaagStr ? kz.dsVoorbij : ""}`;
+          return g
+            ? <a key={d} href={`#plan-${d}`} className={klasse} role="listitem" aria-label={`${fmtDag(d)}: gepland`}>{inhoud}</a>
+            : <span key={d} className={klasse} role="listitem">{inhoud}</span>;
+        })}
+      </div>
+
+      <ul className={kz.planLijst}>
+        {toonStart && (
+          <li id={`plan-${k.start!.datum}`}>
+            <div className={kz.planDatum}><span>{fmtMaand(k.start!.datum).slice(0, 3)}</span><strong>{Number(k.start!.datum.slice(8, 10))}</strong></div>
+            <div className={kz.planInhoud}>
+              <p className={kz.planTitel}>{start.zeker ? "Start van je werken" : "Voorlopige start"}</p>
+              <p className={kz.planWanneer}>{start.waarde}</p>
+            </div>
+          </li>
+        )}
+        {komend.map((a) => {
+          const d = a.start.slice(0, 10);
+          const info = a.info || AFSPRAAK_TIPS[a.titel];
+          return (
+            <li key={a.id} id={`plan-${d}`} className={d === vandaagStr ? kz.planVandaag : undefined}>
+              <div className={kz.planDatum}><span>{fmtMaand(a.start).slice(0, 3)}</span><strong>{Number(d.slice(8, 10))}</strong></div>
+              <div className={kz.planInhoud}>
+                <p className={kz.planTitel}>{a.titel}{d === vandaagStr && <span className={kz.planNu}>Vandaag</span>}</p>
+                <p className={kz.planWanneer}><span>{hfd(fmtDag(a.start))}</span> <span>· {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)}</span></p>
+                {info && <p className={kz.planInfo}>{info}</p>}
+              </div>
+              {d > vandaagStr && (
+                <div className={kz.planActie}>
+                  <VoorstelKnop klantId={k.id} titel={a.titel} huidig={`${fmtDag(a.start)} om ${fmtUur(a.start)}`} vandaag={vandaagStr} />
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }
 
@@ -793,34 +817,30 @@ function Dakdossier({ k }: Ctx) {
                   <span className={kz.gbRest}>{g.tekst}</span>
                 </div>
                 <div className={kz.gbBalk}><span style={{ width: `${Math.max(g.procent, g.tot ? 3 : 0)}%` }} /></div>
-                <p className={kz.gbTot}>{g.tot ? `Geldig tot ${fmtKort(g.tot)}` : "Je garantie start op de dag van de oplevering."}</p>
+                {g.tot && <p className={kz.gbTot}>Geldig tot {fmtKort(g.tot)}</p>}
               </div>
             ))}
           </div>
+          {garantie.some((g) => !g.tot) && <p className={kz.gbTot} style={{ marginTop: 12 }}>Je garantie start op de dag van de oplevering.</p>}
         </section>
       )}
 
-      {(opm.length > 0 || oog.length > 0) && (
-        <section className={kz.kaart}>
-          <div className={kz.kaartKop}>
-            <h2 className={kz.kaartTitel}><Leaf size={18} /> Opmerkingen</h2>
-            {opm.length > 0 && <span className={kz.dakTeller}>{opm.length}</span>}
-          </div>
-          {opm.length > 0 && (
-            <ul className={kz.ohPunten}>
-              {opm.map((a) => (
-                <li key={a.id}>
-                  {a.fotoUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={a.fotoUrl} alt="" className={kz.ohPuntFoto} />
-                  ) : <span className={`${kz.ohPuntFoto} ${kz.ohPuntIcoon}`} aria-hidden="true"><Leaf size={22} /></span>}
-                  <div className={kz.ohPuntTekst}>
-                    <p className={kz.ohPuntTitel}>{a.titel}</p>
-                    {a.tekst && <p className={kz.rijSub}>{a.tekst}</p>}
-                    <p className={kz.ohPuntDatum}>{fmtKort(a.datum)}{a.prioriteit === "info" ? " · ter info" : ""}</p>
-                  </div>
+      {opm.length > 0 && (
+        <>
+          <h2 className={kz.sectieTitel}>Opmerkingen</h2>
+          <div className={kz.opmRaster}>
+            {opm.map((a) => (
+              <article key={a.id} className={kz.opmKaart}>
+                {a.fotoUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={a.fotoUrl} alt="" className={kz.opmFoto} />
+                ) : <div className={`${kz.opmFoto} ${kz.opmFotoLeeg}`} aria-hidden="true"><Leaf size={26} /></div>}
+                <div className={kz.opmInhoud}>
+                  <span className={`${kz.opmLabel} ${a.prioriteit === "info" ? kz.opmLabelInfo : ""}`}>{a.prioriteit === "info" ? "Ter info" : a.prioriteit === "dringend" ? "Dringend" : "Aanbevolen"}</span>
+                  <h3 className={kz.opmTitel}>{a.titel}</h3>
+                  {a.tekst && <p className={kz.opmTekst}>{a.tekst}</p>}
                   {a.prioriteit !== "info" && (
-                    <div className={kz.ohPuntKnop}>
+                    <div className={kz.opmKnop}>
                       <AanvraagKnop
                         klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd"
                         label="Prijs aanvragen" titel={a.titel}
@@ -829,16 +849,22 @@ function Dakdossier({ k }: Ctx) {
                       />
                     </div>
                   )}
-                </li>
-              ))}
-            </ul>
-          )}
-          {oog.length > 0 && (
-            <div className={kz.ohOog}>
-              <p className={kz.ohOogKop}>Om in het oog te houden</p>
-              <ul>{oog.map((r) => <li key={r}><Leaf size={14} /> {r}</li>)}</ul>
-            </div>
-          )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+
+      {oog.length > 0 && (
+        <section className={kz.kaart}>
+          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Leaf size={18} /> Om in het oog te houden</h2></div>
+          <ul className={kz.oogLijst}>
+            {oog.map((r) => {
+              const [kop, ...rest] = r.split(":");
+              return <li key={r}>{rest.length ? <><strong>{kop.trim()}</strong><span>{rest.join(":").trim()}</span></> : <span>{r}</span>}</li>;
+            })}
+          </ul>
         </section>
       )}
 
@@ -880,7 +906,6 @@ function Dakdossier({ k }: Ctx) {
 function Dakzorg(ctx: Ctx) {
   const { k } = ctx;
   const gevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.soort === "onderhoud");
-  const tot = mosGarantieTot(k);
   const naWerken = onderhoudZinvol(k);
   // Vóór de oplevering: verwacht onderhoud = verwachte oplevering + de mosgarantie
   const { tot: opleverDag } = werkPeriode(k);
@@ -914,8 +939,6 @@ function Dakzorg(ctx: Ctx) {
               />
               <span>Vrijblijvend, je krijgt eerst een prijs.</span>
             </div>
-            {tot && binnenMosGarantie(k) && <p className={kz.ohGarantie}>Je mosgarantie loopt tot {fmtKort(tot)}, ook zonder onderhoud.</p>}
-            {!naWerken && k.garantie.mosvrijJaren > 0 && <p className={kz.ohGarantie}>Je mosgarantie van {k.garantie.mosvrijJaren} jaar start bij de oplevering en geldt ook zonder onderhoud.</p>}
           </div>
         </section>
       )}
@@ -1017,10 +1040,10 @@ function Voordelen(ctx: Ctx) {
   const inwisselGevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.tekst.startsWith("Punten inwisselen"));
   const verdienen = [
     actief ? { punten: regels.beloning, tekst: "Een buur wordt dankzij jou klant" } : null,
-    { punten: PUNTEN.onderhoud, tekst: "Je laat een onderhoud uitvoeren" },
-    { punten: PUNTEN.welkom, tekst: "Welkom, na de oplevering van je werken" },
-    { punten: PUNTEN.deelVoorNa, tekst: "Je toont je voor en na aan je buren" },
     ctx.reviewPunten > 0 ? { punten: ctx.reviewPunten, tekst: "Je laat een eerlijke review achter op Google" } : null,
+    { punten: PUNTEN.onderhoud, tekst: "Je laat een onderhoud uitvoeren" },
+    { punten: PUNTEN.deelVoorNa, tekst: "Je toont je voor en na aan je buren" },
+    { punten: PUNTEN.welkom, tekst: "Welkom, na de oplevering van je werken" },
   ].filter((x) => x !== null);
 
   return (
@@ -1032,7 +1055,7 @@ function Voordelen(ctx: Ctx) {
         <div>
           <h2 className={kz.kringTitel}>Zo spaar je punten</h2>
           <ul className={kz.puntenLijst}>
-            {verdienen.map((v) => <li key={v.tekst}><span>+{v.punten}</span>{v.tekst}</li>)}
+            {verdienen.map((v) => <li key={v.tekst}><span>+{v.punten}</span><span className={kz.puntenTekst}>{v.tekst}</span><em>€&nbsp;{puntenInEuro(v.punten, ctx.centPerPunt)}</em></li>)}
           </ul>
           <p className={kz.sub} style={{ marginTop: 12 }}>100 punten = € {puntenInEuro(100, ctx.centPerPunt)} korting op een volgende factuur.</p>
           <div className={kz.rijKnoppen}>

@@ -232,7 +232,7 @@ export type Aanbeveling = {
   fotoUrl?: string;
 };
 
-export type AanvraagSoort = "onderhoud" | "controle" | "aanbeveling" | "dakzorg" | "schade" | "extra" | "andere";
+export type AanvraagSoort = "onderhoud" | "controle" | "aanbeveling" | "dakzorg" | "schade" | "extra" | "verzetten" | "andere";
 
 export const AANVRAAG_LABEL: Record<AanvraagSoort, string> = {
   onderhoud: "Onderhoud inplannen",
@@ -241,6 +241,7 @@ export const AANVRAAG_LABEL: Record<AanvraagSoort, string> = {
   dakzorg: "Interesse in MOS-X Dakzorg",
   schade: "Stormschade of probleem",
   extra: "Extra dienst",
+  verzetten: "Voorstel andere datum",
   andere: "Vraag",
 };
 
