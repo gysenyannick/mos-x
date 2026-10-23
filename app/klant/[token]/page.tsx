@@ -1075,16 +1075,32 @@ function Voordelen(ctx: Ctx) {
       {actief && (
         <>
           <h2 className={kz.sectieTitel} id="buren">Breng een buur mee</h2>
-          <section className={kz.kaart} style={{ marginTop: 0 }}>
-            <ol className={kz.burenStappen}>
-              <li><span>1</span><p><strong>Deel je link of ledencode</strong> met buren, familie of vrienden.</p></li>
-              <li><span>2</span><p><strong>Je buur vraagt een offerte aan voor een dakreiniging.</strong>{regels.korting > 0 ? ` Hij krijgt € ${regels.korting} korting op zijn eerste opdracht.` : ""}</p></li>
-              <li><span>3</span><p><strong>Is zijn opdracht uitgevoerd en betaald,</strong> dan krijg jij € {puntenInEuro(regels.beloning, ctx.centPerPunt)}. Dit geldt voor een dakreiniging.</p></li>
-            </ol>
-            <DeelBuurlink url={refUrl} voornaam={k.voornaam} korting={regels.korting} />
-            <div className={kz.qrRij}>
-              <div className={kz.qr} dangerouslySetInnerHTML={{ __html: refQr }} />
-              <p className={kz.sub} style={{ margin: 0 }}>Je buur kan deze code scannen met zijn gsm.</p>
+          <section className={`${kz.kaart} ${kz.buurKaart}`} style={{ marginTop: 0 }}>
+            <div className={kz.buurHero}>
+              <div>
+                <span className={kz.buurOog}>Burenvoordeel</span>
+                <p className={kz.buurTitel}>€&nbsp;{puntenInEuro(regels.beloning, ctx.centPerPunt)} voor jou{regels.korting > 0 && <>, €&nbsp;{regels.korting} voor je buur</>}</p>
+                <p className={kz.buurSub}>Voor elke dakreiniging via jouw link.</p>
+              </div>
+              <div className={kz.buurMunten} aria-hidden="true">
+                <span>€{puntenInEuro(regels.beloning, ctx.centPerPunt)}</span>
+                {regels.korting > 0 && <span>€{regels.korting}</span>}
+              </div>
+            </div>
+
+            <div className={kz.buurBody}>
+              <ol className={kz.buurStappen}>
+                <li><span>1</span><div><strong>Deel je link</strong><p>Met buren, familie of vrienden.</p></div></li>
+                <li><span>2</span><div><strong>Je buur vraagt een offerte</strong><p>Voor een dakreiniging{regels.korting > 0 ? `, met € ${regels.korting} korting` : ""}.</p></div></li>
+                <li><span>3</span><div><strong>Jij krijgt €&nbsp;{puntenInEuro(regels.beloning, ctx.centPerPunt)}</strong><p>Zodra zijn dak gereinigd en betaald is.</p></div></li>
+              </ol>
+              <div className={kz.buurDeel}>
+                <div className={kz.buurQr}>
+                  <div className={kz.qr} dangerouslySetInnerHTML={{ __html: refQr }} />
+                  <p>Laat je buur deze code scannen met zijn gsm.</p>
+                </div>
+                <DeelBuurlink url={refUrl} voornaam={k.voornaam} korting={regels.korting} />
+              </div>
             </div>
             {lijst.length > 0 && (
               <ul className={kz.burenLijst}>

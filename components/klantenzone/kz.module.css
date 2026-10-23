@@ -2019,3 +2019,39 @@ div.planKop:hover { background: transparent; }
 .puntenTabel li:nth-child(even):not(.puntenKop) { background: #fff; }
 .puntenTabel li { grid-template-columns: minmax(0, 1fr) 56px 56px; }
 @media (max-width: 560px) { .puntenTabel li { grid-template-columns: minmax(0, 1fr) 48px 48px; } .puntenTabel li.puntenKop { padding: 8px 12px; } }
+
+/* ══ Breng een buur mee ════════════════════════════════════════════════════ */
+.buurKaart { padding: 0; overflow: hidden; }
+.buurHero { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 26px 28px; background: radial-gradient(circle at 85% 30%, rgba(155,203,108,0.28), transparent 55%), linear-gradient(160deg, #1E3324 0%, #16261A 100%); color: #fff; }
+.buurOog { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #B9DE95; }
+.buurTitel { margin: 6px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.2; letter-spacing: -0.028em; }
+.buurSub { margin: 6px 0 0; font-size: 15px; color: rgba(255,255,255,.75); }
+.buurMunten { display: flex; flex: none; }
+.buurMunten span { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 20px; color: #16261A; background: radial-gradient(circle at 35% 30%, #D6EDBE 0%, #9BCB6C 70%); border: 3px solid #16261A; box-shadow: 0 8px 20px -8px rgba(0,0,0,.5); }
+.buurMunten span + span { margin-left: -16px; background: radial-gradient(circle at 35% 30%, #FFFFFF 0%, #E9F3DE 75%); }
+.buurBody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding: 26px 28px 8px; }
+.buurStappen { list-style: none; margin: 0; padding: 0; display: grid; align-content: start; gap: 0; }
+.buurStappen li { position: relative; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding-bottom: 22px; }
+.buurStappen li:last-child { padding-bottom: 0; }
+.buurStappen li:not(:last-child)::before { content: ""; position: absolute; left: 16px; top: 36px; bottom: 2px; width: 2px; background: var(--groen-zacht); }
+.buurStappen li > span { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--groen); color: #fff; font-weight: 800; font-size: 14px; }
+.buurStappen strong { display: block; margin-top: 6px; font-size: 15.5px; color: var(--tekst); }
+.buurStappen p { margin: 2px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+.buurDeel { display: grid; gap: 12px; align-content: start; padding: 18px; border-radius: 16px; background: var(--zacht); border: 1px solid var(--rand); }
+.buurQr { display: flex; align-items: center; gap: 14px; }
+.buurQr p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.buurQr .qr { width: 92px; height: 92px; }
+.buurLink { background: #fff; border: 1px solid var(--rand); margin: 0; }
+.buurDeelKnop { width: 100%; justify-content: center; }
+.buurPrivacy { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--muted); text-align: center; }
+.buurKaart > :not(.buurHero):not(.buurBody) { margin-left: 28px; margin-right: 28px; }
+.buurKaart > :last-child { margin-bottom: 24px; }
+@media (max-width: 760px) {
+  .buurHero { padding: 22px 20px; }
+  .buurTitel { font-size: 21px; }
+  .buurMunten span { width: 54px; height: 54px; font-size: 15px; }
+  .buurBody { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 22px 20px 4px; }
+  .buurKaart > :not(.buurHero):not(.buurBody) { margin-left: 20px; margin-right: 20px; }
+}
+@media (max-width: 420px) { .buurMunten { display: none; } }
+.buurDeel, .buurStappen, .buurLink { min-width: 0; }

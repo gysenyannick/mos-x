@@ -18,19 +18,17 @@ export default function DeelBuurlink({ url, voornaam, korting }: { url: string; 
 
   return (
     <>
-      <div className={kz.linkVak} style={{ background: "#fff", border: "1px solid #E5E7EB" }}>
+      <div className={`${kz.linkVak} ${kz.buurLink}`}>
         <code>{url}</code>
         <button type="button" className={kz.icoonKnop} aria-label="Link kopiëren"
           onClick={async () => { await navigator.clipboard.writeText(url); setOk(true); setTimeout(() => setOk(false), 1600); }}>
           {ok ? <Check size={16} /> : <Copy size={16} />}
         </button>
       </div>
-      <div className={kz.rijKnoppen}>
-        <button type="button" className={kz.knop} style={{ background: "#25D366" }} onClick={deel}>
-          <Share2 size={15} /> Deel met je buren
-        </button>
-      </div>
-      <p className={kz.sub} style={{ fontSize: 12 }}>Je buur ziet alleen je voornaam ({voornaam}), niet je adres of je dossier.</p>
+      <button type="button" className={`${kz.knop} ${kz.knopPrimair} ${kz.buurDeelKnop}`} onClick={deel}>
+        <Share2 size={16} /> Deel met je buren
+      </button>
+      <p className={kz.buurPrivacy}>Je buur ziet alleen je voornaam ({voornaam}), niet je adres of je dossier.</p>
     </>
   );
 }
