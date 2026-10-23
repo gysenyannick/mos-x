@@ -790,9 +790,9 @@ function Dakdossier({ k, controle }: Ctx) {
             <div><dt>Oppervlakte</dt><dd>{p.oppervlakte ? `${p.oppervlakte} m²` : "–"}</dd></div>
           </dl>
           <div className={kz.dpHeroKnoppen}>
-            {heeftDossier(k) && <a className={`${kz.knop} ${kz.knopPrimair}`} href={`/klant/${k.id}/dakdossier`} target="_blank" rel="noopener noreferrer"><FolderOpen size={16} /> Volledig dakdossier</a>}
+            {heeftDossier(k) && <a className={`${kz.knop} ${kz.knopPrimair}`} href={`/klant/${k.id}/dakdossier`} target="_blank" rel="noopener noreferrer"><FolderOpen size={16} /> Volledig dossier</a>}
             {rapport && <a className={`${kz.knop} ${kz.dpKnopGlas}`} href={rapport} target="_blank" rel="noopener noreferrer"><FileText size={16} /> Inspectierapport</a>}
-            {certificaat && <a className={`${kz.knop} ${kz.dpKnopGlas}`} href={certificaat.url} target="_blank" rel="noopener noreferrer"><ShieldCheck size={16} /> Garantiecertificaat</a>}
+            {certificaat && <a className={`${kz.knop} ${kz.dpKnopGlas}`} href={certificaat.url} target="_blank" rel="noopener noreferrer"><ShieldCheck size={16} /> Certificaat</a>}
           </div>
         </div>
         <div className={kz.dpHeroFoto}>

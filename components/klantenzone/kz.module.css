@@ -2321,3 +2321,27 @@ div.planKop:hover { background: transparent; }
   .dpHero .dpHeroInfo { padding: 18px 16px 20px; }
   .dpHero .dpAdres { font-size: 20px; }
 }
+
+/* ══ Dakdossier: strakker ══════════════════════════════════════════════════ */
+/* Gegevens als nette rijen */
+.dpHero .dpSpecs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: rgba(255,255,255,.06); overflow: hidden; }
+.dpHero .dpSpecs > div, .dpHero .dpSpecs > div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border: 0; border-top: 1px solid rgba(255,255,255,.1); border-radius: 0; background: none; }
+.dpHero .dpSpecs > div:first-child { border-top: 0; }
+.dpHero .dpSpecs dt { font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; color: rgba(255,255,255,.7); }
+.dpHero .dpSpecs dd { margin: 0; font-size: 14.5px; font-weight: 700; }
+/* Knoppen naast elkaar, even breed */
+.dpHero .dpHeroKnoppen { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 8px; }
+.dpHero .dpHeroKnoppen .knop { justify-content: center; padding-left: 12px; padding-right: 12px; font-size: 14px; white-space: nowrap; }
+/* Lijsten onder elkaar, over de volle breedte */
+.dpDuo { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.dpDuo .dpKaart { padding: 20px 24px 8px; }
+.dpRijDatum { width: 110px; }
+@media (max-width: 760px) {
+  .dpHero .dpSpecs > div, .dpHero .dpSpecs > div:first-child { padding: 9px 12px; }
+  .dpHero .dpSpecs dd { font-size: 13.5px; }
+  .dpHero .dpSpecs dt { font-size: 12.5px; }
+  .dpDuo .dpKaart { padding: 16px 16px 6px; }
+  .dpRijDatum { width: 88px; }
+}
+.dpDocs { padding: 20px 24px 12px; }
+@media (max-width: 760px) { .dpDocs { padding: 16px 16px 8px; } }
