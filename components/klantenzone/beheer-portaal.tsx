@@ -158,7 +158,13 @@ export function BeheerZorg({ k }: { k: Klant }) {
               </select>
             </div>
             <div className={`${kz.veld} ${kz.vol}`}><label htmlFor="ibev">Bevindingen (de klant ziet dit)</label><textarea id="ibev" name="bevindingen" className={kz.invoer} placeholder="bv. Dak in goede staat, lichte groene waas op de noordkant." /></div>
-            <div className={kz.veld}><label htmlFor="iurl">Link naar verslag (optioneel)</label><input id="iurl" name="verslagUrl" className={kz.invoer} placeholder="Upload het verslag bij Documenten en plak de link" /></div>
+            <div className={kz.veld}>
+              <label htmlFor="iurl">Inspectierapport (optioneel)</label>
+              <select id="iurl" name="verslagUrl" className={kz.invoer} defaultValue="">
+                <option value="">Geen rapport</option>
+                {k.documenten.map((d) => <option key={d.id} value={d.url}>{d.titel} ({fmtKort(d.datum)})</option>)}
+              </select>
+            </div>
             <div className={kz.veld}><label htmlFor="ivolg">Onderhoud aanraden op (optioneel)</label><input id="ivolg" name="volgendeControle" type="date" className={kz.invoer} /></div>
           </div>
           <div className={kz.rijKnoppen}><button className={`${kz.knop} ${kz.knopKlein}`}>Controle toevoegen</button></div>

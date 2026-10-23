@@ -344,7 +344,7 @@ export type Inspectie = {
   id: string;
   /** YYYY-MM-DD */
   datum: string;
-  soort: "12maanden" | "controle" | "plaatsbezoek";
+  soort: "12maanden" | "controle" | "inspectie" | "plaatsbezoek";
   bevindingen: string;
   verslagUrl?: string;
 };
@@ -352,6 +352,7 @@ export type Inspectie = {
 export const INSPECTIE_LABEL: Record<Inspectie["soort"], string> = {
   "12maanden": "Controle na 12 maanden",
   controle: "Dakcontrole",
+  inspectie: "Dakinspectie",
   plaatsbezoek: "Plaatsbezoek",
 };
 

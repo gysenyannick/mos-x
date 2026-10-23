@@ -64,7 +64,7 @@ export async function voegInspectieToe(id: string, fd: FormData) {
   await vereisBeheerder();
   const datum = s(fd, "datum");
   const soort = s(fd, "soort") as Inspectie["soort"];
-  if (!datum || !["12maanden", "controle", "plaatsbezoek"].includes(soort)) return;
+  if (!datum || !["12maanden", "controle", "inspectie", "plaatsbezoek"].includes(soort)) return;
   const r = await wijzigKlant(id, (k) => {
     (k.inspecties ??= []).push({ id: nieuwId(6), datum, soort, bevindingen: s(fd, "bevindingen"), verslagUrl: s(fd, "verslagUrl") || undefined });
     k.log.unshift({ datum: new Date().toISOString(), tekst: "Er werd een dakcontrole toegevoegd aan je dakdossier." });

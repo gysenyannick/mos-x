@@ -755,8 +755,12 @@ function Dakdossier({ k, controle }: Ctx) {
   const labels = Object.fromEntries(k.documenten.map((d) => [d.id, { datum: fmtKort(d.datum), bedrag: d.bedrag ? fmtEuro(d.bedrag) : undefined }]));
 
   const uitgevoerd = [
-    ...historiek.map((b) => ({ id: b.id, datum: b.datum, titel: b.soort })),
-    ...inspecties.map((i) => ({ id: i.id, datum: i.datum, titel: INSPECTIE_LABEL[i.soort] })),
+    ...historiek.map((b) => ({ id: b.id, datum: b.datum, titel: b.soort, sub: undefined as string | undefined, rapport: undefined as string | undefined })),
+    // Bij een inspectie: de bevindingen en het rapport (gekoppeld, of een inspectierapport van dezelfde dag)
+    ...inspecties.map((i) => ({
+      id: i.id, datum: i.datum, titel: INSPECTIE_LABEL[i.soort], sub: i.bevindingen || undefined,
+      rapport: i.verslagUrl ?? k.documenten.find((d) => d.type === "inspectie" && d.datum.slice(0, 10) === i.datum.slice(0, 10))?.url,
+    })),
   ].sort((a, b) => b.datum.localeCompare(a.datum));
   const punten = [
     ...opm.map((a) => ({ id: a.id, titel: a.titel, tekst: a.tekst, amber: a.prioriteit !== "info", fotos: aanbevelingFotos(a), a })),
@@ -766,8 +770,8 @@ function Dakdossier({ k, controle }: Ctx) {
     }),
   ];
   const tegels = [
-    ...garantie.map((g) => ({ id: g.id, waarde: `${g.jaren} jaar`, label: g.naam })),
-    controle ? { id: "oh", waarde: hfd(fmtMaand(controle.datum)).replace(/^(\S{3})\S*/, "$1"), label: "Onderhoud" } : null,
+    ...garantie.map((g) => ({ id: g.id, oog: "Garantie", waarde: `${g.jaren} jaar`, label: g.naam })),
+    controle ? { id: "oh", waarde: hfd(fmtMaand(controle.datum)).replace(/^(\S{3})\S*/, "$1"), oog: "Onderhoud", label: "Volgende beurt" } : null,
   ].filter((x) => x !== null);
 
   return (
@@ -800,6 +804,7 @@ function Dakdossier({ k, controle }: Ctx) {
         <div className={kz.dpTegels} style={{ gridTemplateColumns: `repeat(${tegels.length}, minmax(0, 1fr))` }}>
           {tegels.map((t) => (
             <div key={t.id}>
+              <em>{t.oog === "Garantie" ? <ShieldCheck size={13} /> : <Leaf size={13} />} {t.oog}</em>
               <strong>{t.waarde}</strong>
               <span>{t.label}</span>
             </div>
@@ -857,10 +862,25 @@ function Dakdossier({ k, controle }: Ctx) {
               <ul className={kz.dpRijen}>
                 {uitgevoerd.map((r) => (
                   <li key={r.id}>
-                    <div className={kz.dpRij}>
-                      <span className={kz.dpRijDatum}>{fmtKort(r.datum)}</span>
-                      <span className={kz.dpRijTitel}>{r.titel}</span>
-                    </div>
+                    {r.sub || r.rapport ? (
+                      <details>
+                        <summary>
+                          <span className={kz.dpRijDatum}>{fmtKort(r.datum)}</span>
+                          <span className={kz.dpRijTitel}>{r.titel}</span>
+                          {r.rapport && <FileText size={15} className={kz.dpRijIcoon} aria-label="Met rapport" />}
+                          <ChevronDown size={16} className={kz.dpPuntPijl} />
+                        </summary>
+                        <div className={kz.dpPuntOpen} style={{ paddingLeft: 0 }}>
+                          {r.sub && <p className={kz.dosSub}>{r.sub}</p>}
+                          {r.rapport && <a className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`} href={r.rapport} target="_blank" rel="noopener noreferrer"><FileText size={15} /> Inspectierapport bekijken</a>}
+                        </div>
+                      </details>
+                    ) : (
+                      <div className={kz.dpRij}>
+                        <span className={kz.dpRijDatum}>{fmtKort(r.datum)}</span>
+                        <span className={kz.dpRijTitel}>{r.titel}</span>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
