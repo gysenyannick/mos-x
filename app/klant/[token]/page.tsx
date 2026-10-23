@@ -222,13 +222,6 @@ function WerkdagBlok({ dag, nummer }: { dag: Werkdag; nummer?: number }) {
   );
 }
 
-/** Dagnummer: de hoeveelste werkdag sinds de start (bezoeken ervoor krijgen geen nummer). */
-function dagNummers(k: Klant, dagen: Werkdag[]): Map<string, number> {
-  const start = k.start?.datum ?? "9999";
-  const werk = dagen.filter((d) => d.dag >= start).map((d) => d.dag).sort();
-  return new Map(werk.map((d, i) => [d, i + 1]));
-}
-
 
 function Planning(ctx: Ctx) {
   const { k, komend } = ctx;
@@ -438,7 +431,8 @@ function Overzicht(ctx: Ctx) {
   const stap = volgendeStap(k, volgende);
   const berichtVers = !!k.bericht && (!k.berichtDatum || dagenTot(k.berichtDatum.slice(0, 10)) >= -7);
   const melding = [...(k.opmerkingen ?? [])].reverse().find((o) => o.belangrijk && o.van === "yannick" && dagenTot(o.datum.slice(0, 10)) >= -14);
-  const laatsteDag = k.fase === "bezig" || k.fase === "klaar" ? werkdagen(k).find((d) => d.dag >= (k.start?.datum ?? "0000")) : undefined;
+  const periode = werkPeriode(k);
+  const laatsteDag = k.fase === "bezig" || k.fase === "klaar" ? werkdagen(k).find((d) => !!periode.van && d.dag >= periode.van && (!periode.tot || d.dag <= periode.tot)) : undefined;
   const behandeling = laatsteBehandeling(k);
   const garantie = garantieStaat(k);
   const c12 = controle12(k);
@@ -506,7 +500,7 @@ function Overzicht(ctx: Ctx) {
             <h2 className={kz.kaartTitel}><Camera size={18} /> Wat er gebeurde</h2>
             <Link href="?tab=werken" className={kz.meerLink}>Volledig verslag <ArrowRight size={14} /></Link>
           </div>
-          <WerkdagBlok dag={laatsteDag} nummer={dagNummers(k, werkdagen(k)).get(laatsteDag.dag)} />
+          <WerkdagBlok dag={laatsteDag} nummer={tijdlijn(k).filter((d) => d.werken.length || d.verslag).findIndex((d) => d.dag === laatsteDag.dag) + 1 || undefined} />
         </section>
       )}
 
@@ -594,15 +588,33 @@ type TijdlijnDag = {
 };
 
 /** Alles van het project per dag: werken, afspraken, verslagen en foto's. */
+/** Afspraken die niet bij de uitvoering horen: vóór de opdracht of erna. */
+const GEEN_WERKDAG = ["Plaatsbezoek", "Nazorgbezoek", "Controle", "Dakcontrole"];
+
+/** Van de start van de werken tot en met de oplevering. */
+function werkPeriode(k: Klant): { van?: string; tot?: string } {
+  const datums = (k.werken ?? []).map((w) => w.datum).filter((d): d is string => !!d).sort();
+  const van = k.start?.precisie === "dag" ? k.start.datum : datums[0];
+  const oplevering = k.afspraken.find((a) => a.titel === "Oplevering")?.start.slice(0, 10);
+  const tot = [oplevering, k.garantie.vanaf, datums[datums.length - 1]].filter((d): d is string => !!d).sort().pop();
+  return { van, tot };
+}
+
+/** Elke dag van de uitvoering: werken, afspraken, verslagen en foto's. Het plaatsbezoek en de nazorg horen er niet bij. */
 function tijdlijn(k: Klant): TijdlijnDag[] {
+  const { van, tot } = werkPeriode(k);
+  const binnen = (d: string) => !!van && d >= van && (!tot || d <= tot);
   const m = new Map<string, TijdlijnDag>();
   const dag = (d: string) => {
     if (!m.has(d)) m.set(d, { dag: d, werken: [], afspraken: [] });
     return m.get(d)!;
   };
   for (const w of k.werken ?? []) if (w.datum) dag(w.datum).werken.push(w);
-  for (const a of k.afspraken) dag(a.start.slice(0, 10)).afspraken.push(a);
-  for (const v of werkdagen(k)) dag(v.dag).verslag = v;
+  for (const a of k.afspraken) {
+    const d = a.start.slice(0, 10);
+    if (!GEEN_WERKDAG.includes(a.titel) && binnen(d)) dag(d).afspraken.push(a);
+  }
+  for (const v of werkdagen(k)) if (binnen(v.dag)) dag(v.dag).verslag = v;
   return [...m.values()].sort((a, b) => a.dag.localeCompare(b.dag));
 }
 
@@ -612,9 +624,10 @@ function MijnWerken(ctx: Ctx) {
   const klaar = werken.filter((w) => w.status === "klaar").length;
   const nu = werken.find((w) => w.status === "bezig");
   const vandaagStr = vandaag();
-  const komend = ctx.komend.find((a) => a.start.slice(0, 10) > vandaagStr);
+  const komend = ctx.komend.find((a) => a.start.slice(0, 10) > vandaagStr && !GEEN_WERKDAG.includes(a.titel));
   const dagen = tijdlijn(k);
-  const nummers = dagNummers(k, dagen.filter((d) => d.werken.length || d.verslag).map((d) => d.verslag ?? { dag: d.dag, werken: [], notities: [], fotos: [] }));
+  // Enkel echte werkdagen krijgen een nummer, de oplevering niet
+  const nummers = new Map(dagen.filter((d) => d.werken.length || d.verslag).map((d, i) => [d.dag, i + 1]));
   const voor = k.fotos.find((f) => f.fase === "voor");
   const na = k.fotos.find((f) => f.fase === "na");
   const ongedateerd = werken.filter((w) => !w.datum);
