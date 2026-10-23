@@ -2298,3 +2298,26 @@ div.planKop:hover { background: transparent; }
   .dpHeroInfo .dpSpecs dd { font-size: 12.5px; }
   .dpHeroInfo .dpSpecs dt { font-size: 10px; letter-spacing: .03em; }
 }
+
+/* ══ Dakdossier: kop in dezelfde stijl als Onderhoud, Diensten en Voordelen ══ */
+.dpHero { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 0; border: 0; color: #fff; background: radial-gradient(circle at 15% 10%, rgba(155,203,108,0.22), transparent 55%), linear-gradient(160deg, #1E3324 0%, #16261A 100%); box-shadow: 0 18px 40px -24px rgba(22,38,26,0.7); }
+.dpHero .dpHeroInfo { padding: 30px; gap: 16px; }
+.dpHero .dpOog { color: #B9DE95; }
+.dpHero .dpAdres { color: #fff; font-size: 24px; }
+.dpHero .dpSpecs { border: 0; gap: 8px; overflow: visible; }
+.dpHero .dpSpecs > div { border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: rgba(255,255,255,.08); }
+.dpHero .dpSpecs > div:first-child { border-left: 1px solid rgba(255,255,255,.14); }
+.dpHero .dpSpecs dt { color: #B9DE95; }
+.dpHero .dpSpecs dd { color: #fff; }
+.dpHero .dpHeroKnoppen { display: flex; flex-wrap: wrap; gap: 8px; }
+.dpHero .dpHeroKnoppen .knop { flex: 1 1 auto; }
+.dpKnopGlas { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); color: #fff; box-shadow: none; }
+.dpKnopGlas:hover { background: rgba(255,255,255,.18); }
+.dpKnopGlas:focus-visible { outline: 2px solid #B9DE95; outline-offset: 2px; }
+.dpHero .dpHeroFoto { margin: 14px 14px 14px 0; border-radius: 14px; overflow: hidden; }
+@media (max-width: 760px) {
+  .dpHero { grid-template-columns: 1fr; }
+  .dpHero .dpHeroFoto { order: -1; margin: 12px 12px 0; }
+  .dpHero .dpHeroInfo { padding: 18px 16px 20px; }
+  .dpHero .dpAdres { font-size: 20px; }
+}

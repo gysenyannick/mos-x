@@ -769,9 +769,11 @@ function Dakdossier({ k, controle }: Ctx) {
       return { id: r, titel: rest.length ? kop.trim() : r, tekst: rest.join(":").trim(), amber: false, fotos: [] as string[], a: undefined };
     }),
   ];
+  // Het meest recente inspectierapport krijgt een eigen knop
+  const rapport = uitgevoerd.find((r) => r.rapport)?.rapport ?? k.documenten.find((d) => d.type === "inspectie")?.url;
   const tegels = [
     ...garantie.map((g) => ({ id: g.id, oog: "Garantie", waarde: `${g.jaren} jaar`, label: g.naam })),
-    controle ? { id: "oh", waarde: hfd(fmtMaand(controle.datum)).replace(/^(\S{3})\S*/, "$1"), oog: "Onderhoud", label: "Volgende beurt" } : null,
+    controle ? { id: "oh", waarde: hfd(fmtMaand(controle.datum)).replace(/^(\S{3})\S*/, "$1"), oog: "Onderhoud", label: "Aangeraden" } : null,
   ].filter((x) => x !== null);
 
   return (
@@ -779,12 +781,6 @@ function Dakdossier({ k, controle }: Ctx) {
       <PaginaKop titel="Mijn dakdossier" />
 
       <section className={kz.dpHero}>
-        <div className={kz.dpHeroFoto}>
-          {foto ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={foto.url} alt="Je dak" />
-          ) : <span className={kz.dpFotoLeeg}><Home size={34} /></span>}
-        </div>
         <div className={kz.dpHeroInfo}>
           <p className={kz.dpOog}>Mijn dak</p>
           <h2 className={kz.dpAdres}>{k.adres}</h2>
@@ -794,9 +790,16 @@ function Dakdossier({ k, controle }: Ctx) {
             <div><dt>Oppervlakte</dt><dd>{p.oppervlakte ? `${p.oppervlakte} m²` : "–"}</dd></div>
           </dl>
           <div className={kz.dpHeroKnoppen}>
-            {heeftDossier(k) && <a className={`${kz.knop} ${kz.knopPrimair} ${kz.knopKlein}`} href={`/klant/${k.id}/dakdossier`} target="_blank" rel="noopener noreferrer"><FileText size={15} /> Dossier als PDF</a>}
-            {certificaat && <a className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`} href={certificaat.url} target="_blank" rel="noopener noreferrer"><ShieldCheck size={15} /> Certificaat</a>}
+            {heeftDossier(k) && <a className={`${kz.knop} ${kz.knopPrimair}`} href={`/klant/${k.id}/dakdossier`} target="_blank" rel="noopener noreferrer"><FolderOpen size={16} /> Volledig dakdossier</a>}
+            {rapport && <a className={`${kz.knop} ${kz.dpKnopGlas}`} href={rapport} target="_blank" rel="noopener noreferrer"><FileText size={16} /> Inspectierapport</a>}
+            {certificaat && <a className={`${kz.knop} ${kz.dpKnopGlas}`} href={certificaat.url} target="_blank" rel="noopener noreferrer"><ShieldCheck size={16} /> Garantiecertificaat</a>}
           </div>
+        </div>
+        <div className={kz.dpHeroFoto}>
+          {foto ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={foto.url} alt="Je dak" />
+          ) : <span className={kz.dpFotoLeeg}><Home size={34} /></span>}
         </div>
       </section>
 

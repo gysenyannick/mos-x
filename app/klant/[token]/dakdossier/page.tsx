@@ -6,6 +6,7 @@ import { effectief } from "@/lib/klantenzone/auto";
 import { volgendeControle } from "@/lib/klantenzone/onderhoud";
 import { dakGegevens, dakfoto, garantieRegels, onderhoudZinvol } from "@/lib/klantenzone/dak";
 import { fmtKort, fmtMaand, hfd, vandaag } from "@/lib/klantenzone/tijd";
+import { INSPECTIE_LABEL } from "@/lib/klantenzone/types";
 import PrintKnop from "@/components/klantenzone/print-knop";
 import d from "./dossier.module.css";
 
@@ -24,6 +25,8 @@ export default async function Dakdossier({ params }: { params: Promise<{ token: 
   const gegevens = dakGegevens(k);
   const foto = dakfoto(k);
   const werken = k.behandelingen ?? [];
+  const inspecties = [...(k.inspecties ?? [])].filter((i) => i.soort !== "plaatsbezoek").sort((a, b) => b.datum.localeCompare(a.datum));
+  const rapportVan = (datum: string, url?: string) => url ?? k.documenten.find((x) => x.type === "inspectie" && x.datum.slice(0, 10) === datum.slice(0, 10))?.url;
   const garantie = garantieRegels(k);
   const punten = [
     ...(k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd").map((a) => a.titel),
@@ -37,7 +40,7 @@ export default async function Dakdossier({ params }: { params: Promise<{ token: 
   return (
     <main className={d.scherm}>
       <div className={d.balk}>
-        <Link href={`/klant/${k.id}?tab=dak`} className={d.terug}>Terug naar je klantenzone</Link>
+        <Link href={`/klant/${k.id}?tab=dossier`} className={d.terug}>Terug naar je klantenzone</Link>
         <PrintKnop className={d.knop}>Opslaan als PDF</PrintKnop>
       </div>
 
@@ -107,6 +110,27 @@ export default async function Dakdossier({ params }: { params: Promise<{ token: 
           </section>
         )}
 
+        {inspecties.length > 0 && (
+          <section className={d.deel}>
+            <h2 className={d.kop2}>Dakinspectie</h2>
+            <table className={`${d.tabel} ${d.werken}`}>
+              <thead><tr><th>Datum</th><th>Soort</th><th>Bevindingen</th></tr></thead>
+              <tbody>
+                {inspecties.map((i) => {
+                  const url = rapportVan(i.datum, i.verslagUrl);
+                  return (
+                    <tr key={i.id}>
+                      <td>{fmtKort(i.datum)}</td>
+                      <th>{INSPECTIE_LABEL[i.soort]}</th>
+                      <td>{i.bevindingen || "–"}{url && <> · <a href={url} target="_blank" rel="noopener noreferrer">Rapport</a></>}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </section>
+        )}
+
         {(punten.length > 0 || controle) && (
           <section className={`${d.deel} ${d.tweeKol}`}>
             {punten.length > 0 && (
@@ -117,7 +141,7 @@ export default async function Dakdossier({ params }: { params: Promise<{ token: 
             )}
             {controle && (
               <div>
-                <h2 className={d.kop2}>Volgend onderhoud</h2>
+                <h2 className={d.kop2}>Aangeraden onderhoud</h2>
                 <p className={d.groot}>{hfd(fmtMaand(controle.datum))}</p>
                 <p className={d.tekst}>Aangeraden: een preventieve anti-mosbehandeling en een inspectie van het dak.</p>
               </div>
