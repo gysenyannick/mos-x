@@ -19,8 +19,8 @@ import {
 } from "@/lib/klantenzone/tijd";
 import {
   AANVRAAG_LABEL, AANVRAAG_STATUS_LABEL, AFSPRAAK_TIPS, CHECKLIST, DOC_GROEPEN, DOC_IS_FACTUUR, EXTRAS, FASES, FASE_KORT,
-  FASE_LABEL, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, VERZET_UREN, aanvraagLoopt,
-  type Afspraak, type Klant, type VrijMoment,
+  FASE_LABEL, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, VERZET_UREN, WERK_UITLEG, aanvraagLoopt,
+  type Afspraak, type Klant, type VrijMoment, type Werk,
 } from "@/lib/klantenzone/types";
 import { reviewWeg, zetChecklist, zetDeelVoorNa, zetMarketing } from "@/app/klant/actions";
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
@@ -229,30 +229,6 @@ function dagNummers(k: Klant, dagen: Werkdag[]): Map<string, number> {
   return new Map(werk.map((d, i) => [d, i + 1]));
 }
 
-/** Elk werk van dit project met zijn status: wat klaar is, wat vandaag gebeurt, wat nog komt. */
-function WerkenLijst({ k }: { k: Klant }) {
-  const werken = [...(k.werken ?? [])].sort((a, b) => (a.datum ?? "9999").localeCompare(b.datum ?? "9999"));
-  if (!werken.length) return null;
-  return (
-    <section className={kz.kaart}>
-      <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><CheckCircle2 size={18} /> De werken</h2></div>
-      <ul className={kz.werkenLijst}>
-        {werken.map((w) => (
-          <li key={w.id} className={w.status === "klaar" ? kz.werkKlaar : w.status === "bezig" ? kz.werkNu : undefined}>
-            <span className={kz.werkBol}>{w.status === "klaar" ? <CheckCircle2 size={18} /> : <Circle size={18} />}</span>
-            <div>
-              <p className={kz.werkNaam}>{w.naam}</p>
-              {w.omschrijving && <p className={kz.rijSub}>{w.omschrijving}</p>}
-            </div>
-            <span className={kz.werkStatus}>
-              {w.status === "klaar" ? `Klaar${w.datum ? ` · ${fmtKort(w.datum)}` : ""}` : w.status === "bezig" ? "Vandaag" : w.datum ? hfd(fmtDag(w.datum)) : "Datum volgt"}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
 
 function Planning(ctx: Ctx) {
   const { k, komend } = ctx;
@@ -608,63 +584,125 @@ function Overzicht(ctx: Ctx) {
   );
 }
 
-/* ══ Mijn werken: fases, planning, voorbereiding, fotoverslag ══════════════ */
+/* ══ Mijn werken: voortgang en een tijdlijn per dag ════════════════════════ */
+
+type TijdlijnDag = {
+  dag: string;
+  werken: Werk[];
+  afspraken: Afspraak[];
+  verslag?: Werkdag;
+};
+
+/** Alles van het project per dag: werken, afspraken, verslagen en foto's. */
+function tijdlijn(k: Klant): TijdlijnDag[] {
+  const m = new Map<string, TijdlijnDag>();
+  const dag = (d: string) => {
+    if (!m.has(d)) m.set(d, { dag: d, werken: [], afspraken: [] });
+    return m.get(d)!;
+  };
+  for (const w of k.werken ?? []) if (w.datum) dag(w.datum).werken.push(w);
+  for (const a of k.afspraken) dag(a.start.slice(0, 10)).afspraken.push(a);
+  for (const v of werkdagen(k)) dag(v.dag).verslag = v;
+  return [...m.values()].sort((a, b) => a.dag.localeCompare(b.dag));
+}
 
 function MijnWerken(ctx: Ctx) {
-  const { k, voorbij } = ctx;
-  const faseIndex = FASES.indexOf(k.fase);
+  const { k } = ctx;
+  const werken = k.werken ?? [];
+  const klaar = werken.filter((w) => w.status === "klaar").length;
+  const nu = werken.find((w) => w.status === "bezig");
+  const vandaagStr = vandaag();
+  const komend = ctx.komend.find((a) => a.start.slice(0, 10) > vandaagStr);
+  const dagen = tijdlijn(k);
+  const nummers = dagNummers(k, dagen.filter((d) => d.werken.length || d.verslag).map((d) => d.verslag ?? { dag: d.dag, werken: [], notities: [], fotos: [] }));
   const voor = k.fotos.find((f) => f.fase === "voor");
   const na = k.fotos.find((f) => f.fase === "na");
-  const dagen = werkdagen(k);
-  const nummers = dagNummers(k, dagen);
-  const oplevering = k.afspraken.find((a) => a.titel === "Oplevering");
-  const faseDatum: Record<string, string | undefined> = {
-    gepland: k.start ? startTekst(k).waarde : undefined,
-    bezig: k.start?.precisie === "dag" ? hfd(fmtDag(k.start.datum)) : undefined,
-    klaar: k.garantie.vanaf ? hfd(fmtDag(k.garantie.vanaf)) : oplevering ? hfd(fmtDag(oplevering.start)) : undefined,
-    nazorg: k.garantie.vanaf ? `Vanaf ${fmtKort(k.garantie.vanaf)}` : undefined,
-  };
-  const faseUitleg: Record<string, string> = {
-    gepland: "Je opdracht is bevestigd en ingepland.",
-    bezig: "Yannick werkt aan je dak. Elke werkdag komt er een verslag met foto's.",
-    klaar: "Samen het resultaat nalopen. Je garantie start op die dag.",
-    nazorg: "Je garantie loopt, en na 12 maanden is er een gratis dakcontrole.",
-  };
+  const ongedateerd = werken.filter((w) => !w.datum);
 
   return (
     <>
       <PaginaKop titel="Mijn werken" sub={k.dienst || undefined} />
 
-      <section className={kz.kaart}>
-        <ol className={kz.faseLijst}>
-          {FASES.map((f, i) => (
-            <li key={f} className={i < faseIndex ? kz.faseLijstKlaar : i === faseIndex ? kz.faseLijstNu : undefined}>
-              <span className={kz.faseLijstBol}>{i < faseIndex ? <CheckCircle2 size={16} /> : i + 1}</span>
-              <div>
-                <p className={kz.faseLijstTitel}>{FASE_LABEL[f]}{i === faseIndex && <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ marginLeft: 8 }}>Nu</span>}</p>
-                <p className={kz.faseLijstTekst}>{faseUitleg[f]}{faseDatum[f] ? ` ${faseDatum[f]}.` : ""}</p>
+      {werken.length > 0 && (
+        <section className={kz.kaart}>
+          <div className={kz.voortgangKop}>
+            <p className={kz.voortgangGetal}><strong>{klaar}</strong> van {werken.length} werken klaar</p>
+            <span className={`${kz.badge} ${klaar === werken.length ? kz.badgeGroen : kz.badgeAmber}`}>{klaar === werken.length ? "Afgerond" : FASE_LABEL[k.fase]}</span>
+          </div>
+          <div className={kz.voortgangBalk} aria-hidden="true">
+            {werken.map((w) => <span key={w.id} className={w.status === "klaar" ? kz.vgKlaar : w.status === "bezig" ? kz.vgNu : undefined} />)}
+          </div>
+          <dl className={kz.voortgangInfo}>
+            <div><dt>Vandaag</dt><dd>{nu ? nu.naam : "Geen werken gepland"}</dd></div>
+            <div><dt>Volgende</dt><dd>{komend ? `${komend.titel}, ${fmtDag(komend.start)} om ${fmtUur(komend.start)}` : "Nog niets gepland"}</dd></div>
+          </dl>
+        </section>
+      )}
+
+      {(k.fase === "gepland" || k.fase === "bezig") && CHECKLIST.some((c) => !k.checklist?.[c.id]) && <Checklist k={k} />}
+
+      <h2 className={kz.sectieTitel}>Dag per dag</h2>
+      {dagen.length === 0 && <Leeg>Zodra je werken ingepland zijn, zie je hier elke dag wat er gebeurt.</Leeg>}
+      <ol className={kz.tijdlijn}>
+        {dagen.map((d) => {
+          const staat = d.dag < vandaagStr ? "gedaan" : d.dag === vandaagStr ? "vandaag" : "gepland";
+          const nummer = nummers.get(d.dag);
+          const titel = d.werken.length ? d.werken.map((w) => w.naam).join(" en ") : d.afspraken.map((a) => a.titel).join(" en ") || d.verslag?.notities[0]?.titel || "Bezoek";
+          const uren = d.afspraken.map((a) => `${fmtUur(a.start)} tot ${eindUur(a.start, a.duurMin)}`);
+          const info = d.afspraken.map((a) => a.info || AFSPRAAK_TIPS[a.titel]).filter(Boolean) as string[];
+          return (
+            <li key={d.dag} className={staat === "vandaag" ? kz.tlVandaag : staat === "gedaan" ? kz.tlGedaan : undefined}>
+              <span className={kz.tlPunt} aria-hidden="true">{staat === "gedaan" ? <CheckCircle2 size={16} /> : null}</span>
+              <div className={kz.tlKaart}>
+                <div className={kz.tlKop}>
+                  <div>
+                    <p className={kz.werkdagLabel}>{nummer ? `Dag ${nummer} · ` : ""}{hfd(fmtDag(d.dag))}</p>
+                    <h3 className={kz.tlTitel}>{titel}</h3>
+                  </div>
+                  <span className={`${kz.tlStaat} ${staat === "gedaan" ? kz.tlStaatGedaan : staat === "vandaag" ? kz.tlStaatNu : ""}`}>
+                    {staat === "gedaan" ? "Gedaan" : staat === "vandaag" ? "Vandaag" : "Gepland"}
+                  </span>
+                </div>
+
+                {staat !== "gedaan" && uren.length > 0 && <p className={kz.planningUur}><Clock size={13} /> {uren.join(" · ")} · Yannick</p>}
+                {staat !== "gedaan" && d.werken.map((w) => (w.omschrijving || WERK_UITLEG[w.naam]) && <p key={w.id} className={kz.tlTekst}>{w.omschrijving || WERK_UITLEG[w.naam]}</p>)}
+                {staat !== "gedaan" && info.map((t) => <p key={t} className={kz.tlTip}>{t}</p>)}
+
+                {d.werken.some((w) => w.status === "klaar") && (
+                  <ul className={kz.werkdagAf}>
+                    {d.werken.filter((w) => w.status === "klaar").map((w) => <li key={w.id}><CheckCircle2 size={16} /> {w.naam} afgerond</li>)}
+                  </ul>
+                )}
+                {d.verslag?.notities.map((n) => (
+                  <div key={n.id} className={kz.werkdagNotitie}>
+                    {n.titel && n.titel !== titel && <p className={kz.werkdagTitel}>{n.titel}</p>}
+                    <p className={kz.werkdagTekst}>{n.tekst}</p>
+                  </div>
+                ))}
+                {d.verslag && d.verslag.fotos.length > 0 && <div className={kz.werkdagFotos}><FotoGalerij fotos={d.verslag.fotos} zonderFilter /></div>}
+                {staat === "gedaan" && !d.verslag && d.werken.length === 0 && <p className={kz.tlTekst}>Afgerond.</p>}
+
+                {d.afspraken.filter((a) => staat !== "gedaan" && kanVerzetten(a, ctx)).map((a) => (
+                  <div key={a.id} style={{ marginTop: 12 }}>
+                    <VerzetKnop klantId={k.id} afspraakId={a.id} titel={`${a.titel}, nu op ${fmtDag(a.start)} om ${fmtUur(a.start)}`} momenten={ctx.vrijeMomenten} dagLabels={ctx.dagLabels} />
+                  </div>
+                ))}
               </div>
             </li>
-          ))}
-        </ol>
-      </section>
-
-      <WerkenLijst k={k} />
-
-      {(k.fase === "gepland" || k.fase === "bezig") && <Checklist k={k} />}
-
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><CalendarDays size={18} /> Planning</h2></div>
-        <Planning {...ctx} />
-        {voorbij.length > 0 && (
-          <details className={kz.tipMeer}>
-            <summary>Eerdere afspraken ({voorbij.length})</summary>
-            <ul className={kz.eerder}>
-              {voorbij.map((a) => <li key={a.id}><span>{fmtKort(a.start)}</span><strong>{a.titel}</strong></li>)}
-            </ul>
-          </details>
-        )}
-      </section>
+          );
+        })}
+        {ongedateerd.map((w) => (
+          <li key={w.id}>
+            <span className={kz.tlPunt} aria-hidden="true" />
+            <div className={kz.tlKaart}>
+              <div className={kz.tlKop}>
+                <div><p className={kz.werkdagLabel}>Datum volgt</p><h3 className={kz.tlTitel}>{w.naam}</h3></div>
+                <span className={kz.tlStaat}>Gepland</span>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
 
       {voor && na && (
         <section className={kz.kaart}>
@@ -672,14 +710,6 @@ function MijnWerken(ctx: Ctx) {
           <VoorNa voor={voor.url} na={na.url} />
         </section>
       )}
-
-      <h2 className={kz.sectieTitel}>Fotoverslag</h2>
-      {dagen.length === 0 && <Leeg>Zodra je dak bekeken of behandeld wordt, verschijnen hier de verslagen en foto&apos;s.</Leeg>}
-      {dagen.map((d) => (
-        <section key={d.dag} className={kz.kaart}>
-          <WerkdagBlok dag={d} nummer={nummers.get(d.dag)} />
-        </section>
-      ))}
     </>
   );
 }

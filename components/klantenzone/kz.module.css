@@ -1596,3 +1596,45 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .ticketOp .ticketStaat { color: var(--muted); }
 .knopMelden { background: #FDF1EE; color: #8A2E1B; border: 1px solid #F3C9BE; }
 .knopMelden:hover { background: #FBE6E0; }
+
+/* Mijn werken: voortgang en tijdlijn */
+.voortgangKop { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.voortgangGetal { margin: 0; font-size: 16px; color: var(--muted); }
+.voortgangGetal strong { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.03em; color: var(--tekst); margin-right: 4px; }
+.voortgangBalk { display: flex; gap: 6px; margin-top: 14px; }
+.voortgangBalk span { flex: 1; height: 8px; border-radius: 99px; background: var(--rand); }
+.voortgangBalk .vgKlaar { background: var(--groen); }
+.voortgangBalk .vgNu { background: #E3A93B; }
+.voortgangInfo { margin: 16px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.voortgangInfo > div { padding: 12px 14px; border-radius: 12px; background: var(--zacht); min-width: 0; }
+.voortgangInfo dt { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.voortgangInfo dd { margin: 4px 0 0; font-size: 15px; font-weight: 600; color: var(--tekst); }
+
+.tijdlijn { list-style: none; margin: 0; padding: 0; position: relative; }
+.tijdlijn > li { position: relative; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 14px; padding-bottom: 14px; }
+.tijdlijn > li:not(:last-child)::before { content: ""; position: absolute; left: 13px; top: 30px; bottom: 0; width: 2px; background: var(--rand); }
+.tijdlijn > li.tlGedaan:not(:last-child)::before { background: var(--groen); }
+.tlPunt { width: 28px; height: 28px; margin-top: 16px; border-radius: 50%; display: grid; place-items: center; background: #fff; border: 2px solid #CFCFCA; color: #fff; box-sizing: border-box; }
+.tlGedaan .tlPunt { background: var(--groen); border-color: var(--groen); }
+.tlVandaag .tlPunt { border-color: #E3A93B; box-shadow: 0 0 0 5px #FFF1D6; }
+.tlKaart { padding: 16px 18px; border-radius: 14px; background: #fff; border: 1px solid var(--rand); min-width: 0; }
+.tlVandaag .tlKaart { border-color: #F1DCA5; box-shadow: 0 8px 24px -16px rgba(201,138,28,0.5); }
+.tlKop { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.tlTitel { margin: 2px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--tekst); }
+.tlStaat { flex-shrink: 0; padding: 4px 10px; border-radius: 999px; background: var(--zacht); color: var(--muted); font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+.tlStaatGedaan { background: var(--groen-zacht); color: #4F7F2B; }
+.tlStaatNu { background: #FFF1D6; color: #9A6A12; }
+.tlTekst { margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: #33332F; }
+.tlTip { margin: 8px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--zacht); font-size: 14px; line-height: 1.55; color: #33332F; }
+.tlKaart .planningUur { margin-top: 8px; }
+@media (max-width: 480px) {
+  .voortgangInfo { grid-template-columns: 1fr; }
+  .tijdlijn > li { grid-template-columns: 20px minmax(0, 1fr); gap: 10px; }
+  .tlPunt { width: 20px; height: 20px; }
+  .tijdlijn > li:not(:last-child)::before { left: 9px; }
+  .tlKaart { padding: 14px; }
+}
+@media (max-width: 480px) {
+  .tlKop { flex-direction: column-reverse; align-items: flex-start; gap: 8px; }
+}
+@media (max-width: 380px) { .tlTitel { font-size: 16px; } }
