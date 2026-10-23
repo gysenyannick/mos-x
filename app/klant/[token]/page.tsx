@@ -651,7 +651,7 @@ function MijnWerken(ctx: Ctx) {
         {dagen.map((d) => {
           const staat = d.dag < vandaagStr ? "gedaan" : d.dag === vandaagStr ? "vandaag" : "gepland";
           const nummer = nummers.get(d.dag);
-          const titel = d.werken.length ? d.werken.map((w) => w.naam).join(" en ") : d.afspraken.map((a) => a.titel).join(" en ") || d.verslag?.notities[0]?.titel || "Bezoek";
+          const titel = d.werken.length ? d.werken.map((w, i) => (i ? w.naam.toLowerCase() : w.naam)).join(" en ") : d.afspraken.map((a) => a.titel).join(" en ") || d.verslag?.notities[0]?.titel || "Bezoek";
           const uren = d.afspraken.map((a) => `${fmtUur(a.start)} tot ${eindUur(a.start, a.duurMin)}`);
           const info = d.afspraken.map((a) => a.info || AFSPRAAK_TIPS[a.titel]).filter(Boolean) as string[];
           return (
