@@ -1,12 +1,9 @@
 import Link from "next/link";
-import { Camera, Lightbulb, Plug, Settings, Tag, Trash2 } from "lucide-react";
+import { Camera, Plug, Settings, Tag } from "lucide-react";
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getInstellingen } from "@/lib/klantenzone/store";
 import { EXTRAS } from "@/lib/klantenzone/types";
-import { fmtKort } from "@/lib/klantenzone/tijd";
-import { BevestigKnop } from "@/components/klantenzone/beheer-client";
-import { bewaarInstellingen, verwijderTip } from "../actions";
-import TipForm from "@/components/klantenzone/tip-form";
+import { bewaarInstellingen } from "../actions";
 import DienstFotos from "@/components/klantenzone/dienst-fotos";
 import kz from "@/components/klantenzone/kz.module.css";
 
@@ -28,28 +25,6 @@ export default async function Instellingen() {
   return (
     <>
       <div className={kz.dashKop}><h1 className={kz.dashTitel}>Instellingen</h1></div>
-
-      {/* Eigen tips en advies */}
-      <section className={kz.kaart}>
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><Lightbulb size={18} /> Tips en advies</h2></div>
-        <p className={kz.sub} style={{ marginTop: 0, marginBottom: 14 }}>
-          Wat je hier toevoegt, zien alle klanten bovenaan bij &quot;Tips en advies&quot;. Voeg gerust een foto of een document toe, zoals een brochure of een fiche.
-        </p>
-        {(i.tips ?? []).length > 0 && (
-          <ul className={kz.lijst} style={{ marginBottom: 16 }}>
-            {(i.tips ?? []).map((t) => (
-              <li key={t.id} className={kz.rij}>
-                <div className={kz.rijMidden}>
-                  <p className={kz.rijTitel}>{t.titel}</p>
-                  <p className={kz.rijSub}>{t.onderwerp ? `${t.onderwerp} · ` : ""}{fmtKort(t.datum)}{t.fotoUrl ? " · met foto" : ""}{t.bestandUrl ? " · met document" : ""}</p>
-                </div>
-                <BevestigKnop actie={verwijderTip.bind(null, t.id)} vraag="Tip verwijderen?"><Trash2 size={14} /></BevestigKnop>
-              </li>
-            ))}
-          </ul>
-        )}
-        <TipForm />
-      </section>
 
       {/* Foto's bij de diensten */}
       <section className={kz.kaart}>

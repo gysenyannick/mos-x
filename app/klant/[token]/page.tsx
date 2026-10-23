@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowRight, CalendarDays, Camera, Check, CheckCircle2, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
+  ArrowRight, CalendarDays, Camera, Check, CheckCircle2, Circle, Clock, FolderOpen, Gift, Home, LayoutDashboard,
   Leaf, LifeBuoy, MessagesSquare, ShieldCheck, Siren, Star, Tag, UserRound, Wallet, Wrench,
 } from "lucide-react";
 import { headers } from "next/headers";
 import QRCode from "qrcode";
-import { getInstellingen, getKlant, getMomenten, listKlanten, zorgVoorRefCode, type Actie, type EigenTip } from "@/lib/klantenzone/store";
+import { getInstellingen, getKlant, getMomenten, listKlanten, zorgVoorRefCode, type Actie } from "@/lib/klantenzone/store";
 import {
   binnenMosGarantie, controle12, controleBinnen, laatsteBehandeling, mosGarantieTot, volgendeControle,
 } from "@/lib/klantenzone/onderhoud";
@@ -190,7 +190,6 @@ type Ctx = {
   reviewUrl?: string;
   reviewCitaat?: string;
   reviewNaam?: string;
-  eigenTips: EigenTip[];
   dienstFotos: Record<string, string>;
 };
 
@@ -823,7 +822,7 @@ function Dakdossier({ k }: Ctx) {
 /* ══ Onderhoud: het voorstel en de opmerkingen ════════════════════════════ */
 
 function Dakzorg(ctx: Ctx) {
-  const { k, controle, eigenTips } = ctx;
+  const { k, controle } = ctx;
   const opm = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
   const oog = (k.paspoort?.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
 
@@ -874,31 +873,6 @@ function Dakzorg(ctx: Ctx) {
         )}
       </section>
 
-      {eigenTips.length > 0 && (
-        <>
-          <h2 className={kz.sectieTitel}>Van Yannick</h2>
-          <div className={kz.tipRaster2} style={{ marginTop: 0 }}>
-            {eigenTips.map((t) => (
-              <article key={t.id} className={kz.tipKaart}>
-                {t.fotoUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={t.fotoUrl} alt="" className={kz.tipFoto} />
-                )}
-                <div className={kz.tipInhoud}>
-                  {t.onderwerp && <div className={kz.tipKop}><span className={kz.dakEyebrow} style={{ margin: 0 }}>{t.onderwerp}</span></div>}
-                  <h3 className={kz.tipTitel}>{t.titel}</h3>
-                  <p className={kz.tipIntro} style={{ whiteSpace: "pre-line" }}>{t.tekst}</p>
-                  {t.bestandUrl && (
-                    <div className={kz.tipKnop}>
-                      <a className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`} href={t.bestandUrl} target="_blank" rel="noopener noreferrer"><FileText size={14} /> {t.bestandNaam || "Bekijk het document"}</a>
-                    </div>
-                  )}
-                </div>
-              </article>
-            ))}
-          </div>
-        </>
-      )}
     </>
   );
 }
@@ -1251,7 +1225,6 @@ export default async function KlantPagina({
     reviewUrl: instellingen.googleReviewUrl,
     reviewCitaat: instellingen.reviewCitaat,
     reviewNaam: instellingen.reviewNaam,
-    eigenTips: instellingen.tips ?? [],
     dienstFotos: instellingen.dienstFotos ?? {},
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),

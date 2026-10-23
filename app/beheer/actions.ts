@@ -421,18 +421,6 @@ export async function voegActieToe(fd: FormData) {
   revalidatePath("/beheer/instellingen");
 }
 
-/** Een eigen tip verwijderen, met de bestanden erbij */
-export async function verwijderTip(tipId: string) {
-  await vereisBeheerder();
-  const i = await getInstellingen();
-  const t = (i.tips ?? []).find((x) => x.id === tipId);
-  if (t?.fotoUrl) await verwijderBestand(t.fotoUrl);
-  if (t?.bestandUrl) await verwijderBestand(t.bestandUrl);
-  i.tips = (i.tips ?? []).filter((x) => x.id !== tipId);
-  await saveInstellingen(i);
-  revalidatePath("/beheer/instellingen");
-}
-
 export async function verwijderActie(actieId: string) {
   await vereisBeheerder();
   const i = await getInstellingen();
