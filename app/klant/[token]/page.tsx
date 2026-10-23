@@ -48,6 +48,7 @@ export const metadata: Metadata = {
   referrer: "no-referrer",
 };
 
+const TOON_ACTIES = false;
 const WA_NUMMER = "32468352869";
 /** Spoednummer (bv. stormschade): voorlopig het gsm-nummer van Yannick */
 const SPOED_TEL = "+32468352869";
@@ -1250,7 +1251,8 @@ export default async function KlantPagina({
   const [instellingen, alleKlanten] = await Promise.all([getInstellingen(), listKlanten()]);
   const controle = volgendeControle(k);
   const ref = refRegels(instellingen);
-  const acties = (instellingen.acties ?? [])
+  // Acties voorlopig niet tonen aan klanten (Yannick zet ze later terug aan)
+  const acties = (TOON_ACTIES ? instellingen.acties ?? [] : [])
     .map((actie) => ({ actie, interesse: interesseVoor(actie, alleKlanten) }))
     .filter((a) => actieVoorKlant(a.actie, k, a.interesse));
 
