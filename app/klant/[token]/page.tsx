@@ -243,9 +243,10 @@ function Planning(ctx: Ctx) {
 
   return (
     <>
+      <div className={kz.planGrid}>
       <Agenda items={agendaItems} vandaag={vandaagStr} />
 
-      <ul className={kz.planning} style={{ marginTop: 18 }}>
+      <ul className={kz.planning}>
         {toonStart && (
           <li id={`plan-${k.start!.datum}`} className={kz.planRij}>
             <DatumBlok start={k.start!.datum} />
@@ -278,6 +279,7 @@ function Planning(ctx: Ctx) {
           );
         })}
       </ul>
+      </div>
       <p className={kz.planRegel}>Kan je niet? Laat het minstens 24 uur op voorhand weten. Bij spoed: bel <a href="tel:+32468352869">+32 468 35 28 69</a>.</p>
     </>
   );

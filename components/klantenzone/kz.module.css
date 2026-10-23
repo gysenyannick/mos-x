@@ -1893,3 +1893,16 @@ a.voorstelKnop { text-decoration: none; }
   .agVoorbij .agStip { background: #CFE5B8; }
 }
 .page .agItem { text-wrap: nowrap; white-space: nowrap; }
+/* Agenda en afspraken naast elkaar zodra er plaats is */
+.planGrid > .planning { margin-top: 16px; }
+@media (min-width: 1100px) {
+  .planGrid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 22px; align-items: start; }
+  .planGrid > .planning { margin-top: 0; }
+  .planGrid .agDag, .planGrid .agLeeg { min-height: 42px; align-items: center; padding: 3px 2px; }
+  .planGrid .agItem { display: none; }
+  .planGrid .agStip { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--groen); }
+  .planGrid .agVoorbij .agStip { background: #CFE5B8; }
+  .planGrid .planning li { align-items: flex-start; row-gap: 8px; }
+  .planGrid .rijMidden { flex: 1; }
+  .planGrid .planningActie { flex-basis: 100%; margin-left: 62px; }
+}
