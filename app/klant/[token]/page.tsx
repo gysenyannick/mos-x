@@ -1385,7 +1385,8 @@ export default async function KlantPagina({
   };
   const reviewAl = (k.tegoed ?? []).some((t) => t.sleutel === "review");
   // De ballon verschijnt zodra de werken klaar zijn (in het voorbeelddossier altijd, om hem te tonen)
-  const toonBallon = !!ctx.reviewUrl && !k.review?.weggeklikt && !reviewAl && (k.fase === "klaar" || k.fase === "nazorg" || !!k.demo);
+  // Verdwijnt pas als de klant naar Google doorklikte (in het voorbeelddossier blijft hij staan)
+  const toonBallon = !!ctx.reviewUrl && (!k.review?.geklikt || !!k.demo) && !reviewAl && (k.fase === "klaar" || k.fase === "nazorg" || !!k.demo);
   const openAanb = (k.aanbevelingen ?? []).filter((a) => a.status === "open").length;
   const openDocs = k.documenten.filter((d) => d.status === "open").length;
   const nieuwVanYannick = (k.opmerkingen ?? []).filter((o) => o.van === "yannick" && dagenTot(o.datum.slice(0, 10)) >= -3).length;
@@ -1450,7 +1451,7 @@ export default async function KlantPagina({
         </div>
       </div>
 
-      {toonBallon && <ReviewBallon klantId={k.id} voornaam={k.voornaam} foto={YANNICK_FOTO} punten={ctx.reviewPunten} euro={puntenInEuro(ctx.reviewPunten, ctx.centPerPunt)} />}
+      {toonBallon && <ReviewBallon key={tab} klantId={k.id} voornaam={k.voornaam} foto={YANNICK_FOTO} euro={puntenInEuro(ctx.reviewPunten, ctx.centPerPunt)} />}
 
       <nav className={kz.onderNav} aria-label="Klantenzone">
         <ul>

@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { Star, X } from "lucide-react";
-import { reviewWeg } from "@/app/klant/actions";
 import kz from "./kz.module.css";
 
-const SLEUTEL = "kzReviewDicht";
+const DICHT = "kzReviewDicht";
+const TELLER = "kzReviewTel";
+/** Na zoveel paginawissels komt de ballon terug, ook als hij weggeklikt werd. */
+const OPNIEUW_NA = 3;
 
 /** Het Google-logo, zodat meteen duidelijk is waar de review komt. */
 function GoogleG({ wit = false }: { wit?: boolean }) {
@@ -25,25 +27,37 @@ function GoogleG({ wit = false }: { wit?: boolean }) {
   );
 }
 
-/** Een tekstballon van Yannick rechtsonder, op elke pagina. Dichtgeklapt blijft enkel zijn foto staan. */
-export default function ReviewBallon({ klantId, voornaam, foto, punten, euro }: { klantId: string; voornaam: string; foto: string; punten: number; euro: number }) {
+/**
+ * Een tekstballon van Yannick rechtsonder, op elke pagina. Dichtgeklapt blijft zijn foto staan,
+ * en na een paar paginawissels komt de ballon terug: reviews zijn belangrijk.
+ */
+export default function ReviewBallon({ klantId, voornaam, foto, euro }: { klantId: string; voornaam: string; foto: string; euro: number }) {
   const [open, setOpen] = useState(false);
   const [zichtbaar, setZichtbaar] = useState(false);
-  const [weg, setWeg] = useState(false);
 
   useEffect(() => {
     let dicht = false;
-    try { dicht = sessionStorage.getItem(SLEUTEL) === "1"; } catch { /* geen opslag */ }
-    const t = setTimeout(() => { setZichtbaar(true); setOpen(!dicht); }, 1200);
+    let tel = 0;
+    try {
+      dicht = sessionStorage.getItem(DICHT) === "1";
+      tel = Number(sessionStorage.getItem(TELLER) || 0) + 1;
+      sessionStorage.setItem(TELLER, String(tel));
+    } catch { /* geen opslag */ }
+    const terug = dicht && tel >= OPNIEUW_NA;
+    const t = setTimeout(() => {
+      setZichtbaar(true);
+      setOpen(!dicht || terug);
+      if (terug) try { sessionStorage.removeItem(DICHT); } catch { /* geen opslag */ }
+    }, 1200);
     return () => clearTimeout(t);
   }, []);
 
   const sluit = () => {
     setOpen(false);
-    try { sessionStorage.setItem(SLEUTEL, "1"); } catch { /* geen opslag */ }
+    try { sessionStorage.setItem(DICHT, "1"); sessionStorage.setItem(TELLER, "0"); } catch { /* geen opslag */ }
   };
 
-  if (weg || !zichtbaar) return null;
+  if (!zichtbaar) return null;
 
   return (
     <div className={kz.ballonPlek}>
@@ -56,11 +70,12 @@ export default function ReviewBallon({ klantId, voornaam, foto, punten, euro }: 
             <span className={kz.ballonSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={13} />)}</span>
           </span>
           <p className={kz.ballonTitel}>Tevreden over je dak, {voornaam}?</p>
-          <p className={kz.ballonTekst}>Laat een review achter op Google. Dat helpt Yannick enorm.{punten > 0 && <> Je krijgt er <strong>{punten} punten</strong> voor (€&nbsp;{euro}).</>}</p>
+          <p className={kz.ballonTekst}>Laat een review achter op Google. Het duurt maar een minuutje en helpt Yannick enorm.</p>
+          {euro > 0 && <p className={kz.ballonBedankt}>Als bedankje: €&nbsp;{euro} korting op een volgend werk</p>}
           <a className={`${kz.knop} ${kz.knopPrimair} ${kz.ballonKnop}`} href={`/api/klantenzone/review?k=${encodeURIComponent(klantId)}`} target="_blank" rel="noopener noreferrer" onClick={sluit}>
             <GoogleG wit /> Schrijf je review op Google
           </a>
-          <button type="button" className={kz.ballonNooit} onClick={() => { setWeg(true); void reviewWeg(klantId); }}>Niet meer tonen</button>
+          <button type="button" className={kz.ballonNooit} onClick={sluit}>Later</button>
         </div>
       )}
       <button type="button" className={kz.ballonFoto} onClick={() => (open ? sluit() : setOpen(true))} aria-label={open ? "Ballon sluiten" : "Review schrijven"} aria-expanded={open}>
