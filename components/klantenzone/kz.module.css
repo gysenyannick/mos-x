@@ -1893,16 +1893,41 @@ a.voorstelKnop { text-decoration: none; }
   .agVoorbij .agStip { background: #CFE5B8; }
 }
 .page .agItem { text-wrap: nowrap; white-space: nowrap; }
-/* Agenda en afspraken naast elkaar zodra er plaats is */
-.planGrid > .planning { margin-top: 16px; }
+/* Agenda en afspraken naast elkaar, even hoog */
+.planGrid { display: grid; gap: 16px; }
+.ag { display: flex; flex-direction: column; }
+.agRooster { flex: 1; grid-template-rows: auto; grid-auto-rows: minmax(0, 1fr); }
+.planLijstKort { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border: 1px solid var(--rand); border-radius: 16px; background: #fff; overflow: hidden; }
+.planLijstKort > li { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; border-top: 1px solid var(--rand); }
+.planLijstKort > li:first-child { border-top: 0; }
+.planDetails { display: flex; flex-direction: column; }
+.planKop { display: flex; align-items: center; gap: 14px; padding: 14px 16px; list-style: none; cursor: pointer; }
+.planKop::-webkit-details-marker { display: none; }
+div.planKop { cursor: default; }
+.planKop:hover { background: #FBFBF9; }
+div.planKop:hover { background: transparent; }
+.planKop:focus-visible { outline: 2px solid var(--groen-d); outline-offset: -2px; }
+.planKop .planningTitel { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.planPijl { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--zacht); color: var(--muted); transition: transform .2s ease, background-color .15s ease; }
+.planKop:hover .planPijl { background: var(--groen-zacht); color: var(--groen-d); }
+.planDetails[open] .planPijl { transform: rotate(180deg); }
+.planOpen { display: grid; justify-items: start; gap: 10px; padding: 0 16px 16px 78px; }
+.planOpen p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.planRij:target { background: transparent; }
+.planRij:target .planKop { background: var(--groen-zacht); }
 @media (min-width: 1100px) {
-  .planGrid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 22px; align-items: start; }
-  .planGrid > .planning { margin-top: 0; }
+  .planGrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
   .planGrid .agDag, .planGrid .agLeeg { min-height: 42px; align-items: center; padding: 3px 2px; }
   .planGrid .agItem { display: none; }
   .planGrid .agStip { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--groen); }
   .planGrid .agVoorbij .agStip { background: #CFE5B8; }
-  .planGrid .planning li { align-items: flex-start; row-gap: 8px; }
-  .planGrid .rijMidden { flex: 1; }
-  .planGrid .planningActie { flex-basis: 100%; margin-left: 62px; }
+}
+@media (max-width: 640px) {
+  .planKop { padding: 12px; gap: 12px; }
+  .planOpen { padding: 0 12px 14px 12px; }
+}
+.planRijNu { box-shadow: inset 3px 0 0 #E3A93B; }
+.page .planKop .planningUur { text-wrap: nowrap; white-space: nowrap; }
+@media (max-width: 640px) {
+  .planKop > .planNu { display: none; }
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowRight, CalendarDays, Camera, Check, CheckCircle2, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
+  ArrowRight, CalendarDays, Camera, Check, CheckCircle2, ChevronDown, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
   Leaf, LifeBuoy, MessagesSquare, ShieldCheck, Siren, Star, Tag, UserRound, Wrench,
 } from "lucide-react";
 import { headers } from "next/headers";
@@ -244,41 +244,47 @@ function Planning(ctx: Ctx) {
   return (
     <>
       <div className={kz.planGrid}>
-      <Agenda items={agendaItems} vandaag={vandaagStr} />
+        <Agenda items={agendaItems} vandaag={vandaagStr} />
 
-      <ul className={kz.planning}>
-        {toonStart && (
-          <li id={`plan-${k.start!.datum}`} className={kz.planRij}>
-            <DatumBlok start={k.start!.datum} />
-            <span className={kz.rijMidden}>
-              <span className={kz.planningTitel}>{start.zeker ? "Start van je werken" : "Voorlopige start"}</span>
-              <span className={kz.planningDatum}>{start.waarde}</span>
-            </span>
-          </li>
-        )}
-        {komend.map((a) => {
-          const d = a.start.slice(0, 10);
-          const teLaat = brusselNaarDate(a.start).getTime() < grens24;
-          return (
-            <li key={a.id} id={`plan-${d}`} className={kz.planRij}>
-              <DatumBlok start={a.start} />
-              <span className={kz.rijMidden}>
-                <span className={kz.planningTitel}>{a.titel}{d === vandaagStr && <span className={kz.planNu}>Vandaag</span>}</span>
-                <span className={kz.planningDatum}>{hfd(fmtDag(a.start))}</span>
-                <span className={kz.planningUur}><Clock size={13} /> {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)} · Yannick</span>
-                {(a.info || AFSPRAAK_TIPS[a.titel]) && <span className={kz.planningInfo}>{a.info || AFSPRAAK_TIPS[a.titel]}</span>}
-              </span>
-              {d >= vandaagStr && (
-                <span className={kz.planningActie}>
-                  {teLaat
-                    ? <a className={kz.voorstelKnop} href="tel:+32468352869">Bel Yannick</a>
-                    : <VoorstelKnop klantId={k.id} titel={a.titel} huidig={`${fmtDag(a.start)} om ${fmtUur(a.start)}`} vandaag={vandaagStr} />}
+        <ul className={kz.planLijstKort}>
+          {toonStart && (
+            <li id={`plan-${k.start!.datum}`} className={kz.planRij}>
+              <div className={kz.planKop}>
+                <DatumBlok start={k.start!.datum} />
+                <span className={kz.rijMidden}>
+                  <span className={kz.planningTitel}>{start.zeker ? "Start van je werken" : "Voorlopige start"}</span>
+                  <span className={kz.planningDatum}>{start.waarde}</span>
                 </span>
-              )}
+              </div>
             </li>
-          );
-        })}
-      </ul>
+          )}
+          {komend.map((a) => {
+            const d = a.start.slice(0, 10);
+            const teLaat = brusselNaarDate(a.start).getTime() < grens24;
+            const info = a.info || AFSPRAAK_TIPS[a.titel];
+            return (
+              <li key={a.id} id={`plan-${d}`} className={`${kz.planRij} ${d === vandaagStr ? kz.planRijNu : ""}`}>
+                <details className={kz.planDetails}>
+                  <summary className={kz.planKop}>
+                    <DatumBlok start={a.start} />
+                    <span className={kz.rijMidden}>
+                      <span className={kz.planningTitel}>{a.titel}</span>
+                      <span className={kz.planningDatum}>{d === vandaagStr ? "Vandaag, " + fmtDag(a.start) : hfd(fmtDag(a.start))}</span>
+                      <span className={kz.planningUur}><Clock size={13} /> {fmtUur(a.start)} tot {eindUur(a.start, a.duurMin)}</span>
+                    </span>
+                    <span className={kz.planPijl} aria-hidden="true"><ChevronDown size={18} /></span>
+                  </summary>
+                  <div className={kz.planOpen}>
+                    {info && <p>{info}</p>}
+                    {d >= vandaagStr && (teLaat
+                      ? <a className={kz.voorstelKnop} href="tel:+32468352869">Bel Yannick</a>
+                      : <VoorstelKnop klantId={k.id} titel={a.titel} huidig={`${fmtDag(a.start)} om ${fmtUur(a.start)}`} vandaag={vandaagStr} />)}
+                  </div>
+                </details>
+              </li>
+            );
+          })}
+        </ul>
       </div>
       <p className={kz.planRegel}>Kan je niet? Laat het minstens 24 uur op voorhand weten. Bij spoed: bel <a href="tel:+32468352869">+32 468 35 28 69</a>.</p>
     </>

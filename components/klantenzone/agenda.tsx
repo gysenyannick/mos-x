@@ -50,7 +50,7 @@ export default function Agenda({ items, vandaag }: { items: AgendaItem[]; vandaa
             </>
           );
           return lijst.length
-            ? <a key={dag} href={`#plan-${dag}`} className={klasse} aria-label={`${d} ${MAANDEN[maand.m]}: ${lijst.map((x) => x.titel).join(", ")}`}>{inhoud}</a>
+            ? <a key={dag} href={`#plan-${dag}`} onClick={() => document.getElementById(`plan-${dag}`)?.querySelector("details")?.setAttribute("open", "")} className={klasse} aria-label={`${d} ${MAANDEN[maand.m]}: ${lijst.map((x) => x.titel).join(", ")}`}>{inhoud}</a>
             : <span key={dag} className={klasse}>{inhoud}</span>;
         })}
       </div>
