@@ -20,7 +20,7 @@ import {
   maandagVan, nuMs, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
-  AFSPRAAK_TIPS, CHECKLIST, EXTRAS, FASES, FASE_KORT,
+  AANVRAAG_LABEL, AANVRAAG_STATUS_LABEL, AFSPRAAK_TIPS, CHECKLIST, EXTRAS, FASES, FASE_KORT,
   FASE_LABEL, INSPECTIE_LABEL, VERWIJZING_STATUS_LABEL, VERZET_UREN, WERK_UITLEG, aanbevelingFotos, aanvraagLoopt,
   type Afspraak, type Klant, type VrijMoment, type Werk,
 } from "@/lib/klantenzone/types";
@@ -1195,9 +1195,27 @@ function Voordelen(ctx: Ctx) {
 function Hulp({ k }: Ctx) {
   const lijst = [...(k.opmerkingen ?? [])].sort((a, b) => a.datum.localeCompare(b.datum));
   const marketing = k.voorkeuren?.marketing !== false;
+  const aanvragen = [...(k.aanvragen ?? [])].sort((a, b) => b.datum.localeCompare(a.datum));
   return (
     <>
       <PaginaKop titel="Hulp en contact" />
+
+      {aanvragen.length > 0 && (
+        <section className={kz.kaart} id="aanvragen">
+          <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><FileText size={18} /> Mijn aanvragen</h2></div>
+          <ul className={kz.aanvraagKort}>
+            {aanvragen.map((a) => (
+              <li key={a.id}>
+                <div>
+                  <p className={kz.rijTitel}>{AANVRAAG_LABEL[a.soort]}</p>
+                  <p className={kz.aanvraagSub}>{fmtKort(a.datum)}{a.tekst ? ` · ${a.tekst}` : ""}</p>
+                </div>
+                <span className={`${kz.badge} ${aanvraagLoopt(a.status) ? kz.badgeAmber : kz.badgeGroen}`}>{AANVRAAG_STATUS_LABEL[a.status]}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className={kz.kaart} id="berichten">
         <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><MessagesSquare size={18} /> Berichten met Yannick</h2></div>

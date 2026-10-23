@@ -19,7 +19,7 @@ export default function DeelBuurlink({ url, voornaam, korting }: { url: string; 
   return (
     <>
       <div className={`${kz.linkVak} ${kz.buurLink}`}>
-        <code>{url}</code>
+        <code>{url.replace(/^https?:\/\/(www\.)?/, "")}</code>
         <button type="button" className={kz.icoonKnop} aria-label="Link kopiëren"
           onClick={async () => { await navigator.clipboard.writeText(url); setOk(true); setTimeout(() => setOk(false), 1600); }}>
           {ok ? <Check size={16} /> : <Copy size={16} />}

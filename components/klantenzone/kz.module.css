@@ -2345,3 +2345,19 @@ div.planKop:hover { background: transparent; }
 }
 .dpDocs { padding: 20px 24px 12px; }
 @media (max-width: 760px) { .dpDocs { padding: 16px 16px 8px; } }
+.aanvraagKort { list-style: none; margin: 0; padding: 0; }
+.aanvraagKort li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--rand); }
+.aanvraagKort li:first-child { border-top: 0; padding-top: 4px; }
+.aanvraagKort li > div { min-width: 0; }
+.aanvraagKort .rijTitel { margin: 0; }
+.page .aanvraagSub { margin: 2px 0 0; font-size: 13.5px; color: var(--muted); text-wrap: nowrap; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aanvraagKort .badge { flex-shrink: 0; white-space: nowrap; }
+/* Aanvraag: maximaal twee regels */
+.page .aanvraagSub { white-space: normal; text-wrap: pretty; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+/* Agenda: overal bolletjes, de namen staan in de lijst ernaast of eronder */
+.agItem { display: none; }
+.agStip { display: block; width: 6px; height: 6px; border-radius: 50%; background: var(--groen); }
+.agVoorbij .agStip { background: #CFE5B8; }
+.agDag, .agLeeg { align-items: center; }
+.spoedKaart .knopMelden { width: 100%; justify-content: center; }
+@media (max-width: 420px) { .spoedRij .knop { flex: 1 1 100%; justify-content: center; } }
