@@ -44,8 +44,8 @@ export default function Cadeaubon({ voornaam, code, tegoed, beloning }: Props) {
         </div>
         <div className={kz.bonMidden}>
           <p className={kz.bonLabel}>Tegoed van {voornaam}</p>
-          <p className={kz.bonBedrag}>€ {tegoed}</p>
-          <p className={kz.bonSub}>€ {beloning} per buur die klant wordt</p>
+          <p className={kz.bonBedrag}>€&nbsp;{tegoed}</p>
+          <p className={kz.bonSub}>€&nbsp;{beloning} per buur die klant wordt</p>
         </div>
         <div className={kz.bonOnder}>
           <span className={kz.bonCodeLabel}>Jouw code</span>

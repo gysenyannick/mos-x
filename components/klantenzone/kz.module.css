@@ -1423,3 +1423,25 @@ a.volgendeStap:hover { border-color: var(--groen); }
 .dienstFoto > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .dienst { min-height: 220px; }
 @media (max-width: 640px) { .dienst { min-height: 0; } }
+
+/* Buurvoordeel: dubbel, keuze, voor/na delen */
+.dubbelBalk { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 14px 18px; border-radius: 14px; background: #FFF6E5; border: 1px solid #F1DCA5; }
+.dubbelBalk p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--tekst); }
+.dubbelX { flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: #E3A93B; color: #fff; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 18px; }
+.tegoedKeuze { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tegoedKeuze > div { display: grid; gap: 2px; padding: 14px 16px; border-radius: 12px; background: var(--zacht); border: 1px solid var(--rand); }
+.tegoedKeuze strong { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 22px; color: var(--tekst); }
+.tegoedKeuze span { font-size: 13.5px; color: var(--muted); }
+.tegoedKeuzeBeste { background: var(--groen-zacht) !important; border-color: #CFE5B8 !important; }
+.tegoedKeuzeBeste strong { color: var(--groen-d); }
+.deelVoorNa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; }
+.dienstAnders { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 16px; padding: 18px 22px; border-radius: 16px; border: 1px dashed #CFE5B8; background: var(--groen-zacht); color: var(--tekst); text-decoration: none; font-size: 15px; }
+.dienstAnders:hover { background: #E4F1D8; }
+.dienstAnders:focus-visible { outline: 2px solid var(--groen-d); outline-offset: 2px; }
+.dienstAnders strong { margin-right: 4px; }
+@media (max-width: 760px) {
+  .deelVoorNa { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .tegoedKeuze { grid-template-columns: 1fr; }
+}

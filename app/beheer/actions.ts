@@ -406,6 +406,8 @@ export async function bewaarInstellingen(fd: FormData) {
     refBeloning: bedrag(s(fd, "refBeloning")),
     refKorting: bedrag(s(fd, "refKorting")),
     refBonusAantal: bedrag(s(fd, "refBonusAantal")),
+    refDubbelDagen: bedrag(s(fd, "refDubbelDagen")),
+    refOnderhoudExtra: bedrag(s(fd, "refOnderhoudExtra")),
     refBonusTekst: fd.has("refBonusTekst") ? s(fd, "refBonusTekst") : i.refBonusTekst,
   });
   revalidatePath("/beheer/instellingen");

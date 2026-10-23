@@ -262,6 +262,10 @@ export type Instellingen = {
   /** Bonus bij een aantal buren die klant worden (leeg tekst = geen bonus) */
   refBonusAantal?: number;
   refBonusTekst?: string;
+  /** Dubbele beloning voor buren die binnen zoveel dagen na de oplevering klant worden (0 = uit) */
+  refDubbelDagen?: number;
+  /** Hoeveel procent meer de klant krijgt als hij zijn tegoed op een onderhoud zet (0 = uit) */
+  refOnderhoudExtra?: number;
   /** Tips en advies die Yannick zelf toevoegt */
   tips?: EigenTip[];
   /** Eigen foto per dienst (id uit EXTRAS → url) */

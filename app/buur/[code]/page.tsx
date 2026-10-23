@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CheckCircle2, ShieldCheck, Star, UserRound } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import BuurFormulier from "@/components/klantenzone/buur-formulier";
+import VoorNa from "@/components/klantenzone/voor-na";
 import { meldBuurAan } from "@/app/klant/actions";
 import { REF_STANDAARD, getInstellingen, klantVoorRefCode } from "@/lib/klantenzone/store";
 import kz from "@/components/klantenzone/kz.module.css";
@@ -24,6 +25,9 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
   const voordeel = korting > 0 ? `€ ${korting} korting op je eerste werk, dankzij ${k?.voornaam ?? "je buur"}.` : undefined;
   const wie = k?.voornaam ?? "Een klant";
   const gemeente = k?.adres.match(/\d{4}\s+(.+)$/)?.[1];
+  // Enkel als de klant er zelf voor koos: zijn voor- en na-foto als bewijs
+  const voor = k?.deelVoorNa ? k.fotos.find((f) => f.fase === "voor") : undefined;
+  const na = k?.deelVoorNa ? k.fotos.find((f) => f.fase === "na") : undefined;
 
   return (
     <PageLayout>
@@ -46,6 +50,12 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
                 <span className={kz.rijIcoon}><Star size={18} /></span>
                 <span style={{ fontWeight: 600 }}>{voordeel}</span>
               </div>
+            )}
+            {voor && na && (
+              <figure style={{ margin: "0 0 22px", maxWidth: 520 }}>
+                <VoorNa voor={voor.url} na={na.url} />
+                <figcaption style={{ marginTop: 8, fontSize: 14, color: "#545454" }}>Het dak van {wie}{gemeente ? ` in ${gemeente}` : ""}, voor en na. Schuif om het verschil te zien.</figcaption>
+              </figure>
             )}
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 10 }}>
               {[

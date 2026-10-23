@@ -170,6 +170,12 @@ export async function meldBuurAan(code: string, _: unknown, fd: FormData): Promi
 
 /* ── Opmerking van de klant op Mijn dak ───────────────────────────────────── */
 
+/** De klant kiest of zijn voor- en na-foto op zijn uitnodigingslink staan. */
+export async function zetDeelVoorNa(klantId: string, aan: boolean): Promise<void> {
+  const r = await wijzigKlant(klantId, (k) => { k.deelVoorNa = aan || undefined; });
+  if (r) ververs(klantId);
+}
+
 export async function plaatsOpmerking(klantId: string, tekst: string): Promise<Uitkomst> {
   const schoon = tekst.trim().slice(0, 1500);
   if (schoon.length < 2) return { ok: false, fout: "Schrijf eerst je opmerking." };

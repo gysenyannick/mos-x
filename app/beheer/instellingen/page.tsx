@@ -130,6 +130,14 @@ export default async function Instellingen() {
           </div>
           <div className={kz.velden} style={{ marginBottom: 14 }}>
             <div className={kz.veld}>
+              <label htmlFor="refDubbelDagen">Dubbele beloning tot hoeveel dagen na de oplevering?</label>
+              <input id="refDubbelDagen" name="refDubbelDagen" inputMode="numeric" className={kz.invoer} defaultValue={i.refDubbelDagen ?? ""} placeholder="30" />
+            </div>
+            <div className={kz.veld}>
+              <label htmlFor="refOnderhoudExtra">Extra als het tegoed naar een onderhoud gaat (%)</label>
+              <input id="refOnderhoudExtra" name="refOnderhoudExtra" inputMode="numeric" className={kz.invoer} defaultValue={i.refOnderhoudExtra ?? ""} placeholder="50" />
+            </div>
+            <div className={kz.veld}>
               <label htmlFor="refBonusAantal">Bonus bij hoeveel buren?</label>
               <input id="refBonusAantal" name="refBonusAantal" inputMode="numeric" className={kz.invoer} defaultValue={i.refBonusAantal ?? ""} placeholder="3" />
             </div>

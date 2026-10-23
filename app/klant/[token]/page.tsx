@@ -13,7 +13,7 @@ import { dakGegevens, dakfoto, heeftDossier, onderhoudZinvol, werkdagen, type We
 import { TIPS } from "@/lib/klantenzone/tips";
 import {
   brusselNaarDate, dagenTot, eindUur, fmtDag, fmtDagMaand, fmtEuro, fmtKort, fmtMaand, fmtMoment, fmtUur, groet, hfd,
-  maandagVan, nuMs, plusJaren, vandaag,
+  maandagVan, nuMs, plusDagen, plusJaren, vandaag,
 } from "@/lib/klantenzone/tijd";
 import {
   AFSPRAAK_TIPS, DOC_GROEPEN, DOC_IS_FACTUUR, EXTRAS, FASES, FASE_KORT, FASE_LABEL,
@@ -23,6 +23,7 @@ import {
 import AanvraagKnop from "@/components/klantenzone/aanvraag-knop";
 import Cadeaubon from "@/components/klantenzone/cadeaubon";
 import OpmerkingForm from "@/components/klantenzone/opmerking-form";
+import { zetDeelVoorNa } from "@/app/klant/actions";
 import DeelBuurlink from "@/components/klantenzone/deel-buurlink";
 import DocumentLijst from "@/components/klantenzone/document-lijst";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
@@ -189,6 +190,8 @@ type Ctx = {
   refKorting: number;
   refBonusAantal: number;
   refBonusTekst?: string;
+  refDubbelDagen: number;
+  refOnderhoudExtra: number;
   eigenTips: EigenTip[];
   dienstFotos: Record<string, string>;
 };
@@ -383,10 +386,10 @@ function Overzicht(ctx: Ctx) {
       {/* Na de werken: doorverwijzen */}
       {na_werken && ctx.refBeloning > 0 && (
         <Link href="?tab=buren" className={kz.burenTeaser}>
-          <span className={kz.burenTeaserBedrag}>€ {ctx.refBeloning}</span>
+          <span className={kz.burenTeaserBedrag}>€&nbsp;{(dubbelTot(k, ctx.refDubbelDagen) ?? "") >= vandaag() ? ctx.refBeloning * 2 : ctx.refBeloning}</span>
           <span>
             <strong>Voor jou per buur die klant wordt</strong>
-            <span>En je buur krijgt € {ctx.refKorting} korting. Bekijk je cadeaubon.</span>
+            <span>En je buur krijgt €&nbsp;{ctx.refKorting} korting. Bekijk je cadeaubon.</span>
           </span>
           <ArrowRight size={18} />
         </Link>
@@ -680,7 +683,7 @@ function TipsAdvies({ k, acties, eigenTips }: Ctx) {
             </div>
           </article>
         ))}
-        {TIPS.map((t) => {
+        {TIPS.filter((t) => !t.alleenZonderCoating || k.garantie.coatingJaren === 0).map((t) => {
           const extra = t.aanvraag?.extra ? EXTRAS.find((x) => x.id === t.aanvraag!.extra) : undefined;
           const korting = t.aanvraag?.extra ? acties.find((a) => a.extra === t.aanvraag!.extra) : undefined;
           return (
@@ -766,7 +769,7 @@ function Diensten({ k, acties, controle, dienstFotos }: Ctx) {
             </div>
           </article>
         )}
-        {EXTRAS.map((x) => {
+        {EXTRAS.filter((x) => x.id !== "coating" || k.garantie.coatingJaren === 0).map((x) => {
           const korting = acties.find((a) => a.extra === x.id);
           return (
             <article key={x.id} className={kz.dienst}>
@@ -788,6 +791,10 @@ function Diensten({ k, acties, controle, dienstFotos }: Ctx) {
           );
         })}
       </div>
+      <Link href="?tab=berichten" className={kz.dienstAnders}>
+        <span><strong>Iets anders nodig?</strong> Stuur een bericht, dan kijkt Yannick wat mogelijk is.</span>
+        <ArrowRight size={18} />
+      </Link>
     </>
   );
 }
@@ -808,22 +815,49 @@ function DienstFoto({ src, naam }: { src?: string; naam: string }) {
 
 const VERWIJZING_KLANT = { nieuw: "Aanvraag ontvangen", gecontacteerd: "Yannick nam contact op", klant: "Klant geworden", geen: "Geen klant geworden" } as const;
 
-function Buren({ k, refUrl, refCode, refBeloning, refKorting, refBonusAantal, refBonusTekst, burenVoordeel }: Ctx) {
+/** Tot wanneer de dubbele beloning loopt (enkel na de oplevering), of null. */
+function dubbelTot(k: Klant, dagen: number): string | null {
+  if (!dagen || !k.garantie.vanaf) return null;
+  return plusDagen(k.garantie.vanaf, dagen);
+}
+
+/** Tegoed in euro: per buur die klant werd, dubbel als hij binnen de periode na de oplevering kwam. */
+function berekenTegoed(k: Klant, beloning: number, dagen: number): number {
+  const tot = dubbelTot(k, dagen);
+  return (k.verwijzingen ?? []).filter((v) => v.status === "klant")
+    .reduce((som, v) => som + (tot && k.garantie.vanaf && v.datum.slice(0, 10) >= k.garantie.vanaf && v.datum.slice(0, 10) <= tot ? 2 : 1) * beloning, 0);
+}
+
+function Buren({ k, refUrl, refCode, refBeloning, refKorting, refBonusAantal, refBonusTekst, refDubbelDagen, refOnderhoudExtra, burenVoordeel }: Ctx) {
   const lijst = k.verwijzingen ?? [];
   const klanten = lijst.filter((v) => v.status === "klant").length;
-  const tegoed = klanten * refBeloning;
+  const tegoed = berekenTegoed(k, refBeloning, refDubbelDagen);
+  const opOnderhoud = Math.round(tegoed * (1 + refOnderhoudExtra / 100));
+  const tot = dubbelTot(k, refDubbelDagen);
+  const nuDubbel = !!tot && tot >= vandaag();
+  const perBuur = nuDubbel ? refBeloning * 2 : refBeloning;
   const vakjes = Math.max(5, refBonusTekst ? refBonusAantal : 0, klanten + 1);
   const nogTeGaan = refBonusTekst ? refBonusAantal - klanten : 0;
+  const voor = k.fotos.find((f) => f.fase === "voor");
+  const na = k.fotos.find((f) => f.fase === "na");
   return (
     <>
-      <PaginaKop titel="Buurvoordeel" sub={`€ ${refBeloning} voor jou, € ${refKorting} korting voor je buur.`} />
+      <PaginaKop titel="Buurvoordeel" sub={`€ ${perBuur} voor jou, € ${refKorting} korting voor je buur.`} />
+
+      {nuDubbel && (
+        <section className={kz.dubbelBalk}>
+          <span className={kz.dubbelX}>2×</span>
+          <p><strong>Nu dubbel: €&nbsp;{perBuur} per buur.</strong> Je dak is net gedaan en je buren zien het verschil. Dat loopt nog tot {fmtKort(tot!)}.</p>
+        </section>
+      )}
+
       <section className={`${kz.kaart} ${kz.burenKaart}`}>
-        <Cadeaubon voornaam={k.voornaam} code={refCode} tegoed={tegoed} beloning={refBeloning} />
+        <Cadeaubon voornaam={k.voornaam} code={refCode} tegoed={tegoed} beloning={perBuur} />
         <div>
           <ol className={kz.burenStappen}>
             <li><span>1</span><p><strong>Deel je link</strong> met buren, familie of vrienden.</p></li>
-            <li><span>2</span><p><strong>Je buur krijgt € {refKorting} korting</strong> op zijn eerste werk.</p></li>
-            <li><span>3</span><p><strong>Wordt hij klant, dan krijg jij € {refBeloning}.</strong> {burenVoordeel ?? "Als korting op je volgende onderhoud of per overschrijving, zoals jij wil."}</p></li>
+            <li><span>2</span><p><strong>Je buur krijgt €&nbsp;{refKorting} korting</strong> op zijn eerste werk.</p></li>
+            <li><span>3</span><p><strong>Wordt hij klant, dan krijg jij €&nbsp;{perBuur}.</strong> {burenVoordeel ?? (refOnderhoudExtra > 0 ? `Per overschrijving, of ${refOnderhoudExtra}% meer als korting op je onderhoud.` : "Als korting op je volgende onderhoud of per overschrijving.")}</p></li>
           </ol>
           <DeelBuurlink url={refUrl} voornaam={k.voornaam} korting={refKorting} />
         </div>
@@ -832,11 +866,11 @@ function Buren({ k, refUrl, refCode, refBeloning, refKorting, refBonusAantal, re
       <section className={kz.kaart}>
         <div className={kz.kaartKop}>
           <h2 className={kz.kaartTitel}>Jouw tegoed</h2>
-          <span className={kz.burenTotaal}>€ {tegoed}</span>
+          <span className={kz.burenTotaal}>€&nbsp;{tegoed}</span>
         </div>
         <div className={kz.burenBalk} aria-label={`${klanten} buren klant geworden`}>
           {Array.from({ length: vakjes }, (_, i) => (
-            <span key={i} className={`${i < klanten ? kz.burenVakVol : ""} ${refBonusTekst && i === refBonusAantal - 1 ? kz.burenVakBonus : ""}`}>{refBonusTekst && i === refBonusAantal - 1 ? "Bonus" : `€ ${refBeloning}`}</span>
+            <span key={i} className={`${i < klanten ? kz.burenVakVol : ""} ${refBonusTekst && i === refBonusAantal - 1 ? kz.burenVakBonus : ""}`}>{refBonusTekst && i === refBonusAantal - 1 ? "Bonus" : `€\u00a0${perBuur}`}</span>
           ))}
         </div>
         {refBonusTekst && (
@@ -846,6 +880,12 @@ function Buren({ k, refUrl, refCode, refBeloning, refKorting, refBonusAantal, re
               : <>Bonus behaald: <strong>{refBonusTekst}</strong>. Bedankt!</>}
           </p>
         )}
+        {tegoed > 0 && refOnderhoudExtra > 0 && (
+          <div className={kz.tegoedKeuze}>
+            <div><strong>€&nbsp;{tegoed}</strong><span>per overschrijving</span></div>
+            <div className={kz.tegoedKeuzeBeste}><strong>€&nbsp;{opOnderhoud}</strong><span>als korting op je onderhoud</span></div>
+          </div>
+        )}
         {lijst.length === 0 ? (
           <p className={kz.leeg}>Nog niemand via jouw link. Deel hem hierboven.</p>
         ) : (
@@ -853,14 +893,33 @@ function Buren({ k, refUrl, refCode, refBeloning, refKorting, refBonusAantal, re
             {lijst.map((v) => (
               <li key={v.id}>
                 <span><strong>{v.naam.split(" ")[0]}</strong> · {fmtKort(v.datum)}</span>
-                <span className={v.status === "klant" ? kz.burenPlus : undefined}>
-                  {VERWIJZING_KLANT[v.status]}{v.status === "klant" ? ` · + € ${refBeloning}` : ""}
-                </span>
+                <span className={v.status === "klant" ? kz.burenPlus : undefined}>{VERWIJZING_KLANT[v.status]}</span>
               </li>
             ))}
           </ul>
         )}
       </section>
+
+      {voor && na && (
+        <section className={`${kz.kaart} ${kz.deelVoorNa}`}>
+          <div>
+            <h2 className={kz.kaartTitel}>Laat je buren het verschil zien</h2>
+            <p className={kz.sub} style={{ marginTop: 6 }}>
+              Toon je voor- en na-foto op je uitnodiging. Een echt dak uit de buurt overtuigt meer dan eender welke reclame.
+              Je buur ziet alleen je voornaam en je gemeente.
+            </p>
+            <div className={kz.rijKnoppen}>
+              <form action={zetDeelVoorNa.bind(null, k.id, !k.deelVoorNa)}>
+                <button className={`${kz.knop} ${kz.knopKlein} ${k.deelVoorNa ? kz.knopLicht : kz.knopPrimair}`}>
+                  {k.deelVoorNa ? "Foto's niet meer tonen" : "Ja, toon mijn foto's"}
+                </button>
+              </form>
+              {k.deelVoorNa && <span className={kz.ok} style={{ margin: 0 }}><CheckCircle2 size={15} style={{ verticalAlign: -3 }} /> Je buren zien je voor en na</span>}
+            </div>
+          </div>
+          <VoorNa voor={voor.url} na={na.url} />
+        </section>
+      )}
     </>
   );
 }
@@ -962,6 +1021,8 @@ export default async function KlantPagina({
     refBonusAantal: instellingen.refBonusAantal ?? 3,
     refBonusTekst: instellingen.refBonusTekst === undefined ? "een gratis onderhoudsbeurt" : instellingen.refBonusTekst || undefined,
     eigenTips: instellingen.tips ?? [],
+    refDubbelDagen: instellingen.refDubbelDagen ?? 30,
+    refOnderhoudExtra: instellingen.refOnderhoudExtra ?? 50,
     dienstFotos: instellingen.dienstFotos ?? {},
     komend: k.afspraken.filter((a) => a.start.slice(0, 10) >= vandaag()),
     voorbij: k.afspraken.filter((a) => a.start.slice(0, 10) < vandaag()),
