@@ -853,22 +853,27 @@ function Dakdossier({ k }: Ctx) {
 /* ══ Onderhoud: het voorstel en de opmerkingen ════════════════════════════ */
 
 function Dakzorg(ctx: Ctx) {
-  const { k, controle } = ctx;
+  const { k } = ctx;
   const gevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.soort === "onderhoud");
   const tot = mosGarantieTot(k);
-  const maanden = controle ? Math.max(0, Math.round(dagenTot(controle.datum) / 30.44)) : null;
+  const naWerken = onderhoudZinvol(k);
+  // Vóór de oplevering: verwacht onderhoud = verwachte oplevering + de mosgarantie
+  const { tot: opleverDag } = werkPeriode(k);
+  const verwacht = !naWerken && opleverDag && k.garantie.mosvrijJaren > 0 ? plusJaren(opleverDag, k.garantie.mosvrijJaren) : null;
+  const datum = ctx.controle?.datum ?? verwacht;
+  const maanden = datum ? Math.max(0, Math.round(dagenTot(datum) / 30.44)) : null;
 
   return (
     <>
       <PaginaKop titel="Onderhoud" />
 
-      {onderhoudZinvol(k) && (
+      {(
         <section className={kz.ohHero}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={ONDERHOUD_FOTO} alt="" className={kz.ohBeeld} />
           <div className={kz.ohInhoud}>
-            <p className={kz.ohLabel}>Je volgende onderhoud</p>
-            <p className={kz.ohMaand}>{controle ? hfd(fmtMaand(controle.datum)) : "Nog niet bekend"}</p>
+            <p className={kz.ohLabel}>{naWerken ? "Je volgende onderhoud" : "Je eerste onderhoud, na je werken"}</p>
+            <p className={kz.ohMaand}>{datum ? hfd(fmtMaand(datum)) : "Na je werken"}</p>
             {maanden !== null && <p className={kz.ohSub}>{maanden > 1 ? `Over ${maanden} maanden` : maanden === 1 ? "Volgende maand" : "Nu"}</p>}
             <ul className={kz.ohWat}>
               <li><Check size={16} strokeWidth={3} /> Preventieve anti-mosbehandeling</li>
@@ -884,6 +889,7 @@ function Dakzorg(ctx: Ctx) {
               <span>Vrijblijvend, je krijgt eerst een prijs.</span>
             </div>
             {tot && binnenMosGarantie(k) && <p className={kz.ohGarantie}>Je mosgarantie loopt tot {fmtKort(tot)}, ook zonder onderhoud.</p>}
+            {!naWerken && k.garantie.mosvrijJaren > 0 && <p className={kz.ohGarantie}>Je mosgarantie van {k.garantie.mosvrijJaren} jaar start bij de oplevering en geldt ook zonder onderhoud.</p>}
           </div>
         </section>
       )}
@@ -1218,7 +1224,7 @@ export default async function KlantPagina({
   const naWerken = k.fase === "klaar" || k.fase === "nazorg";
   const zichtbaar: Record<TabId, boolean> = {
     overzicht: true, werken: true, dossier: true, hulp: true,
-    dakzorg: naWerken,
+    dakzorg: true,
     diensten: k.fase !== "gepland",
     voordelen: naWerken,
   };
