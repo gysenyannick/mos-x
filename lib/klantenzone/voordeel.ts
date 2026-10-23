@@ -45,6 +45,8 @@ export function voegTransactieToe(k: Klant, t: TegoedTransactie): boolean {
 
 export type RefRegels = {
   beloning: number;
+  /** Hoe de beloning heet voor de klant (een bon, geen geld) */
+  naam: string;
   korting: number;
   minOpdracht: number;
   maxPerKlant: number;
@@ -61,6 +63,7 @@ export const REF_STANDAARD_BEDRAG = 50;
 export function refRegels(i: Instellingen): RefRegels {
   return {
     beloning: i.refBeloning ?? REF_STANDAARD_BEDRAG,
+    naam: i.refBeloningNaam || "Onderhoudsbon",
     korting: i.refKorting ?? REF_STANDAARD_BEDRAG,
     minOpdracht: i.refMinOpdracht ?? 0,
     maxPerKlant: i.refMaxPerKlant ?? 0,
@@ -110,7 +113,7 @@ export function beloningMag(k: Klant, v: Verwijzing, r: RefRegels): { mag: boole
 export function beloningTransactie(v: Verwijzing, r: RefRegels, id: string, nu: string): TegoedTransactie {
   return {
     id, datum: nu, soort: "toegekend", bedrag: r.beloning,
-    omschrijving: `Burenvoordeel: ${v.naam.split(" ")[0]} werd klant`,
+    omschrijving: `Omdat ${v.naam.split(" ")[0]} klant werd`,
     sleutel: refSleutel(v),
     vervaltOp: r.geldigMaanden > 0 ? plusDagen(nu.slice(0, 10), Math.round(r.geldigMaanden * 30.44)) : undefined,
     door: "yannick",
@@ -189,3 +192,31 @@ export function interesseVoor(c: Actie, klanten: Klant[]): number {
 
 /** Einde van de garantie in jaren vanaf een datum (hulpje voor de tests). */
 export const garantieTot = (vanaf: string, jaren: number) => plusJaren(vanaf, jaren);
+
+/* ── Bonnen: het tegoed zoals de klant het ziet ──────────────────────────── */
+
+export type Bon = { id: string; datum: string; omschrijving: string; waarde: number; rest: number; vervaltOp?: string; staat: "beschikbaar" | "gebruikt" | "vervallen" };
+
+/**
+ * Elke toegekende beloning is een bon. Gebruik telt eerst af van de oudste bon.
+ * Zo ziet de klant bonnen in plaats van een geldbedrag.
+ */
+export function tegoedBonnen(k: Klant, op = vandaag()): Bon[] {
+  const regels = [...(k.tegoed ?? [])].sort((a, b) => a.datum.localeCompare(b.datum));
+  const bonnen: Bon[] = [];
+  for (const t of regels) {
+    if (t.bedrag > 0) {
+      if (t.soort === "toegekend") bonnen.push({ id: t.id, datum: t.datum, omschrijving: t.omschrijving, waarde: t.bedrag, rest: t.bedrag, vervaltOp: t.vervaltOp, staat: "beschikbaar" });
+      continue;
+    }
+    let af = -t.bedrag;
+    for (const b of bonnen) {
+      if (af <= 0) break;
+      const neem = Math.min(b.rest, af);
+      b.rest -= neem;
+      af -= neem;
+    }
+  }
+  for (const b of bonnen) b.staat = b.rest <= 0 ? "gebruikt" : b.vervaltOp && b.vervaltOp < op ? "vervallen" : "beschikbaar";
+  return bonnen.reverse();
+}

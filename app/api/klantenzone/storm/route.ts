@@ -6,7 +6,7 @@ import { bewaarBestand, getKlant, nieuwId, wijzigKlant } from "@/lib/klantenzone
 export const runtime = "nodejs";
 
 const MAX_BYTES = 4 * 1024 * 1024;
-const TYPES = ["Stormschade", "Lek of vocht binnen", "Verschoven of gebroken pannen", "Losse nok of rand", "Dakgoot", "Iets anders"];
+const TYPES = ["Stormschade of probleem", "Stormschade", "Lek of vocht binnen", "Verschoven of gebroken pannen", "Losse nok of rand", "Dakgoot", "Iets anders"];
 
 /** De klant meldt stormschade of een probleem, met foto's. Dit is een aanvraag, geen garantie op onmiddellijke interventie. */
 export async function POST(req: NextRequest) {

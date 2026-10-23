@@ -133,15 +133,15 @@ export async function kenBeloningToe(id: string, vId: string): Promise<void> {
     if (!voegTransactieToe(k, t)) return null;
     v.status = "beloond";
     audit(k, `Beloning € ${t.bedrag} toegekend voor doorverwijzing ${v.naam} (sleutel ${t.sleutel})`);
-    k.log.unshift({ datum: nu, tekst: `Je kreeg € ${t.bedrag} onderhoudstegoed omdat iemand via jou klant werd. Bedankt!` });
+    k.log.unshift({ datum: nu, tekst: `Je kreeg een bon (${regels.naam.toLowerCase()}) omdat iemand via jou klant werd. Bedankt!` });
     return t.bedrag;
   });
   ververs(id);
   if (r?.resultaat) {
     await meldKlant(r.klant, {
       soort: "beloning", sleutel: `beloning-${vId}`,
-      onderwerp: "Je kreeg onderhoudstegoed van MOS-X",
-      tekst: `Iemand die jij aanbracht, werd klant. Je kreeg € ${r.resultaat} onderhoudstegoed. Dat trekken we af van een volgende factuur.`,
+      onderwerp: "Je kreeg een bon van de MOS-X Kring",
+      tekst: `Iemand die jij aanbracht, werd klant. Bedankt! Je kreeg een bon: ${regels.naam.toLowerCase()}.`,
       knop: { label: "Bekijk je voordelen", tab: "voordelen" },
     });
   }
@@ -232,6 +232,7 @@ export async function bewaarRefRegels(fd: FormData) {
   await saveInstellingen({
     ...i,
     refBeloning: heel("refBeloning"),
+    refBeloningNaam: s(fd, "refBeloningNaam") || undefined,
     refKorting: heel("refKorting"),
     refMinOpdracht: heel("refMinOpdracht"),
     refMaxPerKlant: heel("refMaxPerKlant"),

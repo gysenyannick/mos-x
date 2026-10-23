@@ -54,7 +54,8 @@ export default async function Doorverwijzingen() {
         </p>
         <form action={bewaarRefRegels}>
           <div className={kz.velden}>
-            <div className={kz.veld}><label htmlFor="rb">Onderhoudstegoed per buur (€, 0 = uit)</label><input id="rb" name="refBeloning" inputMode="numeric" defaultValue={i.refBeloning ?? ""} placeholder="50" className={kz.invoer} /></div>
+            <div className={kz.veld}><label htmlFor="rbn">Naam van de bon (wat de klant ziet)</label><input id="rbn" name="refBeloningNaam" defaultValue={i.refBeloningNaam ?? ""} placeholder="Onderhoudsbon" className={kz.invoer} /></div>
+            <div className={kz.veld}><label htmlFor="rb">Waarde van de bon (€, 0 = uit)</label><input id="rb" name="refBeloning" inputMode="numeric" defaultValue={i.refBeloning ?? ""} placeholder="50" className={kz.invoer} /></div>
             <div className={kz.veld}><label htmlFor="rk">Korting voor de nieuwe klant (€, 0 = geen)</label><input id="rk" name="refKorting" inputMode="numeric" defaultValue={i.refKorting ?? ""} placeholder="50" className={kz.invoer} /></div>
             <div className={kz.veld}><label htmlFor="rm">Minimumwaarde opdracht (€)</label><input id="rm" name="refMinOpdracht" inputMode="numeric" defaultValue={i.refMinOpdracht ?? ""} className={kz.invoer} /></div>
             <div className={kz.veld}><label htmlFor="rmax">Maximum beloningen per klant</label><input id="rmax" name="refMaxPerKlant" inputMode="numeric" defaultValue={i.refMaxPerKlant ?? ""} className={kz.invoer} placeholder="Leeg = geen maximum" /></div>

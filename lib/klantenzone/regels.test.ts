@@ -98,3 +98,18 @@ describe("acties", () => {
     expect(campagneMarge({ ...basis, opdrachtWaarde: 300, kosten: 120, korting: 30, verplaatsing: 20 }, 50)).toEqual({ marge: 80, procent: 30 });
   });
 });
+
+describe("bonnen", () => {
+  it("een gebruikte bon staat als gebruikt, de rest blijft beschikbaar", async () => {
+    const { tegoedBonnen } = await import("./voordeel");
+    const k = klant({
+      tegoed: [
+        { id: "a", datum: "2026-01-01T00:00:00Z", soort: "toegekend", bedrag: 50, omschrijving: "Buur 1", door: "yannick" },
+        { id: "b", datum: "2026-02-01T00:00:00Z", soort: "toegekend", bedrag: 50, omschrijving: "Buur 2", door: "yannick" },
+        { id: "c", datum: "2026-03-01T00:00:00Z", soort: "gebruikt", bedrag: -50, omschrijving: "Factuur", door: "yannick" },
+      ],
+    });
+    const b = tegoedBonnen(k, "2026-04-01");
+    expect(b.map((x) => x.staat)).toEqual(["beschikbaar", "gebruikt"]);
+  });
+});

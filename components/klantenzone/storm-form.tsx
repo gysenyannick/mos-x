@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, TriangleAlert } from "lucide-react";
+import { CheckCircle2, Siren, X } from "lucide-react";
 import kz from "./kz.module.css";
 
-const TYPES = ["Stormschade", "Lek of vocht binnen", "Verschoven of gebroken pannen", "Losse nok of rand", "Dakgoot", "Iets anders"];
-
-/** Stormschade of een probleem melden, met foto's. */
-export default function StormForm({ klantId, telefoon, spoedTel, spoedToon }: { klantId: string; telefoon: string; spoedTel: string; spoedToon: string }) {
+/** Eén knop: stormschade of een probleem melden, met een foto en een korte zin. */
+export default function StormForm({ klantId, spoedTel, spoedToon }: { klantId: string; telefoon?: string; spoedTel: string; spoedToon: string }) {
+  const [open, setOpen] = useState(false);
   const [bezig, setBezig] = useState(false);
   const [klaar, setKlaar] = useState(false);
   const [fout, setFout] = useState<string | null>(null);
@@ -18,6 +17,7 @@ export default function StormForm({ klantId, telefoon, spoedTel, spoedToon }: { 
     setFout(null);
     const fd = new FormData(e.currentTarget);
     fd.append("klantId", klantId);
+    fd.append("type", "Stormschade of probleem");
     try {
       const r = await fetch("/api/klantenzone/storm", { method: "POST", body: fd });
       const j = await r.json().catch(() => ({ ok: false }));
@@ -30,50 +30,44 @@ export default function StormForm({ klantId, telefoon, spoedTel, spoedToon }: { 
     }
   }
 
-  if (klaar) {
-    return (
-      <div className={kz.stormKlaar}>
-        <CheckCircle2 size={28} />
-        <div>
-          <p className={kz.rijTitel}>Je melding is verstuurd</p>
-          <p className={kz.sub} style={{ marginTop: 4 }}>Yannick neemt zo snel mogelijk contact met je op. Dit is een aanvraag, geen garantie op een onmiddellijke tussenkomst. Bij spoed: bel {spoedToon}.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={verstuur}>
-      <div className={kz.stormVeilig}>
-        <TriangleAlert size={20} />
-        <p><strong>Eerst veilig.</strong> Hou afstand van losse delen, klim nooit zelf op het dak en bel bij acuut gevaar de brandweer (112).</p>
-      </div>
-      <div className={kz.velden}>
-        <div className={kz.veld}>
-          <label htmlFor="stype">Wat is er aan de hand?</label>
-          <select id="stype" name="type" className={kz.invoer} required defaultValue="">
-            <option value="" disabled>Kies…</option>
-            {TYPES.map((t) => <option key={t}>{t}</option>)}
-          </select>
+    <>
+      <button type="button" className={`${kz.knop} ${kz.knopMelden}`} onClick={() => { setOpen(true); setKlaar(false); }}>
+        <Siren size={17} /> Stormschade of probleem melden
+      </button>
+      {open && (
+        <div className={kz.modaalAchter} onClick={() => setOpen(false)}>
+          <div className={kz.modaal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Probleem melden">
+            <div className={kz.kaartKop}>
+              <h3 className={kz.kaartTitel}>{klaar ? "Verstuurd" : "Probleem melden"}</h3>
+              <button type="button" className={kz.icoonKnop} onClick={() => setOpen(false)} aria-label="Sluiten"><X size={18} /></button>
+            </div>
+            {klaar ? (
+              <div className={kz.stormKlaar}>
+                <CheckCircle2 size={24} />
+                <p className={kz.sub} style={{ margin: 0 }}>Yannick neemt zo snel mogelijk contact op. Spoed? Bel {spoedToon}.</p>
+              </div>
+            ) : (
+              <form onSubmit={verstuur}>
+                <div className={kz.veld}>
+                  <label htmlFor="stekst">Wat is er?</label>
+                  <textarea id="stekst" name="tekst" className={kz.invoer} required rows={3} />
+                </div>
+                <div className={kz.veld} style={{ marginTop: 10 }}>
+                  <label htmlFor="sfotos">Foto (optioneel)</label>
+                  <input id="sfotos" name="fotos" type="file" accept="image/*" multiple className={kz.invoer} />
+                </div>
+                <p className={kz.rijSub} style={{ marginTop: 10 }}>Klim niet zelf op het dak. Bij gevaar: bel 112.</p>
+                {fout && <p className={kz.fout}>{fout}</p>}
+                <div className={kz.rijKnoppen}>
+                  <button className={`${kz.knop} ${kz.knopPrimair}`} disabled={bezig} style={{ flex: 1 }}>{bezig ? "Versturen…" : "Versturen"}</button>
+                  <a className={`${kz.knop} ${kz.knopLicht}`} href={`tel:${spoedTel}`}>Bel</a>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
-        <div className={kz.veld}>
-          <label htmlFor="stel">Terugbelnummer</label>
-          <input id="stel" name="telefoon" className={kz.invoer} defaultValue={telefoon} inputMode="tel" />
-        </div>
-        <div className={`${kz.veld} ${kz.vol}`}>
-          <label htmlFor="stekst">Wat zie je?</label>
-          <textarea id="stekst" name="tekst" className={kz.invoer} required rows={3} placeholder="bv. Na de storm liggen er twee pannen in de tuin, aan de achterkant." />
-        </div>
-        <div className={`${kz.veld} ${kz.vol}`}>
-          <label htmlFor="sfotos">Foto&apos;s (optioneel, max. 5)</label>
-          <input id="sfotos" name="fotos" type="file" accept="image/*" multiple className={kz.invoer} />
-        </div>
-      </div>
-      {fout && <p className={kz.fout}>{fout}</p>}
-      <div className={kz.rijKnoppen}>
-        <button className={`${kz.knop} ${kz.knopPrimair}`} disabled={bezig}>{bezig ? "Versturen…" : "Melding versturen"}</button>
-        <a className={`${kz.knop} ${kz.knopLicht}`} href={`tel:${spoedTel}`}>Spoed? Bel {spoedToon}</a>
-      </div>
-    </form>
+      )}
+    </>
   );
 }

@@ -300,6 +300,8 @@ export type Instellingen = {
   reviewNaam?: string;
   /** Doorverwijzen: wat de klant krijgt per buur die klant wordt, en de korting voor die buur (euro; 0 = uit) */
   refBeloning?: number;
+  /** Naam van de bon die de klant krijgt, bv. "Gratis dakgootreiniging" */
+  refBeloningNaam?: string;
   refKorting?: number;
   /** Bonus bij een aantal buren die klant worden (leeg tekst = geen bonus) */
   refBonusAantal?: number;

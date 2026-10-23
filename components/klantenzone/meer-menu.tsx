@@ -9,7 +9,7 @@ import kz from "./kz.module.css";
 const ITEMS = [
   { id: "werken", label: "Mijn werken", uitleg: "Planning en fotoverslag", icoon: CalendarDays },
   { id: "dossier", label: "Mijn dakdossier", uitleg: "Documenten, garantie en controles", icoon: FolderOpen },
-  { id: "dakzorg", label: "Dakzorg", uitleg: "Onderhoud, aandachtspunten en tips", icoon: Leaf },
+  { id: "dakzorg", label: "Onderhoud", uitleg: "Je onderhoud en opmerkingen", icoon: Leaf },
   { id: "diensten", label: "Diensten", uitleg: "Aanvragen en hun status", icoon: Wrench },
   { id: "voordelen", label: "Mijn voordelen", uitleg: "Tegoed, burenvoordeel en acties", icoon: Gift },
   { id: "hulp", label: "Hulp en contact", uitleg: "Berichten, stormschade en profiel", icoon: LifeBuoy },

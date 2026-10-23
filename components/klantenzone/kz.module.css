@@ -1559,3 +1559,40 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .jeDak dd { text-align: left; white-space: normal; }
   .dakHistoriek li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* Mijn werken: duidelijk per werk en per dag */
+.werkenLijst { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rand); }
+.werkenLijst li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--rand); }
+.werkenLijst li:last-child { border-bottom: 0; padding-bottom: 0; }
+.werkBol { color: #C4C4BF; display: grid; place-items: center; }
+.werkKlaar .werkBol { color: var(--groen-d); }
+.werkNu .werkBol { color: #C98A1C; }
+.werkNaam { margin: 0; font-weight: 700; font-size: 15.5px; color: var(--tekst); }
+.werkStatus { font-size: 14px; color: var(--muted); white-space: nowrap; }
+.werkKlaar .werkStatus { color: var(--groen-d); font-weight: 600; }
+.werkNu .werkStatus { color: #9A6A12; font-weight: 700; }
+.werkdagLabel { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--groen-d); }
+.werkdag .werkdagDatum { margin: 2px 0 0; }
+.werkdagAf { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }
+.werkdagAf li { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: #4F7F2B; }
+@media (max-width: 480px) {
+  .werkenLijst li { grid-template-columns: 26px minmax(0, 1fr); }
+  .werkStatus { grid-column: 2; }
+}
+
+/* MOS-X Kring: ledenkaart en bonnen */
+.bonNaam { margin: 4px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.025em; }
+.kringTitel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.028em; color: var(--tekst); }
+.kringLijst { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+.kringLijst li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: #33332F; }
+.kringLijst svg { flex-shrink: 0; margin-top: 2px; color: var(--groen-d); }
+.bonnen { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 12px; }
+.ticket { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 14px 18px 14px 0; border-radius: 14px; background: #fff; border: 1px solid var(--rand); overflow: hidden; }
+.ticketLinks { align-self: stretch; display: grid; place-items: center; background: #16261A radial-gradient(circle at 0% 100%, rgba(155,203,108,0.55), transparent 70%); color: #fff; border-right: 2px dashed rgba(255,255,255,.6); }
+.ticketNaam { margin: 0; font-weight: 700; font-size: 15.5px; color: var(--tekst); }
+.ticketSub { margin: 2px 0 0; font-size: 13.5px; color: var(--muted); }
+.ticketStaat { font-size: 13px; font-weight: 700; color: var(--groen-d); white-space: nowrap; }
+.ticketOp { opacity: .55; }
+.ticketOp .ticketStaat { color: var(--muted); }
+.knopMelden { background: #FDF1EE; color: #8A2E1B; border: 1px solid #F3C9BE; }
+.knopMelden:hover { background: #FBE6E0; }
