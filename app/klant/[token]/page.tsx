@@ -715,6 +715,8 @@ function MijnWerken(ctx: Ctx) {
 /* ══ Mijn dakdossier: gegevens, garantie, inspecties, documenten ═══════════ */
 
 function Dakdossier({ k }: Ctx) {
+  const opm = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
+  const oog = (k.paspoort?.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
   const gegevens = dakGegevens(k);
   const historiek = k.behandelingen ?? [];
   const foto = dakfoto(k);
@@ -755,6 +757,48 @@ function Dakdossier({ k }: Ctx) {
           ) : <p className={kz.rapportTekst}>Nog geen behandelingen.</p>}
         </div>
       </section>
+
+      {(opm.length > 0 || oog.length > 0) && (
+        <section className={kz.kaart}>
+          <div className={kz.kaartKop}>
+            <h2 className={kz.kaartTitel}>Opmerkingen</h2>
+            {opm.length > 0 && <span className={kz.dakTeller}>{opm.length}</span>}
+          </div>
+          {opm.length > 0 && (
+            <ul className={kz.ohPunten}>
+              {opm.map((a) => (
+                <li key={a.id}>
+                  {a.fotoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={a.fotoUrl} alt="" className={kz.ohPuntFoto} />
+                  ) : <span className={kz.ohPuntFoto} aria-hidden="true" />}
+                  <div className={kz.ohPuntTekst}>
+                    <p className={kz.ohPuntTitel}>{a.titel}</p>
+                    {a.tekst && <p className={kz.rijSub}>{a.tekst}</p>}
+                    <p className={kz.ohPuntDatum}>{fmtKort(a.datum)}{a.prioriteit === "info" ? " · ter info" : ""}</p>
+                  </div>
+                  {a.prioriteit !== "info" && (
+                    <div className={kz.ohPuntKnop}>
+                      <AanvraagKnop
+                        klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd"
+                        label="Prijs aanvragen" titel={a.titel}
+                        uitleg="Je krijgt eerst een prijs en een voorstel van datum. Je zit nergens aan vast."
+                        placeholder="Vraag of opmerking (optioneel)"
+                      />
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+          {oog.length > 0 && (
+            <div className={kz.ohOog}>
+              <p className={kz.ohOogKop}>Om in het oog te houden</p>
+              <ul>{oog.map((r) => <li key={r}><Leaf size={14} /> {r}</li>)}</ul>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className={kz.dakBlok}>
         <div className={kz.dakBlokKop}>
@@ -810,55 +854,39 @@ function Dakdossier({ k }: Ctx) {
 
 function Dakzorg(ctx: Ctx) {
   const { k, controle } = ctx;
-  const opm = (k.aanbevelingen ?? []).filter((a) => a.status === "open" || a.status === "aangevraagd");
-  const oog = (k.paspoort?.aandachtspunten ?? "").split("\n").map((r) => r.trim()).filter(Boolean);
+  const gevraagd = (k.aanvragen ?? []).some((a) => aanvraagLoopt(a.status) && a.soort === "onderhoud");
+  const tot = mosGarantieTot(k);
+  const maanden = controle ? Math.max(0, Math.round(dagenTot(controle.datum) / 30.44)) : null;
 
   return (
     <>
       <PaginaKop titel="Onderhoud" />
 
-      {onderhoudZinvol(k) && <OnderhoudAanbod k={k} controle={controle} />}
-
-      <section className={kz.dakBlok}>
-        <div className={kz.dakBlokKop}>
-          <h2 className={kz.dakTitel}>Opmerkingen</h2>
-          {opm.length > 0 && <span className={kz.dakTeller}>{opm.length}</span>}
-        </div>
-        {opm.length === 0 && oog.length === 0 && <p className={kz.rapportTekst} style={{ marginTop: 0 }}>Geen opmerkingen.</p>}
-        {opm.length > 0 && (
-          <ol className={kz.dakPunten}>
-            {opm.map((a, i) => (
-              <li key={a.id} className={a.fotoUrl ? undefined : kz.dakPuntZonder}>
-                {a.fotoUrl && (
-                  <figure className={kz.dakPuntFoto}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.fotoUrl} alt={a.titel} />
-                  </figure>
-                )}
-                <div>
-                  <p className={kz.dakPuntMeta}><span>{String(i + 1).padStart(2, "0")}</span>{fmtKort(a.datum)}{a.prioriteit === "info" && " · ter info"}</p>
-                  <h3 className={kz.rapportSubkop}>{a.titel}</h3>
-                  {a.tekst && <p className={kz.rapportTekst}>{a.tekst}</p>}
-                  {a.prioriteit !== "info" && <div style={{ marginTop: 14 }}>
-                    <AanvraagKnop
-                      klantId={k.id} soort="aanbeveling" aanbevelingId={a.id} klein licht alGevraagd={a.status === "aangevraagd"} alGevraagdTekst="Aangevraagd"
-                      label="Prijs aanvragen" titel={a.titel}
-                      uitleg="Je krijgt eerst een prijs en een voorstel van datum. Je zit nergens aan vast."
-                      placeholder="Vraag of opmerking (optioneel)"
-                    />
-                  </div>}
-                </div>
-              </li>
-            ))}
-          </ol>
-        )}
-        {oog.length > 0 && (
-          <div className={kz.dakOog} style={opm.length ? undefined : { marginTop: 0 }}>
-            <p className={kz.dakOogKop}>Aandachtspunten</p>
-            <ul className={kz.rapportLijst}>{oog.map((r) => <li key={r}>{r}</li>)}</ul>
+      {onderhoudZinvol(k) && (
+        <section className={kz.ohHero}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={ONDERHOUD_FOTO} alt="" className={kz.ohBeeld} />
+          <div className={kz.ohInhoud}>
+            <p className={kz.ohLabel}>Je volgende onderhoud</p>
+            <p className={kz.ohMaand}>{controle ? hfd(fmtMaand(controle.datum)) : "Nog niet bekend"}</p>
+            {maanden !== null && <p className={kz.ohSub}>{maanden > 1 ? `Over ${maanden} maanden` : maanden === 1 ? "Volgende maand" : "Nu"}</p>}
+            <ul className={kz.ohWat}>
+              <li><Check size={16} strokeWidth={3} /> Preventieve anti-mosbehandeling</li>
+              <li><Check size={16} strokeWidth={3} /> Inspectie van je dak, met foto&apos;s</li>
+            </ul>
+            <div className={kz.ohKnoppen}>
+              <AanvraagKnop
+                klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, Yannick neemt contact op"
+                label="Plan mijn onderhoud" titel="Onderhoud inplannen"
+                uitleg="Yannick neemt contact op om een moment af te spreken. Je krijgt eerst een prijs."
+                placeholder="bv. Liefst in het voorjaar."
+              />
+              <span>Vrijblijvend, je krijgt eerst een prijs.</span>
+            </div>
+            {tot && binnenMosGarantie(k) && <p className={kz.ohGarantie}>Je mosgarantie loopt tot {fmtKort(tot)}, ook zonder onderhoud.</p>}
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
     </>
   );
@@ -1223,8 +1251,7 @@ export default async function KlantPagina({
   const openDocs = k.documenten.filter((d) => d.status === "open").length;
   const nieuwVanYannick = (k.opmerkingen ?? []).filter((o) => o.van === "yannick" && dagenTot(o.datum.slice(0, 10)) >= -3).length;
   const teller: Partial<Record<TabId, { n: number; amber?: boolean }>> = {
-    dossier: openDocs ? { n: openDocs, amber: true } : undefined,
-    dakzorg: openAanb ? { n: openAanb, amber: true } : undefined,
+    dossier: openDocs + openAanb ? { n: openDocs + openAanb, amber: true } : undefined,
     voordelen: acties.length ? { n: acties.length } : undefined,
     hulp: nieuwVanYannick ? { n: nieuwVanYannick, amber: true } : undefined,
   };
@@ -1300,7 +1327,7 @@ export default async function KlantPagina({
             </li>
           ))}
           {tabs.some((t) => !onderaan.includes(t.id)) && (
-            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ dakzorg: openAanb, voordelen: acties.length }} /></li>
+            <li><MeerMenu actief={tab} zichtbaar={tabs.filter((t) => !onderaan.includes(t.id)).map((t) => t.id)} tellers={{ dossier: openDocs + openAanb, voordelen: acties.length }} /></li>
           )}
         </ul>
       </nav>

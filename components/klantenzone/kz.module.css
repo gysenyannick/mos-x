@@ -1652,3 +1652,40 @@ a.volgendeStap:hover { border-color: var(--groen); }
   .page .topbarIn { max-width: none !important; padding: 0 24px; }
 }
 .voortgangGetal strong.voortgangKlaar { font-size: 22px; margin-right: 0; }
+
+/* Onderhoud: één opvallende kaart en rustige rijen */
+.ohHero { position: relative; margin-top: 18px; border-radius: 20px; overflow: hidden; color: #fff; background: #16261A; box-shadow: 0 18px 40px -24px rgba(22,38,26,0.7); }
+.ohBeeld { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .35; }
+.ohHero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(22,38,26,0.96) 0%, rgba(22,38,26,0.85) 45%, rgba(22,38,26,0.35) 100%); }
+.ohInhoud { position: relative; z-index: 1; padding: 32px 34px; max-width: 520px; }
+.ohLabel { margin: 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #B9DE95; }
+.ohMaand { margin: 8px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 44px; line-height: 1; letter-spacing: -0.035em; white-space: nowrap; }
+.ohSub { margin: 8px 0 0; font-size: 15px; color: rgba(255,255,255,.75); }
+.ohWat { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 8px; }
+.ohWat li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 600; }
+.ohWat svg { color: #9BCB6C; flex-shrink: 0; }
+.ohKnoppen { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.ohKnoppen > span { font-size: 13.5px; color: rgba(255,255,255,.7); }
+.ohKnoppen button { background: #fff !important; color: #16261A !important; border-color: #fff !important; }
+.ohKnoppen button:hover { background: #EEF6E6 !important; }
+.ohGarantie { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.15); font-size: 13.5px; color: rgba(255,255,255,.7); }
+
+.ohPunten { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rand); }
+.ohPunten li { display: grid; grid-template-columns: 72px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--rand); }
+.ohPuntFoto { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; display: block; background: var(--groen-zacht); }
+.ohPuntTitel { margin: 0; font-weight: 700; font-size: 16px; color: var(--tekst); }
+.ohPuntTekst .rijSub { margin-top: 3px; line-height: 1.55; }
+.ohPuntDatum { margin: 4px 0 0; font-size: 12.5px; color: #9A9A95; }
+.ohOog { margin-top: 16px; }
+.ohOogKop { margin: 0 0 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.ohOog ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.ohOog li { display: flex; gap: 8px; align-items: flex-start; font-size: 15px; line-height: 1.5; color: #33332F; }
+.ohOog svg { color: var(--groen-d); flex-shrink: 0; margin-top: 4px; }
+
+@media (max-width: 640px) {
+  .ohInhoud { padding: 26px 22px; }
+  .ohMaand { font-size: 36px; }
+  .ohPunten li { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; }
+  .ohPuntFoto { width: 56px; height: 56px; }
+  .ohPuntKnop { grid-column: 2; }
+}
