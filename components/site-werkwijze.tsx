@@ -1,202 +1,64 @@
 "use client";
 
-import { useState } from "react";
-import { Calculator, MapPin, FileText, Home, ShieldCheck, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
-const steps = [
+const delen = [
   {
-    Icon: Calculator,
-    step: "STAP 01",
-    title: "Richtprijs berekenen",
-    desc: "Bereken eenvoudig online je richtprijs en weet meteen waar je ongeveer aan toe bent.",
+    label: "Deel 1",
+    titel: "Je offerte",
+    stappen: [
+      { titel: "Richtprijs berekenen", tekst: "Bereken online je richtprijs en weet meteen waar je aan toe bent." },
+      { titel: "Kies je volgende stap", tekst: "Kies een plaatsbezoek, of laat ons je dak op afstand bekijken." },
+      { titel: "Offerte op maat", tekst: "Een duidelijke offerte, afgestemd op jouw dak en situatie." },
+    ],
   },
   {
-    Icon: MapPin,
-    step: "STAP 02",
-    title: "Kies je volgende stap",
-    desc: "Interesse na je richtprijs? Kies voor een plaatsbezoek of laat Yannick je dak op afstand bekijken.",
-  },
-  {
-    Icon: FileText,
-    step: "STAP 03",
-    title: "Offerte op maat",
-    desc: "Yannick bekijkt je dak en maakt een duidelijke offerte afgestemd op jouw situatie.",
-  },
-  {
-    Icon: Home,
-    step: "STAP 04",
-    title: "Professionele uitvoering",
-    desc: "We voeren de werken vakkundig en zorgvuldig uit, op het afgesproken moment.",
-  },
-  {
-    Icon: ShieldCheck,
-    step: "STAP 05",
-    title: "Oplevering & nazorg",
-    desc: "We leveren pas op wanneer alles netjes is afgewerkt en blijven bereikbaar voor advies.",
+    label: "Deel 2",
+    titel: "Je dak",
+    stappen: [
+      { titel: "Professionele uitvoering", tekst: "Vakkundig en zorgvuldig uitgevoerd, op het afgesproken moment." },
+      { titel: "Oplevering & nazorg", tekst: "We leveren pas op als alles netjes is, en blijven bereikbaar." },
+      { titel: "Jaarlijkse opvolging", tekst: "Met MOS-X Dakzorg blijft je dak jarenlang verzorgd." },
+    ],
   },
 ];
 
-function StepCard({ Icon, step, title, desc, showButton, wide }: typeof steps[0] & { showButton?: boolean; wide?: boolean }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div
-      className="werkwijze-step-card"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        flexGrow: wide ? 0 : 1,
-        flexShrink: wide ? 0 : 1,
-        flexBasis: wide ? "220px" : "0%",
-        background: "#0B0F0C",
-        border: `1px solid ${hovered ? "#9BCB6C" : "rgba(155,203,108,0.35)"}`,
-        borderRadius: "16px",
-        padding: "28px 20px",
-        boxShadow: hovered
-          ? "0 4px 24px rgba(155,203,108,0.18)"
-          : "0 2px 16px rgba(0,0,0,0.25)",
-        transform: hovered ? "translateY(-4px)" : "translateY(0)",
-        transition: "box-shadow 250ms ease, transform 250ms ease, border-color 250ms ease",
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Subtle radial glow */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse at 50% 0%, rgba(155,203,108,0.08) 0%, transparent 70%)",
-        pointerEvents: "none",
-      }} />
-
-      {/* Top: icon | vertical line (mobile) | step label + title */}
-      <div className="step-card-top">
-        <div className="step-card-icon" style={{
-          width: "48px", height: "48px", borderRadius: "50%",
-          background: "rgba(155,203,108,0.12)",
-          border: "1px solid rgba(155,203,108,0.25)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0, position: "relative",
-        }}>
-          <Icon size={22} color="#9BCB6C" strokeWidth={2} />
-        </div>
-
-        <div className="step-card-vline" />
-
-        <div className="step-card-header-text">
-          <p style={{
-            fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em",
-            textTransform: "uppercase", color: "#9BCB6C", marginBottom: "6px",
-            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            whiteSpace: "nowrap", position: "relative",
-          }}>
-            {step}
-          </p>
-          <p style={{
-            fontSize: "14px", fontWeight: 700, color: "#FFFFFF",
-            marginBottom: "10px", lineHeight: 1.3,
-            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            position: "relative",
-          }}>
-            {title}
-          </p>
-        </div>
-      </div>
-
-      {/* Green horizontal divider — desktop only, hidden on mobile */}
-      <div className="step-card-hdivider" style={{
-        width: "32px", height: "2px", background: "#9BCB6C",
-        borderRadius: "2px", marginBottom: "12px",
-        flexShrink: 0, position: "relative",
-      }} />
-
-      {/* Description */}
-      <p className="step-card-desc" style={{
-        fontSize: "13px", color: "rgba(255,255,255,0.55)", lineHeight: 1.65,
-        fontFamily: "var(--font-inter), system-ui, sans-serif",
-        position: "relative",
-      }}>
-        {desc}
-      </p>
-
-
-      {showButton && (
-        <div className="werkwijze-cta-wrap" style={{ marginTop: "24px", alignSelf: "center" }}>
-          <BtnPress
-            href="/#calculator"
-            className="werkwijze-cta-btn"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "6px",
-              background: "#9BCB6C", color: "#FFFFFF",
-              fontWeight: 700, fontSize: "13px",
-              borderRadius: "8px", padding: "10px 7.5px",
-              textDecoration: "none",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              border: "2px solid #9BCB6C",
-              transition: "background 200ms ease, color 200ms ease",
-              whiteSpace: "nowrap", width: "fit-content",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
-            onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
-          >
-            Bereken mijn richtprijs
-            <ChevronRight size={14} strokeWidth={2.5} />
-          </BtnPress>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Connector() {
-  return (
-    <div className="werkwijze-connector" style={{
-      width: "40px", flexShrink: 0,
-      display: "flex", alignItems: "center", justifyContent: "center",
-    }}>
-      <div style={{
-        width: "28px", height: "28px", borderRadius: "50%",
-        background: "#0B0F0C", border: "1px solid rgba(155,203,108,0.4)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "13px", color: "#9BCB6C", fontWeight: 700,
-      }}>
-        →
-      </div>
-    </div>
-  );
-}
-
 export default function SiteWerkwijze() {
-  const items = steps.flatMap((s, i) =>
-    i < steps.length - 1
-      ? [<StepCard key={`card-${i}`} {...s} showButton={i === 0} wide={i === 0} />, <Connector key={`conn-${i}`} />]
-      : [<StepCard key={`card-${i}`} {...s} />]
-  );
-
   return (
-    <section style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(155,203,108,0.06) 0%, transparent 65%), #F7F8F6", padding: "100px 0", width: "100%" }}>
+    <section style={{
+      background: "radial-gradient(900px 500px at 85% 10%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(800px 500px at 10% 100%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
+      padding: "100px 0", width: "100%",
+    }}>
       <style>{`
+        .ww-raster { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+        .ww-foto { position: relative; border-radius: 16px; overflow: hidden; min-height: 100%; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+        .ww-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .ww-kaart { background: #fff; border-radius: 16px; border-top: 3px solid #9BCB6C; padding: 28px 28px 8px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+        .ww-label { display: inline-block; padding: 6px 12px; border-radius: 999px; background: #1A1A1A; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ww-titel { margin: 14px 0 10px; font-size: 24px; font-weight: 800; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ww-stappen { list-style: none; margin: 0; padding: 0; }
+        .ww-stappen li { min-height: 104px; box-sizing: border-box; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 18px 0; border-top: 1px solid #E5E7EB; }
+        .ww-stappen li:first-child { border-top: 0; }
+        .ww-nr { width: 34px; height: 34px; border-radius: 50%; background: #9BCB6C; color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ww-stap-titel { margin: 5px 0 0; font-size: 16px; font-weight: 700; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ww-stap-tekst { margin: 4px 0 0; font-size: 14.5px; line-height: 1.55; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
         @media (max-width: 1024px) {
-          .werkwijze-cta-wrap {
-            margin-top: 6px !important;
-          }
+          .ww-raster { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+          .ww-foto { grid-column: 1 / -1; min-height: 280px; }
         }
-        /* Mobiel: bredere knop via meer zijpadding. De beschikbare ruimte in de
-           kaart groeit met 0,5px per zijde per px viewport; de calc blijft daar
-           net onder zodat de knop van 320px tot 767px binnen de kaart past.
-           Verticale padding blijft 10px, dus de hoogte verandert niet. */
-        @media (max-width: 767px) {
-          .werkwijze-cta-btn {
-            padding-left: clamp(10px, calc(35vw - 102px), 30px) !important;
-            padding-right: clamp(10px, calc(35vw - 102px), 30px) !important;
-          }
+        @media (max-width: 680px) {
+          .ww-raster { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+          .ww-foto { min-height: 220px; }
+          .ww-kaart { padding: 22px 20px 4px; }
         }
       `}</style>
       <div className="site-wrap">
 
-        {/* Header */}
-        <div style={{ marginBottom: "56px", textAlign: "center" }}>
+        <div style={{ marginBottom: "48px", textAlign: "center" }}>
+          <p style={{ margin: "0 0 10px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7AB54E", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
+            Zo werkt het
+          </p>
           <h2 style={{
             fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
@@ -205,7 +67,7 @@ export default function SiteWerkwijze() {
             Zo verloopt <span style={{ color: "#9BCB6C" }}>jouw traject</span> met MOS-X.
           </h2>
           <p style={{
-            fontSize: "16px", color: "#666666", lineHeight: 1.7,
+            fontSize: "16px", color: "#545454", lineHeight: 1.7,
             fontFamily: "var(--font-inter), system-ui, sans-serif",
             maxWidth: "800px", margin: "0 auto",
           }}>
@@ -213,9 +75,46 @@ export default function SiteWerkwijze() {
           </p>
         </div>
 
-        {/* Steps + connectors — flat siblings so alignItems:stretch works */}
-        <div className="werkwijze-steps-row" style={{ display: "flex", alignItems: "stretch" }}>
-          {items}
+        <div className="ww-raster">
+          <div className="ww-foto">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/FullSizeRender.JPEG" alt="Een verzorgd dak na de werken van MOS-X" />
+          </div>
+          {delen.map((d, di) => (
+            <div key={d.label} className="ww-kaart">
+              <span className="ww-label">{d.label}</span>
+              <h3 className="ww-titel">{d.titel}</h3>
+              <ol className="ww-stappen">
+                {d.stappen.map((s, si) => (
+                  <li key={s.titel}>
+                    <span className="ww-nr">{di * 3 + si + 1}</span>
+                    <div>
+                      <p className="ww-stap-titel">{s.titel}</p>
+                      <p className="ww-stap-tekst">{s.tekst}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <BtnPress
+            href="/#calculator"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "6px",
+              background: "#9BCB6C", color: "#FFFFFF", borderRadius: "10px", padding: "14px 28px",
+              fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px",
+              textDecoration: "none", transition: "background 200ms ease",
+              boxShadow: "0 8px 20px -10px rgba(122,181,78,0.8)",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
+            onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
+          >
+            Bereken mijn richtprijs
+            <ChevronRight size={16} strokeWidth={2.5} />
+          </BtnPress>
         </div>
 
       </div>
