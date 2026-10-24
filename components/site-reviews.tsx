@@ -96,35 +96,24 @@ export default function SiteReviews() {
   return (
     <section className="site-pad site-reviews-section" id="reviews" style={{ background: "#0B0F0C", position: "relative", overflow: "hidden" }}>
 
-      {/* Decorative background photo */}
+      {/* Moss texture - left side (zelfde stijl als diensten) */}
       <img
-        src="/images/IMG_5898.JPEG"
+        src="/images/mos-texture.png"
+        alt=""
         aria-hidden="true"
-        className="reviews-bg-photo"
+        className="hidden lg:block"
         style={{
           position: "absolute",
-          left: 0,
-          top: 0,
+          left: "-40px",
+          top: "0",
           height: "100%",
-          width: "32%",
-          objectFit: "cover",
-          objectPosition: "center center",
-          opacity: 0.45,
+          width: "auto",
+          opacity: 0.35,
           pointerEvents: "none",
+          zIndex: 0,
           transform: "scaleX(-1)",
         }}
       />
-      {/* Gradient overlay */}
-      <div className="reviews-bg-gradient" style={{
-        position: "absolute",
-        left: 0,
-        top: 0,
-        height: "100%",
-        width: "50%",
-        background: "linear-gradient(to bottom, #0B0F0C 0%, transparent 25%, transparent 75%, #0B0F0C 100%), linear-gradient(to right, transparent 15%, #0B0F0C 55%)",
-        pointerEvents: "none",
-        zIndex: 1,
-      }} />
 
       <div className="site-wrap" style={{ position: "relative", zIndex: 2 }}>
 
