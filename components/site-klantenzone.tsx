@@ -11,7 +11,7 @@ export default function SiteKlantenzone() {
   return (
     <section style={{
       background: "radial-gradient(800px 480px at 85% 30%, rgba(155,203,108,0.10), transparent 65%), #FFFFFF",
-      padding: "100px 0", overflow: "hidden", position: "relative",
+      padding: "64px 0", overflow: "hidden", position: "relative",
     }}>
       <svg aria-hidden="true" viewBox="0 0 600 600" style={{ position: "absolute", right: "-120px", top: "50%", transform: "translateY(-50%)", width: "760px", height: "760px", zIndex: 0 }}>
         <defs>
@@ -31,9 +31,9 @@ export default function SiteKlantenzone() {
         <circle cx="108" cy="40" r="4" fill="#9BCB6C" fillOpacity="0.25" />
       </svg>
       <style>{`
-        .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 64px; align-items: center; }
-        .kzp-oog { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #7AB54E; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .kzp-nieuw { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 999px; background: #E3A93B; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; }
+        .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
+        .kzp-oog { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #7AB54E; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .kzp-nieuw { margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 999px; background: #E3A93B; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-nieuw::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.3); animation: kzp-puls 1.8s ease-in-out infinite; }
         @keyframes kzp-puls { 0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); } 50% { box-shadow: 0 0 0 4px rgba(255,255,255,0); } }
         @media (prefers-reduced-motion: reduce) { .kzp-nieuw::before { animation: none; } }
@@ -92,7 +92,7 @@ export default function SiteKlantenzone() {
 
         .kzp-kort { display: none; }
         @media (max-width: 1023px) {
-          .kzp-raster { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+          .kzp-raster { grid-template-columns: minmax(0, 1fr); gap: 36px; }
           .kzp-inhoud { text-align: left; }
           .kzp-lijst { max-width: 100%; }
           .kzp-knoppen { align-items: stretch; }
@@ -111,9 +111,9 @@ export default function SiteKlantenzone() {
       <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
         <div className="kzp-raster">
           <div className="kzp-inhoud">
+            <span className="kzp-nieuw">Nieuw</span>
             <p className="kzp-oog">
               Mijn MOS-X
-              <span className="kzp-nieuw">Nieuw</span>
             </p>
             <h2 className="kzp-titel">Volg je dak in je eigen klantenzone</h2>
             <p className="kzp-tekst">
