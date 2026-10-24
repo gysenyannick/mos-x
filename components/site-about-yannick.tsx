@@ -99,9 +99,9 @@ export default function SiteAboutYannick() {
             <p style={{
               fontSize: "16px", lineHeight: 1.7, color: "#545454",
               fontFamily: "var(--font-inter), system-ui, sans-serif",
-              marginBottom: "40px", maxWidth: "560px", textWrap: "pretty",
+              marginBottom: "40px", maxWidth: "560px", textWrap: "balance",
             }}>
-              Een dak reinigen is één ding. Er een bedrijf voor kiezen waarop je kunt vertrouwen, is minstens even belangrijk. Daarom draait het bij <span style={{ whiteSpace: "nowrap" }}>MOS-X</span> niet alleen om het eindresultaat, maar ook om duidelijke afspraken, heldere communicatie en een service waarop je kunt blijven rekenen.
+              Een dak reinigen is één ding. Een bedrijf kiezen waarop je kunt vertrouwen, is minstens even belangrijk. Daarom staan bij <span style={{ whiteSpace: "nowrap" }}>MOS-X</span> duidelijke afspraken, heldere communicatie en goede service centraal.
             </p>
 
             {/* USPs */}

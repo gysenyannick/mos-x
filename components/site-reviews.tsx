@@ -101,7 +101,7 @@ export default function SiteReviews() {
         src="/images/mos-texture.png"
         alt=""
         aria-hidden="true"
-        className="hidden lg:block"
+        className="reviews-mos"
         style={{
           position: "absolute",
           left: "-40px",
@@ -159,7 +159,7 @@ export default function SiteReviews() {
       <img
         src="/images/mos-texture.png"
         alt=""
-        className="hidden lg:block"
+        className="reviews-mos reviews-mos-rechts"
         style={{
           position: "absolute",
           right: "0",
