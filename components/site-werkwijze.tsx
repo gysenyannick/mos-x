@@ -92,7 +92,7 @@ export default function SiteWerkwijze() {
         <div className="ww-raster">
           <div className="ww-foto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/FullSizeRender.JPEG" alt="Een verzorgd dak na de werken van MOS-X" />
+            <img src="/images/15.JPEG" alt="Dronefoto van een verzorgd dak na de werken van MOS-X" />
           </div>
           {delen.map((d, di) => (
             <div key={d.label} className="ww-kaart">
