@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "Heb ik een dakcoating nodig?",
-    a: "Niet elk dak heeft een coating nodig. Yannick bekijkt de staat van je dak en adviseert alleen wat écht een meerwaarde biedt.",
+    a: "Niet elk dak heeft een coating nodig. We bekijken de staat van je dak en adviseren alleen wat écht een meerwaarde biedt.",
   },
   {
     q: "Welke daktypes behandelen jullie?",
@@ -200,6 +200,7 @@ function FaqItem({ faq, defaultOpen }: { faq: typeof faqs[0]; defaultOpen?: bool
           <p style={{
             fontSize: "15px", color: "#555555", lineHeight: 1.7,
             fontFamily: "var(--font-inter), system-ui, sans-serif",
+            maxWidth: "640px", textWrap: "balance",
           }}>
             {faq.a}
           </p>

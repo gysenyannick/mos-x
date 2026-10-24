@@ -100,7 +100,7 @@ export default function DienstenPage() {
                 Niet zeker wat <span style={{ color: "#9BCB6C" }}>jouw dak</span> nodig heeft?
               </p>
               <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Niet elk dak heeft een coating nodig. Soms is een reiniging voldoende.<br />Yannick bekijkt wat jouw dak écht nodig heeft.
+                Niet elk dak heeft een coating nodig. Soms is een reiniging voldoende. <br className="hidden lg:inline" />We bekijken wat jouw dak écht nodig heeft.
               </p>
             </div>
 

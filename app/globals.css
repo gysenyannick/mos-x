@@ -1014,3 +1014,14 @@ body > div:has(img[src*="trustindex.io/assets/platform/Trustindex/logo.svg"]) {
 }
 
 .reviews-mos { max-width: none !important; }
+
+/* -----------------------------------------------
+   Mooie regelverdeling: koppen en gecentreerde zinnen
+   evenwichtig, gewone alinea's zonder los woordje
+----------------------------------------------- */
+h1, h2, h3, h4 { text-wrap: balance; }
+p, li { text-wrap: balance; }
+p[style*="text-align:center"], p[style*="text-align: center"],
+[style*="text-align:center"] > p, [style*="text-align: center"] > p,
+.text-center p, p.text-center { text-wrap: balance; }
+

@@ -566,7 +566,7 @@ export default function MosXDakzorgPage() {
                 Je dak verzorgd.<br /><span style={{ color: "#9BCB6C" }}>Jaar na jaar.</span>
               </h2>
               <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.65, marginBottom: "28px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Periodieke opvolging na je dakreiniging,<br />
+                Periodieke opvolging na je dakreiniging, <br className="hidden lg:inline" />
                 zodat je dak langer proper en in goede staat blijft.
               </p>
 

@@ -380,7 +380,7 @@ export default function DakontmossingPage() {
               <span style={{ color: "#9BCB6C" }}>jaren bescherming.</span>
             </h1>
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "56px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-              Mos en vuil houden vocht vast en laten je dak sneller verouderen.<br />
+              Mos en vuil houden vocht vast en laten je dak sneller verouderen. <br className="hidden lg:inline" />
               Met een professionele reiniging verwijderen we vervuiling veilig en helpen we je dak langer in goede staat te houden.
             </p>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
