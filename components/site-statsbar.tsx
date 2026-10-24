@@ -7,7 +7,7 @@ type Stat = { title: string; label: React.ReactNode; kort: string; icon: React.R
 const stats: Stat[] = [
   { title: "5/5 op Google",    label: "Meer dan 150 daken gereinigd", kort: "150+ daken gereinigd", icon: <Star        size={26} color="#9BCB6C" /> },
   { title: "Vaste prijs",      label: "Geen verrassingen achteraf", kort: "Geen verrassingen", icon: <ShieldCheck size={26} color="#9BCB6C" /> },
-  { title: "Garantie", label: "2 jaar mosvrij, 10 jaar op de coating", kort: "Tot 10 jaar op je dak", icon: <Leaf        size={26} color="#9BCB6C" /> },
+  { title: "Garantie", label: "2 jaar mosvrij, 10 jaar op de coating", kort: "Tot 10 jaar op je coating", icon: <Leaf        size={26} color="#9BCB6C" /> },
   { title: "Schadevrij",       label: "Veilig voor je dakpannen", kort: "Veilig voor je pannen", icon: <CircleCheck size={26} color="#9BCB6C" /> },
 ];
 
@@ -64,6 +64,13 @@ export default function SiteStatsBar() {
           .usp-stats-wrap .usp-stat-label { white-space: nowrap !important; font-size: 13px !important; line-height: 1.4; }
           .usp-stats-wrap .usp-lang { display: none; }
           .usp-stats-wrap .usp-kort { display: inline !important; }
+        }
+        @media (max-width: 374px) {
+          .usp-stats-wrap .usp-stat-label { font-size: 12px !important; letter-spacing: -0.01em; }
+          .usp-stats-wrap.usp-stats-wrap > div { padding-left: 6px !important; padding-right: 6px !important; }
+        }
+        @media (max-width: 339px) {
+          .usp-stats-wrap .usp-stat-label { white-space: normal !important; text-wrap: balance; }
         }
       `}</style>
       <div className="site-wrap">
