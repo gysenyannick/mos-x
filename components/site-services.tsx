@@ -11,7 +11,7 @@ const services = [
     title: "Dakreiniging",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "2 jaar mosvrij",
-    sticker: { groot: "2", klein: "jaar mosvrij garantie" },
+    sticker: { groot: "2", ring: "MOSVRIJ GARANTIE" },
     href: "/diensten/dakontmossing",
     img: "/images/IMG_4543.JPEG",
     video: "/videos/dakreiniging-hero.mp4",
@@ -25,7 +25,7 @@ const services = [
     title: "Dakcoating",
     imgSubtitle: "Bescherming en vernieuwing.",
     badge: "10 jaar garantie",
-    sticker: { groot: "10", klein: "jaar garantie" },
+    sticker: { groot: "10", ring: "DAKCOATING GARANTIE" },
     href: "/diensten/dakcoating",
     img: "/images/IMG_4468 (2).JPEG",
     video: "/videos/Dakcoating.mp4",
@@ -141,22 +141,32 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       </div>
     </Link>
 
-    {/* Sticker over de rechterbovenhoek */}
+    {/* Sticker over de rechterbovenhoek: cijfer in het midden, tekst in een ring */}
     {s.sticker && (
-      <div aria-label={`${s.sticker.groot} ${s.sticker.klein}`} style={{
-        position: "absolute", top: "-18px", right: "-14px", zIndex: 20,
-        width: "92px", height: "92px", borderRadius: "50%",
-        background: "radial-gradient(circle at 30% 25%, #B7DC90 0%, #9BCB6C 55%, #7AB54E 100%)",
-        boxShadow: "0 10px 22px -8px rgba(0,0,0,0.6), inset 0 -3px 6px rgba(0,0,0,0.12)",
-        transform: hovered ? "rotate(-4deg) scale(1.04)" : "rotate(-10deg)",
-        transition: "transform 300ms ease",
-        display: "grid", placeItems: "center", pointerEvents: "none",
+      <div aria-label={`${s.sticker.groot} jaar ${s.sticker.ring.toLowerCase()}`} style={{
+        position: "absolute", top: "-22px", right: "-16px", zIndex: 20,
+        width: "104px", height: "104px",
+        filter: "drop-shadow(0 10px 14px rgba(0,0,0,0.45))",
+        transform: hovered ? "rotate(-4deg) scale(1.04)" : "rotate(-12deg)",
+        transition: "transform 300ms ease", pointerEvents: "none",
       }}>
-        <div style={{ position: "absolute", inset: "6px", borderRadius: "50%", border: "1.5px dashed rgba(11,15,12,0.45)" }} />
-        <div style={{ textAlign: "center", color: "#0B0F0C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1 }}>
-          <div style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "-0.04em" }}>{s.sticker.groot}</div>
-          <div style={{ margin: "3px auto 0", fontSize: "8.5px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", maxWidth: "62px", lineHeight: 1.15 }}>{s.sticker.klein}</div>
-        </div>
+        <svg viewBox="0 0 104 104" width="104" height="104" aria-hidden="true">
+          <defs>
+            <radialGradient id={`stk-${s.id}`} cx="35%" cy="28%" r="80%">
+              <stop offset="0%" stopColor="#B9DE95" />
+              <stop offset="60%" stopColor="#9BCB6C" />
+              <stop offset="100%" stopColor="#7AB54E" />
+            </radialGradient>
+            <path id={`ring-${s.id}`} d="M52,52 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+          </defs>
+          <circle cx="52" cy="52" r="51" fill={`url(#stk-${s.id})`} />
+          <circle cx="52" cy="52" r="29" fill="none" stroke="#0B0F0C" strokeOpacity="0.35" strokeWidth="1" />
+          <text fill="#0B0F0C" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "8.6px", fontWeight: 800, letterSpacing: "1.6px" }}>
+            <textPath href={`#ring-${s.id}`} startOffset="0" textLength="226" lengthAdjust="spacing">{`${s.sticker.ring} • ${s.sticker.ring} •`}</textPath>
+          </text>
+          <text x="52" y="55" textAnchor="middle" fill="#0B0F0C" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "26px", fontWeight: 800, letterSpacing: "-1px" }}>{s.sticker.groot}</text>
+          <text x="52" y="68" textAnchor="middle" fill="#0B0F0C" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "8px", fontWeight: 800, letterSpacing: "1.5px" }}>JAAR</text>
+        </svg>
       </div>
     )}
     </div>
