@@ -42,7 +42,7 @@ export default function SiteKlantenzone() {
         .kzp-stappen { display: grid; grid-template-columns: repeat(4, 1fr); font-size: 8.5px; color: #8E8E89; }
         .kzp-stappen b { color: #1A1A1A; }
         .kzp-foto { position: relative; margin-top: 10px; height: 78px; border-radius: 10px; overflow: hidden; }
-        .kzp-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .kzp-foto img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
         .kzp-foto span { position: absolute; left: 8px; bottom: 6px; font-size: 9px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .kzp-vakman { display: flex; align-items: center; gap: 9px; margin-top: 10px; }
         .kzp-vakman img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #9BCB6C; }
@@ -110,8 +110,8 @@ export default function SiteKlantenzone() {
                   <div className="kzp-stappen"><span>Gepland</span><b>Start</b><span>Bezig</span><span>Klaar</span></div>
                   <div className="kzp-foto">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/15.JPEG" alt="" />
-                    <span>Dakfoto · 1 oktober</span>
+                    <img src="/images/Yannick%20foto%20op%20dak.JPEG" alt="" />
+                    <span>Werffoto · vandaag</span>
                   </div>
                   <div className="kzp-vakman">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
