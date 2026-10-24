@@ -13,7 +13,11 @@ const usps = [
 export default function SiteAboutYannick() {
 
   return (
-    <section style={{ background: "transparent", padding: "80px 0", overflow: "hidden" }}>
+    <section style={{
+      padding: "80px 0", overflow: "hidden", position: "relative",
+      background: "radial-gradient(700px 420px at 12% 20%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(640px 400px at 92% 85%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
+      borderTop: "1px solid #EEF0EA", borderBottom: "1px solid #EEF0EA",
+    }}>
       <div className="about-yannick-wrap" style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 40px" }}>
 
         <div className="flex flex-col lg:flex-row" style={{ gap: "32px", alignItems: "stretch" }}>
@@ -93,11 +97,11 @@ export default function SiteAboutYannick() {
 
             {/* Body */}
             <p style={{
-              fontSize: "16px", lineHeight: 1.7, color: "#666666",
+              fontSize: "16px", lineHeight: 1.7, color: "#545454",
               fontFamily: "var(--font-inter), system-ui, sans-serif",
-              marginBottom: "40px",
+              marginBottom: "40px", maxWidth: "560px", textWrap: "pretty",
             }}>
-              Een dak reinigen is één ding. Er een bedrijf voor kiezen waarop je kunt vertrouwen, is minstens even belangrijk. Daarom draait het bij MOS-X niet alleen om het eindresultaat, maar ook om duidelijke afspraken, heldere communicatie en een service waarop je kunt blijven rekenen.
+              Een dak reinigen is één ding. Er een bedrijf voor kiezen waarop je kunt vertrouwen, is minstens even belangrijk. Daarom draait het bij <span style={{ whiteSpace: "nowrap" }}>MOS-X</span> niet alleen om het eindresultaat, maar ook om duidelijke afspraken, heldere communicatie en een service waarop je kunt blijven rekenen.
             </p>
 
             {/* USPs */}
