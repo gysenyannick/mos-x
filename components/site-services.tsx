@@ -29,7 +29,7 @@ const services = [
     sticker: { groot: "10", klein: "garantie" },
     href: "/diensten/dakcoating",
     img: "/images/IMG_4468 (2).JPEG",
-    video: "/videos/Dakcoating.mp4",
+    video: "/videos/dakcoating-kaart.mp4",
     Icon: Shield,
     desc: "Geef je dak een nieuwe uitstraling met een beschermende coating.",
     link: "Ontdek dakcoating",
