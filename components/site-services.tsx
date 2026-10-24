@@ -11,6 +11,7 @@ const services = [
     title: "Dakreiniging",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "2 jaar mosvrij",
+    sticker: { groot: "2", klein: "jaar mosvrij" },
     href: "/diensten/dakontmossing",
     img: "/images/IMG_4543.JPEG",
     video: "/videos/dakreiniging-hero.mp4",
@@ -24,6 +25,7 @@ const services = [
     title: "Dakcoating",
     imgSubtitle: "Bescherming en vernieuwing.",
     badge: "10 jaar garantie",
+    sticker: { groot: "10", klein: "jaar garantie" },
     href: "/diensten/dakcoating",
     img: "/images/IMG_4468 (2).JPEG",
     video: "/videos/Dakcoating.mp4",
@@ -36,6 +38,7 @@ const services = [
     title: "MOS-X Dakzorg",
     imgSubtitle: "Jaarlijkse controle en onderhoud.",
     badge: "Onderhoudsplan",
+    sticker: { groot: "1×", klein: "per jaar nazicht" },
     href: "/diensten/mos-x-dakzorg",
     img: "/images/Foto_dakzorg.png",
     video: null,
@@ -108,18 +111,6 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           background: "linear-gradient(to top, rgba(8,12,9,0.92) 0%, rgba(8,12,9,0.7) 40%, transparent 100%)",
           zIndex: 1,
         }} />
-        {s.badge && (
-          <span style={{
-            position: "absolute", top: "18px", left: "18px", zIndex: 10,
-            background: "#9BCB6C", color: "#0B0F0C",
-            padding: "7px 11px", borderRadius: "4px",
-            fontSize: "12px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase",
-            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            boxShadow: "0 6px 18px -6px rgba(0,0,0,0.55)",
-          }}>
-            {s.badge}
-          </span>
-        )}
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
@@ -151,6 +142,24 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       </div>
     </Link>
 
+    {/* Sticker over de rechterbovenhoek */}
+    {s.sticker && (
+      <div aria-label={`${s.sticker.groot} ${s.sticker.klein}`} style={{
+        position: "absolute", top: "-18px", right: "-14px", zIndex: 20,
+        width: "92px", height: "92px", borderRadius: "50%",
+        background: "radial-gradient(circle at 30% 25%, #B7DC90 0%, #9BCB6C 55%, #7AB54E 100%)",
+        boxShadow: "0 10px 22px -8px rgba(0,0,0,0.6), inset 0 -3px 6px rgba(0,0,0,0.12)",
+        transform: hovered ? "rotate(-4deg) scale(1.04)" : "rotate(-10deg)",
+        transition: "transform 300ms ease",
+        display: "grid", placeItems: "center", pointerEvents: "none",
+      }}>
+        <div style={{ position: "absolute", inset: "6px", borderRadius: "50%", border: "1.5px dashed rgba(11,15,12,0.45)" }} />
+        <div style={{ textAlign: "center", color: "#0B0F0C", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1 }}>
+          <div style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "-0.04em" }}>{s.sticker.groot}</div>
+          <div style={{ margin: "3px auto 0", fontSize: "8.5px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", maxWidth: "62px", lineHeight: 1.15 }}>{s.sticker.klein}</div>
+        </div>
+      </div>
+    )}
     </div>
   );
 }
