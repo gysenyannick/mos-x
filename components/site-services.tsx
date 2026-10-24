@@ -11,7 +11,7 @@ const services = [
     title: "Dakreiniging",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "2 jaar mosvrij",
-    sticker: { groot: "2", klein: "jaar mosvrij" },
+    sticker: { groot: "2", klein: "mosvrij garantie" },
     href: "/diensten/dakontmossing",
     img: "/images/IMG_4543.JPEG",
     video: "/videos/dakreiniging-hero.mp4",
@@ -25,7 +25,7 @@ const services = [
     title: "Dakcoating",
     imgSubtitle: "Bescherming en vernieuwing.",
     badge: "10 jaar garantie",
-    sticker: { groot: "10", klein: "jaar garantie" },
+    sticker: { groot: "10", klein: "garantie" },
     href: "/diensten/dakcoating",
     img: "/images/IMG_4468 (2).JPEG",
     video: "/videos/Dakcoating.mp4",
@@ -141,21 +141,33 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       </div>
     </Link>
 
-    {/* Subtiele sticker over de rechterbovenhoek */}
+    {/* Sticker over de rechterbovenhoek: cijfer + lint met de garantie */}
     {s.sticker && (
-      <div aria-label={`${s.sticker.groot} ${s.sticker.klein}`} style={{
-        position: "absolute", top: "-14px", right: "-10px", zIndex: 20,
-        width: "72px", height: "72px", borderRadius: "50%",
-        background: "#9BCB6C", color: "#0B0F0C",
-        boxShadow: "0 6px 16px -6px rgba(0,0,0,0.5)",
-        transform: hovered ? "rotate(-2deg)" : "rotate(-8deg)",
-        transition: "transform 300ms ease",
-        display: "grid", placeItems: "center", textAlign: "center", pointerEvents: "none",
+      <div aria-label={`${s.sticker.groot} jaar ${s.sticker.klein}`} style={{
+        position: "absolute", top: "-18px", right: "-12px", zIndex: 20,
+        width: "86px", height: "86px",
+        transform: hovered ? "rotate(-3deg) scale(1.04)" : "rotate(-9deg)",
+        transition: "transform 300ms ease", pointerEvents: "none",
         fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1,
       }}>
-        <div>
-          <div style={{ fontSize: "22px", fontWeight: 800, letterSpacing: "-0.03em" }}>{s.sticker.groot}</div>
-          <div style={{ margin: "3px auto 0", maxWidth: "50px", fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.2 }}>{s.sticker.klein}</div>
+        <div style={{
+          position: "absolute", inset: 0, borderRadius: "50%",
+          background: "radial-gradient(circle at 32% 26%, #B4DA8C 0%, #9BCB6C 58%, #86BC57 100%)",
+          boxShadow: "0 8px 18px -6px rgba(0,0,0,0.55)",
+        }} />
+        <div style={{ position: "absolute", inset: "5px", borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.6)" }} />
+        <div style={{ position: "absolute", top: "20px", left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "baseline", gap: "3px", color: "#0B0F0C" }}>
+          <span style={{ fontSize: "30px", fontWeight: 800, letterSpacing: "-0.04em" }}>{s.sticker.groot}</span>
+          <span style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.1em" }}>JAAR</span>
+        </div>
+        <div style={{
+          position: "absolute", left: "-10px", right: "-10px", bottom: "14px", height: "19px",
+          background: "#0B0F0C", color: "#FFFFFF",
+          clipPath: "polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%)",
+          display: "grid", placeItems: "center",
+          fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", whiteSpace: "nowrap",
+        }}>
+          {s.sticker.klein}
         </div>
       </div>
     )}
