@@ -33,7 +33,10 @@ export default function SiteKlantenzone() {
       <style>{`
         .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 64px; align-items: center; }
         .kzp-oog { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #7AB54E; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .kzp-icoon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: #EEF6E6; color: #7AB54E; box-shadow: inset 0 0 0 1px #CFE5B8; }
+        .kzp-nieuw { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 999px; background: #E3A93B; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; }
+        .kzp-nieuw::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.3); animation: kzp-puls 1.8s ease-in-out infinite; }
+        @keyframes kzp-puls { 0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); } 50% { box-shadow: 0 0 0 4px rgba(255,255,255,0); } }
+        @media (prefers-reduced-motion: reduce) { .kzp-nieuw::before { animation: none; } }
         .kzp-titel { margin: 0 0 18px; font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-tekst { margin: 0 0 26px; max-width: 540px; font-size: 17px; line-height: 1.7; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-lijst { list-style: none; margin: 0 0 34px; padding: 0; display: grid; gap: 14px; }
@@ -109,15 +112,8 @@ export default function SiteKlantenzone() {
         <div className="kzp-raster">
           <div className="kzp-inhoud">
             <p className="kzp-oog">
-              <span className="kzp-icoon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 11.2 12 4l9 7.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M5.5 9.6V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.6" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                  <circle cx="12" cy="13" r="1.9" fill="currentColor" />
-                  <path d="M12 14.4v2.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </span>
               Mijn MOS-X
+              <span className="kzp-nieuw">Nieuw</span>
             </p>
             <h2 className="kzp-titel">Volg je dak in je eigen klantenzone</h2>
             <p className="kzp-tekst">
