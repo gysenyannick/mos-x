@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { CalendarDays, FileText, Leaf, Phone } from "lucide-react";
-import Link from "next/link";
 import PageLayout from "@/components/page-layout";
 import LinkAanvraag from "@/components/klantenzone/link-aanvraag";
 
@@ -15,10 +13,10 @@ export default function KlantenzoneIngang() {
   return (
     <PageLayout>
       <style>{`
-        .kz-link { position: relative; padding: 140px 16px 96px; background: radial-gradient(900px 480px at 90% 0%, rgba(155,203,108,0.12), transparent 60%), #F7F8F6; }
+        .kz-link { position: relative; min-height: 78vh; box-sizing: border-box; padding: 160px 16px 96px; background: radial-gradient(900px 480px at 90% 0%, rgba(155,203,108,0.12), transparent 60%), #F7F8F6; }
         .kz-link-kaart { max-width: 560px; margin: 0 auto; padding: 36px; border-radius: 20px; background: #fff; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
         .kz-link-oog { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #7AB54E; }
-        .kz-link-titel { margin: 8px 0 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(26px, 5vw, 34px); line-height: 1.15; letter-spacing: -0.028em; color: #1A1A1A; }
+        .kz-link-titel { margin: 8px 0 24px; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(26px, 5vw, 34px); line-height: 1.15; letter-spacing: -0.028em; color: #1A1A1A; }
         .kz-link-sub { margin: 12px 0 24px; font-size: 16px; line-height: 1.6; color: #545454; }
         .kz-link-rij { display: flex; gap: 8px; flex-wrap: wrap; }
         .kz-link-invoer { flex: 1 1 220px; min-width: 0; height: 48px; padding: 0 16px; border-radius: 12px; border: 1px solid #E5E7EB; background: #F7F8F6; font-size: 15px; color: #1A1A1A; }
@@ -45,20 +43,7 @@ export default function KlantenzoneIngang() {
         <div className="kz-link-kaart">
           <p className="kz-link-oog">MOS-X</p>
           <h1 className="kz-link-titel">Inloggen in je klantenzone</h1>
-          <p className="kz-link-sub">
-            Klant bij MOS-X? Vul het e-mailadres in dat je ons gaf. Je krijgt meteen een mail met je persoonlijke link. Een wachtwoord heb je niet nodig.
-          </p>
           <LinkAanvraag />
-          <p className="kz-link-kop">In je klantenzone vind je</p>
-          <ul className="kz-link-punten">
-            <li><CalendarDays size={18} /> <span>Je planning en foto&apos;s van de werken</span></li>
-            <li><FileText size={18} /> <span>Je offerte, facturen en garantie</span></li>
-            <li><Leaf size={18} /> <span>Je onderhoud en je voordelen</span></li>
-          </ul>
-          <div className="kz-link-voet">
-            <span>Nog geen klant? <Link href="/#calculator">Bereken je richtprijs</Link></span>
-            <a href="tel:+32468352869"><Phone size={14} /> +32 468 35 28 69</a>
-          </div>
         </div>
       </section>
     </PageLayout>
