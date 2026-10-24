@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Droplets, Shield, CalendarCheck, LayoutGrid, ArrowRight, ShieldCheck, ChevronRight } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, LayoutGrid, ShieldCheck, ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 const services = [
@@ -15,13 +15,8 @@ const services = [
     video: "/videos/dakreiniging-hero.mp4",
     videoPosition: "center 35%",
     Icon: Droplets,
-    desc: "Mos, algen en vuil verwijderen voor een proper en gezond dak.",
-    checks: [
-      "Proper dak in plaats van mos en vervuiling",
-      "Meer uitstraling voor je woning",
-      "Langere levensduur van je dak",
-    ],
-    link: "Meer over dakreiniging",
+    desc: "Verwijder mos en aanslag. Geef je dak zijn verzorgde uitstraling terug.",
+    link: "Ontdek dakreiniging",
   },
   {
     id: "dak-coaten",
@@ -32,13 +27,8 @@ const services = [
     img: "/images/IMG_4468 (2).JPEG",
     video: "/videos/Dakcoating.mp4",
     Icon: Shield,
-    desc: "Geef je dak een tweede leven zonder een dure renovatie.",
-    checks: [
-      "Dak oogt opnieuw als nieuw",
-      "Bescherming tegen regen, vorst, UV en mos",
-      "Uitstel van een dure renovatie",
-    ],
-    link: "Meer over dakcoating",
+    desc: "Geef je dak een nieuwe uitstraling met een beschermende coating.",
+    link: "Ontdek dakcoating",
   },
   {
     id: "dakabonnement",
@@ -49,13 +39,8 @@ const services = [
     img: "/images/Foto_dakzorg.png",
     video: null,
     Icon: CalendarCheck,
-    desc: "Houd je dak jaar na jaar proper, beschermd en verzorgd.",
-    checks: [
-      "Geen verrassingen meer",
-      "Jaarlijkse controle door een specialist",
-      "Problemen oplossen vóór ze duur worden",
-    ],
-    link: "Ontdek MOS-X Dakzorg",
+    desc: "Wij volgen je dak op en helpen het jarenlang verzorgd te houden.",
+    link: "Ontdek Dakzorg",
   },
 ];
 
@@ -84,7 +69,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: "#FFFFFF",
+        background: "#0B0F0C",
         borderRadius: "16px",
         overflow: "hidden",
         textDecoration: "none",
@@ -94,7 +79,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       }}
     >
       {/* Media area */}
-      <div className="relative overflow-hidden service-card-media" style={{ height: "380px", borderRadius: "16px 16px 0 0" }}>
+      <div className="relative overflow-hidden service-card-media" style={{ height: "460px", borderRadius: "16px" }}>
         {!s.video && (
           <img
             src={s.img}
@@ -118,8 +103,8 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
         )}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
-          height: "60%",
-          background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, transparent 70%)",
+          height: "75%",
+          background: "linear-gradient(to top, rgba(8,12,9,0.92) 0%, rgba(8,12,9,0.7) 40%, transparent 100%)",
           zIndex: 1,
         }} />
         {s.badge && (
@@ -141,74 +126,32 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
             }}>{s.badge}</span>
           </div>
         )}
-        <div className="absolute bottom-0 left-0 right-0 p-5 z-10" style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}>
-          {/* Green icon circle */}
-          <div style={{
-            flexShrink: 0,
-            width: "36px", height: "36px",
-            background: "#9BCB6C",
-            borderRadius: "50%",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            marginBottom: "2px",
-          }}>
-            <Icon size={18} color="#FFFFFF" strokeWidth={2} />
-          </div>
-          <div>
+        <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{
+              flexShrink: 0, width: "36px", height: "36px", background: "#9BCB6C", borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <Icon size={18} color="#FFFFFF" strokeWidth={2} />
+            </div>
             <p className="font-bold text-xl leading-tight"
-              style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: hovered ? "#9BCB6C" : "#FFFFFF", transition: "color 200ms ease" }}>
+              style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: hovered ? "#9BCB6C" : "#FFFFFF", transition: "color 200ms ease", letterSpacing: "-0.02em" }}>
               {s.title}
             </p>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-inter), system-ui, sans-serif", marginTop: "2px" }}>
-              {s.imgSubtitle}
-            </p>
           </div>
-        </div>
-      </div>
-
-      {/* Card body */}
-      <div className="flex flex-col service-card-body" style={{ padding: "24px", flex: 1 }}>
-        {/* Description */}
-        <p style={{
-          fontSize: "14px", lineHeight: 1.65, color: "#555555",
-          fontFamily: "var(--font-inter), system-ui, sans-serif",
-          marginBottom: "20px", textAlign: "left",
-        }}>
-          {s.desc}
-        </p>
-
-        {/* Checkmarks */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "24px" }}>
-          {s.checks.map((item, i) => (
-            <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-              <span style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", height: "19.5px" }}>
-                <span style={{
-                  width: "18px", height: "18px",
-                  background: "#9BCB6C",
-                  borderRadius: "50%",
-                  display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "11px", color: "#FFFFFF", fontWeight: 700,
-                }}>✓</span>
-              </span>
-              <span style={{
-                fontSize: "13px", color: "#444444", lineHeight: 1.5,
-                fontFamily: "var(--font-inter), system-ui, sans-serif",
-                paddingTop: i === s.checks.length - 1 ? "2px" : "1px",
-              }}>
-                {item}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Link */}
-        <div style={{ marginTop: "auto", textAlign: "left" }}>
+          <p style={{
+            margin: "12px 0 0", fontSize: "15px", lineHeight: 1.55, color: "rgba(255,255,255,0.82)",
+            fontFamily: "var(--font-inter), system-ui, sans-serif", textWrap: "pretty",
+          }}>
+            {s.desc}
+          </p>
           <span style={{
-            color: "#9BCB6C", fontSize: "14px", fontWeight: 600,
+            marginTop: "16px", color: "#9BCB6C", fontSize: "14px", fontWeight: 700,
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            display: "inline-flex", alignItems: "center", gap: "4px",
+            display: "inline-flex", alignItems: "center", gap: "6px",
           }}>
             {s.link}
-            <ChevronRight size={15} strokeWidth={2.5} />
+            <ChevronRight size={15} strokeWidth={2.5} style={{ transform: hovered ? "translateX(3px)" : "none", transition: "transform 200ms ease" }} />
           </span>
         </div>
       </div>
@@ -340,7 +283,7 @@ export default function SiteServices() {
             Voor elk dak de <span style={{ color: "#9BCB6C" }}>juiste aanpak.</span>
           </h2>
           <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "16px", color: "rgba(255,255,255,0.7)", marginTop: "12px" }}>
-            Niet zeker wat je dak nodig heeft? Yannick helpt je kiezen.
+            Niet zeker wat je dak nodig heeft? We helpen je kiezen.
           </p>
         </div>
 

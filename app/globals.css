@@ -318,7 +318,10 @@
     display: none !important;
   }
   .service-card-media {
-    height: 300px !important;
+    height: 380px !important;
+  }
+  .service-card-tekst {
+    padding: 18px !important;
   }
   .service-card-body {
     padding: 16px !important;
