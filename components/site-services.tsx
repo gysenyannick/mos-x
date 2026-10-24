@@ -161,11 +161,11 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           <span style={{ fontSize: "9px", fontWeight: 800, letterSpacing: "0.1em" }}>JAAR</span>
         </div>
         <div style={{
-          position: "absolute", left: "-10px", right: "-10px", bottom: "14px", height: "19px",
+          position: "absolute", left: "-15px", right: "-15px", bottom: "14px", height: "19px",
           background: "#0B0F0C", color: "#FFFFFF",
           clipPath: "polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%)",
           display: "grid", placeItems: "center",
-          fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", whiteSpace: "nowrap",
+          fontSize: "7.5px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", whiteSpace: "nowrap",
         }}>
           {s.sticker.klein}
         </div>
