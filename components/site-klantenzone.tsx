@@ -69,11 +69,12 @@ export default function SiteKlantenzone() {
         .kzp-docs small { display: block; font-size: 8.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7AB54E; }
         .kzp-docs b { display: block; margin-top: 2px; font-size: 12px; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
 
+        .kzp-kort { display: none; }
         @media (max-width: 1023px) {
           .kzp-raster { grid-template-columns: minmax(0, 1fr); gap: 48px; }
           .kzp-tekst { margin-left: auto; margin-right: auto; }
           .kzp-inhoud { text-align: center; }
-          .kzp-lijst { max-width: 460px; margin-left: auto; margin-right: auto; text-align: left; }
+          .kzp-lijst { width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto; text-align: left; }
           .kzp-knoppen { justify-content: center; }
           .kzp-knoppen .kzp-knop { width: 100%; max-width: 340px; justify-content: center; }
           .kzp-knoppen { flex-direction: column; }
@@ -81,7 +82,10 @@ export default function SiteKlantenzone() {
         @media (max-width: 560px) {
           .kzp-gsm { width: 280px; }
           .kzp-docs { display: none; }
-          .kzp-lijst li { font-size: 15px; }
+          .kzp-lijst li { font-size: 15.5px; align-items: center; }
+          .kzp-lang { display: none; }
+          .kzp-kort { display: inline; white-space: nowrap; }
+          .kzp-tekst { font-size: 16px; max-width: 330px; }
         }
       `}</style>
       <div className="site-wrap">
@@ -93,9 +97,9 @@ export default function SiteKlantenzone() {
               Elke klant krijgt een persoonlijke pagina met de planning, foto&apos;s van de werken, je documenten en je garantie. Geen account, geen wachtwoord: gewoon je eigen link.
             </p>
             <ul className="kzp-lijst">
-              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Je ziet wanneer we komen en hoe ver de werken staan.</li>
-              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Foto&apos;s, offerte, facturen en garantie op één plek.</li>
-              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Exclusieve voordelen en acties, enkel voor klanten.</li>
+              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span><span className="kzp-lang">Je ziet wanneer we komen en hoe ver de werken staan.</span><span className="kzp-kort">Planning en stand van de werken</span></li>
+              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span><span className="kzp-lang">Foto&apos;s, offerte, facturen en garantie op één plek.</span><span className="kzp-kort">Foto&apos;s, documenten en garantie</span></li>
+              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span><span className="kzp-lang">Exclusieve voordelen en acties, enkel voor klanten.</span><span className="kzp-kort">Exclusieve voordelen en acties</span></li>
             </ul>
             <div className="kzp-knoppen">
               <Link href="/klant" className="kzp-knop">Naar je klantenzone <ChevronRight size={16} strokeWidth={2.5} /></Link>
