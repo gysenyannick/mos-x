@@ -1029,15 +1029,15 @@ p[style*="text-align:center"], p[style*="text-align: center"],
 /* Hero op gsm: compacter, badges klein naast elkaar */
 @media (max-width: 767px) {
   .hero-sectie.hero-sectie { height: auto !important; min-height: 0 !important; }
-  .hero-sectie .hero-content-wrap { height: auto !important; padding-top: 104px !important; padding-bottom: 116px !important; }
+  .hero-sectie .hero-content-wrap { height: auto !important; padding-top: 104px !important; padding-bottom: 130px !important; }
   .hero-sectie .hero-content-wrap > div { padding-top: 0 !important; padding-bottom: 0 !important; }
   .hero-sectie .hero-desc { font-size: 16px !important; margin-bottom: 24px !important; }
   .hero-sectie .hero-ctas { margin-bottom: 22px !important; gap: 10px !important; }
-  .hero-sectie .hero-badges { flex-wrap: nowrap !important; gap: 8px !important; margin-bottom: 0 !important; }
+  .hero-sectie .hero-badges { flex-wrap: wrap !important; gap: 8px !important; margin-bottom: 0 !important; }
   .hero-sectie .hero-google-widget { display: none !important; }
   .hero-sectie .hero-google-mini { display: inline-flex !important; }
   .hero-sectie .hero-badges > span { padding: 4px 8px !important; gap: 4px !important; transform-origin: left center; }
-  .hero-sectie .hero-badges > span > span:first-child { display: none; }
   .hero-sectie .hero-badges > span span { font-size: 9px !important; letter-spacing: 0.02em !important; }
   .hero-sectie .hero-badges > span svg { width: 10px !important; height: 10px !important; }
 }
+
