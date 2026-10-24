@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Droplets, Shield, CalendarCheck, LayoutGrid, ShieldCheck, ChevronRight } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, LayoutGrid, ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 const services = [
@@ -10,6 +10,7 @@ const services = [
     id: "dak-reinigen",
     title: "Dakreiniging",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
+    badge: "2 jaar mosvrij",
     href: "/diensten/dakontmossing",
     img: "/images/IMG_4543.JPEG",
     video: "/videos/dakreiniging-hero.mp4",
@@ -107,26 +108,15 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           background: "linear-gradient(to top, rgba(8,12,9,0.92) 0%, rgba(8,12,9,0.7) 40%, transparent 100%)",
           zIndex: 1,
         }} />
-        {s.badge && (
-          <div style={{
-            position: "absolute", top: "14px", right: "14px", zIndex: 10,
-            display: "flex", alignItems: "center", gap: "6px",
-            background: "rgba(11,15,12,0.80)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(155,203,108,0.45)",
-            borderRadius: "50px",
-            padding: "6px 12px",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.25)",
-          }}>
-            {s.badge === "10 jaar garantie" && <ShieldCheck size={13} color="#9BCB6C" strokeWidth={2.5} />}
-            <span style={{
-              fontSize: "11px", fontWeight: 700, color: "#FFFFFF",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              letterSpacing: "0.04em", whiteSpace: "nowrap",
-            }}>{s.badge}</span>
-          </div>
-        )}
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
+          {s.badge && (
+            <p style={{
+              margin: "0 0 12px", fontSize: "11.5px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase",
+              color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+            }}>
+              {s.badge}
+            </p>
+          )}
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
               flexShrink: 0, width: "36px", height: "36px", background: "#9BCB6C", borderRadius: "50%",
