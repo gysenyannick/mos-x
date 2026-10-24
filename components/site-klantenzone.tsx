@@ -10,7 +10,7 @@ export default function SiteKlantenzone() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
   return (
     <section style={{
-      background: "radial-gradient(700px 460px at 80% 50%, rgba(155,203,108,0.14), transparent 65%), radial-gradient(600px 400px at 0% 0%, rgba(155,203,108,0.07), transparent 60%), #F7F8F6",
+      background: "radial-gradient(700px 460px at 80% 50%, rgba(155,203,108,0.10), transparent 65%), #FFFFFF",
       padding: "64px 0", overflow: "hidden", position: "relative",
     }}>
       <svg aria-hidden="true" viewBox="0 0 600 600" style={{ position: "absolute", right: "-120px", top: "50%", transform: "translateY(-50%)", width: "760px", height: "760px", zIndex: 0 }}>
