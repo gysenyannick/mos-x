@@ -10,9 +10,12 @@ export default function SiteHero() {
   const trustindexRef = useRef<HTMLDivElement>(null);
   const [bezoekOpen, setBezoekOpen] = useState(false);
   // Op gsm een staande video, anders wordt de liggende video te sterk ingezoomd
-  const [videoSrc, setVideoSrc] = useState<string | undefined>(undefined);
+  const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
-    setVideoSrc(window.matchMedia("(max-width: 767px)").matches ? "/videos/hero-dakreiniging.mp4" : "/videos/yannick-hero.mp4");
+    const v = videoRef.current;
+    if (!v) return;
+    v.src = window.matchMedia("(max-width: 767px)").matches ? "/videos/hero-dakreiniging.mp4" : "/videos/yannick-hero.mp4";
+    v.play().catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -33,7 +36,7 @@ export default function SiteHero() {
     >
       {/* Video background */}
       <video
-        src={videoSrc}
+        ref={videoRef}
         autoPlay muted loop playsInline
         style={{
           position: "absolute", top: 0, left: 0,
