@@ -45,19 +45,18 @@ export default function SiteStatsBar() {
           .usp-stats-wrap.usp-stats-wrap {
             display: grid !important;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 0;
             margin: 0 !important;
             padding: 8px 0 0 !important;
             overflow: visible !important;
           }
           .usp-stats-wrap.usp-stats-wrap > div {
             min-width: 0 !important;
-            border: 1px solid #E5E7EB !important;
-            border-radius: 16px;
-            background: #FFFFFF;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.05);
-            padding: 20px 12px !important;
+            border: 0 !important;
+            padding: 22px 10px !important;
           }
+          .usp-stats-wrap.usp-stats-wrap > div:nth-child(odd) { border-right: 1px solid #E5E7EB !important; }
+          .usp-stats-wrap.usp-stats-wrap > div:nth-child(-n+2) { border-bottom: 1px solid #E5E7EB !important; }
           .usp-stats-wrap .usp-stat-inner { padding: 0 !important; }
           .usp-stats-wrap .usp-stat-icon { display: flex; justify-content: center; margin-bottom: 10px !important; }
           .usp-stats-wrap .usp-stat-title { font-size: 14px !important; margin-bottom: 4px !important; }
