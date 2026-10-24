@@ -10,7 +10,7 @@ export default function SiteKlantenzone() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
   return (
     <section style={{
-      background: "radial-gradient(800px 480px at 85% 30%, rgba(155,203,108,0.10), transparent 65%), #FFFFFF",
+      background: "radial-gradient(700px 460px at 80% 50%, rgba(155,203,108,0.14), transparent 65%), radial-gradient(600px 400px at 0% 0%, rgba(155,203,108,0.07), transparent 60%), #F7F8F6",
       padding: "64px 0", overflow: "hidden", position: "relative",
     }}>
       <svg aria-hidden="true" viewBox="0 0 600 600" style={{ position: "absolute", right: "-120px", top: "50%", transform: "translateY(-50%)", width: "760px", height: "760px", zIndex: 0 }}>
@@ -31,14 +31,14 @@ export default function SiteKlantenzone() {
         <circle cx="108" cy="40" r="4" fill="#9BCB6C" fillOpacity="0.25" />
       </svg>
       <style>{`
-        .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
+        .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 40px; align-items: center; max-width: 1080px; margin: 0 auto; }
         .kzp-oog { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #7AB54E; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-nieuw { margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 999px; background: #E3A93B; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-nieuw::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.3); animation: kzp-puls 1.8s ease-in-out infinite; }
         @keyframes kzp-puls { 0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); } 50% { box-shadow: 0 0 0 4px rgba(255,255,255,0); } }
         @media (prefers-reduced-motion: reduce) { .kzp-nieuw::before { animation: none; } }
         .kzp-titel { margin: 0 0 18px; font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .kzp-tekst { margin: 0 0 26px; max-width: 540px; font-size: 17px; line-height: 1.7; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+        .kzp-tekst { margin: 0 0 24px; max-width: 540px; font-size: 17px; line-height: 1.7; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-lijst { list-style: none; margin: 0 0 34px; padding: 0; display: grid; gap: 14px; }
         .kzp-lijst li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 16px; line-height: 1.55; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-vink { width: 26px; height: 26px; border-radius: 50%; background: #EEF6E6; color: #7AB54E; display: grid; place-items: center; }
@@ -53,7 +53,7 @@ export default function SiteKlantenzone() {
         .kzp-link:hover { color: #7AB54E; }
 
         /* De gsm */
-        .kzp-gsm { position: relative; width: 320px; max-width: 100%; margin: 0 auto; aspect-ratio: 320 / 640; border-radius: 46px; padding: 11px; background: #0B0F0C; box-shadow: 0 40px 80px -30px rgba(11,15,12,0.55), inset 0 0 0 2px #2A2F2B; }
+        .kzp-gsm { position: relative; width: 290px; max-width: 100%; margin: 0 auto; aspect-ratio: 320 / 640; border-radius: 46px; padding: 11px; background: #0B0F0C; box-shadow: 0 40px 80px -30px rgba(11,15,12,0.55), inset 0 0 0 2px #2A2F2B; }
         .kzp-scherm { position: relative; height: 100%; border-radius: 36px; overflow: hidden; background: #F7F8F6; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-kop { padding: 12px 22px 22px; background: linear-gradient(160deg, #1E3324 0%, #16261A 100%); color: #fff; }
         .kzp-status { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; }
@@ -85,7 +85,7 @@ export default function SiteKlantenzone() {
         .kzp-plan span { font-size: 11px; color: #545454; }
         .kzp-plan span b { display: block; color: #1A1A1A; font-size: 11.5px; }
         .kzp-plan div + div { margin-top: 8px; padding-top: 8px; border-top: 1px solid #EEF0EA; }
-        .kzp-docs { margin: 10px 12px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .kzp-docs { margin: 10px 12px 0; display: none; grid-template-columns: 1fr 1fr; gap: 8px; }
         .kzp-docs div { padding: 10px 12px; border-radius: 14px; background: #fff; box-shadow: 0 6px 20px -12px rgba(0,0,0,0.2); }
         .kzp-docs small { display: block; font-size: 8.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7AB54E; }
         .kzp-docs b { display: block; margin-top: 2px; font-size: 12px; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
