@@ -2,16 +2,16 @@
 
 import { Star, ShieldCheck, Leaf, CircleCheck } from "lucide-react";
 
-type Stat = { title: string; label: React.ReactNode; icon: React.ReactNode };
+type Stat = { title: string; label: React.ReactNode; kort: string; icon: React.ReactNode };
 
 const stats: Stat[] = [
-  { title: "5/5 op Google",    label: "Meer dan 150 daken gereinigd",           icon: <Star        size={26} color="#9BCB6C" /> },
-  { title: "Vaste prijs",      label: "Geen verrassingen achteraf",             icon: <ShieldCheck size={26} color="#9BCB6C" /> },
-  { title: "Dubbele garantie", label: "2 jaar mosvrij, 10 jaar op de coating",  icon: <Leaf        size={26} color="#9BCB6C" /> },
-  { title: "Schadevrij",       label: "Veilig voor je dakpannen",               icon: <CircleCheck size={26} color="#9BCB6C" /> },
+  { title: "5/5 op Google",    label: "Meer dan 150 daken gereinigd", kort: "150+ daken gereinigd", icon: <Star        size={26} color="#9BCB6C" /> },
+  { title: "Vaste prijs",      label: "Geen verrassingen achteraf", kort: "Geen verrassingen", icon: <ShieldCheck size={26} color="#9BCB6C" /> },
+  { title: "Dubbele garantie", label: "2 jaar mosvrij, 10 jaar op de coating", kort: "Mosvrij en coating", icon: <Leaf        size={26} color="#9BCB6C" /> },
+  { title: "Schadevrij",       label: "Veilig voor je dakpannen", kort: "Veilig voor je pannen", icon: <CircleCheck size={26} color="#9BCB6C" /> },
 ];
 
-function UspStat({ title, label, icon }: Stat) {
+function UspStat({ title, label, kort, icon }: Stat) {
   return (
     <div className="usp-stat-inner" style={{ padding: "0 24px" }}>
       <div className="usp-stat-icon" style={{ marginBottom: "14px" }}>
@@ -31,7 +31,7 @@ function UspStat({ title, label, icon }: Stat) {
         fontWeight: 500,
         fontFamily: "var(--font-inter), system-ui, sans-serif",
         whiteSpace: "nowrap",
-      }}>{label}</p>
+      }}><span className="usp-lang">{label}</span><span className="usp-kort">{kort}</span></p>
     </div>
   );
 }
@@ -40,6 +40,7 @@ export default function SiteStatsBar() {
   return (
     <section style={{ background: "transparent", padding: "0 0 48px", position: "relative", zIndex: 5 }}>
       <style>{`
+        .usp-kort { display: none; }
         /* Gsm: 2x2 kaartjes met ademruimte */
         @media (max-width: 640px) {
           .usp-stats-wrap.usp-stats-wrap {
@@ -60,7 +61,9 @@ export default function SiteStatsBar() {
           .usp-stats-wrap .usp-stat-inner { padding: 0 !important; }
           .usp-stats-wrap .usp-stat-icon { display: flex; justify-content: center; margin-bottom: 10px !important; }
           .usp-stats-wrap .usp-stat-title { font-size: 14px !important; margin-bottom: 4px !important; }
-          .usp-stats-wrap .usp-stat-label { white-space: normal !important; font-size: 12.5px !important; line-height: 1.4; text-wrap: balance; }
+          .usp-stats-wrap .usp-stat-label { white-space: nowrap !important; font-size: 13px !important; line-height: 1.4; }
+          .usp-stats-wrap .usp-lang { display: none; }
+          .usp-stats-wrap .usp-kort { display: inline !important; }
         }
       `}</style>
       <div className="site-wrap">
