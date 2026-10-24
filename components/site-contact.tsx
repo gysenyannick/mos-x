@@ -52,6 +52,17 @@ export default function SiteContact() {
         /* Derde bullet ingekort zodat de groep centraler uitvalt */
         .bullet-lang { display: none !important; }
         .bullet-kort { display: inline !important; }
+        .contact-cta-btns { margin-top: 20px !important; }
+
+        /* Bullets als kleine labels naast elkaar */
+        .contact-richtprijs-group.contact-richtprijs-group { width: 100% !important; text-align: center; }
+        .contact-checkmarks.contact-checkmarks { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; }
+        .contact-checkmarks > div { padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(155,203,108,0.25); gap: 6px !important; }
+        .contact-checkmarks > div svg { width: 14px; height: 14px; }
+        .contact-checkmarks > div > span { font-size: 13px !important; }
+        .contact-headline-col { padding-bottom: 0 !important; }
+        .contact-headline-col h2 { font-size: 26px !important; margin-top: 4px !important; }
+        .contact-headline-col > p:not(.contact-region-label) { margin-top: 0 !important; font-size: 14.5px !important; }
 
         /* 2. Bulletgroep als geheel inspringen; bullets blijven links uitgelijnd.
               width:fit-content geeft de groep de breedte van de langste regel,
@@ -110,12 +121,7 @@ export default function SiteContact() {
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               display: "flex", alignItems: "center", gap: "10px",
             }}>
-              <svg width="16" height="12" viewBox="0 0 18 13" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, borderRadius: "2px" }}>
-                <rect x="0"  width="6"  height="13" fill="#000000" />
-                <rect x="6"  width="6"  height="13" fill="#FFE000" />
-                <rect x="12" width="6"  height="13" fill="#EF3340" />
-              </svg>
-              Actief regio Antwerpen, Limburg,{" "}<br />Vlaams-Brabant
+              <span>Actief regio Antwerpen, Limburg,{" "}<br className="hidden lg:inline" /><span style={{ whiteSpace: "nowrap" }}>Vlaams-Brabant</span></span>
             </p>
             <h2 style={{
               fontSize: "clamp(1.9rem, 2.2vw, 1.9rem)", fontWeight: 800,
@@ -123,14 +129,14 @@ export default function SiteContact() {
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
               marginBottom: "14px", marginTop: "12px",
             }}>
-              Levenslang een <span style={{ color: GREEN }}>verzorgd dak</span><br />begint hier.
+              Levenslang een <span style={{ color: GREEN }}>verzorgd dak</span> <br className="hidden lg:inline" />begint hier.
             </h2>
             <p style={{
               fontSize: "15px", color: `rgba(255,255,255,0.6)`, lineHeight: 1.65,
               fontFamily: "var(--font-inter), system-ui, sans-serif",
               marginTop: "auto",
             }}>
-              Persoonlijk advies van Yannick.<br />Alleen wat je dak écht nodig heeft.
+              Persoonlijk advies. <br className="hidden lg:inline" />Alleen wat je dak écht nodig heeft.
             </p>
           </div>
 
@@ -148,7 +154,7 @@ export default function SiteContact() {
             <div className="contact-checkmarks" style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "0" }}>
               {[
                 { txt: "Binnen 1 minuut" },
-                { txt: "Persoonlijk dakadvies" },
+                { txt: "Persoonlijk dakadvies", kort: "Persoonlijk" },
                 { txt: "Vrijblijvend en zonder verplichtingen", kort: "Vrijblijvend" },
               ].map(({ txt, kort }) => (
                 <div key={txt} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
