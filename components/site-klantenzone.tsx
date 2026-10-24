@@ -72,11 +72,10 @@ export default function SiteKlantenzone() {
         .kzp-kort { display: none; }
         @media (max-width: 1023px) {
           .kzp-raster { grid-template-columns: minmax(0, 1fr); gap: 48px; }
-          .kzp-tekst { margin-left: auto; margin-right: auto; }
-          .kzp-inhoud { text-align: center; }
-          .kzp-lijst { width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto; text-align: left; }
-          .kzp-knoppen { justify-content: center; }
-          .kzp-knoppen .kzp-knop { width: 100%; max-width: 340px; justify-content: center; }
+          .kzp-inhoud { text-align: left; }
+          .kzp-lijst { max-width: 100%; }
+          .kzp-knoppen { align-items: stretch; }
+          .kzp-knoppen .kzp-knop { width: 100%; justify-content: center; }
           .kzp-knoppen { flex-direction: column; }
         }
         @media (max-width: 560px) {
@@ -85,7 +84,7 @@ export default function SiteKlantenzone() {
           .kzp-lijst li { font-size: 15.5px; align-items: center; }
           .kzp-lang { display: none; }
           .kzp-kort { display: inline; white-space: nowrap; }
-          .kzp-tekst { font-size: 16px; max-width: 330px; }
+          .kzp-tekst { font-size: 16px; text-wrap: pretty; }
         }
       `}</style>
       <div className="site-wrap">
