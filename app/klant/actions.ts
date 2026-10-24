@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { FROM_INTERN, esc, sendMail } from "@/lib/mail";
 import { sendToBeavr } from "@/lib/beavr";
+import { meldKlant } from "@/lib/klantenzone/meldingen";
 import { getInstellingen, getMomenten, klantVoorRefCode, listKlanten, nieuwId, saveMomenten, wijzigKlant } from "@/lib/klantenzone/store";
 import { PUNTEN, actieVoorKlant, controleerVerwijzing, interesseVoor, voegTransactieToe } from "@/lib/klantenzone/voordeel";
 import { brusselNaarDate, fmtDag, fmtUur } from "@/lib/klantenzone/tijd";
@@ -251,4 +252,25 @@ export async function plaatsOpmerking(klantId: string, tekst: string): Promise<U
   await meldAanYannick(`💬 Bericht van ${k.voornaam}`, `<p>${esc(schoon)}</p>${klantBlok(k)}`);
   ververs(k.id);
   return { ok: true };
+}
+
+/**
+ * Een klant vraagt zijn persoonlijke link opnieuw aan via mos-x.be/klant.
+ * Altijd hetzelfde antwoord, zodat niemand kan uitzoeken welke adressen klant zijn.
+ * Hoogstens één mail per uur per klant (de sleutel van de melding bevat het uur).
+ */
+export async function vraagLinkAan(_vorige: { klaar: boolean } | null, fd: FormData): Promise<{ klaar: boolean }> {
+  const email = String(fd.get("email") ?? "").trim().toLowerCase().slice(0, 200);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { klaar: false };
+  const klanten = (await listKlanten()).filter((k) => !k.demo && k.email?.trim().toLowerCase() === email);
+  const uur = new Date().toISOString().slice(0, 13);
+  for (const k of klanten) {
+    await meldKlant(k, {
+      soort: "bericht", sleutel: `link-${uur}`,
+      onderwerp: "Je link naar je klantenzone",
+      tekst: "Hier is je persoonlijke link naar je klantenzone van MOS-X. Bewaar deze mail goed en deel de link niet met anderen.",
+      knop: { label: "Open je klantenzone", tab: "overzicht" },
+    }).catch(() => undefined);
+  }
+  return { klaar: true };
 }

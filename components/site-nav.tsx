@@ -18,6 +18,7 @@ const links = [
 const mobileLinks = [
   { label: "Home",        href: "/" },
   ...links,
+  { label: "Klantenzone", href: "/klant" },
 ];
 
 export default function SiteNav() {

@@ -154,6 +154,7 @@ export default function SiteFooter() {
             <FLink href="/over-ons">Over ons</FLink>
             <FLink href="/contact">Contact</FLink>
             <FLink href="/faq">FAQ</FLink>
+            <FLink href="/klant">Klantenzone</FLink>
           </div>
 
           {/* Col 5 — Contact */}
