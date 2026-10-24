@@ -122,7 +122,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, transparent 70%)",
           zIndex: 1,
         }} />
-        {s.badge === "Onderhoudsplan" && (
+        {s.badge && (
           <div style={{
             position: "absolute", top: "14px", right: "14px", zIndex: 10,
             display: "flex", alignItems: "center", gap: "6px",
@@ -133,6 +133,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
             padding: "6px 12px",
             boxShadow: "0 2px 12px rgba(0,0,0,0.25)",
           }}>
+            {s.badge === "10 jaar garantie" && <ShieldCheck size={13} color="#9BCB6C" strokeWidth={2.5} />}
             <span style={{
               fontSize: "11px", fontWeight: 700, color: "#FFFFFF",
               fontFamily: "var(--font-montserrat), system-ui, sans-serif",
@@ -213,20 +214,6 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       </div>
     </Link>
 
-    {/* Golden guarantee badge — overlaps top-right corner */}
-    {s.badge === "10 jaar garantie" && (
-      <img
-        src="/images/10 jaar garantie badge.png"
-        alt="10 jaar garantie"
-        style={{
-          position: "absolute", top: "-28px", right: "-28px",
-          width: "110px", height: "110px",
-          objectFit: "contain",
-          zIndex: 20,
-          pointerEvents: "none",
-        }}
-      />
-    )}
     </div>
   );
 }
