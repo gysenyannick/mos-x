@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Droplets, Shield, CalendarCheck, LayoutGrid, ChevronRight } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 const services = [
   {
@@ -177,6 +178,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
 
 export default function SiteServices() {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [bezoekOpen, setBezoekOpen] = useState(false);
   const cardEls = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const registerCard = useCallback((id: string, el: HTMLDivElement | null) => {
@@ -323,19 +325,21 @@ export default function SiteServices() {
             </svg>
             WhatsApp Yannick
           </BtnPress>
-          <BtnPress
-            href="/diensten"
+          <button
+            type="button"
+            onClick={() => setBezoekOpen(true)}
             className="inline-flex items-center"
-            style={{ border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease", gap: "8px" }}
+            style={{ cursor: "pointer", border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease", gap: "8px" }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
           >
-            <LayoutGrid size={16} strokeWidth={2} />
-            Alle diensten bekijken
+            <CalendarCheck size={16} strokeWidth={2} />
+            Plan een gratis plaatsbezoek
             <ChevronRight size={16} strokeWidth={2.5} />
-          </BtnPress>
+          </button>
         </div>
       </div>
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Homepage diensten" />
     </section>
   );
 }
