@@ -86,12 +86,12 @@ export default function SiteKlantenzone() {
             <p className="kzp-oog">Mijn MOS-X</p>
             <h2 className="kzp-titel">Volg je dak in je eigen klantenzone</h2>
             <p className="kzp-tekst">
-              Elke klant krijgt een persoonlijke pagina met de planning, foto&apos;s van de werken, je documenten, je garantie en je exclusieve voordelen. Geen account, geen wachtwoord: gewoon je eigen link.
+              Elke klant krijgt een persoonlijke pagina met de planning, foto&apos;s van de werken, je documenten en je garantie. Geen account, geen wachtwoord: gewoon je eigen link.
             </p>
             <ul className="kzp-lijst">
               <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Je ziet wanneer we komen en hoe ver de werken staan.</li>
               <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Foto&apos;s, offerte, facturen en garantie op één plek.</li>
-              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Na de werken: je onderhoud en je voordelen.</li>
+              <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Exclusieve voordelen en acties, enkel voor klanten.</li>
             </ul>
             <div className="kzp-knoppen">
               <Link href="/klant" className="kzp-knop">Naar je klantenzone <ChevronRight size={16} strokeWidth={2.5} /></Link>
