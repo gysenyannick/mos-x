@@ -108,15 +108,19 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           background: "linear-gradient(to top, rgba(8,12,9,0.92) 0%, rgba(8,12,9,0.7) 40%, transparent 100%)",
           zIndex: 1,
         }} />
+        {s.badge && (
+          <span style={{
+            position: "absolute", top: "18px", left: "18px", zIndex: 10,
+            background: "#9BCB6C", color: "#0B0F0C",
+            padding: "7px 11px", borderRadius: "4px",
+            fontSize: "12px", fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase",
+            fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+            boxShadow: "0 6px 18px -6px rgba(0,0,0,0.55)",
+          }}>
+            {s.badge}
+          </span>
+        )}
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
-          {s.badge && (
-            <p style={{
-              margin: "0 0 12px", fontSize: "11.5px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase",
-              color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            }}>
-              {s.badge}
-            </p>
-          )}
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
               flexShrink: 0, width: "36px", height: "36px", background: "#9BCB6C", borderRadius: "50%",
