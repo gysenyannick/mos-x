@@ -1,8 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { Check, ChevronRight } from "lucide-react";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 /** Homepage: korte uitleg van de klantenzone, met een gsm als voorbeeld. */
 export default function SiteKlantenzone() {
+  const [bezoekOpen, setBezoekOpen] = useState(false);
   return (
     <section style={{
       background: "radial-gradient(800px 480px at 85% 30%, rgba(155,203,108,0.10), transparent 65%), #FFFFFF",
@@ -21,7 +26,7 @@ export default function SiteKlantenzone() {
         .kzp-knop:hover { background: #7AB54E; }
         .kzp-knop:active { transform: translateY(1px); }
         .kzp-knop:focus-visible, .kzp-link:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 3px; }
-        .kzp-link { font-size: 15px; font-weight: 600; color: #1A1A1A; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #9BCB6C; font-family: var(--font-inter), system-ui, sans-serif; }
+        .kzp-link { background: none; border: 0; padding: 0; cursor: pointer; font-size: 15px; font-weight: 600; color: #1A1A1A; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #9BCB6C; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-link:hover { color: #7AB54E; }
 
         /* De gsm */
@@ -81,7 +86,7 @@ export default function SiteKlantenzone() {
             <p className="kzp-oog">Mijn MOS-X</p>
             <h2 className="kzp-titel">Volg je dak in je eigen klantenzone</h2>
             <p className="kzp-tekst">
-              Elke klant krijgt een persoonlijke pagina met de planning, foto&apos;s van de werken, je documenten en je garantie. Geen account, geen wachtwoord: gewoon je eigen link.
+              Elke klant krijgt een persoonlijke pagina met de planning, foto&apos;s van de werken, je documenten, je garantie en je exclusieve voordelen. Geen account, geen wachtwoord: gewoon je eigen link.
             </p>
             <ul className="kzp-lijst">
               <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span>Je ziet wanneer we komen en hoe ver de werken staan.</li>
@@ -90,7 +95,7 @@ export default function SiteKlantenzone() {
             </ul>
             <div className="kzp-knoppen">
               <Link href="/klant" className="kzp-knop">Naar je klantenzone <ChevronRight size={16} strokeWidth={2.5} /></Link>
-              <Link href="/#calculator" className="kzp-link">Nog geen klant? Bereken je richtprijs</Link>
+              <button type="button" onClick={() => setBezoekOpen(true)} className="kzp-link">Nog geen klant? Vraag een plaatsbezoek aan</button>
             </div>
           </div>
 
@@ -139,6 +144,7 @@ export default function SiteKlantenzone() {
           </div>
         </div>
       </div>
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Homepage klantenzone" />
     </section>
   );
 }
