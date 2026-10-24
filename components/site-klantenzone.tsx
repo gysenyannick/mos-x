@@ -36,6 +36,11 @@ export default function SiteKlantenzone() {
         .kzp-nieuw { margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; border-radius: 999px; background: #E3A93B; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-nieuw::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.3); animation: kzp-puls 1.8s ease-in-out infinite; }
         @keyframes kzp-puls { 0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.6); } 50% { box-shadow: 0 0 0 4px rgba(255,255,255,0); } }
+        .kzp-nieuw-naast { display: none; margin-bottom: 0; }
+        @media (max-width: 1023px) {
+          .kzp-nieuw-boven { display: none; }
+          .kzp-nieuw.kzp-nieuw-naast { display: inline-flex; }
+        }
         @media (prefers-reduced-motion: reduce) { .kzp-nieuw::before { animation: none; } }
         .kzp-titel { margin: 0 0 18px; font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-tekst { margin: 0 0 24px; max-width: 540px; font-size: 17px; line-height: 1.7; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
@@ -111,9 +116,10 @@ export default function SiteKlantenzone() {
       <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
         <div className="kzp-raster">
           <div className="kzp-inhoud">
-            <span className="kzp-nieuw">Nieuw</span>
+            <span className="kzp-nieuw kzp-nieuw-boven">Nieuw</span>
             <p className="kzp-oog">
               Mijn MOS-X
+              <span className="kzp-nieuw kzp-nieuw-naast">Nieuw</span>
             </p>
             <h2 className="kzp-titel">Volg je dak in je eigen klantenzone</h2>
             <p className="kzp-tekst">
