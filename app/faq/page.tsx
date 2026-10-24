@@ -296,11 +296,11 @@ export default function FaqPage() {
                   <div className="flex items-center gap-3 mb-6 p-3 rounded-xl" style={{ background: "rgba(155,203,108,0.10)", border: "1px solid rgba(155,203,108,0.2)" }}>
                     <div style={{ width: "68px", height: "68px", borderRadius: "50%", overflow: "hidden", flexShrink: 0, position: "relative" }}>
                       <img
-                        src="/images/IMG_4678.PNG"
+                        src="/images/yannick-avatar.jpg"
                         alt="Yannick"
                         style={{
-                          position: "absolute", top: "65%", left: "50%",
-                          transform: "translate(-50%, -50%) scale(1.4)",
+                          position: "absolute", top: "50%", left: "50%",
+                          transform: "translate(-50%, -50%)",
                           width: "68px", height: "68px",
                           objectFit: "cover", objectPosition: "center",
                         }}

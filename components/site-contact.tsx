@@ -235,14 +235,14 @@ export default function SiteContact() {
               <div style={{ position: "relative", width: "72px", height: "72px", flexShrink: 0 }}>
                 <div style={{ width: "72px", height: "72px", borderRadius: "50%", border: `2px solid ${GREEN}`, overflow: "hidden", position: "relative" }}>
                   <Image
-                    src="/images/IMG_4678.PNG"
+                    src="/images/yannick-avatar.jpg"
                     alt="Yannick"
                     width={128}
                     height={128}
                     quality={100}
                     style={{
-                      position: "absolute", top: "65%", left: "50%",
-                      transform: "translate(-50%, -50%) scale(1.4)",
+                      position: "absolute", top: "50%", left: "50%",
+                      transform: "translate(-50%, -50%)",
                       width: "72px", height: "72px",
                       objectFit: "cover", objectPosition: "center",
                     }}

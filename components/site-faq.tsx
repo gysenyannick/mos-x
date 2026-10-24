@@ -79,11 +79,11 @@ function ContactCard() {
       }}>
         <div style={{ position: "relative", width: "64px", height: "64px", flexShrink: 0, borderRadius: "50%", border: "2px solid #9BCB6C", overflow: "hidden" }}>
           <img
-            src="/images/IMG_4678.PNG"
+            src="/images/yannick-avatar.jpg"
             alt="Yannick"
             style={{
-              position: "absolute", top: "65%", left: "50%",
-              transform: "translate(-50%, -50%) scale(1.4)",
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
               width: "64px", height: "64px",
               objectFit: "cover",
             }}

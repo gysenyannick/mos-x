@@ -21,11 +21,13 @@ export default function SiteKlantenzone() {
         .kzp-lijst { list-style: none; margin: 0 0 34px; padding: 0; display: grid; gap: 14px; }
         .kzp-lijst li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 16px; line-height: 1.55; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-vink { width: 26px; height: 26px; border-radius: 50%; background: #EEF6E6; color: #7AB54E; display: grid; place-items: center; }
-        .kzp-knoppen { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+        .kzp-knoppen { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
         .kzp-knop { display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 26px; border-radius: 10px; background: #9BCB6C; color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; font-family: var(--font-montserrat), system-ui, sans-serif; box-shadow: 0 8px 20px -10px rgba(122,181,78,0.8); transition: background-color .2s ease, transform .15s ease; }
         .kzp-knop:hover { background: #7AB54E; }
         .kzp-knop:active { transform: translateY(1px); }
         .kzp-knop:focus-visible, .kzp-link:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 3px; }
+        .kzp-knop-licht { background: transparent; color: #1A1A1A; border: 1px solid #CFE5B8; box-shadow: none; cursor: pointer; }
+        .kzp-knop-licht:hover { background: #EEF6E6; border-color: #9BCB6C; }
         .kzp-link { background: none; border: 0; padding: 0; cursor: pointer; font-size: 15px; font-weight: 600; color: #1A1A1A; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #9BCB6C; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-link:hover { color: #7AB54E; }
 
@@ -47,7 +49,7 @@ export default function SiteKlantenzone() {
         .kzp-stappen { display: grid; grid-template-columns: repeat(4, 1fr); font-size: 8.5px; color: #8E8E89; }
         .kzp-stappen b { color: #1A1A1A; }
         .kzp-foto { position: relative; margin-top: 10px; height: 78px; border-radius: 10px; overflow: hidden; }
-        .kzp-foto img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+        .kzp-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 54% 49%; display: block; }
         .kzp-foto span { position: absolute; left: 8px; bottom: 6px; font-size: 9px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
         .kzp-vakman { display: flex; align-items: center; gap: 9px; margin-top: 10px; }
         .kzp-vakman img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid #9BCB6C; }
@@ -73,6 +75,8 @@ export default function SiteKlantenzone() {
           .kzp-inhoud { text-align: center; }
           .kzp-lijst { max-width: 460px; margin-left: auto; margin-right: auto; text-align: left; }
           .kzp-knoppen { justify-content: center; }
+          .kzp-knoppen .kzp-knop { width: 100%; max-width: 340px; justify-content: center; }
+          .kzp-knoppen { flex-direction: column; }
         }
         @media (max-width: 560px) {
           .kzp-gsm { width: 280px; }
@@ -95,7 +99,7 @@ export default function SiteKlantenzone() {
             </ul>
             <div className="kzp-knoppen">
               <Link href="/klant" className="kzp-knop">Naar je klantenzone <ChevronRight size={16} strokeWidth={2.5} /></Link>
-              <button type="button" onClick={() => setBezoekOpen(true)} className="kzp-link">Nog geen klant? Vraag een plaatsbezoek aan</button>
+              <button type="button" onClick={() => setBezoekOpen(true)} className="kzp-knop kzp-knop-licht">Plan een gratis plaatsbezoek</button>
             </div>
           </div>
 
@@ -120,7 +124,7 @@ export default function SiteKlantenzone() {
                   </div>
                   <div className="kzp-vakman">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/IMG_4678.PNG" alt="" />
+                    <img src="/images/yannick-avatar.jpg" alt="" />
                     <span><b>Yannick</b><small>Je vakman</small></span>
                   </div>
                 </div>
