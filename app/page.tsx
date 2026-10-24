@@ -2,6 +2,7 @@ import SiteNav             from "@/components/site-nav";
 import SiteHero            from "@/components/site-hero";
 import SiteTrustBar        from "@/components/site-trustbar";
 import SiteServices        from "@/components/site-services";
+import SiteKlantenzone     from "@/components/site-klantenzone";
 import SitePricing         from "@/components/site-pricing";
 import SiteStatsBar              from "@/components/site-statsbar";
 import SiteRealisatiesPreview   from "@/components/site-realisaties-preview";
@@ -40,6 +41,9 @@ export default function HomePage() {
 
         {/* 6 · Diensten */}
         <SiteServices />
+
+        {/* Klantenzone */}
+        <SiteKlantenzone />
 
         {/* 7 · Zo werken we */}
         <SiteWerkwijze />
