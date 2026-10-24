@@ -12,8 +12,8 @@ export default function FeedbackForm({ klantId }: { klantId: string }) {
   const [fout, setFout] = useState<string | null>(null);
   const [bezig, start] = useTransition();
 
-  if (klaar) return <p className={kz.ok} style={{ margin: 0 }}>Bedankt, Yannick leest je feedback persoonlijk.</p>;
-  if (!open) return <button type="button" className={`${kz.knop} ${kz.knopLicht}`} onClick={() => setOpen(true)}>Feedback aan Yannick</button>;
+  if (klaar) return <p className={kz.ok} style={{ margin: 0 }}>Bedankt, we lezen je feedback persoonlijk.</p>;
+  if (!open) return <button type="button" className={`${kz.knop} ${kz.knopLicht}`} onClick={() => setOpen(true)}>Feedback geven</button>;
 
   return (
     <div style={{ width: "100%" }}>

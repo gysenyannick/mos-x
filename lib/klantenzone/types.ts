@@ -34,10 +34,10 @@ export function normaliseerFase(f: string): Fase {
 
 /** Korte uitleg per fase, zoals de klant ze ziet. */
 export const FASE_UITLEG: Record<Fase, string> = {
-  gepland: "Je werken staan ingepland. Hieronder zie je wanneer Yannick komt.",
-  bezig: "Yannick is met je dak bezig. Foto's van de werf verschijnen hieronder.",
+  gepland: "Je werken staan ingepland. Hieronder zie je wanneer we komen.",
+  bezig: "We zijn met je dak bezig. Foto's van de werf verschijnen hieronder.",
   klaar: "Je dak is klaar. Je garantie loopt vanaf vandaag.",
-  nazorg: "Je dak is in nazorg. Vragen of iets gezien? Stuur Yannick een berichtje.",
+  nazorg: "Je dak is in nazorg. Vragen of iets gezien? Stuur ons een berichtje.",
 };
 
 export type Precisie = "dag" | "week" | "maand";
@@ -297,7 +297,7 @@ export type Dakzorg = {
 
 /** Wat in MOS-X Dakzorg zit (zelfde lijst als op de website). */
 export const DAKZORG_INBEGREPEN = [
-  "Jaarlijkse inspectie door Yannick persoonlijk",
+  "Jaarlijkse inspectie van je dak",
   "Preventieve reiniging waar nodig",
   "Gootcontrole en -reiniging",
   "Foto-rapportage voor en na",
@@ -490,12 +490,12 @@ export type VrijMoment = {
 
 /** Standaarduitleg per soort afspraak, als Yannick zelf niets invult. */
 export const AFSPRAAK_TIPS: Record<string, string> = {
-  "Plaatsbezoek": "Yannick bekijkt je dak en bespreekt met jou wat het nodig heeft. Reken op een halfuurtje. Je hoeft niets voor te bereiden.",
+  "Plaatsbezoek": "We bekijken je dak en bespreken met jou wat het nodig heeft. Reken op een halfuurtje. Je hoeft niets voor te bereiden.",
   "Start werken": "Zorg dat de oprit of het stuk voor je woning vrij is en dat er een buitenkraan bruikbaar is. Thuis zijn hoeft niet.",
   "Dakreiniging": "Hou ramen en dakvensters dicht tijdens de werken. Een buitenkraan in de buurt is handig.",
   "Dakcoating": "De coating heeft droog weer nodig. Is het nat, dan schuift de dag in overleg op. Hou ramen en dakvensters dicht.",
   "Oplevering": "Samen het resultaat nalopen en je garantie overlopen. Reken op een kwartiertje.",
-  "Nazorgbezoek": "Gratis controle binnen je garantie: Yannick kijkt hoe je dak erbij ligt. Je hoeft niets te doen.",
+  "Nazorgbezoek": "Gratis controle binnen je garantie: we kijken hoe je dak erbij ligt. Je hoeft niets te doen.",
 };
 
 /** Hoe lang vooraf een klant een afspraak nog zelf mag verzetten. */

@@ -70,7 +70,7 @@ export default function ReviewBallon({ klantId, voornaam, foto }: { klantId: str
             <span className={kz.ballonSterren} aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={13} />)}</span>
           </span>
           <p className={kz.ballonTitel}>Tevreden over je dak, {voornaam}?</p>
-          <p className={kz.ballonTekst}>Laat een review achter op Google. Het duurt maar een minuutje en helpt Yannick enorm.</p>
+          <p className={kz.ballonTekst}>Laat een review achter op Google. Het duurt maar een minuutje en helpt ons enorm.</p>
           <a className={`${kz.knop} ${kz.knopPrimair} ${kz.ballonKnop}`} href={`/api/klantenzone/review?k=${encodeURIComponent(klantId)}`} target="_blank" rel="noopener noreferrer" onClick={sluit}>
             <GoogleG wit /> Schrijf je review op Google
           </a>

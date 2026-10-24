@@ -42,7 +42,7 @@ export default function VoorstelKnop({ klantId, titel, huidig, vandaag }: { klan
             {klaar ? (
               <div className={kz.stormKlaar}>
                 <CheckCircle2 size={24} />
-                <p className={kz.sub} style={{ margin: 0 }}>Yannick bekijkt je voorstel en laat je weten of het past. Tot dan blijft de huidige afspraak staan.</p>
+                <p className={kz.sub} style={{ margin: 0 }}>We bekijken je voorstel en laten je weten of het past. Tot dan blijft de huidige afspraak staan.</p>
               </div>
             ) : (
               <form onSubmit={verstuur}>

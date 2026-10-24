@@ -14,7 +14,7 @@ export default function BuurFormulier({ actie }: { actie: (s: Staat, fd: FormDat
       <div style={{ textAlign: "center", padding: "12px 0" }}>
         <CheckCircle2 size={40} color="#7AB54E" />
         <p className={kz.groot} style={{ marginTop: 10 }}>Bedankt!</p>
-        <p className={kz.sub}>Yannick neemt binnen 1 werkdag contact met je op voor een richtprijs. Liever meteen? Bel of WhatsApp naar +32 468 35 28 69.</p>
+        <p className={kz.sub}>We nemen binnen 1 werkdag contact met je op voor een richtprijs. Liever meteen? Bel of WhatsApp naar +32 468 35 28 69.</p>
       </div>
     );
   }
@@ -33,7 +33,7 @@ export default function BuurFormulier({ actie }: { actie: (s: Staat, fd: FormDat
       <div className={kz.rijKnoppen}>
         <button className={kz.knop} disabled={bezig} style={{ flex: 1, padding: "14px 18px", fontSize: 15 }}>{bezig ? "Even geduld…" : "Vraag mijn richtprijs aan"}</button>
       </div>
-      <p className={kz.sub} style={{ fontSize: 12 }}>Vrijblijvend. Je gegevens gebruikt Yannick alleen om je te contacteren over je dak.</p>
+      <p className={kz.sub} style={{ fontSize: 12 }}>Vrijblijvend. We gebruiken je gegevens alleen om je te contacteren over je dak.</p>
     </form>
   );
 }

@@ -112,7 +112,7 @@ export async function doeAanvraag(
     if (actieTitel) omschrijving = `${actieTitel}${omschrijving ? ` · ${omschrijving}` : ""}`;
     const id = nieuwId(6);
     (k.aanvragen ??= []).unshift({ id, datum: nu, soort, tekst: omschrijving, status: "nieuw", campagneId, historiek: [{ datum: nu, status: "nieuw" }] });
-    k.log.unshift({ datum: nu, tekst: `Je vroeg: ${AANVRAAG_LABEL[soort].toLowerCase()}. Yannick neemt contact op.` });
+    k.log.unshift({ datum: nu, tekst: `Je vroeg: ${AANVRAAG_LABEL[soort].toLowerCase()}. We nemen contact op.` });
     return { ok: true, omschrijving, id };
   });
   if (!r) return { ok: false, fout: "Dossier niet gevonden." };
@@ -165,7 +165,7 @@ export async function meldBuurAan(code: string, _: unknown, fd: FormData): Promi
     return true;
   });
   if (!r) return { fout: "Deze link werkt niet meer." };
-  if (!r.resultaat) return { fout: "Er kwamen vandaag al veel aanvragen via deze link. Bel of WhatsApp Yannick gerust rechtstreeks." };
+  if (!r.resultaat) return { fout: "Er kwamen vandaag al veel aanvragen via deze link. Bel of stuur ons gerust rechtstreeks een WhatsApp." };
 
   const k = r.klant;
   const door = `${k.voornaam} ${k.achternaam}`.trim();
@@ -247,7 +247,7 @@ export async function plaatsOpmerking(klantId: string, tekst: string): Promise<U
     return true;
   });
   if (!r) return { ok: false, fout: "Dossier niet gevonden." };
-  if (!r.resultaat) return { ok: false, fout: "Je stuurde vandaag al veel berichten. Stuur Yannick gerust een WhatsApp." };
+  if (!r.resultaat) return { ok: false, fout: "Je stuurde vandaag al veel berichten. Stuur ons gerust een WhatsApp." };
   const k = r.klant;
   await meldAanYannick(`💬 Bericht van ${k.voornaam}`, `<p>${esc(schoon)}</p>${klantBlok(k)}`);
   ververs(k.id);

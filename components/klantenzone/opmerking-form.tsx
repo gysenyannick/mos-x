@@ -30,7 +30,7 @@ export default function OpmerkingForm({ klantId }: { klantId: string }) {
         placeholder="bv. Moet ik de auto morgen van de oprit zetten?" rows={3}
       />
       <div className={kz.opmerkingVoet}>
-        <span className={kz.rijSub}>{klaar ? "Verstuurd. Yannick antwoordt zo snel mogelijk." : "Liever bellen? +32 468 35 28 69"}</span>
+        <span className={kz.rijSub}>{klaar ? "Verstuurd. We antwoorden zo snel mogelijk." : "Liever bellen? +32 468 35 28 69"}</span>
         <button className={`${kz.knop} ${kz.knopPrimair} ${kz.knopKlein}`} disabled={bezig || tekst.trim().length < 2}>
           <Send size={14} /> {bezig ? "Versturen…" : "Versturen"}
         </button>

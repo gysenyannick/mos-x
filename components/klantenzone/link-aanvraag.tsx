@@ -13,7 +13,7 @@ export default function LinkAanvraag() {
       <div className="kz-link-ok" role="status">
         <p style={{ margin: 0, fontWeight: 700, color: "#1A1A1A" }}>Bekijk je mailbox</p>
         <p style={{ margin: "6px 0 0", color: "#545454", fontSize: 15, lineHeight: 1.6 }}>
-          Als dit adres bij ons bekend is, krijg je zo een mail met je persoonlijke link. Niets gekregen? Kijk even bij je spam of stuur Yannick een berichtje.
+          Als dit adres bij ons bekend is, krijg je zo een mail met je persoonlijke link. Niets gekregen? Kijk even bij je spam of stuur ons een berichtje.
         </p>
       </div>
     );

@@ -46,12 +46,12 @@ export default function KlantenzoneIngang() {
           <p className="kz-link-oog">MOS-X</p>
           <h1 className="kz-link-titel">Inloggen in je klantenzone</h1>
           <p className="kz-link-sub">
-            Klant bij MOS-X? Vul het e-mailadres in dat je aan Yannick gaf. Je krijgt meteen een mail met je persoonlijke link. Een wachtwoord heb je niet nodig.
+            Klant bij MOS-X? Vul het e-mailadres in dat je ons gaf. Je krijgt meteen een mail met je persoonlijke link. Een wachtwoord heb je niet nodig.
           </p>
           <LinkAanvraag />
           <p className="kz-link-kop">In je klantenzone vind je</p>
           <ul className="kz-link-punten">
-            <li><CalendarDays size={18} /> <span>Wanneer Yannick komt, en foto&apos;s van de werken</span></li>
+            <li><CalendarDays size={18} /> <span>Je planning en foto&apos;s van de werken</span></li>
             <li><FileText size={18} /> <span>Je offerte, facturen en garantie</span></li>
             <li><Leaf size={18} /> <span>Je onderhoud en je voordelen</span></li>
           </ul>

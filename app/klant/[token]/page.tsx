@@ -234,7 +234,7 @@ function Planning(ctx: Ctx) {
   const vandaagStr = vandaag();
   const start = startTekst(k);
   const toonStart = !!k.start && k.start.datum >= vandaagStr && !komend.some((a) => a.titel === "Start werken");
-  if (komend.length === 0 && !toonStart) return <p className={kz.leeg}>Zodra de datum vastligt, zie je hier wanneer Yannick komt.</p>;
+  if (komend.length === 0 && !toonStart) return <p className={kz.leeg}>Zodra de datum vastligt, zie je hier je planning.</p>;
   const agendaItems: AgendaItem[] = [
     ...komend.map((a) => ({ dag: a.start.slice(0, 10), titel: a.titel, uur: fmtUur(a.start) })),
     ...(toonStart ? [{ dag: k.start!.datum, titel: "Start werken" }] : []),
@@ -278,7 +278,7 @@ function Planning(ctx: Ctx) {
                   <div className={kz.planOpen}>
                     {info && <p>{info}</p>}
                     {d >= vandaagStr && (teLaat
-                      ? <a className={kz.voorstelKnop} href="tel:+32468352869">Bel Yannick</a>
+                      ? <a className={kz.voorstelKnop} href="tel:+32468352869">Bel ons</a>
                       : <VoorstelKnop klantId={k.id} titel={a.titel} huidig={`${fmtDag(a.start)} om ${fmtUur(a.start)}`} vandaag={vandaagStr} />)}
                   </div>
                 </details>
@@ -371,9 +371,9 @@ function OnderhoudAanbod({ k, controle }: { k: Klant; controle: Ctx["controle"] 
         )}
         <div className={kz.dakOnderhoudVoet}>
           <AanvraagKnop
-            klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, Yannick neemt contact op"
+            klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, we nemen contact op"
             label="Plan mijn onderhoud" titel="Onderhoud inplannen"
-            uitleg="Yannick neemt contact op om een moment af te spreken. Je krijgt eerst een prijs."
+            uitleg="We nemen contact op om een moment af te spreken. Je krijgt eerst een prijs."
             placeholder="bv. Liefst in het voorjaar."
           />
           <span className={kz.rijSub}>Vrijblijvend, je krijgt eerst een prijs.</span>
@@ -406,7 +406,7 @@ function ActieKaart({ k, actie, interesse }: { k: Klant; actie: Actie; interesse
         {actie.tekst && <p className={kz.actieTekst}>{actie.tekst}</p>}
         {actie.type === "buurt" && actie.werkdag && <p className={kz.actieTekst}><strong>Gepland in je buurt:</strong> {actie.werkdag}</p>}
         {actie.minInteresse ? (
-          <p className={kz.actieTekst}>{interesse} van de {actie.minInteresse} woningen toonden interesse. Het voordeel geldt pas als dat aantal bereikt is en Yannick bevestigt dat het te combineren valt.</p>
+          <p className={kz.actieTekst}>{interesse} van de {actie.minInteresse} woningen toonden interesse. Het voordeel geldt pas als dat aantal bereikt is en we bevestigen dat het te combineren valt.</p>
         ) : null}
         {actie.voorwaarden && (
           <details className={kz.tipMeer}><summary>Voorwaarden</summary><p style={{ whiteSpace: "pre-line" }}>{actie.voorwaarden}</p></details>
@@ -417,7 +417,7 @@ function ActieKaart({ k, actie, interesse }: { k: Klant; actie: Actie; interesse
           klantId={k.id} soort="extra" campagneId={actie.id} voorvoegsel={dienst?.naam} klein alGevraagd={gevraagd} alGevraagdTekst="Interesse doorgegeven"
           label={actie.type === "buurt" ? "Ik heb interesse" : "Prijs aanvragen"} titel={actie.titel}
           uitleg="Je krijgt eerst een prijs. Het voordeel geldt pas als de voorwaarden vervuld zijn."
-          placeholder="Iets wat Yannick moet weten? (optioneel)"
+          placeholder="Iets wat we moeten weten? (optioneel)"
         />
       </div>
     </article>
@@ -671,7 +671,7 @@ function MijnWerken(ctx: Ctx) {
                   </span>
                 </div>
 
-                {staat !== "gedaan" && uren.length > 0 && <p className={kz.planningUur}><Clock size={13} /> {uren.join(" · ")} · Yannick</p>}
+                {staat !== "gedaan" && uren.length > 0 && <p className={kz.planningUur}><Clock size={13} /> {uren.join(" · ")}</p>}
                 {staat !== "gedaan" && d.werken.map((w) => (w.omschrijving || WERK_UITLEG[w.naam]) && <p key={w.id} className={kz.tlTekst}>{w.omschrijving || WERK_UITLEG[w.naam]}</p>)}
                 {staat !== "gedaan" && info.map((t) => <p key={t} className={kz.tlTip}>{t}</p>)}
 
@@ -950,9 +950,9 @@ function Dakzorg(ctx: Ctx) {
             </ul>
             <div className={kz.ohKnoppen}>
               <AanvraagKnop
-                klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, Yannick neemt contact op"
+                klantId={k.id} soort="onderhoud" alGevraagd={gevraagd} alGevraagdTekst="Aangevraagd, we nemen contact op"
                 label="Plan mijn onderhoud" titel="Onderhoud inplannen"
-                uitleg="Yannick neemt contact op om een moment af te spreken. Je krijgt eerst een prijs."
+                uitleg="We nemen contact op om een moment af te spreken. Je krijgt eerst een prijs."
                 placeholder="bv. Liefst in het voorjaar."
               />
               <span>Vrijblijvend, je krijgt eerst een prijs.</span>
@@ -978,7 +978,7 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
       <section className={kz.dienstHero}>
         <span className={kz.buurOog}>Enkel voor klanten</span>
         <p className={kz.buurTitel}>{naWerken ? "Nu je dak proper is, zorgen we ook voor de rest" : "Ook voor de rest van je woning"}</p>
-        <p className={kz.buurSub}>Dakgoten, gevel, oprit en terras. Yannick doet het zelf, en je krijgt altijd eerst een eerlijke prijs.</p>
+        <p className={kz.buurSub}>Dakgoten, gevel, oprit en terras. Zonder onderaannemers, en altijd eerst een eerlijke prijs.</p>
       </section>
 
       <section id="combi" className={kz.combiKaart}>
@@ -1003,7 +1003,7 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
               <h2 className={kz.dienstTitel}>Preventieve anti-mosbehandeling</h2>
               <p className={kz.dienstUitleg}>Een preventieve behandeling en een volledige inspectie, zodat je dak blijft zoals na de reiniging.{controle ? ` Aangeraden in ${fmtMaand(controle.datum)}.` : ""}</p>
               <div className={kz.dienstKnop}>
-                <AanvraagKnop klantId={k.id} soort="onderhoud" klein alGevraagd={gevraagd("onderhoud")} alGevraagdTekst="Aangevraagd" label="Onderhoud aanvragen" titel="Onderhoud aanvragen" uitleg="Yannick neemt contact op. Je krijgt eerst een prijs." placeholder="bv. Liefst in het voorjaar." />
+                <AanvraagKnop klantId={k.id} soort="onderhoud" klein alGevraagd={gevraagd("onderhoud")} alGevraagdTekst="Aangevraagd" label="Onderhoud aanvragen" titel="Onderhoud aanvragen" uitleg="We nemen contact op. Je krijgt eerst een prijs." placeholder="bv. Liefst in het voorjaar." />
               </div>
             </div>
           </article>
@@ -1012,9 +1012,9 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
           <DienstFoto src={dienstFotos.controle ?? "/images/Foto%20dak.jpg"} naam="Dakcontrole" />
           <div className={kz.dienstInhoud}>
             <h2 className={kz.dienstTitel}>Dakcontrole</h2>
-            <p className={kz.dienstUitleg}>Yannick kijkt je dak na: pannen, nok, aansluitingen en goten. Je krijgt een verslag met foto&apos;s in je dakdossier.</p>
+            <p className={kz.dienstUitleg}>We kijken je dak na: pannen, nok, aansluitingen en goten. Je krijgt een verslag met foto&apos;s in je dakdossier.</p>
             <div className={kz.dienstKnop}>
-              <AanvraagKnop klantId={k.id} soort="controle" klein licht alGevraagd={gevraagd("controle")} alGevraagdTekst="Aangevraagd" label="Prijs aanvragen" titel="Dakcontrole aanvragen" uitleg="Yannick neemt contact op voor een moment." placeholder="Iets wat je opviel? (optioneel)" />
+              <AanvraagKnop klantId={k.id} soort="controle" klein licht alGevraagd={gevraagd("controle")} alGevraagdTekst="Aangevraagd" label="Prijs aanvragen" titel="Dakcontrole aanvragen" uitleg="We nemen contact op voor een moment." placeholder="Iets wat je opviel? (optioneel)" />
             </div>
           </div>
         </article>
@@ -1029,7 +1029,7 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
                 <p className={kz.dienstUitleg}>{x.tekst}</p>
                 <div className={kz.dienstKnop}>
                   <AanvraagKnop klantId={k.id} soort="extra" voorvoegsel={x.naam} campagneId={actie?.id} klein licht alGevraagd={gevraagd("extra", x.naam)} alGevraagdTekst="Aangevraagd"
-                    label="Prijs aanvragen" titel={x.naam} uitleg="Je krijgt vrijblijvend een prijs en een voorstel van datum. Een vaste prijs kan pas als oppervlakte en bereikbaarheid gekend zijn." placeholder="Iets wat Yannick moet weten? (optioneel)" />
+                    label="Prijs aanvragen" titel={x.naam} uitleg="Je krijgt vrijblijvend een prijs en een voorstel van datum. Een vaste prijs kan pas als oppervlakte en bereikbaarheid gekend zijn." placeholder="Iets wat we moeten weten? (optioneel)" />
                 </div>
               </div>
             </article>
@@ -1037,7 +1037,7 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
         })}
       </div>
       <Link href="?tab=hulp" className={kz.dienstAnders}>
-        <span><strong>Iets anders nodig?</strong> Stuur een bericht, dan kijkt Yannick wat mogelijk is.</span>
+        <span><strong>Iets anders nodig?</strong> Stuur een bericht, dan kijken we wat mogelijk is.</span>
         <ArrowRight size={18} />
       </Link>
     </>
@@ -1088,7 +1088,7 @@ function Voordelen(ctx: Ctx) {
           {saldo > 0 && (
             <div className={kz.rijKnoppen}>
               <AanvraagKnop klantId={k.id} soort="andere" voorvoegsel={`Tegoed gebruiken (€ ${euro})`} metFotos={false} klein alGevraagd={inwisselGevraagd} alGevraagdTekst="Aangevraagd"
-                label="Tegoed gebruiken" titel="Tegoed gebruiken" uitleg={`Je € ${euro} gaat af van je volgende werk. Yannick bevestigt het.`} placeholder="Voor welk werk? (optioneel)" />
+                label="Tegoed gebruiken" titel="Tegoed gebruiken" uitleg={`Je € ${euro} gaat af van je volgende werk. We bevestigen het.`} placeholder="Voor welk werk? (optioneel)" />
             </div>
           )}
         </div>
@@ -1235,7 +1235,7 @@ function Hulp({ k }: Ctx) {
       )}
 
       <section className={kz.kaart} id="berichten">
-        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><MessagesSquare size={18} /> Berichten met Yannick</h2></div>
+        <div className={kz.kaartKop}><h2 className={kz.kaartTitel}><MessagesSquare size={18} /> Berichten</h2></div>
         {lijst.length > 0 && (
           <ul className={kz.gesprek}>
             {lijst.map((o) => (
@@ -1258,7 +1258,7 @@ function Hulp({ k }: Ctx) {
 
       <section className={`${kz.kaart} ${kz.spoedKaart}`} id="storm">
         <h2 className={kz.kaartTitel}><Siren size={18} /> Storm of een dringende vraag?</h2>
-        <p className={kz.sub} style={{ marginTop: 4 }}>Bel Yannick of stuur een WhatsApp, dan helpt hij je zo snel mogelijk. Of meld het hieronder met foto&apos;s.</p>
+        <p className={kz.sub} style={{ marginTop: 4 }}>Bel of stuur een WhatsApp, dan helpen we je zo snel mogelijk. Of meld het hieronder met foto&apos;s.</p>
         <div className={kz.spoedRij}>
           <a className={`${kz.knop} ${kz.knopPrimair}`} href={`tel:${SPOED_TEL}`}>Bel {SPOED_TOON}</a>
           <a className={`${kz.knop} ${kz.knopLicht}`} href={waLink(k, "iets dringends")} target="_blank" rel="noopener noreferrer"><WaIcoon size={17} /> WhatsApp</a>
@@ -1293,7 +1293,7 @@ function Hulp({ k }: Ctx) {
           <div><dt>Telefoon</dt><dd>{k.telefoon || "Niet ingevuld"}</dd></div>
           <div><dt>E-mail</dt><dd>{k.email || "Niet ingevuld"}</dd></div>
         </dl>
-        <p className={kz.rijSub} style={{ marginTop: 10 }}>Klopt er iets niet? Stuur een bericht, dan past Yannick het aan.</p>
+        <p className={kz.rijSub} style={{ marginTop: 10 }}>Klopt er iets niet? Stuur een bericht, dan passen we het aan.</p>
         <div className={kz.voorkeur}>
           <div>
             <p className={kz.rijTitel}>Mails over acties en voorstellen</p>
@@ -1331,7 +1331,7 @@ export default async function KlantPagina({
           <img src="/images/logo.avif" alt="MOS-X" className={kz.logo} style={{ margin: "0 auto 28px", height: 40 }} />
           <h1 className={kz.paginaTitel} style={{ justifyContent: "center" }}>Deze link werkt niet (meer)</h1>
           <p className={kz.sub} style={{ maxWidth: 420, margin: "12px auto 24px" }}>
-            Misschien is de link onvolledig gekopieerd, of kreeg je intussen een nieuwe. Stuur Yannick een berichtje, dan krijg je meteen je juiste link.
+            Misschien is de link onvolledig gekopieerd, of kreeg je intussen een nieuwe. Stuur ons een berichtje, dan krijg je meteen je juiste link.
           </p>
           <a className={`${kz.knop} ${kz.knopPrimair}`} href={`https://wa.me/${WA_NUMMER}?text=${encodeURIComponent("Hallo Yannick, mijn link naar de klantenzone werkt niet. Kan je hem opnieuw sturen?")}`}>
             <WaIcoon size={18} /> Vraag je link op via WhatsApp

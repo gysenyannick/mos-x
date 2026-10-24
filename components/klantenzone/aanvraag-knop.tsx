@@ -43,7 +43,7 @@ export default function AanvraagKnop({
   if (alGevraagd && !open) {
     return (
       <span className={`${kz.badge} ${kz.badgeGroen}`} style={{ padding: "8px 12px", fontSize: 13 }}>
-        <CheckCircle2 size={14} /> {alGevraagdTekst ?? "Aangevraagd, Yannick neemt contact op"}
+        <CheckCircle2 size={14} /> {alGevraagdTekst ?? "Aangevraagd, we nemen contact op"}
       </span>
     );
   }
@@ -78,7 +78,7 @@ export default function AanvraagKnop({
             </div>
             {klaar ? (
               <>
-                <p className={kz.sub} style={{ marginTop: 0 }}>Bedankt! Yannick heeft je vraag gekregen en neemt snel contact met je op, meestal binnen 1 werkdag. Je volgt de status bij Diensten.</p>
+                <p className={kz.sub} style={{ marginTop: 0 }}>Bedankt! We hebben je vraag gekregen en nemen snel contact met je op, meestal binnen 1 werkdag. Je volgt de status bij Diensten.</p>
                 <div className={kz.rijKnoppen}><button type="button" className={kz.knop} onClick={() => { setOpen(false); }}>Sluiten</button></div>
               </>
             ) : (
@@ -97,7 +97,7 @@ export default function AanvraagKnop({
                 )}
                 {fout && <p className={kz.fout}>{fout}</p>}
                 <div className={kz.rijKnoppen}>
-                  <button type="button" className={kz.knop} onClick={verstuur} disabled={bezig} style={{ flex: 1 }}>{bezig ? "Even geduld…" : "Verstuur naar Yannick"}</button>
+                  <button type="button" className={kz.knop} onClick={verstuur} disabled={bezig} style={{ flex: 1 }}>{bezig ? "Even geduld…" : "Versturen"}</button>
                 </div>
               </>
             )}

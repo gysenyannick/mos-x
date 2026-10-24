@@ -45,7 +45,7 @@ export default function StormForm({ klantId, spoedTel, spoedToon }: { klantId: s
             {klaar ? (
               <div className={kz.stormKlaar}>
                 <CheckCircle2 size={24} />
-                <p className={kz.sub} style={{ margin: 0 }}>Yannick neemt zo snel mogelijk contact op. Spoed? Bel {spoedToon}.</p>
+                <p className={kz.sub} style={{ margin: 0 }}>We nemen zo snel mogelijk contact op. Spoed? Bel {spoedToon}.</p>
               </div>
             ) : (
               <form onSubmit={verstuur}>
