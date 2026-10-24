@@ -5,14 +5,14 @@ import { ArrowLeft, Camera, Clock, ExternalLink, FileText, KeyRound, MessagesSqu
 import { isBeheerder } from "@/lib/klantenzone/auth";
 import { getInstellingen, getKlant } from "@/lib/klantenzone/store";
 import { effectief } from "@/lib/klantenzone/auto";
-import { fmtDag, fmtEuro, fmtKort, fmtUur, vandaag } from "@/lib/klantenzone/tijd";
+import { fmtDag, fmtEuro, fmtKort, fmtMoment, fmtUur, vandaag } from "@/lib/klantenzone/tijd";
 import { DOC_IS_FACTUUR, DOC_TYPE_LABEL, FASES, FASE_LABEL } from "@/lib/klantenzone/types";
 import FotoGalerij from "@/components/klantenzone/foto-galerij";
 import { BeheerDak } from "@/components/klantenzone/beheer-dak";
 import { BeheerAanvragenV2, BeheerVerwijzingen, BeheerZorg } from "@/components/klantenzone/beheer-portaal";
 import { BevestigKnop, DocumentUpload, FotoUpload, KopieerLink } from "@/components/klantenzone/beheer-client";
 import {
-  bewaarKlant, nieuweLink, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
+  bewaarKlant, nieuweLink, stuurWelkomstmail, verwijderAfspraak, verwijderDocument, verwijderFoto, verwijderKlant,
   opmerkingGezien, verwijderNotitie, verwijderOpmerking, voegAfspraakToe, voegOpmerkingToe,
   zetDocumentStatus,
 } from "../actions";
@@ -45,6 +45,7 @@ export default async function BeheerKlant({ params }: { params: Promise<{ id: st
   const waTekst = `Dag ${k.voornaam}, hier is je persoonlijke pagina bij MOS-X. Daar volg je je dak op: planning, foto's, documenten en garantie. Bewaar deze link goed:\n${link}\n\nGroetjes, Yannick`;
   const waUpdate = `Dag ${k.voornaam}, er is nieuws over je dak: kijk even op je pagina 👉 ${link}`;
 
+  const welkomOp = (k.meldingen ?? []).find((m) => m.sleutel === "welkom")?.datum;
   const bewaar = bewaarKlant.bind(null, k.id);
   const afspraakToe = voegAfspraakToe.bind(null, k.id);
 
@@ -78,6 +79,16 @@ Groetjes, Yannick`)}`}>Vraag een review</a>
             <p className={kz.sub} style={{ margin: 0 }}>Vul een gsm-nummer in om de link via WhatsApp te sturen.</p>
           )}
         </div>
+        {k.email ? (
+          <form action={stuurWelkomstmail.bind(null, k.id)} style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
+            <p className={kz.sub} style={{ margin: 0 }}>
+              {welkomOp ? `Welkomstmail met de link verstuurd op ${fmtMoment(welkomOp)}.` : "De welkomstmail met de link is nog niet verstuurd."}
+            </p>
+            <button className={`${kz.knop} ${kz.knopLicht} ${kz.knopKlein}`}>{welkomOp ? "Opnieuw sturen" : "Welkomstmail sturen"}</button>
+          </form>
+        ) : (
+          <p className={kz.sub} style={{ margin: "12px 0 0" }}>Vul een e-mailadres in: dan krijgt de klant zijn link ook per mail.</p>
+        )}
       </section>
 
       <BeheerAanvragenV2 k={k} />

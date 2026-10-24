@@ -11,12 +11,44 @@ import type { Klant } from "./types";
  */
 export type MeldingSoort =
   | "afspraak" | "fotos" | "document" | "oplevering" | "garantie" | "controle" | "bericht" | "beloning" | "aanvraag"
-  | "onderhoud" | "actie" | "buurtactie";
+  | "onderhoud" | "actie" | "buurtactie" | "welkom";
 
 const MARKETING: MeldingSoort[] = ["onderhoud", "actie", "buurtactie"];
 const MARKETING_PAUZE_DAGEN = 7;
 
 export const basisUrl = () => process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mos-x.be";
+
+const TIP_BEGINSCHERM = "Tip: open de link op je gsm en kies \"Zet op beginscherm\". Dan staat je klantenzone tussen je apps.";
+
+/** Welkomstmail met de persoonlijke link. Gaat maar één keer, ook als hij twee keer aangeroepen wordt. */
+export function stuurWelkom(k: Klant) {
+  return meldKlant(k, {
+    soort: "welkom", sleutel: "welkom",
+    onderwerp: "Welkom bij MOS-X: je persoonlijke klantenzone",
+    tekst: `Bedankt voor je vertrouwen. In je klantenzone volg je alles over je dak: wanneer we komen, foto's van de werken, je offerte en facturen, je garantie en je onderhoud.\n\nDe link is persoonlijk: je hebt geen wachtwoord nodig, deel hem dus niet met anderen.\n\n${TIP_BEGINSCHERM}`,
+    knop: { label: "Open je klantenzone", tab: "overzicht" },
+  });
+}
+
+/** Na "nieuwe link": de klant krijgt meteen de nieuwe link, de oude werkt niet meer. */
+export function stuurNieuweLink(k: Klant) {
+  return meldKlant(k, {
+    soort: "welkom", sleutel: `nieuwe-link-${k.id}`,
+    onderwerp: "Je nieuwe link naar je klantenzone",
+    tekst: `Je klantenzone heeft een nieuwe link gekregen. De vorige link werkt niet meer.\n\n${TIP_BEGINSCHERM}`,
+    knop: { label: "Open je klantenzone", tab: "overzicht" },
+  });
+}
+
+/** Link opnieuw opgevraagd via mos-x.be/klant: hoogstens één mail per uur. */
+export function stuurLinkOpnieuw(k: Klant) {
+  return meldKlant(k, {
+    soort: "bericht", sleutel: `link-${new Date().toISOString().slice(0, 13)}`,
+    onderwerp: "Je link naar je klantenzone",
+    tekst: `Hier is je persoonlijke link naar je klantenzone van MOS-X. Bewaar deze mail goed en deel de link niet met anderen.\n\n${TIP_BEGINSCHERM}`,
+    knop: { label: "Open je klantenzone", tab: "overzicht" },
+  });
+}
 
 /** Mag de klant marketing ontvangen? Standaard ja voor bestaande klanten (gelijkaardige diensten), tenzij afgemeld. */
 export function magMarketing(k: Klant): boolean {

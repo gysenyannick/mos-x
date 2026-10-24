@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { MessageCircle, ShieldCheck } from "lucide-react";
+import { CalendarDays, FileText, Leaf, Phone } from "lucide-react";
+import Link from "next/link";
 import PageLayout from "@/components/page-layout";
 import LinkAanvraag from "@/components/klantenzone/link-aanvraag";
 
 export const metadata: Metadata = {
   title: "Klantenzone | MOS-X",
-  description: "Volg je dakwerken, je dakdossier, je garantie en je onderhoud in je persoonlijke klantenzone van MOS-X.",
+  description: "Log in op je klantenzone van MOS-X: je planning, foto's van de werken, je documenten, garantie en onderhoud.",
   robots: { index: false, follow: true },
 };
 
@@ -28,7 +29,12 @@ export default function KlantenzoneIngang() {
         .kz-link-knop:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
         .kz-link-knop:disabled { opacity: .7; cursor: default; }
         .kz-link-ok { padding: 16px 18px; border-radius: 12px; background: #EEF6E6; border: 1px solid #CFE5B8; }
-        .kz-link-punten { list-style: none; margin: 28px 0 0; padding: 22px 0 0; border-top: 1px solid #E5E7EB; display: grid; gap: 12px; }
+        .kz-link-kop { margin: 28px 0 0; padding-top: 22px; border-top: 1px solid #E5E7EB; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #545454; }
+        .kz-link-punten { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+        .kz-link-voet { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 24px; padding-top: 18px; border-top: 1px solid #E5E7EB; font-size: 14px; color: #545454; }
+        .kz-link-voet a { display: inline-flex; align-items: center; gap: 6px; color: #3F6B22; font-weight: 700; text-decoration: none; white-space: nowrap; }
+        .kz-link-voet a:hover { text-decoration: underline; }
+        .kz-link-voet a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 4px; }
         .kz-link-punten li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; line-height: 1.5; color: #545454; }
         .kz-link-punten svg { flex: none; margin-top: 2px; color: #7AB54E; }
         .kz-link-punten a { color: #3F6B22; font-weight: 700; text-decoration: none; }
@@ -37,16 +43,22 @@ export default function KlantenzoneIngang() {
       `}</style>
       <section className="kz-link">
         <div className="kz-link-kaart">
-          <p className="kz-link-oog">Klantenzone</p>
-          <h1 className="kz-link-titel">Volg je dak, op één plek</h1>
+          <p className="kz-link-oog">MOS-X</p>
+          <h1 className="kz-link-titel">Inloggen in je klantenzone</h1>
           <p className="kz-link-sub">
-            Je werken, je dakdossier, je garantie en je onderhoud. Elke klant van MOS-X krijgt een persoonlijke link. Kwijt? Vul je e-mailadres in en je krijgt hem opnieuw.
+            Klant bij MOS-X? Vul het e-mailadres in dat je aan Yannick gaf. Je krijgt meteen een mail met je persoonlijke link. Een wachtwoord heb je niet nodig.
           </p>
           <LinkAanvraag />
+          <p className="kz-link-kop">In je klantenzone vind je</p>
           <ul className="kz-link-punten">
-            <li><ShieldCheck size={18} /> <span>Je link is enkel voor jou. Deel hem niet met anderen.</span></li>
-            <li><MessageCircle size={18} /> <span>Liever even bellen? <a href="tel:+32468352869" style={{ whiteSpace: "nowrap" }}>+32 468 35 28 69</a></span></li>
+            <li><CalendarDays size={18} /> <span>Wanneer Yannick komt, en foto&apos;s van de werken</span></li>
+            <li><FileText size={18} /> <span>Je offerte, facturen en garantie</span></li>
+            <li><Leaf size={18} /> <span>Je onderhoud en je voordelen</span></li>
           </ul>
+          <div className="kz-link-voet">
+            <span>Nog geen klant? <Link href="/#calculator">Bereken je richtprijs</Link></span>
+            <a href="tel:+32468352869"><Phone size={14} /> +32 468 35 28 69</a>
+          </div>
         </div>
       </section>
     </PageLayout>

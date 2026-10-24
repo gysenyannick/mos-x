@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { timingSafeEqual } from "crypto";
 import { getKlant, klantVoorExternId, koppelExternId, nieuwId, saveKlant, wijzigKlant } from "@/lib/klantenzone/store";
+import { stuurWelkom } from "@/lib/klantenzone/meldingen";
 import {
   DOC_LOG_ZIN, FASES, FOTO_FASE_LABEL, type DocStatus, type DocType, type Fase, type FotoFase, type Klant,
 } from "@/lib/klantenzone/types";
@@ -23,7 +24,8 @@ export const runtime = "nodejs";
  *   "werken":    [{ "naam": "Dakreiniging", "datum": "2026-10-23" }],
  *   "documenten":[{ "type": "offerte", "titel": "Offerte", "url": "https://...pdf", "bedrag": 4850, "status": "info" }],
  *   "fotos":     [{ "url": "https://...jpg", "fase": "voor", "bijschrift": "Voorkant" }],
- *   "notitie":   { "titel": "Plaatsbezoek", "tekst": "..." }
+ *   "notitie":   { "titel": "Plaatsbezoek", "tekst": "..." },
+ *   "welkom":    true                           // optioneel: welkomstmail met de link bij een nieuw dossier
  * }
  *
  * Bestaat het dossier al (zelfde externId), dan wordt het aangevuld: afspraken en werken met
@@ -40,6 +42,8 @@ type Bericht = {
   documenten?: { type?: string; titel?: string; url?: string; bedrag?: number; status?: string; datum?: string }[];
   fotos?: { url?: string; fase?: string; bijschrift?: string }[];
   notitie?: { titel?: string; tekst?: string };
+  /** true: de klant krijgt bij een nieuw dossier meteen de welkomstmail met zijn link */
+  welkom?: boolean;
 };
 
 const s = (v: unknown, max = 300) => (typeof v === "string" ? v.trim().slice(0, max) : "");
@@ -137,6 +141,7 @@ export async function POST(req: NextRequest) {
     await saveKlant(k);
     await koppelExternId(externId, k.id);
     k = (await getKlant(k.id)) ?? k;
+    if (m.welkom === true && k.email) await stuurWelkom(k).catch(() => undefined);
   }
 
   revalidatePath(`/klant/${k.id}`);

@@ -1,7 +1,7 @@
 "use server";
 
 import { FROM_KLANT, esc, sendMail } from "@/lib/mail";
-import { meldKlant } from "@/lib/klantenzone/meldingen";
+import { meldKlant, stuurNieuweLink, stuurWelkom } from "@/lib/klantenzone/meldingen";
 import { fmtDag, fmtUur } from "@/lib/klantenzone/tijd";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE, controleerWachtwoord, vereisBeheerder } from "@/lib/klantenzone/auth";
 import {
   deleteKlant, getInstellingen, getKlant, getMomenten, herkoppelRefCode, koppelExternId, nieuwId, saveInstellingen,
-  saveKlant, saveMomenten,
+  saveKlant, saveMomenten, wijzigKlant,
   verwijderBestand,
 } from "@/lib/klantenzone/store";
 import {
@@ -69,6 +69,17 @@ export async function logout() {
 
 /* ── Klanten ──────────────────────────────────────────────────────────────── */
 
+/** Welkomstmail (opnieuw) versturen vanuit het beheer, bv. als het e-mailadres later ingevuld werd. */
+export async function stuurWelkomstmail(id: string) {
+  await vereisBeheerder();
+  const k = await laad(id);
+  if (!k.email) return;
+  await wijzigKlant(id, (x) => { x.meldingen = (x.meldingen ?? []).filter((m) => m.sleutel !== "welkom"); });
+  const vers = await getKlant(id);
+  if (vers) await stuurWelkom(vers).catch(() => undefined);
+  ververs(id);
+}
+
 export async function maakKlant(fd: FormData) {
   await vereisBeheerder();
   const nu = new Date().toISOString();
@@ -89,6 +100,8 @@ export async function maakKlant(fd: FormData) {
   };
   if (!k.voornaam) throw new Error("Voornaam is verplicht");
   await saveKlant(k);
+  // Met een e-mailadres krijgt de klant meteen zijn link (zonder Resend-sleutel gebeurt er niets)
+  if (k.email) await stuurWelkom(k).catch(() => undefined);
   ververs();
   redirect(`/beheer/${k.id}`);
 }
@@ -158,6 +171,7 @@ export async function nieuweLink(id: string) {
   await deleteKlant(oudId);
   await herkoppelRefCode(k);
   if (k.externId) await koppelExternId(k.externId, k.id);
+  if (k.email) await stuurNieuweLink(k).catch(() => undefined);
   ververs(oudId);
   redirect(`/beheer/${k.id}`);
 }
