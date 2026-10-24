@@ -28,7 +28,7 @@ export default function SiteHero() {
     >
       {/* Video background */}
       <video
-        src="/videos/yannick-hero.mp4"
+        src="/videos/hero-dakreiniging.mp4"
         autoPlay muted loop playsInline
         style={{
           position: "absolute", top: 0, left: 0,
