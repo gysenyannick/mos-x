@@ -11,11 +11,29 @@ export default function SiteKlantenzone() {
   return (
     <section style={{
       background: "radial-gradient(800px 480px at 85% 30%, rgba(155,203,108,0.10), transparent 65%), #FFFFFF",
-      padding: "100px 0", overflow: "hidden",
+      padding: "100px 0", overflow: "hidden", position: "relative",
     }}>
+      <svg aria-hidden="true" viewBox="0 0 600 600" style={{ position: "absolute", right: "-120px", top: "50%", transform: "translateY(-50%)", width: "760px", height: "760px", zIndex: 0 }}>
+        <defs>
+          <radialGradient id="kzp-vlak" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#9BCB6C" stopOpacity="0.16" />
+            <stop offset="100%" stopColor="#9BCB6C" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="300" cy="300" r="300" fill="url(#kzp-vlak)" />
+        <circle cx="300" cy="300" r="210" fill="none" stroke="#9BCB6C" strokeOpacity="0.18" strokeWidth="1.2" strokeDasharray="2 7" />
+        <circle cx="300" cy="300" r="270" fill="none" stroke="#9BCB6C" strokeOpacity="0.10" strokeWidth="1" />
+      </svg>
+      <svg aria-hidden="true" width="120" height="90" viewBox="0 0 120 90" style={{ position: "absolute", left: "4%", bottom: "48px", zIndex: 0 }}>
+        <circle cx="20" cy="30" r="10" fill="#9BCB6C" fillOpacity="0.18" />
+        <circle cx="62" cy="12" r="5" fill="#9BCB6C" fillOpacity="0.25" />
+        <circle cx="70" cy="62" r="8" fill="#9BCB6C" fillOpacity="0.14" />
+        <circle cx="108" cy="40" r="4" fill="#9BCB6C" fillOpacity="0.25" />
+      </svg>
       <style>{`
         .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 64px; align-items: center; }
-        .kzp-oog { margin: 0 0 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #7AB54E; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .kzp-oog { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #7AB54E; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .kzp-icoon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: #EEF6E6; color: #7AB54E; box-shadow: inset 0 0 0 1px #CFE5B8; }
         .kzp-titel { margin: 0 0 18px; font-size: clamp(1.9rem, 3.6vw, 2.9rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .kzp-tekst { margin: 0 0 26px; max-width: 540px; font-size: 17px; line-height: 1.7; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-lijst { list-style: none; margin: 0 0 34px; padding: 0; display: grid; gap: 14px; }
@@ -87,10 +105,20 @@ export default function SiteKlantenzone() {
           .kzp-tekst { font-size: 16px; text-wrap: pretty; }
         }
       `}</style>
-      <div className="site-wrap">
+      <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
         <div className="kzp-raster">
           <div className="kzp-inhoud">
-            <p className="kzp-oog">Mijn MOS-X</p>
+            <p className="kzp-oog">
+              <span className="kzp-icoon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 11.2 12 4l9 7.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M5.5 9.6V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.6" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                  <circle cx="12" cy="13" r="1.9" fill="currentColor" />
+                  <path d="M12 14.4v2.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </span>
+              Mijn MOS-X
+            </p>
             <h2 className="kzp-titel">Volg je dak in je eigen klantenzone</h2>
             <p className="kzp-tekst">
               Elke klant krijgt een persoonlijke pagina met de planning, foto&apos;s van de werken, je documenten en je garantie. Geen account, geen wachtwoord: gewoon je eigen link.
