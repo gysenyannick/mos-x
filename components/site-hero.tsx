@@ -76,6 +76,11 @@ export default function SiteHero() {
                 gap: "8px",
               }}
             >
+              <svg width="18" height="13" viewBox="0 0 18 13" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, borderRadius: "2px", marginTop: "1px" }}>
+                <rect x="0"  width="6"  height="13" fill="#000000" />
+                <rect x="6"  width="6"  height="13" fill="#FFE000" />
+                <rect x="12" width="6"  height="13" fill="#EF3340" />
+              </svg>
               <span>Actief regio Antwerpen, Limburg,{" "}
                 <span style={{ whiteSpace: "nowrap" }}>Vlaams-Brabant</span>
               </span>
