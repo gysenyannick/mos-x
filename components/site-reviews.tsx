@@ -98,7 +98,7 @@ export default function SiteReviews() {
 
       {/* Decorative background photo */}
       <img
-        src="/images/IMG_5397.JPEG"
+        src="/images/IMG_5898.JPEG"
         aria-hidden="true"
         className="reviews-bg-photo"
         style={{
