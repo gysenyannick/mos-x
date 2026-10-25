@@ -39,13 +39,7 @@ export default function SiteContact() {
       @media (max-width: 767px) {
         /* 1. Bovenste tekst centreren */
         .contact-headline-col h2,
-        .contact-headline-col > p:not(.contact-region-label) {
-          text-align: center !important;
-        }
-
-        /* Regio-badge gecentreerd meelopen met de rest */
-        .contact-region-label {
-          justify-content: center !important;
+        .contact-headline-col > p {
           text-align: center !important;
         }
 
@@ -62,7 +56,7 @@ export default function SiteContact() {
         .contact-checkmarks > div > span { font-size: 13px !important; }
         .contact-headline-col { padding-bottom: 0 !important; }
         .contact-headline-col h2 { font-size: 26px !important; margin-top: 4px !important; }
-        .contact-headline-col > p:not(.contact-region-label) { margin-top: 0 !important; font-size: 14.5px !important; }
+        .contact-headline-col > p { margin-top: 0 !important; font-size: 14.5px !important; }
 
         /* 2. Bulletgroep als geheel inspringen; bullets blijven links uitgelijnd.
               width:fit-content geeft de groep de breedte van de langste regel,
@@ -115,14 +109,6 @@ export default function SiteContact() {
 
           {/* ── Col 1: Headline + curved arrow ── */}
           <div className="contact-headline-col" style={{ display: "flex", flexDirection: "column", paddingBottom: "20px" }}>
-            <p className="contact-region-label" style={{
-              fontSize: "9.5px", fontWeight: 700, textTransform: "uppercase",
-              letterSpacing: "0.12em", color: GREEN, marginBottom: "16px",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              display: "flex", alignItems: "center", gap: "10px",
-            }}>
-              <span>Actief regio Antwerpen, Limburg,{" "}<br className="hidden lg:inline" /><span style={{ whiteSpace: "nowrap" }}>Vlaams-Brabant</span></span>
-            </p>
             <h2 style={{
               fontSize: "clamp(1.9rem, 2.2vw, 1.9rem)", fontWeight: 800,
               color: "#FFFFFF", lineHeight: 1.2, letterSpacing: "-0.028em",
