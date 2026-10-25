@@ -31,7 +31,7 @@ const VERGELIJK: [string, string][] = [
   ["“We komen ergens in oktober.” Wanneer precies hoor je pas de dag ervoor.", "Je startdatum staat op je pagina zodra hij vastligt, en je krijgt een berichtje."],
   ["Wat er op je dak gebeurt, zie je alleen als je zelf de ladder op gaat.", "Foto’s van voor, tijdens en na verschijnen op je pagina. Je volgt alles vanuit je zetel."],
   ["Offerte, voorschot en factuur: verspreid over mails en papiertjes.", "Al je documenten op één plek, met wat betaald is en wat nog openstaat."],
-  ["Je weet niet wie er aanbelt, of er komt een onderaannemer.", "Je ziet op voorhand wie er komt: ik, Yannick. Ik doe het werk zelf."],
+  ["Je weet niet wie er aanbelt.", "Je ziet op voorhand wie er komt en wanneer."],
   ["Een afspraak verzetten? Heen en weer bellen tot het past.", "Tot 48 uur vooraf kies je zelf een ander vrij moment op je pagina."],
 ];
 

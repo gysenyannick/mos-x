@@ -978,7 +978,7 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
       <section className={kz.dienstHero}>
         <span className={kz.buurOog}>Enkel voor klanten</span>
         <p className={kz.buurTitel}>{naWerken ? "Nu je dak proper is, zorgen we ook voor de rest" : "Ook voor de rest van je woning"}</p>
-        <p className={kz.buurSub}>Dakgoten, gevel, oprit en terras. Zonder onderaannemers, en altijd eerst een eerlijke prijs.</p>
+        <p className={kz.buurSub}>Dakgoten, gevel, oprit en terras. Altijd eerst een eerlijke prijs.</p>
       </section>
 
       <section id="combi" className={kz.combiKaart}>

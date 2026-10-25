@@ -48,8 +48,7 @@ export default function SiteWerkgebied() {
             Actief in 4 provincies.
           </h2>
           <p style={{ color: "#545454", fontSize: "16px", lineHeight: 1.7 }}>
-            Yannick werkt persoonlijk in Vlaams-Brabant, Oost-Vlaanderen, Antwerpen en Limburg.
-            Geen onderaannemers.
+            We werken in Vlaams-Brabant, Oost-Vlaanderen, Antwerpen en Limburg.
           </p>
         </div>
 

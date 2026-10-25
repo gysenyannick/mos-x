@@ -42,7 +42,7 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
               Je buur koos voor een <span style={{ color: "#9BCB6C" }}>verzorgd dak.</span> Jij ook?
             </h1>
             <p style={{ fontSize: 18, lineHeight: 1.6, color: "#545454", margin: "0 0 22px", maxWidth: 520 }}>
-              Ik ben Yannick van MOS-X. Ik reinig en bescherm daken, en ik doe het werk zelf: geen onderaannemers, een eerlijke prijs vooraf.
+              Ik ben Yannick van MOS-X. Ik reinig en bescherm daken, met een eerlijke prijs vooraf.
               {wie !== "Een klant" ? ` ${wie} was tevreden en stuurde je deze link.` : ""}
             </p>
             {voordeel && (
