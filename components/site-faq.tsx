@@ -305,10 +305,10 @@ export default function SiteFaq() {
           .faq-mini-link svg { width: 16px; height: 16px; }
           .faq-mini-link:hover,
           .faq-mini-link:active {
-            background: #7AB54E;
+            background: #9BCB6C;
           }
           .faq-mini-link:focus-visible {
-            outline: 2px solid #7AB54E;
+            outline: 2px solid #9BCB6C;
             outline-offset: 2px;
           }
         }

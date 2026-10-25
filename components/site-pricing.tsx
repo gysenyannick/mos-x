@@ -1076,7 +1076,7 @@ export default function SitePricing() {
                         transition: "background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
                       }}
                       onMouseEnter={e => {
-                        e.currentTarget.style.background = "#7AB54E";
+                        e.currentTarget.style.background = "#9BCB6C";
                         e.currentTarget.style.boxShadow = "0 6px 22px rgba(90,158,47,0.38)";
                         e.currentTarget.style.transform = "translateY(-2px)";
                         const chevron = e.currentTarget.querySelector("svg");

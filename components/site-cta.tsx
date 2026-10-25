@@ -5,7 +5,7 @@ import { Phone } from "lucide-react";
 import { useState } from "react";
 import { BtnPress } from "@/components/btn-press";
 
-const GREEN = "#9ACA63";
+const GREEN = "#9BCB6C";
 const DARK = "#0B0F0C";
 
 const trustBullets = [

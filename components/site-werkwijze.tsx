@@ -31,10 +31,10 @@ export default function SiteWerkwijze() {
       padding: "100px 0", width: "100%", position: "relative", overflow: "hidden",
     }}>
       {/* Zachte golven onderaan, zoals een heuvellandschap */}
-      <svg aria-hidden="true" viewBox="0 0 1440 420" preserveAspectRatio="none" style={{ position: "absolute", left: 0, right: 0, bottom: 0, width: "100%", height: "55%", zIndex: 0 }}>
-        <path d="M0,170 C240,90 480,90 720,150 C960,210 1200,220 1440,120 L1440,420 L0,420 Z" fill="#9BCB6C" fillOpacity="0.08" />
-        <path d="M0,250 C260,190 520,200 760,250 C1000,300 1220,300 1440,230 L1440,420 L0,420 Z" fill="#9BCB6C" fillOpacity="0.10" />
-        <path d="M0,330 C300,290 600,300 860,330 C1100,358 1280,350 1440,320 L1440,420 L0,420 Z" fill="#7AB54E" fillOpacity="0.10" />
+      <svg aria-hidden="true" viewBox="0 0 1440 420" preserveAspectRatio="none" style={{ position: "absolute", left: 0, right: 0, bottom: 0, width: "100%", height: "55%", zIndex: 0, maskImage: "linear-gradient(to bottom, #000 55%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, #000 55%, transparent 100%)" }}>
+        <path d="M0,170 C240,90 480,90 720,150 C960,210 1200,220 1440,120 L1440,420 L0,420 Z" fill="#9BCB6C" fillOpacity="0.04" />
+        <path d="M0,250 C260,190 520,200 760,250 C1000,300 1220,300 1440,230 L1440,420 L0,420 Z" fill="#9BCB6C" fillOpacity="0.04" />
+        <path d="M0,330 C300,290 600,300 860,330 C1100,358 1280,350 1440,320 L1440,420 L0,420 Z" fill="#9BCB6C" fillOpacity="0.04" />
       </svg>
       {/* Bolletjes rechtsboven */}
       <svg aria-hidden="true" width="140" height="110" viewBox="0 0 140 110" style={{ position: "absolute", top: "40px", right: "6%", zIndex: 0 }}>
@@ -70,7 +70,7 @@ export default function SiteWerkwijze() {
       <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
 
         <div style={{ marginBottom: "48px", textAlign: "center" }}>
-          <p style={{ margin: "0 0 10px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7AB54E", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
+          <p style={{ margin: "0 0 10px", fontSize: "12px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#9BCB6C", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
             Zo werkt het
           </p>
           <h2 style={{

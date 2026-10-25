@@ -26,7 +26,7 @@ export default function MobileContactBar() {
       <style>{`
         .mcb-knop { transition: transform 150ms ease; }
         .mcb-knop:active { transform: scale(0.94); }
-        .mcb-knop:focus-visible { outline: 2px solid #7AB54E; outline-offset: 2px; }
+        .mcb-knop:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
       `}</style>
       <div className="lg:hidden">
       <div
@@ -61,7 +61,7 @@ export default function MobileContactBar() {
           Plaatsbezoek
         </button>
         <a href="tel:+32468352869" aria-label="Bel MOS-X" className="mcb-knop" style={{ ...rond, background: "#F7F8F6", color: "#1A1A1A" }}>
-          <Phone size={18} color="#7AB54E" strokeWidth={2.4} />
+          <Phone size={18} color="#9BCB6C" strokeWidth={2.4} />
         </a>
         <a href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer" aria-label="Chat via WhatsApp" className="mcb-knop" style={{ ...rond, background: "#25D366" }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white" aria-hidden="true">

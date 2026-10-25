@@ -1,324 +1,154 @@
 "use client";
 
-import Image from "next/image";
-import { Phone, CheckCircle, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import { BtnPress } from "@/components/btn-press";
+import { CalendarCheck, ChevronRight, Euro, House, Mail, MapPin, Palette, Phone, ShieldCheck } from "lucide-react";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
+import MosAchtergrond from "@/components/mos-achtergrond";
 
-const GREEN = "#9ACA63";
-const DARK = "#0B0F0C";
+function WhatsAppIcoon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
 
+/** Eén keuze in de kaart "Waar ben je naar op zoek?". */
+function Optie({ icoon, titel, sub, href, onClick, start = false, extern = false }: {
+  icoon: React.ReactNode; titel: string; sub: string; href?: string; onClick?: () => void; start?: boolean; extern?: boolean;
+}) {
+  const inhoud = (
+    <>
+      <span className="ct-icoon">{icoon}</span>
+      <span className="ct-optie-tekst"><b>{titel}</b><small>{sub}</small></span>
+      <ChevronRight size={18} className="ct-pijl" aria-hidden="true" />
+    </>
+  );
+  const klasse = start ? "ct-optie ct-optie-start" : "ct-optie";
+  if (onClick) return <button type="button" className={klasse} onClick={onClick}>{inhoud}</button>;
+  if (extern) return <a className={klasse} href={href} target="_blank" rel="noopener noreferrer">{inhoud}</a>;
+  return <Link className={klasse} href={href!}>{inhoud}</Link>;
+}
 
 export default function SiteContact() {
-  const [btnHovered, setBtnHovered] = useState(false);
-  const [phoneHovered, setPhoneHovered] = useState(false);
-  const [waHovered, setWaHovered] = useState(false);
   const [bezoekOpen, setBezoekOpen] = useState(false);
 
   return (
     <>
-    <style>{`
-      @media (max-width: 1023px) {
-        .site-contact-grid {
-          grid-template-columns: 1fr !important;
-          padding: 28px 24px 24px !important;
-          gap: 28px !important;
+    <section id="contact" className="ct">
+      <style>{`
+        .ct { position: relative; isolation: isolate; overflow: hidden; padding: 104px 24px; background: radial-gradient(620px 520px at 78% 50%, rgba(155,203,108,0.14), transparent 70%), radial-gradient(600px 420px at 0% 100%, rgba(155,203,108,0.07), transparent 65%), linear-gradient(180deg, #FFFFFF 0%, #FBFCFA 100%); }
+        .ct-raster { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: center; }
+        .ct-oog { margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9BCB6C; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ct-titel { margin: 0 0 20px; font-size: clamp(2rem, 3.6vw, 2.9rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ct-titel span { display: block; color: #9BCB6C; }
+        .ct-tekst { margin: 0 0 40px; max-width: 470px; font-size: 17px; line-height: 1.7; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+        .ct-gegevens { display: grid; gap: 24px; margin: 0 0 40px; padding: 0; list-style: none; }
+        .ct-gegevens li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; align-items: start; }
+        .ct-blok { width: 44px; height: 44px; border-radius: 12px; background: #EEF6E6; color: #9BCB6C; display: grid; place-items: center; }
+        .ct-gegevens b { display: block; margin-bottom: 2px; font-size: 17px; font-weight: 800; letter-spacing: -0.01em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ct-gegevens div > span, .ct-gegevens a { display: block; font-size: 15.5px; line-height: 1.55; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+        .ct-gegevens a { color: #9BCB6C; font-weight: 600; text-decoration: none; transition: color .2s ease; }
+        .ct-gegevens a:hover { color: #1A1A1A; }
+        .ct-gegevens a:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 3px; border-radius: 4px; }
+        .ct-gegevens small { display: block; font-size: 13.5px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
+        .ct-bewijs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding-top: 28px; border-top: 1px solid #E5E7EB; font-size: 14.5px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+        .ct-bewijs > span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .ct-bewijs b { color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ct-bewijs i { width: 1px; height: 22px; background: #E5E7EB; }
+        .ct-sterren { color: #9BCB6C; letter-spacing: 2px; }
+
+        .ct-kaart { border-radius: 20px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); overflow: hidden; }
+        .ct-kop { padding: 28px 30px 22px; border-bottom: 1px solid #E5E7EB; }
+        .ct-kop h3 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ct-kop p { margin: 6px 0 0; font-size: 14.5px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+        .ct-lijst { padding: 8px 22px 24px; background: #F7F8F6; }
+        .ct-groep { display: flex; align-items: center; gap: 12px; margin: 18px 4px 10px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8E8E89; font-family: var(--font-montserrat), system-ui, sans-serif; }
+                .ct-groep-start { color: #9BCB6C; }
+        .ct-opties { display: grid; gap: 10px; }
+        .ct-optie { width: 100%; display: grid; grid-template-columns: 46px minmax(0, 1fr) 18px; gap: 16px; align-items: center; padding: 14px 18px 14px 14px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E5E7EB; text-align: left; text-decoration: none; color: inherit; cursor: pointer; font: inherit; box-shadow: 0 1px 3px rgba(0,0,0,0.04); transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease; }
+        .ct-optie:hover { border-color: #9BCB6C; box-shadow: 0 10px 24px -14px rgba(30,51,36,0.35); transform: translateY(-1px); }
+        .ct-optie:active { transform: translateY(0); }
+        .ct-optie:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+        .ct-icoon { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: #F7F8F6; color: #1A1A1A; border: 1px solid #E5E7EB; }
+        .ct-optie-tekst b { display: block; font-size: 15.5px; font-weight: 700; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ct-optie-tekst small { display: block; margin-top: 2px; font-size: 13.5px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+        .ct-pijl { color: #8E8E89; transition: transform .2s ease, color .2s ease; }
+        .ct-optie:hover .ct-pijl { color: #7AB54E; transform: translateX(3px); }
+        .ct-optie-start { border-color: #CFE5B8; }
+        .ct-optie-start .ct-icoon { background: #9BCB6C; border-color: #9BCB6C; color: #FFFFFF; }
+        .ct-optie-start .ct-pijl { color: #9BCB6C; }
+
+        @media (max-width: 960px) {
+          .ct { padding: 72px 20px; }
+          .ct-raster { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+          .ct-tekst { max-width: none; }
         }
-        .contact-col-divider {
-          padding-left: 0 !important;
-          border-left: none !important;
-          margin-top: 0 !important;
+        @media (max-width: 520px) {
+          .ct-kop { padding: 24px 20px 20px; }
+          .ct-lijst { padding: 4px 12px 18px; }
+          .ct-optie { grid-template-columns: 42px minmax(0, 1fr) 16px; gap: 12px; padding: 12px 14px 12px 12px; }
+          .ct-icoon { width: 42px; height: 42px; }
+          .ct-bewijs { font-size: 13.5px; }
+          .ct-bewijs i { display: none; }
         }
-      }
+      `}</style>
 
-      /* Korte bullettekst bestaat alleen op mobiel */
-      .bullet-kort { display: none; }
-
-      /* ── Mobiel: uitlijning en knopbreedtes gelijktrekken ── */
-      @media (max-width: 767px) {
-        /* 1. Bovenste tekst centreren */
-        .contact-headline-col h2,
-        .contact-headline-col > p {
-          text-align: center !important;
-        }
-
-        /* Derde bullet ingekort zodat de groep centraler uitvalt */
-        .bullet-lang { display: none !important; }
-        .bullet-kort { display: inline !important; }
-        .contact-cta-btns { margin-top: 20px !important; }
-
-        /* Bullets als kleine labels naast elkaar */
-        .contact-richtprijs-group.contact-richtprijs-group { width: 100% !important; text-align: center; }
-        .contact-checkmarks.contact-checkmarks { flex-direction: row !important; flex-wrap: wrap; justify-content: center; gap: 8px !important; }
-        .contact-checkmarks > div { padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(155,203,108,0.25); gap: 6px !important; }
-        .contact-checkmarks > div svg { width: 14px; height: 14px; }
-        .contact-checkmarks > div > span { font-size: 13px !important; }
-        .contact-headline-col { padding-bottom: 0 !important; }
-        .contact-headline-col h2 { font-size: 26px !important; margin-top: 4px !important; }
-        .contact-headline-col > p { margin-top: 0 !important; font-size: 14.5px !important; }
-
-        /* 2. Bulletgroep als geheel inspringen; bullets blijven links uitgelijnd.
-              width:fit-content geeft de groep de breedte van de langste regel,
-              auto-marges centreren die groep binnen de kaart. */
-        .contact-richtprijs-group {
-          width: fit-content !important;
-          max-width: 100% !important;
-          margin-left: auto !important;
-          margin-right: auto !important;
-        }
-
-        /* 3. Bovenste twee knoppen even breed als WhatsApp/telefoon eronder */
-        .contact-cta-btns {
-          width: 100% !important;
-        }
-
-        /* 4. Onderste contactzone centreren; knoppen behouden hun breedte */
-        .contact-advies-col > p {
-          text-align: center !important;
-        }
-        .contact-profile {
-          justify-content: center !important;
-        }
-        .contact-hours {
-          text-align: center !important;
-        }
-      }
-    `}</style>
-    <section style={{
-      background: "#F7F8F6",
-      padding: "60px 24px 80px",
-      position: "relative",
-      zIndex: 20,
-    }}>
-      <div style={{ maxWidth: "1180px", margin: "0 auto" }}>
-        <div className="site-contact-grid" style={{
-          background: `radial-gradient(ellipse at 100% 100%, rgba(154,202,99,0.15) 0%, transparent 60%), #0B0F0C`,
-          border: "1px solid #9BCB6C",
-          borderRadius: "28px",
-          boxShadow: "0 28px 90px rgba(0,0,0,0.4)",
-          padding: "36px 64px",
-          position: "relative",
-          marginBottom: "0",
-          zIndex: 20,
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          alignItems: "stretch",
-          boxSizing: "border-box",
-        }}>
-
-          {/* ── Col 1: Headline + curved arrow ── */}
-          <div className="contact-headline-col" style={{ display: "flex", flexDirection: "column", paddingBottom: "20px" }}>
-            <h2 style={{
-              fontSize: "clamp(1.9rem, 2.2vw, 1.9rem)", fontWeight: 800,
-              color: "#FFFFFF", lineHeight: 1.2, letterSpacing: "-0.028em",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              marginBottom: "14px", marginTop: "12px",
-            }}>
-              Levenslang een <span style={{ color: GREEN }}>verzorgd dak</span> <br className="hidden lg:inline" />begint hier.
-            </h2>
-            <p style={{
-              fontSize: "15px", color: `rgba(255,255,255,0.6)`, lineHeight: 1.65,
-              fontFamily: "var(--font-inter), system-ui, sans-serif",
-              marginTop: "auto",
-            }}>
-              Persoonlijk advies. <br className="hidden lg:inline" />Alleen wat je dak écht nodig heeft.
-            </p>
-          </div>
-
-          {/* ── Col 2: CTA button ── */}
-          <div className="contact-col-divider" style={{ display: "flex", flexDirection: "column" }}>
-            <div className="contact-richtprijs-group">
-            <p style={{
-              fontSize: "11px", fontWeight: 700, textTransform: "uppercase",
-              letterSpacing: "0.14em", color: GREEN, marginBottom: "16px",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            }}>
-              Jouw richtprijs
-            </p>
-            {/* Checkmarks */}
-            <div className="contact-checkmarks" style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "0" }}>
-              {[
-                { txt: "Binnen 1 minuut" },
-                { txt: "Persoonlijk dakadvies", kort: "Persoonlijk" },
-                { txt: "Vrijblijvend en zonder verplichtingen", kort: "Vrijblijvend" },
-              ].map(({ txt, kort }) => (
-                <div key={txt} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <CheckCircle size={18} color="#9BCB6C" strokeWidth={2.5} style={{ flexShrink: 0 }} />
-                  <span style={{
-                    fontSize: "15px", color: "rgba(255,255,255,0.75)",
-                    fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    fontWeight: 500,
-                  }}>
-                    {kort ? (
-                      <>
-                        <span className="bullet-lang">{txt}</span>
-                        <span className="bullet-kort">{kort}</span>
-                      </>
-                    ) : txt}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            </div>
-
-            {/* CTA buttons — pushed to bottom */}
-            <div className="contact-cta-btns" style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto", width: "calc(100% - 60px)" }}>
-              <BtnPress
-                href="https://v0-dak-calculator.vercel.app/"
-                target="_blank"
-                onMouseEnter={() => setBtnHovered(true)}
-                onMouseLeave={() => setBtnHovered(false)}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  height: "48px", width: "100%", borderRadius: "12px",
-                  background: btnHovered ? "#7AB54E" : GREEN,
-                  color: "#FFFFFF", fontSize: "14px", fontWeight: 800,
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none", letterSpacing: "0.04em",
-                  transition: "background 200ms ease",
-                  boxSizing: "border-box",
-                }}
-              >
-                Bereken mijn richtprijs
-                <ChevronRight size={16} strokeWidth={2.5} style={{ marginLeft: "8px" }} />
-              </BtnPress>
-
-              <button
-                onClick={() => setBezoekOpen(true)}
-                onMouseEnter={e => { const el = e.currentTarget; el.style.borderColor = GREEN; el.style.background = "rgba(155,203,108,0.08)"; el.style.color = GREEN; }}
-                onMouseLeave={e => { const el = e.currentTarget; el.style.borderColor = "rgba(155,203,108,0.5)"; el.style.background = "transparent"; el.style.color = "#FFFFFF"; }}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  height: "48px", width: "100%", borderRadius: "12px",
-                  background: "transparent",
-                  border: "1px solid rgba(155,203,108,0.5)",
-                  color: "#FFFFFF", fontSize: "14px", fontWeight: 700,
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  letterSpacing: "0.04em", cursor: "pointer",
-                  transition: "border-color 0.2s ease, background 0.2s ease, color 0.2s ease",
-                  boxSizing: "border-box",
-                }}
-              >
-                Plan een plaatsbezoek
-              </button>
-            </div>
-          </div>
-
-          {/* ── Col 3: Yannick contact block ── */}
-          <div className="contact-col-divider contact-advies-col" style={{ display: "flex", flexDirection: "column" }}>
-            <p style={{
-              fontSize: "11px", fontWeight: 700, textTransform: "uppercase",
-              letterSpacing: "0.14em", color: GREEN, marginBottom: "16px",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            }}>
-              Persoonlijk advies nodig?
-            </p>
-
-            {/* Profile */}
-            <div className="contact-profile" style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
-              <div style={{ position: "relative", width: "72px", height: "72px", flexShrink: 0 }}>
-                <div style={{ width: "72px", height: "72px", borderRadius: "50%", border: `2px solid ${GREEN}`, overflow: "hidden", position: "relative" }}>
-                  <Image
-                    src="/images/yannick-avatar.jpg"
-                    alt="Yannick"
-                    width={128}
-                    height={128}
-                    quality={100}
-                    style={{
-                      position: "absolute", top: "50%", left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      width: "72px", height: "72px",
-                      objectFit: "cover", objectPosition: "center",
-                    }}
-                  />
-                </div>
-                <span style={{
-                  position: "absolute", bottom: 0, right: 0,
-                  width: "18px", height: "18px", borderRadius: "50%",
-                  background: GREEN, border: "2px solid #0B0F0C",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                  <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
-                    <path d="M1 3.5L3.5 6L8 1" stroke="#0B0F0C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-              </div>
+      <MosAchtergrond hoek="rechtsonder" />
+      <div className="ct-raster">
+        <div>
+          <p className="ct-oog">Contact</p>
+          <h2 className="ct-titel">Klaar voor een <span>verzorgd dak?</span></h2>
+          <p className="ct-tekst">Vragen, een richtprijs of een plaatsbezoek? Kies hiernaast wat je zoekt, of neem rechtstreeks contact met ons op.</p>
+          <ul className="ct-gegevens">
+            <li>
+              <span className="ct-blok"><MapPin size={20} /></span>
               <div>
-                <p style={{
-                  fontSize: "16px", fontWeight: 700, color: "#FFFFFF",
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  marginBottom: "4px",
-                }}>
-                  Yannick Gysen
-                </p>
-                <p style={{
-                  fontSize: "13px", color: `rgba(255,255,255,0.55)`, lineHeight: 1.5,
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                }}>
-                  Dakspecialist MOS-X
-                </p>
+                <b>Onze vestigingen</b>
+                <span>Pastorijstraat 47, 2590 Berlaar</span>
+                <span>Bovenpad 100, 2280 Grobbendonk</span>
               </div>
+            </li>
+            <li>
+              <span className="ct-blok"><Mail size={20} /></span>
+              <div><b>E-mail</b><a href="mailto:info@mos-x.be">info@mos-x.be</a></div>
+            </li>
+            <li>
+              <span className="ct-blok"><Phone size={20} /></span>
+              <div><b>Telefoon</b><a href="tel:+32468352869">+32 468 35 28 69</a><small>Ma - za: 08:00 - 17:00 · zo: gesloten</small></div>
+            </li>
+          </ul>
+          <div className="ct-bewijs">
+            <span><span className="ct-sterren" aria-hidden="true">★★★★★</span><b>5,0</b> op Google</span>
+            <i aria-hidden="true" />
+            <span><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>10 jaar</b> garantie</span>
+          </div>
+        </div>
+
+        <div className="ct-kaart">
+          <div className="ct-kop">
+            <h3>Waar ben je naar op zoek?</h3>
+            <p>We helpen je graag verder.</p>
+          </div>
+          <div className="ct-lijst">
+            <p className="ct-groep">Ontdekken</p>
+            <div className="ct-opties">
+              <Optie icoon={<Euro size={20} />} titel="Wat kost mijn dak?" sub="Bereken je richtprijs in 1 minuut" href="/#calculator" />
+              <Optie icoon={<Palette size={20} />} titel="Zie mijn dak in een nieuwe kleur" sub="Upload een foto van je huis" href="/dakkleur" />
             </div>
 
-            <p className="contact-hours" style={{
-              fontSize: "13px", color: `rgba(255,255,255,0.5)`,
-              fontFamily: "var(--font-inter), system-ui, sans-serif",
-              marginBottom: "16px",
-            }}>
-              Ma - Za: 08:00 - 17:00 <span style={{ margin: "0 6px", opacity: 0.4 }}>|</span> Zo: Gesloten
-            </p>
+            <p className="ct-groep ct-groep-start">Klaar om te starten</p>
+            <div className="ct-opties">
+              <Optie start icoon={<CalendarCheck size={20} />} titel="Plan een gratis plaatsbezoek" sub="We bekijken je dak ter plaatse" onClick={() => setBezoekOpen(true)} />
+              <Optie start extern icoon={<WhatsAppIcoon />} titel="Stuur ons een WhatsApp" sub="Snel antwoord, ook met foto's van je dak" href="https://wa.me/32468352869" />
+            </div>
 
-            {/* Buttons — pushed to bottom with marginTop auto */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "auto" }}>
-              <BtnPress
-                href="https://wa.me/32468352869"
-                target="_blank"
-                onMouseEnter={() => setWaHovered(true)}
-                onMouseLeave={() => setWaHovered(false)}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  gap: "8px", height: "48px", width: "100%", borderRadius: "12px",
-                  background: waHovered ? "#7AB54E" : "#9BCB6C",
-                  color: "#FFFFFF",
-                  fontSize: "14px", fontWeight: 700,
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none",
-                  transition: "background 0.2s ease",
-                  boxSizing: "border-box",
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                WhatsApp Yannick
-              </BtnPress>
-              <BtnPress
-                href="tel:+32468352869"
-                onMouseEnter={() => setPhoneHovered(true)}
-                onMouseLeave={() => setPhoneHovered(false)}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  gap: "8px", height: "48px", width: "100%", borderRadius: "12px",
-                  background: "transparent",
-                  border: phoneHovered ? "1px solid #9BCB6C" : "1px solid rgba(155,203,108,0.5)",
-                  color: phoneHovered ? "#9BCB6C" : "#FFFFFF",
-                  fontSize: "14px", fontWeight: 700,
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  textDecoration: "none",
-                  transition: "border-color 0.2s ease, color 0.2s ease",
-                  whiteSpace: "nowrap",
-                  boxSizing: "border-box",
-                }}
-              >
-                <Phone size={15} />
-                +32 468 35 28 69
-              </BtnPress>
+            <p className="ct-groep">Al klant?</p>
+            <div className="ct-opties">
+              <Optie icoon={<House size={20} />} titel="Mijn MOS-X" sub="Volg je werken in je klantenzone" href="/klant" />
             </div>
           </div>
-
-
         </div>
       </div>
     </section>

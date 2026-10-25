@@ -182,10 +182,10 @@ export default function SiteReviews() {
         opacity: 0.22,
         pointerEvents: "none",
         background: `
-          radial-gradient(circle at 30% 20%, #9ACA63 0 3px, transparent 4px),
-          radial-gradient(circle at 70% 35%, #9ACA63 0 5px, transparent 6px),
-          radial-gradient(circle at 45% 60%, #9ACA63 0 4px, transparent 5px),
-          radial-gradient(circle at 80% 75%, #9ACA63 0 7px, transparent 8px),
+          radial-gradient(circle at 30% 20%, #9BCB6C 0 3px, transparent 4px),
+          radial-gradient(circle at 70% 35%, #9BCB6C 0 5px, transparent 6px),
+          radial-gradient(circle at 45% 60%, #9BCB6C 0 4px, transparent 5px),
+          radial-gradient(circle at 80% 75%, #9BCB6C 0 7px, transparent 8px),
           radial-gradient(circle, rgba(154,202,99,0.28), transparent 65%)
         `,
         filter: "blur(0.5px)",

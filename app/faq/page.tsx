@@ -332,7 +332,7 @@ export default function FaqPage() {
                       onMouseLeave={() => setWaHov(false)}
                       style={{
                         display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                        background: waHov ? "#7AB54E" : "#9BCB6C", color: "#FFFFFF",
+                        background: waHov ? "#9BCB6C" : "#9BCB6C", color: "#FFFFFF",
                         borderRadius: "8px", padding: "12px 20px",
                         fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                         fontWeight: 700, fontSize: "14px", textDecoration: "none",

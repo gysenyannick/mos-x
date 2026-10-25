@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const GREEN = "#9ACA63";
+const GREEN = "#9BCB6C";
 
 const colTitle: React.CSSProperties = {
   display: "block",
@@ -94,10 +94,10 @@ export default function SiteFooter() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
             <Link href="/" style={{ display: "inline-block", marginBottom: "20px" }}>
               <Image
-                src="/images/logo-footer.avif"
+                src="/images/logo-footer-wit.png"
                 alt="MOS-X"
-                width={260} height={125}
-                style={{ height: "62px", width: "auto", objectFit: "contain" }}
+                width={1001} height={345}
+                style={{ height: "52px", width: "auto", objectFit: "contain" }}
               />
             </Link>
             <p style={{
@@ -162,6 +162,9 @@ export default function SiteFooter() {
             <span style={colTitle}>Contact</span>
             <ALink href="tel:+32468352869">+32 468 35 28 69</ALink>
             <ALink href="mailto:info@mos-x.be">info@mos-x.be</ALink>
+            <span style={{ ...linkStyle, cursor: "default" }}>
+              Pastorijstraat 47<br />2590 Berlaar
+            </span>
             <span style={{ ...linkStyle, cursor: "default" }}>
               Bovenpad 100<br />2280 Grobbendonk
             </span>

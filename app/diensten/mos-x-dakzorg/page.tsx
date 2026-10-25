@@ -1,307 +1,275 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Phone, ChevronRight, ChevronLeft, ArrowRight, ShieldCheck, Calendar, Eye, Bell, X, Check, Droplets, Leaf, ChevronDown, Banknote, Home } from "lucide-react";
+import { CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, ClipboardList, Droplets, Eye, Leaf, Phone, ShieldCheck, Sparkles, Wallet, X } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
-import BeforeAfterSlider from "@/components/before-after-slider";
-import { BtnPress } from "@/components/btn-press";
+import GoogleBalk from "@/components/google-balk";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
+import { DIENST_CSS } from "@/components/dienst-stijl";
 
-const benefits = [
-  { Icon: Home,     title: "Resultaat langer behouden",         desc: "Je dak blijft langer proper en verzorgd." },
-  { Icon: Leaf,     title: "Mosgroei tijdig aanpakken",          desc: "Beginnende mos- en algengroei krijgt minder kans om zich opnieuw op te bouwen." },
-  { Icon: Eye,      title: "Kleine gebreken sneller opmerken",   desc: "We controleren je dak en signaleren aandachtspunten voordat ze groter worden." },
-  { Icon: Banknote, title: "Geen grote achterstand meer",        desc: "Door regelmatig onderhoud voorkom je dat je dak opnieuw jarenlang vervuilt." },
+const voordelen = [
+  { Icoon: Leaf, titel: "Mos krijgt geen kans om terug te komen" },
+  { Icoon: Eye, titel: "Kleine gebreken vroeg opgemerkt" },
+  { Icoon: Droplets, titel: "Dakgoten die vrij blijven" },
+  { Icoon: Wallet, titel: "Geen grote, dure achterstand" },
+  { Icoon: Sparkles, titel: "Je dak blijft langer mooi" },
+  { Icoon: ClipboardList, titel: "Een rapport na elk bezoek" },
 ];
 
-const includesItems = [
-  "Jaarlijkse inspectie door Yannick persoonlijk",
-  "Preventieve reiniging waar nodig",
-  "Gootcontrole en -reiniging",
-  "Foto-rapportage voor en na",
-  "Advies op maat voor uw dak",
-  "Prioriteit bij dringende interventies",
-  "Geen verborgen kosten",
-  "Velux reiniging en onderhoud",
+const stappen = [
+  { nr: "01", titel: "Plaatsbezoek en advies", tekst: "We bekijken je dak en bespreken wat het nodig heeft." },
+  { nr: "02", titel: "Jij kiest wat erin zit", tekst: "Een volledige onderhoudsbeurt, of enkel je dakgoten of kleine herstellingen. Elk jaar of om de 2 jaar." },
+  { nr: "03", titel: "Wij volgen het op", tekst: "We plannen je onderhoud zelf in. Jij hoeft er niet meer aan te denken." },
 ];
 
-const withoutItems = [
+const inbegrepen = [
+  { titel: "Volledige dakcontrole", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
+  { titel: "Dakgoten en afvoer", tekst: "We maken je dakgoten en afvoeren vrij, zodat het water goed wegloopt." },
+  { titel: "Ontmossing en antimos", tekst: "We houden je dak mosvrij. Zit dit in je plan, dan krijg je 2 jaar mosvrij-garantie." },
+  { titel: "Veluxen, zinkwerk en aansluitingen", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
+  { titel: "Kleine herstellingen", tekst: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
+  { titel: "Rapport in je klantenzone", tekst: "Na elk bezoek vind je de foto's en onze bevindingen terug in je klantenzone." },
+];
+
+const zonder = [
   "Mos en algen groeien ongemerkt aan",
-  "Goten raken verstopt, water loopt over",
+  "Dakgoten raken verstopt en lopen over",
   "Kleine scheurtjes worden grote schade",
-  "Plotse rekeningen die u had kunnen vermijden",
-  "Geen bewijs van de staat van uw dak",
+  "Onverwachte, dure herstellingen",
 ];
 
-const withItems = [
-  "Yannick controleert jaarlijks persoonlijk",
-  "Goten altijd vrij en functioneel",
-  "Problemen vroegtijdig herkend en opgelost",
-  "Vaste, transparante prijs vooraf",
-  "Volledige foto-rapportage elk jaar",
+const met = [
+  "Je dak wordt op vaste momenten nagekeken",
+  "Dakgoten blijven vrij en functioneel",
+  "Problemen worden vroeg opgemerkt en opgelost",
+  "Een duidelijke prijs, vooraf afgesproken",
 ];
 
 const faqs = [
-  { q: "Wat houdt het MOS-X Dakzorg plan precies in?", a: "Yannick komt elk jaar langs voor een grondige inspectie en preventief onderhoud van uw dak. U ontvangt een foto-rapportage voor en na, en eventuele problemen worden meteen opgespoord vóór ze groter worden." },
-  { q: "Is het plan geschikt voor elk type dak?", a: "Ja. Of u nu dakpannen, leien of een ander daktype heeft — MOS-X Dakzorg is voor elk dak geschikt. Yannick bekijkt wat uw dak specifiek nodig heeft." },
-  { q: "Wat kost het MOS-X Dakzorg plan?", a: "De prijs hangt af van de grootte en het type van uw dak. Yannick maakt na een eerste inspectie een voorstel op maat. Geen verborgen kosten, alles wordt vooraf besproken." },
-  { q: "Kan ik het plan op elk moment stopzetten?", a: "Ja, u zit nergens aan vast. U kunt het plan op elk moment opzeggen, zonder boetes of verborgen kosten." },
-  { q: "Wat als er tijdens de inspectie iets mis is?", a: "Yannick signaleert het meteen en bespreekt de beste aanpak met u. Als abonnee krijgt u voorrang bij dringende interventies en een eerlijke prijs vooraf." },
+  { q: "Wat is MOS-X Dakzorg?", a: "Een onderhoudsplan dat je zelf samenstelt. Je kiest wat erin zit, van een volledige onderhoudsbeurt tot enkel je dakgoten of kleine herstellingen, en wij komen op vaste momenten langs." },
+  { q: "Krijg ik met Dakzorg ook 2 jaar mosvrij-garantie?", a: "Ja, als je plan een ontmossing bevat. Dan blijft je dak 2 jaar mosvrij. Komt er toch opnieuw mos, dan brengen we gratis een nieuwe antimosbehandeling aan. Kies je enkel bijvoorbeeld dakgoten of herstellingen, dan geldt die garantie niet." },
+  { q: "Hoe vaak komen jullie langs?", a: "Elk jaar of om de 2 jaar. Dat hangt af van de ligging van je woning, de bomen rondom en de staat van je dak. We stellen het plan samen met jou op." },
+  { q: "Wat kost een Dakzorg-plan?", a: "Een onderhoudsbeurt kost vanaf €249. De exacte prijs hangt af van je dak, wat je kiest en hoe vaak we langskomen. Na het plaatsbezoek krijg je een duidelijke prijs, vooraf afgesproken." },
+  { q: "Is Dakzorg geschikt voor elk dak?", a: "Ja. Of je nu pannen of leien hebt, we stemmen het onderhoud af op jouw type dak." },
+  { q: "Kan ik het plan stopzetten?", a: "Ja. Je zit nergens aan vast en kunt het plan stopzetten wanneer je wilt." },
 ];
 
-const investFeatures = [
-  { Icon: ShieldCheck, title: "Bescherming op lange termijn",  desc: "Een gezond dak begint bij regelmatig onderhoud. MOS-X Dakzorg houdt uw investering op peil, jaar na jaar." },
-  { Icon: Droplets,    title: "Geen waterinfiltratie",          desc: "Vroegtijdige inspectie voorkomt dat water binnendringt en structurele schade aanricht aan dakconstructie en isolatie." },
-  { Icon: Leaf,        title: "Duurzamere keuze",               desc: "Een dak langer meegeven betekent minder materiaalkost en minder afval. Goed voor uw portemonnee én voor het milieu." },
-];
+const DAKZORG_CSS = `
+  .do-hero > img { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; height: 100%; object-fit: cover; z-index: -2; }
+  .dz-stappen { margin-top: 8px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .dz-stap { padding: 26px 24px; border-radius: 18px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .dz-stap span { display: inline-grid; place-items: center; width: 40px; height: 40px; margin-bottom: 16px; border-radius: 11px; background: #9BCB6C; color: #FFFFFF; font-size: 14px; font-weight: 800; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dz-stap b { display: block; margin-bottom: 6px; font-size: 17px; font-weight: 800; letter-spacing: -0.01em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dz-stap p { margin: 0; font-size: 15px; line-height: 1.6; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
+  .do-hero .do-p, .dz-stap p, .do-antwoord p, .do-cta p { text-wrap: balance; }
+
+  .dc-vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .dc-kaart { padding: 32px; border-radius: 20px; border: 1px solid #E5E7EB; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .dc-kaart.goed { border-color: #CFE5B8; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 0 0 3px rgba(155,203,108,0.15); }
+  .dc-kaart h3 { margin: 0 0 18px; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dc-kaart ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .dc-kaart li { display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.5; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
+  .dc-kaart li svg { flex: none; margin-top: 2px; }
+  .dc-kaart:not(.goed) li { color: #545454; }
+
+  .dz-prijs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 64px; align-items: center; justify-content: space-between; }
+  .dz-zekerheden { margin: 28px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .dz-zekerheden li { display: flex; align-items: center; gap: 12px; font-size: 15.5px; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
+  .dz-plan { position: relative; padding: 32px; border-radius: 24px; color: #FFFFFF; background: radial-gradient(420px 260px at 100% 0%, rgba(155,203,108,0.22), transparent 70%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 80%); box-shadow: 0 30px 70px -30px rgba(11,15,12,0.7); border: 1px solid rgba(155,203,108,0.35); }
+  .dz-plan-kop { display: flex; justify-content: space-between; align-items: center; }
+  .dz-plan-naam { font-size: 15px; font-weight: 800; letter-spacing: 0.02em; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dz-plan-label { padding: 5px 11px; border-radius: 999px; background: #9BCB6C; color: #0B0F0C; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dz-plan-prijs { margin: 26px 0 6px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dz-plan-prijs small { width: 100%; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+  .dz-plan-prijs b { font-size: 60px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+  .dz-plan-prijs span { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.65); font-family: var(--font-inter), system-ui, sans-serif; }
+  .dz-plan-ritme { margin: 0 0 22px; padding-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 15px; color: #B9DE95; font-family: var(--font-inter), system-ui, sans-serif; }
+  .dz-plan-kies { margin: 0 0 14px; font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.55); font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .dz-plan ul { margin: 0 0 26px; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .dz-plan li { display: flex; align-items: center; gap: 12px; font-size: 15px; color: rgba(255,255,255,0.88); font-family: var(--font-inter), system-ui, sans-serif; }
+  .dz-plan .do-knop { width: 100%; }
+  .dz-plan .do-knop:focus-visible { outline-color: #FFFFFF; }
+  .dz-plan-noot { margin: 12px 0 0; text-align: center; font-size: 13px; color: rgba(255,255,255,0.55); font-family: var(--font-inter), system-ui, sans-serif; }
+
+  @media (max-width: 960px) {
+    .dz-prijs { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .dz-plan { padding: 26px 22px; }
+    .do-hero > img { width: 100%; }
+    .dz-stappen, .dc-vs { grid-template-columns: minmax(0, 1fr); }
+    .dc-kaart { padding: 24px; }
+  }
+`;
 
 export default function MosXDakzorgPage() {
-  const trustindexRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = trustindexRef.current;
-    if (!container) return;
-    if (container.querySelector('script[src*="trustindex"]')) return;
-    const s = document.createElement("script");
-    s.async = true;
-    s.defer = true;
-    s.src = "https://cdn.trustindex.io/loader.js?1b15ba67596980480f76d1d0d69";
-    container.appendChild(s);
-  }, []);
-
-  const [homeHovered, setHomeHovered]         = useState(false);
-  const [dienstenHovered, setDienstenHovered] = useState(false);
-  const [waHovered, setWaHovered]             = useState(false);
-  const [ctaWaHovered, setCtaWaHovered]       = useState(false);
-  const [phoneHovered, setPhoneHovered]       = useState(false);
-  const [ctaPhoneHovered, setCtaPhoneHovered] = useState(false);
-  const [openFaq, setOpenFaq]                 = useState<number | null>(null);
-  const [hoveredBenefit, setHoveredBenefit]   = useState<number | null>(null);
-  const [formOpen, setFormOpen]               = useState(false);
-  const [formSubmitted, setFormSubmitted]     = useState(false);
-
-  useEffect(() => {
-    if (formOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [formOpen]);
-
-  useEffect(() => {
-    if (!formOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setFormOpen(false); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [formOpen]);
+  const [openStap, setOpenStap] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [bezoekOpen, setBezoekOpen] = useState(false);
 
   return (
     <PageLayout>
-      <style>{`
-        @media (max-width: 1023px) {
-          .dakzorg-section { padding-top: 60px !important; padding-bottom: 50px !important; }
-          .dakzorg-benefit-card { padding: 14px 16px !important; }
-          .dakzorg-photo-badge-title { font-size: 12px !important; }
-          .dakzorg-realisatie-photo { height: 310px !important; aspect-ratio: unset !important; }
-        }
-        @keyframes dz-modal-bg { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes dz-modal-in { from { opacity: 0; transform: translateY(28px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @media (prefers-reduced-motion: reduce) {
-          .dz-modal-wrap, .dz-modal-card { animation: none !important; }
-        }
-      `}</style>
+      <style>{DIENST_CSS + DAKZORG_CSS}</style>
 
-      {/* ── HERO ── */}
-      <section style={{ background: "#111111", position: "relative", overflow: "hidden", minHeight: "calc(100vh + 30px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-
-        {/* Foto mobile — volledige achtergrond */}
-        <div className="block lg:hidden" style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <img
-            src="/images/Foto_dakzorg.png"
-            alt="MOS-X Dakzorg — jaarlijkse dakinspectie door Yannick"
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }}
-          />
-          <div style={{ position: "absolute", inset: 0, background: "rgba(17,17,17,0.80)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(17,17,17,0.5) 0%, rgba(17,17,17,0.2) 50%, transparent 100%)", pointerEvents: "none" }} />
-        </div>
-
-        {/* Foto desktop — rechterhelft zichtbaar, links donker */}
-        <div className="hidden lg:block" style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "48%", zIndex: 1 }}>
-          <img
-            src="/images/Foto_dakzorg.png"
-            alt="MOS-X Dakzorg — jaarlijkse dakinspectie door Yannick"
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }}
-          />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #111111 0%, rgba(17,17,17,0.5) 30%, rgba(17,17,17,0.1) 55%, transparent 75%)", pointerEvents: "none" }} />
-        </div>
-
-        <div className="site-wrap pt-[115px] lg:pt-[120px] pb-[100px] lg:pb-[60px] lg:-mt-[140px]" style={{ position: "relative", zIndex: 2, width: "100%" }}>
-
-          <BackLink href="/diensten" dark />
-
-          {/* Breadcrumb */}
-          <p style={{ fontSize: "13px", marginBottom: "60px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-            <Link href="/"
-              onMouseEnter={() => setHomeHovered(true)}
-              onMouseLeave={() => setHomeHovered(false)}
-              style={{ color: homeHovered ? "#9BCB6C" : "rgba(255,255,255,0.55)", textDecoration: "none", transition: "color 180ms ease" }}
-            >Home</Link>
-            <ChevronRight size={13} strokeWidth={2} style={{ display: "inline", verticalAlign: "middle", margin: "0 3px", color: "#9BCB6C" }} />
-            <Link href="/diensten"
-              onMouseEnter={() => setDienstenHovered(true)}
-              onMouseLeave={() => setDienstenHovered(false)}
-              style={{ color: dienstenHovered ? "#9BCB6C" : "rgba(255,255,255,0.55)", textDecoration: "none", transition: "color 180ms ease" }}
-            >Diensten</Link>
-            <ChevronRight size={13} strokeWidth={2} style={{ display: "inline", verticalAlign: "middle", margin: "0 3px", color: "#9BCB6C" }} />
-            <span style={{ color: "#9BCB6C" }}>MOS-X Dakzorg</span>
-          </p>
-
-          {/* Tekst — linkerhelft op desktop */}
-          <div className="lg:w-1/2">
-            <p className="site-eyebrow mb-4">MOS-X DAKZORG PLAN</p>
-            <h1 style={{
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              fontWeight: 800,
-              fontSize: "clamp(1.75rem, 2.6vw, 2.1rem)",
-              letterSpacing: "-0.03em",
-              color: "#FFFFFF",
-              lineHeight: 1.12,
-              marginBottom: "20px",
-            }}>
-              Je dak is weer proper.<br />
-              <span style={{ color: "#9BCB6C" }}>Wij houden het zo.</span>
-            </h1>
-            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "56px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-              Na een professionele dakreiniging wil je natuurlijk dat je dak zo lang mogelijk proper en verzorgd blijft.<br /><br />
-              Met MOS-X Dakzorg volgen we je dak jaarlijks op. We controleren de staat van het dak, reinigen waar nodig en pakken beginnende mosgroei en kleine aandachtspunten tijdig aan.<br /><br />
-              Zo haal je meer uit je dakreiniging en voorkom je dat je dak na enkele jaren opnieuw volledig aangepakt moet worden.
-            </p>
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <BtnPress
-                href="#dakzorg-prijs"
-                onMouseEnter={() => setWaHovered(true)}
-                onMouseLeave={() => setWaHovered(false)}
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  background: waHovered ? "#7AB54E" : "#9BCB6C",
-                  color: "#FFFFFF", borderRadius: "10px",
-                  padding: "14px 24px", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  transition: "background 200ms ease",
-                }}
-              >
-                Bekijk het Dakzorg plan
-                <ChevronRight size={15} strokeWidth={2.5} />
-              </BtnPress>
-              <BtnPress
-                href="tel:+32468352869"
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  background: "transparent", color: "rgba(255,255,255,0.85)",
-                  border: "1.5px solid rgba(155,203,108,0.5)", borderRadius: "10px",
-                  padding: "14px 24px", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                  transition: "border-color 200ms ease, color 200ms ease",
-                }}
-              >
-                <Phone size={16} />
-                +32 468 35 28 69
-              </BtnPress>
+      {/* Hero */}
+      <section className="do-hero">
+        <img src="/images/16.JPEG" alt="" aria-hidden="true" />
+        <div className="do-wrap">
+          <div className="do-hero-tekst">
+            <BackLink href="/diensten" dark />
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
+            <p className="do-oog">MOS-X Dakzorg</p>
+            <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
+            <p className="do-p">Een onderhoudsplan dat je zelf samenstelt. Jij kiest wat je dak nodig heeft, wij komen op vaste momenten langs en houden alles in orde.</p>
+            <div className="do-hero-knoppen">
+              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan op maat aan<ChevronRight size={17} /></button>
+              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
-
-            {/* Google Reviews widget */}
-            <div style={{ marginTop: "20px" }}>
-              <div ref={trustindexRef} style={{ display: "inline-block" }} />
+            <div className="do-hero-bewijs">
+              <GoogleBalk />
+              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" />Vanaf <b>€249</b> per onderhoudsbeurt</span>
             </div>
           </div>
-
-        </div>
-
-        {/* Wave desktop */}
-        <div className="hidden lg:block" style={{ position: "absolute", bottom: "-1px", left: 0, width: "100%", overflow: "hidden", lineHeight: 0, zIndex: 3 }}>
-          <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "80px" }}>
-            <path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#F7F8F6"/>
-          </svg>
-        </div>
-        {/* Wave mobile */}
-        <div className="block lg:hidden" style={{ position: "absolute", bottom: "-1px", left: 0, width: "100%", overflow: "hidden", lineHeight: 0, zIndex: 3 }}>
-          <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "50px" }}>
-            <path d="M0,0 C360,45 1080,45 1440,0 L1440,50 L0,50 Z" fill="#F7F8F6"/>
-          </svg>
         </div>
       </section>
 
-      {/* ── SECTIE 1: Waarom MOS-X Dakzorg? ── */}
-      <section className="dakzorg-section" style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
-        <div className="site-wrap">
-
-          {/* Gecentreerde tekst */}
-          <div style={{ textAlign: "center", marginBottom: "56px" }}>
-            <p className="site-eyebrow mb-4">Waarom MOS-X Dakzorg?</p>
-            <h2 style={{
-              fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              letterSpacing: "-0.028em", lineHeight: 1.12, marginBottom: "20px",
-            }}>
-              <span style={{ whiteSpace: "nowrap" }}>Langer genieten van</span><br /><span style={{ color: "#9BCB6C", whiteSpace: "nowrap" }}>een verzorgd dak.</span>
-            </h2>
-            <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.7, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-              Na een dakreiniging ziet je dak er weer proper en verzorgd uit.<br />
-              Maar door regen, vocht en vervuiling begint de opbouw van mos en vuil na verloop van tijd opnieuw.<br /><br />
-              Met periodieke opvolging houden we die vervuiling onder controle, controleren we je dak en pakken we kleine aandachtspunten tijdig aan.<br />
-              Zo blijft je dak langer verzorgd en haal je meer uit je dakreiniging.
-            </p>
+      {/* Waarom */}
+      <section className="do-sectie do-wit">
+        <div className="do-wrap do-waarom">
+          <div className="do-slider">
+            <img src="/images/7.JPEG" alt="Verzorgde pannendaken na onderhoud" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
           </div>
+          <div>
+            <p className="do-oog">Waarom Dakzorg?</p>
+            <h2 className="do-h2">Langer genieten van <span style={{ display: "block" }}>een verzorgd dak.</span></h2>
+            <ul className="do-voordelen">
+              {voordelen.map(({ Icoon, titel }) => (
+                <li key={titel}><i><Icoon size={20} color="#9BCB6C" /></i>{titel}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
-          {/* 4 benefit cards in één rij */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "16px" }}>
-            {benefits.map((b, i) => {
-              const Icon = b.Icon;
+      {/* Hoe het werkt */}
+      <section className="do-sectie do-zacht">
+        <div className="do-wrap">
+          <div className="do-kop">
+            <div>
+              <p className="do-oog">Zo werkt het</p>
+              <h2 className="do-h2">Een plan <span>op maat van jouw dak.</span></h2>
+            </div>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan aan<ChevronRight size={17} /></button>
+          </div>
+          <div className="dz-stappen">
+            {stappen.map((s) => (
+              <div key={s.nr} className="dz-stap"><span>{s.nr}</span><b>{s.titel}</b><p>{s.tekst}</p></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Wat zit erin */}
+      <section className="do-donker">
+        <div className="do-wrap do-werk">
+          <div className="do-werk-foto">
+            <img src="/images/4.jpg" alt="Hoogwerker van MOS-X bij een woning voor een onderhoudsbeurt" style={{ objectPosition: "45% center" }} />
+          </div>
+          <div>
+            <p className="do-oog">Stel je plan samen</p>
+            <h2 className="do-h2">Kies wat <span style={{ display: "block" }}>jouw dak nodig heeft.</span></h2>
+            <div className="do-stappen">
+              {inbegrepen.map((s, i) => {
+                const open = openStap === i;
+                return (
+                  <div key={s.titel} className={open ? "do-stap open" : "do-stap"}>
+                    <button type="button" aria-expanded={open} onClick={() => setOpenStap(open ? null : i)}>
+                      <span className="do-stap-nr">{String(i + 1).padStart(2, "0")}</span>
+                      {s.titel}
+                      <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
+                    </button>
+                    <div className="do-stap-tekst"><div><p>{s.tekst}</p></div></div>
+                  </div>
+                );
+              })}
+            </div>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
+          </div>
+        </div>
+      </section>
+
+      {/* Prijs */}
+      <section id="dakzorg-prijs" className="do-sectie do-wit" style={{ scrollMarginTop: 100 }}>
+        <div className="do-wrap dz-prijs">
+          <div>
+            <p className="do-oog">Prijs</p>
+            <h2 className="do-h2">Een vaste prijs, <span style={{ display: "block" }}>vooraf afgesproken.</span></h2>
+            <p className="do-p" style={{ marginTop: 18 }}>Je betaalt enkel voor wat je kiest. Na het plaatsbezoek krijg je een duidelijke prijs, zonder verrassingen achteraf.</p>
+            <ul className="dz-zekerheden">
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen kosten voor het plaatsbezoek</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Stop wanneer je wilt</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />2 jaar mosvrij bij een ontmossing</li>
+            </ul>
+          </div>
+          <div className="dz-plan">
+            <div className="dz-plan-kop">
+              <span className="dz-plan-naam">MOS-X Dakzorg</span>
+              <span className="dz-plan-label">Op maat</span>
+            </div>
+            <div className="dz-plan-prijs"><small>vanaf</small><b>€249</b><span>per onderhoudsbeurt</span></div>
+            <p className="dz-plan-ritme">Elk jaar of om de 2 jaar.</p>
+            <p className="dz-plan-kies">Stel samen uit</p>
+            <ul>
+              {inbegrepen.map((i) => <li key={i.titel}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{i.titel}</li>)}
+            </ul>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan op maat aan<ChevronRight size={17} /></button>
+            <p className="dz-plan-noot">Gratis plaatsbezoek, vrijblijvend</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Met of zonder */}
+      <section className="do-sectie do-zacht">
+        <div className="do-wrap">
+          <div className="do-kop">
+            <div>
+              <p className="do-oog">Het verschil</p>
+              <h2 className="do-h2">Met of zonder <span>Dakzorg.</span></h2>
+            </div>
+            <p className="do-p">Een dak dat regelmatig onderhouden wordt, gaat jaren langer mee.</p>
+          </div>
+          <div className="dc-vs">
+            <div className="dc-kaart">
+              <h3>Zonder Dakzorg</h3>
+              <ul>{zonder.map((t) => <li key={t}><X size={18} color="#8E8E89" aria-hidden="true" />{t}</li>)}</ul>
+            </div>
+            <div className="dc-kaart goed">
+              <h3>Met MOS-X Dakzorg</h3>
+              <ul>{met.map((t) => <li key={t}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{t}</li>)}</ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="do-sectie do-wit">
+        <div className="do-wrap">
+          <div className="do-kop">
+            <div>
+              <p className="do-oog">Veelgestelde vragen</p>
+              <h2 className="do-h2">Alles over <span>Dakzorg.</span></h2>
+            </div>
+          </div>
+          <div className="do-faq">
+            {faqs.map((f, i) => {
+              const open = openFaq === i;
               return (
-                <div key={i}
-                  className="dakzorg-benefit-card"
-                  onMouseEnter={() => setHoveredBenefit(i)}
-                  onMouseLeave={() => setHoveredBenefit(null)}
-                  style={{
-                    background: "#FFFFFF",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "16px",
-                    padding: "24px 20px",
-                    boxShadow: hoveredBenefit === i ? "0 4px 24px rgba(155,203,108,0.18)" : "0 2px 12px rgba(0,0,0,0.06)",
-                    transform: hoveredBenefit === i ? "translateY(-4px)" : "translateY(0)",
-                    transition: "box-shadow 250ms ease, transform 250ms ease, border-color 250ms ease",
-                    display: "flex",
-                    flexDirection: "column",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {/* Mobiel: icon | lijn | tekst naast elkaar */}
-                  <div className="flex lg:hidden" style={{ alignItems: "center", gap: "12px" }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <Icon size={16} color="#9BCB6C" strokeWidth={2} />
-                    </div>
-                    <div style={{ width: "1px", alignSelf: "stretch", background: "rgba(155,203,108,0.5)", flexShrink: 0 }} />
-                    <div style={{ flex: 1 }}>
-                      <div>
-                        <p style={{ fontSize: "13px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
-                        <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Desktop: icon bovenaan, gecentreerd */}
-                  <div className="hidden lg:flex lg:flex-col lg:items-center" style={{ textAlign: "center" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
-                      <Icon size={22} color="#9BCB6C" strokeWidth={2} />
-                    </div>
-                    <p style={{ fontWeight: 700, fontSize: "13px", color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "6px" }}>{b.title}</p>
-                    <div style={{ width: "20px", height: "2px", background: "#9BCB6C", borderRadius: "2px", marginBottom: "8px" }} />
-                    <p style={{ fontSize: "12px", color: "#545454", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{b.desc}</p>
-                  </div>
+                <div key={f.q} className={open ? "do-vraag open" : "do-vraag"}>
+                  <button type="button" aria-expanded={open} onClick={() => setOpenFaq(open ? null : i)}>
+                    {f.q}
+                    <ChevronDown size={19} aria-hidden="true" />
+                  </button>
+                  {open && <div className="do-antwoord"><p>{f.a}</p></div>}
                 </div>
               );
             })}
@@ -309,642 +277,23 @@ export default function MosXDakzorgPage() {
         </div>
       </section>
 
-      {/* ── SECTIE 2: Wat zit er in jouw Dakzorg plan? ── */}
-      <section className="dakzorg-section" style={{ background: "#F7F8F6", padding: "120px 0 100px" }}>
-        <div className="site-wrap">
-
-          {/* Kop boven het grid — volledige breedte */}
-          <div style={{ marginBottom: "40px" }}>
-            <p className="site-eyebrow mb-4">Wat is inbegrepen?</p>
-            <h2 style={{
-              fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              letterSpacing: "-0.028em", lineHeight: 1.12,
-            }}>
-              Wat zit er in jouw <span style={{ color: "#9BCB6C" }}>Dakzorg plan?</span>
-            </h2>
-          </div>
-
-          <div className="grid gap-10 lg:gap-16 items-start grid-cols-1 lg:grid-cols-[5fr_5fr]">
-
-            {/* Links: checklist */}
+      {/* Afsluiter */}
+      <section className="do-sectie do-wit" style={{ paddingTop: 0 }}>
+        <div className="do-wrap">
+          <div className="do-cta">
             <div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                {[
-                  { title: "Periodieke dakcontrole",                desc: "Controle van dakpannen, nokken en algemene staat." },
-                  { title: "Onderhoud van dakgoten & afvoer",       desc: "Vrije afwatering en minder kans op verstoppingen." },
-                  { title: "Preventieve anti-mosbehandeling",       desc: "Nieuwe mos- en algengroei wordt afgeremd." },
-                  { title: "Controle van zinkwerk & aansluitingen", desc: "Controle van gevoelige zones waar problemen ontstaan." },
-                  { title: "Kleine herstellingen inbegrepen",         desc: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "14px", padding: "12px 14px", background: "#F7F8F6", borderRadius: "10px", border: "1px solid #E5E7EB" }}>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "2px" }}>{item.title}</p>
-                      <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item.desc}</p>
-                    </div>
-                    {/* Groen vinkje — alle schermen */}
-                    <div style={{ width: "20px", height: "20px", background: "#9BCB6C", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
-                      <Check size={11} color="#FFFFFF" strokeWidth={2.5} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Highlight box onder de lijst */}
-              <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "14px 16px", background: "#FFFFFF", borderRadius: "12px", border: "1px solid rgba(155,203,108,0.4)", marginTop: "16px" }}>
-                <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(155,203,108,0.12)", border: "1px solid rgba(155,203,108,0.35)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <ShieldCheck size={20} color="#9BCB6C" strokeWidth={2} />
-                </div>
-                <div>
-                  <p style={{ fontSize: "14px", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, fontFamily: "var(--font-montserrat), system-ui, sans-serif", marginBottom: "4px" }}>Rust en zekerheid, jaar na jaar.</p>
-                  <p style={{ fontSize: "13px", color: "#545454", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Een regelmatig onderhouden dak blijft langer mooi en in topconditie.</p>
-                </div>
-              </div>
+              <h2>Klaar voor een <span style={{ whiteSpace: "nowrap" }}>zorgeloos dak?</span></h2>
+              <p>Al vanaf €249 per onderhoudsbeurt. We stellen samen je plan op maat op.</p>
             </div>
-
-
-            {/* Rechts: foto grid — 2 sliders bovenaan, 2 foto's onderaan */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", width: "100%", transform: "translateY(20px)" }}>
-
-              {/* Gootreiniging — voor/na slider */}
-              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden" }}>
-                <BeforeAfterSlider beforeSrc="/images/Goot voor.JPEG" afterSrc="/images/Goot na.JPEG" title="Gootreiniging" height="100%" borderRadius="12px" hideLabels />
-              </div>
-
-              {/* Velux reiniging — voor/na slider */}
-              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden" }}>
-                <BeforeAfterSlider beforeSrc="/images/Velux voor 1.0.png" afterSrc="/images/Velux na 1.0.png" title="Velux reiniging" height="100%" borderRadius="12px" hideLabels />
-              </div>
-
-              {/* Anti-mosbehandeling */}
-              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
-                <img src="/images/Antimos op dak.jpg" alt="Anti-mosbehandeling op dak" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-                <div style={{ position: "absolute", bottom: "8px", left: "10px" }}>
-                  <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "11px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>Anti-mosbehandeling</span>
-                </div>
-              </div>
-
-              {/* Dakpan herstelling */}
-              <div className="aspect-square lg:aspect-[6/5]" style={{ borderRadius: "12px", overflow: "hidden", position: "relative" }}>
-                <img src="/images/Dakpan herstelling.png" alt="Dakpan herstelling" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                <span className="absolute top-[7px] left-[7px] lg:top-3 lg:left-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#FFFFFF", fontWeight: 700, background: "rgba(0,0,0,0.65)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VOOR</span>
-                <span className="absolute top-[7px] right-[7px] lg:top-3 lg:right-3 text-[9px] lg:text-[11px] px-[5px] py-[2px] lg:px-3 lg:py-[5px]" style={{ zIndex: 2, color: "#1A1A1A", fontWeight: 700, background: "rgba(155,203,108,0.9)", borderRadius: "50px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>NA</span>
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-                <div style={{ position: "absolute", bottom: "8px", left: "10px" }}>
-                  <span style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "11px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>Dakpan herstelling</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* CTA — scroll naar prijssectie */}
-          <div style={{ marginTop: "48px", textAlign: "center" }}>
-            <BtnPress
-              href="#dakzorg-prijs"
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: "8px",
-                background: "#9BCB6C", color: "#FFFFFF", borderRadius: "10px",
-                padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                fontWeight: 700, fontSize: "15px", textDecoration: "none",
-                transition: "background 200ms ease", whiteSpace: "nowrap",
-              }}
-            >
-              Bekijk de prijs van MOS-X Dakzorg
-              <ChevronRight size={15} strokeWidth={2.5} />
-            </BtnPress>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTIE 3: VS vergelijking ── */}
-      <section className="dakzorg-section" style={{ background: "#111111", padding: "120px 0 100px" }}>
-        <div className="site-wrap">
-          <div style={{ textAlign: "center", marginBottom: "60px" }}>
-            <p className="site-eyebrow mb-4">Het verschil</p>
-            <h2 style={{
-              fontSize: "clamp(1.75rem, 3vw, 2.5rem)", fontWeight: 800, color: "#FFFFFF",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-              letterSpacing: "-0.028em", lineHeight: 1.12,
-            }}>
-              Zonder of<br />
-              <span style={{ color: "#9BCB6C" }}>met MOS-X Dakzorg?</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-stretch" style={{ gap: "32px" }}>
-
-            {/* Zonder */}
-            <div style={{ background: "rgba(239,68,68,0.08)", border: "1.5px solid rgba(239,68,68,0.4)", borderRadius: "20px", overflow: "hidden", boxShadow: "0 4px 24px rgba(239,68,68,0.10)" }}>
-              {/* Foto bovenaan */}
-              <div style={{ height: "200px", overflow: "hidden" }}>
-                <img src="/images/olen-voor.png" alt="Voor - Olen" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }} />
-              </div>
-              {/* Content */}
-              <div style={{ padding: "28px 32px" }}>
-                <div style={{ marginBottom: "24px" }}>
-                  <h3 style={{ fontWeight: 800, fontSize: "18px", color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "-0.02em" }}>Zonder MOS-X Dakzorg</h3>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                  {withoutItems.map((item, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
-                        <X size={11} color="#EF4444" strokeWidth={2.5} />
-                      </div>
-                      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* VS divider */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{
-                width: "52px", height: "52px", borderRadius: "50%",
-                background: "rgba(155,203,108,0.15)",
-                border: "1.5px solid rgba(155,203,108,0.45)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <span style={{ fontSize: "13px", fontWeight: 800, color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>VS</span>
-              </div>
-            </div>
-
-            {/* Met MOS-X Dakzorg */}
-            <div style={{ background: "rgba(155,203,108,0.08)", border: "1.5px solid rgba(155,203,108,0.4)", borderRadius: "20px", overflow: "hidden", boxShadow: "0 4px 24px rgba(155,203,108,0.12)" }}>
-              {/* Foto bovenaan */}
-              <div style={{ height: "200px", overflow: "hidden" }}>
-                <img src="/images/Olen - After.png" alt="Na - Olen" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", display: "block" }} />
-              </div>
-              {/* Content */}
-              <div style={{ padding: "28px 32px" }}>
-                <div style={{ marginBottom: "24px" }}>
-                  <h3 style={{ fontWeight: 800, fontSize: "18px", color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "-0.02em" }}>Met MOS-X Dakzorg</h3>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                  {withItems.map((item, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "rgba(155,203,108,0.2)", border: "1px solid rgba(155,203,108,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
-                        <Check size={11} color="#9BCB6C" strokeWidth={2.5} />
-                      </div>
-                      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.85)", lineHeight: 1.55, fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 500 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Divider + CTA */}
-                <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(155,203,108,0.2)" }}>
-                  <BtnPress
-                    href="#dakzorg-prijs"
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
-                    style={{
-                      display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                      width: "100%", padding: "13px 20px", borderRadius: "10px",
-                      background: "#9BCB6C", color: "#FFFFFF",
-                      fontSize: "14px", fontWeight: 700, whiteSpace: "nowrap",
-                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                      textDecoration: "none", transition: "background 200ms ease",
-                      boxSizing: "border-box",
-                    }}
-                  >
-                    Bekijk het Dakzorg plan
-                    <ChevronRight size={14} strokeWidth={2.5} />
-                  </BtnPress>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTIE 4: Dakzorg prijskaart ── */}
-      <section id="dakzorg-prijs" className="dakzorg-section" style={{ background: "#F7F8F6", padding: "80px 0 100px", scrollMarginTop: "100px" }}>
-        <div className="site-wrap">
-          <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr]" style={{ gap: "56px", alignItems: "stretch" }}>
-
-            {/* Links: foto + badge */}
-            <div className="aspect-square lg:aspect-auto dakzorg-realisatie-photo" style={{ position: "relative", borderRadius: "20px", overflow: "hidden", minHeight: 0 }}>
-              <img
-                src="/images/Foto%20realisatie.jpg"
-                alt="MOS-X Dakzorg realisatie"
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center bottom", display: "block" }}
-              />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%)" }} />
-              <div style={{
-                position: "absolute", bottom: "24px", left: "20px", right: "20px",
-                background: "rgba(10,20,10,0.80)",
-                backdropFilter: "blur(8px)",
-                borderRadius: "14px", padding: "14px 18px",
-                display: "flex", alignItems: "center", gap: "12px",
-                border: "1px solid rgba(155,203,108,0.25)",
-              }}>
-                <ShieldCheck size={20} color="#9BCB6C" strokeWidth={2} style={{ flexShrink: 0 }} />
-                <div>
-                  <p className="dakzorg-photo-badge-title" style={{ fontSize: "14px", fontWeight: 700, color: "#FFFFFF", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1.3, marginBottom: "4px" }}>
-                    Je dak in topconditie, jaar na jaar.
-                  </p>
-                  <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>
-                    Periodiek gecontroleerd en onderhouden.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Rechts: inhoud */}
-            <div>
-              <p className="site-eyebrow mb-3">MOS-X DAKZORG</p>
-              <h2 style={{
-                fontSize: "clamp(1.6rem, 2.5vw, 2.1rem)", fontWeight: 800, color: "#1A1A1A",
-                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                letterSpacing: "-0.028em", lineHeight: 1.15, marginBottom: "12px",
-              }}>
-                Je dak verzorgd.<br /><span style={{ color: "#9BCB6C" }}>Jaar na jaar.</span>
-              </h2>
-              <p style={{ fontSize: "15px", color: "#545454", lineHeight: 1.65, marginBottom: "28px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Periodieke opvolging na je dakreiniging, <br className="hidden lg:inline" />
-                zodat je dak langer proper en in goede staat blijft.
-              </p>
-
-              {/* Card: prijs + checklist + CTA */}
-              <div style={{ background: "#FFFFFF", borderRadius: "16px", border: "1px solid #E5E7EB", padding: "28px", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", marginBottom: "0" }}>
-
-              {/* 1. Frequentie-infobalk */}
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: "#F7F8F6", borderRadius: "8px", border: "1px solid #E5E7EB", marginBottom: "24px" }}>
-                <Calendar size={13} color="#9BCB6C" strokeWidth={2} style={{ flexShrink: 0 }} />
-                <div>
-                  <p style={{ fontSize: "12px", fontWeight: 700, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", lineHeight: 1.3, marginBottom: "1px" }}>Onderhoud op maat van je dak</p>
-                  <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>Jaarlijks of om de 2 jaar, afhankelijk van de staat van je dak.</p>
-                </div>
-              </div>
-
-              {/* 2. Prijs + checklist */}
-              <div className="grid grid-cols-1 sm:grid-cols-[210px_1fr]" style={{ gap: "24px", marginBottom: "24px" }}>
-
-                {/* Prijs */}
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <p style={{ fontSize: "12px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "6px" }}>Vanaf</p>
-                  <p style={{ fontSize: "52px", fontWeight: 800, color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", letterSpacing: "0", lineHeight: 1, marginBottom: "8px" }}>€<span style={{ marginLeft: "5px" }}>249</span></p>
-                  <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>per onderhoudsbeurt</p>
-                </div>
-
-                {/* Checklist */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px", paddingTop: "4px" }}>
-                  {[
-                    "Volledige controle van je dak",
-                    "Dakgoten & afvoer gereinigd",
-                    "Behandeling tegen nieuwe mosgroei",
-                    "Veluxen, aansluitingen & loodwerk nagekeken",
-                    "Kleine gebreken aangepakt waar mogelijk",
-                    "Je ontvangt een duidelijk onderhoudsrapport",
-                  ].map((item, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <Check size={11} color="#FFFFFF" strokeWidth={2.5} />
-                      </div>
-                      <span style={{ fontSize: "13px", color: "#1A1A1A", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-
-              {/* 3. CTA knop — opent inline formulier */}
-              <button
-                onClick={() => { setFormOpen(true); setFormSubmitted(false); }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
-                  width: "100%", padding: "16px 24px", borderRadius: "12px",
-                  background: "#9BCB6C", color: "#FFFFFF",
-                  fontSize: "14px", fontWeight: 700, whiteSpace: "nowrap",
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  border: "none", cursor: "pointer", marginBottom: "12px",
-                  transition: "background 200ms ease",
-                  boxSizing: "border-box",
-                }}
-              >
-                MOS-X Dakzorg aanvragen
-                <ChevronRight size={16} strokeWidth={2.5} />
-              </button>
-
-              {/* 4. Geruststelling onder CTA */}
-              <div style={{ display: "flex", alignItems: "center", gap: "7px", marginTop: "11px" }}>
-                <svg width="13" height="13" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
-                  <circle cx="10" cy="10" r="9" stroke="#9BCB6C" strokeWidth="1.5"/>
-                  <path d="M10 9v5M10 6.5v.5" stroke="#9BCB6C" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-                <p style={{ fontSize: "12px", color: "#9CA3AF", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.4 }}>
-                  Grotere herstellingen? Die bespreken we altijd vooraf.
-                </p>
-              </div>
-
-              </div>{/* einde card */}
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
-      <section className="site-pad dakzorg-section" style={{ background: "#F7F8F6" }}>
-        <div className="site-wrap">
-          <h2
-            className="font-bold mb-8"
-            style={{ fontFamily: "var(--font-montserrat)", fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.02em", color: "#1A1A1A", textAlign: "center" }}
-          >
-            Veelgestelde vragen over MOS-X Dakzorg.
-          </h2>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }} className="faq-grid">
-            {faqs.map((f, i) => (
-              <div
-                key={i}
-                style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", overflow: "hidden", alignSelf: "start" }}
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  style={{
-                    width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
-                    padding: "20px 24px", cursor: "pointer", background: "none", border: "none",
-                    textAlign: "left", gap: "16px",
-                  }}
-                >
-                  <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#1A1A1A", lineHeight: 1.4 }}>
-                    {f.q}
-                  </span>
-                  <ChevronDown
-                    size={18}
-                    color="#9BCB6C"
-                    style={{ flexShrink: 0, transition: "transform 220ms ease", transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)" }}
-                  />
-                </button>
-                {openFaq === i && (
-                  <div style={{ padding: "0 24px 20px", borderTop: "1px solid #E5E7EB", paddingTop: "16px" }}>
-                    <p style={{ fontSize: "14px", lineHeight: 1.65, color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      {f.a}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* WhatsApp kaart */}
-            <div style={{
-              background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px",
-              padding: "10px 24px", alignSelf: "start",
-              display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap",
-            }}>
-              <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#1A1A1A" }}>
-                Staat je vraag er niet bij?
-              </p>
-              <BtnPress
-                href="https://wa.me/32468352869?text=Hallo%20Yannick%2C%20ik%20heb%20een%20vraag%20over%20MOS-X%20Dakzorg."
-                target="_blank"
-                onMouseEnter={e => { e.currentTarget.style.background = "#7AB54E"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "#9BCB6C"; }}
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  background: "#9BCB6C", color: "#FFFFFF", borderRadius: "8px",
-                  padding: "10px 18px", fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "13px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background-color 0.2s ease",
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                Stel je vraag aan Yannick
-              </BtnPress>
+            <div className="do-cta-knoppen">
+              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan op maat aan<ChevronRight size={17} /></button>
+              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SECTIE 5: CTA card ── */}
-      <section style={{ background: "#F7F8F6", paddingBottom: "80px" }}>
-        <div className="site-wrap">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-8 lg:px-12" style={{
-            background: "#0B0F0C",
-            border: "1px solid rgba(155,203,108,0.25)",
-            borderRadius: "16px",
-            gap: "24px",
-          }}>
-            <div className="text-center lg:text-left" style={{ flex: 1, minWidth: "280px" }}>
-              <p className="lg:whitespace-nowrap" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1rem, 2vw, 1.25rem)", color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: "6px", lineHeight: 1.25 }}>
-                Klaar om je dak <span style={{ color: "#9BCB6C" }}>jaar na jaar</span> in topconditie te houden?
-              </p>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                Met MOS-X Dakzorg wordt je dak periodiek gecontroleerd en onderhouden.
-              </p>
-            </div>
-            <div className="flex flex-col lg:flex-row w-full lg:w-auto" style={{ gap: "10px" }}>
-              <button
-                onClick={() => { setFormOpen(true); setFormSubmitted(false); }}
-                onMouseEnter={() => setCtaWaHovered(true)}
-                onMouseLeave={() => setCtaWaHovered(false)}
-                style={{
-                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  flex: 1,
-                  background: ctaWaHovered ? "#7AB54E" : "#9BCB6C",
-                  color: "#FFFFFF", border: "none",
-                  borderRadius: "8px", padding: "12px 20px",
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "14px",
-                  whiteSpace: "nowrap", transition: "background 200ms ease",
-                  cursor: "pointer",
-                }}
-              >
-                MOS-X Dakzorg aanvragen
-                <ChevronRight size={14} strokeWidth={2.5} />
-              </button>
-              <BtnPress
-                href="tel:+32468352869"
-                onMouseEnter={() => setCtaPhoneHovered(true)}
-                onMouseLeave={() => setCtaPhoneHovered(false)}
-                style={{
-                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  flex: 1,
-                  background: "transparent",
-                  color: ctaPhoneHovered ? "#9BCB6C" : "#FFFFFF",
-                  border: ctaPhoneHovered ? "1px solid #9BCB6C" : "1px solid rgba(155,203,108,0.5)",
-                  borderRadius: "8px", padding: "12px 20px",
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 700, fontSize: "14px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "border-color 0.2s ease, color 0.2s ease",
-                }}
-              >
-                <Phone size={15} />
-                +32 468 35 28 69
-              </BtnPress>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── MODAL: MOS-X Dakzorg aanvragen ── */}
-      {formOpen && (
-        <div
-          className="dz-modal-wrap"
-          onClick={(e) => { if (e.target === e.currentTarget) setFormOpen(false); }}
-          style={{
-            position: "fixed", inset: 0, zIndex: 9999,
-            background: "rgba(0,0,0,0.55)",
-            backdropFilter: "blur(4px)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            padding: "16px",
-            animation: "dz-modal-bg 200ms ease both",
-          }}
-        >
-          <div
-            className="dz-modal-card"
-            style={{
-              background: "#FFFFFF",
-              borderRadius: "20px",
-              padding: "36px 40px",
-              maxWidth: "560px",
-              width: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
-              position: "relative",
-              boxShadow: "0 8px 60px rgba(0,0,0,0.30), 0 2px 12px rgba(0,0,0,0.10)",
-              animation: "dz-modal-in 280ms cubic-bezier(0.22,1,0.36,1) both",
-            }}
-          >
-            {/* Sluitknop */}
-            <button
-              onClick={() => setFormOpen(false)}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = "#1A1A1A"; (e.currentTarget as HTMLButtonElement).style.background = "#F3F4F6"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = "#9CA3AF"; (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
-              style={{
-                position: "absolute", top: "16px", right: "16px",
-                background: "transparent", border: "none", cursor: "pointer",
-                color: "#9CA3AF", padding: "6px", borderRadius: "8px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "color 150ms ease, background 150ms ease",
-              }}
-            >
-              <X size={20} />
-            </button>
-
-            {formSubmitted ? (
-              <div style={{ textAlign: "center", padding: "40px 8px 16px" }}>
-                <div style={{
-                  width: "60px", height: "60px", borderRadius: "50%",
-                  background: "rgba(155,203,108,0.15)", border: "2px solid #9BCB6C",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  margin: "0 auto 24px",
-                }}>
-                  <Check size={26} color="#9BCB6C" strokeWidth={2.5} />
-                </div>
-                <p style={{
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  fontWeight: 800, fontSize: "20px", color: "#1A1A1A",
-                  marginBottom: "14px", lineHeight: 1.2,
-                }}>
-                  Aanvraag verstuurd!
-                </p>
-                <p style={{
-                  fontSize: "14px", color: "#545454",
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  lineHeight: 1.65, marginBottom: "8px",
-                }}>
-                  Je ontvangt dadelijk een bevestigingsmail.
-                </p>
-                <p style={{
-                  fontSize: "14px", color: "#545454",
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  lineHeight: 1.65, marginBottom: 0,
-                }}>
-                  Yannick neemt{" "}
-                  <strong style={{ color: "#9BCB6C", fontWeight: 600 }}>binnen 1 werkdag</strong>
-                  {" "}contact met je op.
-                </p>
-                <div style={{ borderTop: "1px solid #E5E7EB", margin: "28px 0" }} />
-                <button
-                  onClick={() => setFormOpen(false)}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: "8px",
-                    padding: "13px 32px", borderRadius: "8px",
-                    background: "#9BCB6C", color: "#FFFFFF", border: "none", cursor: "pointer",
-                    fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                    fontWeight: 700, fontSize: "14px", transition: "background 200ms ease",
-                  }}
-                >
-                  <Check size={16} strokeWidth={2.5} />
-                  Sluiten
-                </button>
-              </div>
-            ) : (
-              <>
-                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#1A1A1A", marginBottom: "6px", lineHeight: 1.2, paddingRight: "32px" }}>
-                  MOS-X Dakzorg aanvragen
-                </p>
-                <p style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", lineHeight: 1.55 }}>
-                  Vul je gegevens in. Yannick bekijkt je aanvraag en neemt persoonlijk contact met je op.
-                </p>
-
-                <form
-                  style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-                  onSubmit={e => { e.preventDefault(); setFormSubmitted(true); }}
-                >
-                  <input type="hidden" name="bron" value="MOS-X Dakzorg" />
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "14px" }}>
-                    <div>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Voornaam *</label>
-                      <input type="text" name="voornaam" required placeholder="Voornaam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Naam *</label>
-                      <input type="text" name="naam" required placeholder="Naam" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>E-mailadres *</label>
-                    <input type="email" name="email" required placeholder="jouw@email.be" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Adres *</label>
-                    <input type="text" name="adres" required placeholder="Straat, nummer, gemeente" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const }} />
-                  </div>
-
-                  <div>
-                    <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>Bericht <span style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span></label>
-                    <textarea name="bericht" rows={4} placeholder="Extra informatie of vragen..." style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const, resize: "none" as const }} />
-                  </div>
-
-                  <button
-                    type="submit"
-                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "#7AB54E"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#9BCB6C"; }}
-                    style={{
-                      display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                      width: "100%", padding: "16px 24px", borderRadius: "10px",
-                      background: "#9BCB6C", color: "#FFFFFF", border: "none", cursor: "pointer",
-                      fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                      fontWeight: 700, fontSize: "15px", transition: "background 200ms ease",
-                    }}
-                  >
-                    Verstuur mijn aanvraag
-                    <ChevronRight size={16} strokeWidth={2.5} />
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Dakzorg" bron="Dakzorg pagina" />
     </PageLayout>
   );
 }

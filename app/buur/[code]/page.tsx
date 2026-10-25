@@ -65,7 +65,7 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
                 "Werk ik al in je straat? Dan bespaar ik verplaatsing, en dat merk je",
               ].map((x) => (
                 <li key={x} style={{ display: "flex", gap: 10, fontSize: 16, color: "#1A1A1A" }}>
-                  <CheckCircle2 size={20} color="#7AB54E" style={{ flexShrink: 0, marginTop: 1 }} /> {x}
+                  <CheckCircle2 size={20} color="#9BCB6C" style={{ flexShrink: 0, marginTop: 1 }} /> {x}
                 </li>
               ))}
             </ul>
@@ -78,11 +78,11 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
               <BuurFormulier actie={meldBuurAan.bind(null, code)} />
             ) : (
               <p className={kz.leeg}>
-                Deze link werkt niet meer, maar je bent natuurlijk welkom. <Link href="/#calculator" style={{ color: "#7AB54E", fontWeight: 600 }}>Bereken hier je richtprijs</Link>.
+                Deze link werkt niet meer, maar je bent natuurlijk welkom. <Link href="/#calculator" style={{ color: "#9BCB6C", fontWeight: 600 }}>Bereken hier je richtprijs</Link>.
               </p>
             )}
             <p className={kz.sub} style={{ fontSize: 13, display: "flex", gap: 6, alignItems: "center" }}>
-              <ShieldCheck size={15} color="#7AB54E" /> {wie} ziet je gegevens niet.
+              <ShieldCheck size={15} color="#9BCB6C" /> {wie} ziet je gegevens niet.
             </p>
           </div>
         </div>

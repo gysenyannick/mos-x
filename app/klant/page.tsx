@@ -15,7 +15,7 @@ export default function KlantenzoneIngang() {
       <style>{`
         .kz-link { position: relative; min-height: 78vh; box-sizing: border-box; padding: 160px 16px 96px; background: radial-gradient(900px 480px at 90% 0%, rgba(155,203,108,0.12), transparent 60%), #F7F8F6; }
         .kz-link-kaart { max-width: 560px; margin: 0 auto; padding: 36px; border-radius: 20px; background: #fff; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
-        .kz-link-oog { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #7AB54E; }
+        .kz-link-oog { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #9BCB6C; }
         .kz-link-titel { margin: 8px 0 24px; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: clamp(26px, 5vw, 34px); line-height: 1.15; letter-spacing: -0.028em; color: #1A1A1A; }
         .kz-link-sub { margin: 12px 0 24px; font-size: 16px; line-height: 1.6; color: #545454; }
         .kz-link-rij { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -34,7 +34,7 @@ export default function KlantenzoneIngang() {
         .kz-link-voet a:hover { text-decoration: underline; }
         .kz-link-voet a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 4px; }
         .kz-link-punten li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; line-height: 1.5; color: #545454; }
-        .kz-link-punten svg { flex: none; margin-top: 2px; color: #7AB54E; }
+        .kz-link-punten svg { flex: none; margin-top: 2px; color: #9BCB6C; }
         .kz-link-punten a { color: #3F6B22; font-weight: 700; text-decoration: none; }
         .kz-link-punten a:hover { text-decoration: underline; }
         @media (max-width: 560px) { .kz-link { padding-top: 110px; } .kz-link-kaart { padding: 24px 20px; } .kz-link-knop { flex: 1 1 100%; } }

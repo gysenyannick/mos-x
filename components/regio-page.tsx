@@ -359,7 +359,7 @@ export default function RegioPage({
                   style={{
                     display: "block",
                     width: "100%",
-                    background: sidebarBtnHov ? "#7AB54E" : "#9BCB6C",
+                    background: sidebarBtnHov ? "#9BCB6C" : "#9BCB6C",
                     color: "#fff",
                     borderRadius: "8px",
                     padding: "13px 20px",
@@ -485,7 +485,7 @@ export default function RegioPage({
                   onMouseLeave={() => setDarkBtnHov(false)}
                   style={{
                     display: "inline-flex", alignItems: "center", gap: "8px",
-                    background: darkBtnHov ? "#7AB54E" : "#9BCB6C",
+                    background: darkBtnHov ? "#9BCB6C" : "#9BCB6C",
                     color: "#FFFFFF", border: "none",
                     borderRadius: "8px", padding: "12px 20px",
                     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
@@ -547,7 +547,7 @@ export default function RegioPage({
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "8px",
-                  background: ctaBtnHov ? "#7AB54E" : "#9BCB6C",
+                  background: ctaBtnHov ? "#9BCB6C" : "#9BCB6C",
                   color: "#FFFFFF",
                   border: "none",
                   borderRadius: "8px",

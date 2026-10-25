@@ -12,7 +12,7 @@ export default function BuurFormulier({ actie }: { actie: (s: Staat, fd: FormDat
   if (staat.ok) {
     return (
       <div style={{ textAlign: "center", padding: "12px 0" }}>
-        <CheckCircle2 size={40} color="#7AB54E" />
+        <CheckCircle2 size={40} color="#9BCB6C" />
         <p className={kz.groot} style={{ marginTop: 10 }}>Bedankt!</p>
         <p className={kz.sub}>We nemen binnen 1 werkdag contact met je op voor een richtprijs. Liever meteen? Bel of WhatsApp naar +32 468 35 28 69.</p>
       </div>

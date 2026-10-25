@@ -525,7 +525,7 @@
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #7AB54E;
+  background-color: #9BCB6C;
   border-color: #E4E6E3;
   background-clip: padding-box;
 }
@@ -1047,3 +1047,7 @@ p[style*="text-align:center"], p[style*="text-align: center"],
 
 
 @media (max-width: 364px) { .hero-sectie .hero-badges { flex-wrap: wrap !important; } }
+
+/* Mooie regelverdeling: titels, vragen en korte teksten verdelen hun regels gelijk */
+main :is(h1, h2, h3, h4, button, li, dt, dd, label, small, b, blockquote) { text-wrap: balance; }
+main p { text-wrap: balance; }

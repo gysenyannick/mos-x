@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const GROEN = "#9BCB6C";
-const GROEN_D = "#7AB54E";
+const GROEN_D = "#9BCB6C";
 const WA = "https://wa.me/32468352869";
 const H = { fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, letterSpacing: "-0.028em" } as const;
 

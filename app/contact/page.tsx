@@ -1,456 +1,210 @@
 ﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Check, CheckCircle, Phone, Mail, MapPin, Clock, ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight, Clock, Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
+import GoogleBalk from "@/components/google-balk";
+import { DIENST_CSS } from "@/components/dienst-stijl";
 
+function WhatsAppIcoon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  );
+}
 
-const includes = [
-  "Reactie binnen 24 uur",
-  "Vrijblijvend advies",
-  "Rechtstreeks contact met Yannick",
-];
+const CONTACT_CSS = `
+  .ct-hero { padding: 132px 24px 72px; background: radial-gradient(700px 420px at 100% 0%, rgba(155,203,108,0.10), transparent 65%), #F7F8F6; }
+  .ct-kruimel { margin: 14px 0 22px; display: flex; align-items: center; gap: 4px; font-size: 13px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-kruimel a { color: #1A1A1A; text-decoration: none; transition: color .2s ease; }
+  .ct-kruimel a:hover { color: #7AB54E; }
+  .ct-h1 { margin: 0 0 18px; font-size: clamp(2.1rem, 4.2vw, 3.3rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .ct-h1 span { display: block; color: #9BCB6C; }
+  .ct-top { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 32px; align-items: center; }
+  .ct-intro { max-width: 560px; }
+  .ct-foto { position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 5 / 4; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(30,51,36,0.45); }
+  .ct-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ct-foto span { position: absolute; left: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,0.94); font-size: 13px; font-weight: 600; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-foto span i { width: 8px; height: 8px; border-radius: 50%; background: #9BCB6C; box-shadow: 0 0 0 4px rgba(155,203,108,0.25); }
+  .ct-raster { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 32px; align-items: start; margin-top: 44px; }
 
-const regions = [
-  "Vlaams-Brabant",
-  "Antwerpen",
-  "Limburg",
-];
+  .ct-form { padding: 36px; border-radius: 24px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -50px rgba(30,51,36,0.35); }
+  .ct-form h2 { margin: 0 0 6px; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .ct-form form > p:first-of-type { margin: 0 0 26px; font-size: 15px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-velden { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .ct-veld { display: grid; gap: 6px; }
+  .ct-veld.breed { grid-column: 1 / -1; }
+  .ct-veld label { font-size: 13.5px; font-weight: 700; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .ct-veld label span { color: #9BCB6C; }
+  .ct-veld input, .ct-veld select, .ct-veld textarea { width: 100%; box-sizing: border-box; padding: 13px 15px; border-radius: 10px; border: 1px solid #E5E7EB; background: #F7F8F6; color: #1A1A1A; font-size: 15px; font-family: var(--font-inter), system-ui, sans-serif; transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease; }
+  .ct-veld textarea { resize: vertical; min-height: 110px; }
+  .ct-veld input:hover, .ct-veld select:hover, .ct-veld textarea:hover { border-color: #CFE5B8; }
+  .ct-veld input:focus, .ct-veld select:focus, .ct-veld textarea:focus { outline: none; border-color: #9BCB6C; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(155,203,108,0.18); }
+  .ct-verstuur { margin-top: 22px; width: 100%; }
+  .ct-verstuur:disabled { opacity: 0.7; cursor: default; }
+  .ct-spin { animation: ct-draai 1s linear infinite; }
+  @keyframes ct-draai { to { transform: rotate(360deg); } }
+  .ct-fout { margin: 12px 0 0; font-size: 14px; color: #B42318; font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-noot { margin: 12px 0 0; text-align: center; font-size: 13px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-klaar { padding: 40px 10px; text-align: center; }
+  .ct-klaar i { width: 64px; height: 64px; margin: 0 auto 18px; border-radius: 50%; display: grid; place-items: center; background: #F2F8EC; }
+  .ct-klaar b { display: block; margin-bottom: 6px; font-size: 22px; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .ct-klaar p { margin: 0; font-size: 15.5px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
 
-const inputStyle = {
-  background: "#F8F8F8",
-  border: "1px solid #E0E0E0",
-  borderRadius: "8px",
-  color: "#111111",
-  width: "100%",
-  padding: "12px 16px",
-  fontSize: "14px",
-  outline: "none",
-  fontFamily: "var(--font-inter), system-ui, sans-serif",
-  boxSizing: "border-box" as const,
-};
+  .ct-zij { display: grid; gap: 16px; }
+  .ct-snel { padding: 28px; border-radius: 24px; color: #FFFFFF; background: radial-gradient(400px 240px at 100% 0%, rgba(155,203,108,0.2), transparent 70%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 80%); box-shadow: 0 30px 70px -30px rgba(11,15,12,0.7); }
+  .ct-snel h3 { margin: 0 0 4px; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .ct-snel > p { margin: 0 0 20px; font-size: 14.5px; color: rgba(255,255,255,0.68); font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-snel .do-knop { width: 100%; }
+  .ct-snel .do-knop + .do-knop { margin-top: 10px; }
+  .ct-snel .do-knop:focus-visible { outline-color: #FFFFFF; }
+  .ct-wa { background: #25D366; color: #FFFFFF; }
+  .ct-wa:hover { background: #1EBE5A; }
 
-const labelStyle = {
-  display: "block",
-  fontSize: "14px",
-  fontWeight: 600,
-  color: "#555555",
-  marginBottom: "6px",
-  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-};
+  .ct-info { padding: 26px 28px; border-radius: 24px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .ct-info ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 18px; }
+  .ct-info li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .ct-info i { width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: #F2F8EC; }
+  .ct-info b { display: block; font-size: 14.5px; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+  .ct-info span, .ct-info a { display: block; font-size: 14.5px; line-height: 1.55; color: #545454; text-decoration: none; font-family: var(--font-inter), system-ui, sans-serif; }
+  .ct-info a { color: #1A1A1A; font-weight: 600; transition: color .2s ease; }
+  .ct-info a:hover { color: #7AB54E; }
+  .ct-info a:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; border-radius: 4px; }
+  .ct-kaart { margin-top: 20px; border-radius: 14px; overflow: hidden; border: 1px solid #E5E7EB; }
+  .ct-kaart iframe { display: block; width: 100%; height: 180px; border: 0; }
+
+  @media (max-width: 960px) {
+    .ct-hero { padding: 112px 16px 56px; }
+    .ct-raster, .ct-top { grid-template-columns: minmax(0, 1fr); }
+    .ct-foto { display: none; }
+    .ct-form { padding: 26px 20px; }
+  }
+  @media (max-width: 560px) {
+    .ct-velden { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ct-spin { animation: none; } }
+`;
 
 export default function ContactPage() {
-  const [homeHovered, setHomeHovered] = useState(false);
-  const [voornaam, setVoornaam] = useState("");
-  const [achternaam, setAchternaam] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefoon, setTelefoon] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [adres, setAdres] = useState("");
-  const [dienst, setDienst] = useState("");
-  const [bericht, setBericht] = useState("");
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [btnHovered, setBtnHovered] = useState(false);
-  const [btnActive, setBtnActive] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    // Zonder dit doet de browser een native POST naar /contact, wat een 405 geeft.
-    e.preventDefault();
-    if (status === 'sending' || status === 'success') return;
-    setStatus('sending');
-    try {
-      const fd = new FormData();
-      fd.append("voornaam", voornaam);
-      fd.append("achternaam", achternaam);
-      fd.append("email", email);
-      fd.append("telefoon", telefoon);
-      fd.append("postcode", postcode);
-      fd.append("adres", adres);
-      fd.append("dienst", dienst);
-      fd.append("bericht", bericht);
-      const res = await fetch("/api/contact", { method: "POST", body: fd });
-      if (!res.ok) throw new Error("send_failed");
-      setStatus('success');
-    } catch {
-      setStatus('error');
-    }
-  };
+  const [velden, setVelden] = useState({ voornaam: "", achternaam: "", email: "", telefoon: "", postcode: "", adres: "", dienst: "", bericht: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const zet = (k: keyof typeof velden) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setVelden((v) => ({ ...v, [k]: e.target.value }));
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("voornaam")) setVoornaam(params.get("voornaam")!);
-    if (params.get("achternaam")) setAchternaam(params.get("achternaam")!);
-    if (params.get("email")) setEmail(params.get("email")!);
-    if (params.get("telefoon")) setTelefoon(params.get("telefoon")!);
-    if (params.get("postcode")) setPostcode(params.get("postcode")!);
-    if (params.get("adres")) setAdres(params.get("adres")!);
-    if (params.get("dienst")) setDienst(params.get("dienst")!);
-    if (params.get("bericht")) setBericht(params.get("bericht")!);
+    setVelden((v) => {
+      const n = { ...v };
+      (Object.keys(n) as (keyof typeof n)[]).forEach((k) => { const w = params.get(k); if (w) n[k] = w; });
+      return n;
+    });
   }, []);
 
-  useEffect(() => {
-    const el = document.getElementById("trustindex-widget");
-    if (!el) return;
-    if (el.querySelector('script[src*="trustindex"]')) return;
-    const s = document.createElement("script");
-    s.defer = true;
-    s.async = true;
-    s.src = "https://cdn.trustindex.io/loader.js?8fa48bf752f98026fa9684ae694";
-    el.appendChild(s);
-  }, []);
+  const verstuur = async (e: React.FormEvent<HTMLFormElement>) => {
+    // Zonder dit doet de browser een native POST naar /contact, wat een 405 geeft.
+    e.preventDefault();
+    if (status === "sending" || status === "success") return;
+    setStatus("sending");
+    try {
+      const fd = new FormData();
+      Object.entries(velden).forEach(([k, v]) => fd.append(k, v));
+      const res = await fetch("/api/contact", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("send_failed");
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  };
 
   return (
     <PageLayout>
-      <style>{`
-        .contact-submit-btn:focus-visible {
-          outline: 2px solid #7AB54E;
-          outline-offset: 3px;
-        }
-      `}</style>
+      <style>{DIENST_CSS + CONTACT_CSS}</style>
 
-      {/* ── Hero ── */}
-      <section style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "24px" }}>
-        <div className="site-wrap">
+      <section className="ct-hero">
+        <div className="do-wrap">
           <BackLink href="/" />
-          <p style={{ fontSize: "13px", color: "#9BCB6C", marginBottom: "20px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-            <Link
-              href="/"
-              onMouseEnter={() => setHomeHovered(true)}
-              onMouseLeave={() => setHomeHovered(false)}
-              style={{ color: homeHovered ? "#9BCB6C" : "#1A1A1A", textDecoration: "none", transition: "color 180ms ease" }}
-            >Home</Link>
-            <ChevronRight size={13} strokeWidth={2} style={{ display: "inline", verticalAlign: "middle", margin: "0 3px", color: "#9BCB6C" }} />
-            <span style={{ color: "#9BCB6C" }}>Contact</span>
-          </p>
-          <h1 className="leading-tight mb-5"
-            style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.625rem, 5vw, 3.5rem)", letterSpacing: "-0.03em", color: "#1A1A1A" }}>
-            Neem contact op met <span style={{ color: "#9BCB6C" }}>Yannick.</span>
-          </h1>
-          <p className="text-base lg:text-lg leading-relaxed" style={{ color: "#545454" }}>
-            Heb je een vraag over je dak of wil je een offerte? Yannick helpt je persoonlijk verder. Je ontvangt binnen 24 uur een reactie.
-          </p>
-        </div>
-      </section>
+          <p className="ct-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" />Contact</p>
+          <div className="ct-top">
+          <div className="ct-intro">
+            <p className="do-oog">Contact</p>
+            <h1 className="ct-h1">Vragen over je dak? <span>We helpen je graag.</span></h1>
+            <p className="do-p">Stel je vraag of vraag vrijblijvend een offerte aan. Je krijgt binnen 1 werkdag een persoonlijk antwoord.</p>
+            <div className="do-hero-bewijs" style={{ borderTopColor: "#E5E7EB", marginTop: 26 }}>
+              <GoogleBalk />
+              <span className="do-garantie-chip" style={{ color: "#545454" }}><Clock size={18} color="#9BCB6C" aria-hidden="true" /><b style={{ color: "#1A1A1A" }}>Binnen 1 werkdag</b> antwoord</span>
+            </div>
+          </div>
+          <div className="ct-foto">
+            <img src="/images/IMG_5900.JPEG" alt="Vakman van MOS-X op een dak" style={{ objectPosition: "30% 25%" }} />
+            <span><i aria-hidden="true" />Ma - za bereikbaar van 08:00 tot 17:00</span>
+          </div>
+          </div>
 
-      {/* ── Main content ── */}
-      <section className="site-pad" style={{ background: "#F7F8F6", paddingTop: "24px", paddingBottom: "30px" }}>
-        <div className="site-wrap">
-          <div className="contact-grid grid lg:grid-cols-[1fr_380px] gap-10 items-start">
-
-            {/* ── Formulier ── */}
-            <div className="contact-form-card rounded-2xl p-8"
-              style={{ background: "#FFFFFF", border: "1px solid #9BCB6C", borderRadius: "16px", boxShadow: "0 2px 16px rgba(155,203,108,0.12)" }}>
-              {status === 'success' ? (
-                <>
-                  <style>{`
-                    @keyframes mosx-success-in {
-                      from { opacity: 0; transform: translateY(10px); }
-                      to   { opacity: 1; transform: translateY(0); }
-                    }
-                    @media (prefers-reduced-motion: reduce) {
-                      @keyframes mosx-success-in { from { opacity: 0; } to { opacity: 1; } }
-                    }
-                  `}</style>
-                  <div style={{ textAlign: "center", padding: "20px 8px 36px", animation: "mosx-success-in 300ms cubic-bezier(0.16,1,0.3,1) both" }}>
-                    <div style={{
-                      width: "60px", height: "60px", borderRadius: "50%",
-                      background: "rgba(155,203,108,0.15)", border: "2px solid #9BCB6C",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      margin: "0 auto 24px",
-                    }}>
-                      <Check size={26} color="#9BCB6C" strokeWidth={2.5} />
-                    </div>
-                    <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#1A1A1A", marginBottom: "14px", lineHeight: 1.2 }}>
-                      Bericht verstuurd!
-                    </p>
-                    <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.65, marginBottom: "8px" }}>
-                      Je ontvangt dadelijk een bevestigingsmail.
-                    </p>
-                    <p style={{ fontSize: "14px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.65, marginBottom: 0 }}>
-                      Yannick neemt{" "}
-                      <strong style={{ color: "#9BCB6C", fontWeight: 600 }}>binnen 1 werkdag</strong>
-                      {" "}contact met je op.
-                    </p>
-                  </div>
-                </>
+          <div className="ct-raster">
+            <div className="ct-form">
+              {status === "success" ? (
+                <div className="ct-klaar" role="status">
+                  <i><CheckCircle2 size={32} color="#9BCB6C" /></i>
+                  <b>Bericht verstuurd!</b>
+                  <p>Je ontvangt zo een bevestigingsmail. We nemen binnen 1 werkdag contact op.</p>
+                </div>
               ) : (
-                <>
-                  <p className="font-black text-lg mb-1"
-                    style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
-                    Waar kunnen we je mee helpen?
-                  </p>
-                  <p style={{ fontSize: "13px", color: "#888888", marginBottom: "24px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                    Stel je vraag of vraag vrijblijvend een offerte aan.
-                  </p>
-                  <form className="space-y-5" onSubmit={handleSubmit} noValidate={false}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                      <div>
-                        <label style={labelStyle}>Voornaam *</label>
-                        <input type="text" name="voornaam" required placeholder="Voornaam" value={voornaam} onChange={e => setVoornaam(e.target.value)} style={inputStyle} />
-                      </div>
-                      <div>
-                        <label style={labelStyle}>Achternaam *</label>
-                        <input type="text" name="achternaam" required placeholder="Achternaam" value={achternaam} onChange={e => setAchternaam(e.target.value)} style={inputStyle} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label style={labelStyle}>E-mailadres *</label>
-                      <input type="email" name="email" required placeholder="jouw@email.be" value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} />
-                    </div>
-
-                    <div>
-                      <label style={labelStyle}>Telefoonnummer *</label>
-                      <input type="tel" name="telefoon" required placeholder="0470 00 00 00" value={telefoon} onChange={e => setTelefoon(e.target.value)} style={inputStyle} />
-                    </div>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "130px 1fr", gap: "12px" }}>
-                      <div>
-                        <label style={labelStyle}>Postcode *</label>
-                        <input type="text" name="postcode" required placeholder="2500" value={postcode} onChange={e => setPostcode(e.target.value)} style={inputStyle} />
-                      </div>
-                      <div>
-                        <label style={labelStyle}>Adres</label>
-                        <input type="text" name="adres" placeholder="bv. Kerkstraat 12, Lier" value={adres} onChange={e => setAdres(e.target.value)} style={inputStyle} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label style={labelStyle}>Interesse in *</label>
-                      <select name="dienst" required value={dienst} onChange={e => setDienst(e.target.value)} style={{ ...inputStyle, color: dienst === "" ? "#AAAAAA" : "#111111" }}>
-                        <option value="" disabled style={{ color: "#AAAAAA" }}>Selecteer een dienst...</option>
-                        <option value="dakreiniging" style={{ color: "#1A1A1A" }}>Dakreiniging</option>
-                        <option value="dakcoating" style={{ color: "#1A1A1A" }}>Dakcoating</option>
-                        <option value="dakabonnement" style={{ color: "#1A1A1A" }}>MOS-X Dakzorg</option>
-                        <option value="weet-niet" style={{ color: "#1A1A1A" }}>Andere</option>
+                <form onSubmit={verstuur}>
+                  <h2>Waar kunnen we je mee helpen?</h2>
+                  <p>Vul het formulier in, dan nemen we contact met je op.</p>
+                  <div className="ct-velden">
+                    <div className="ct-veld"><label htmlFor="voornaam">Voornaam <span>*</span></label><input id="voornaam" name="voornaam" required autoComplete="given-name" value={velden.voornaam} onChange={zet("voornaam")} /></div>
+                    <div className="ct-veld"><label htmlFor="achternaam">Achternaam <span>*</span></label><input id="achternaam" name="achternaam" required autoComplete="family-name" value={velden.achternaam} onChange={zet("achternaam")} /></div>
+                    <div className="ct-veld"><label htmlFor="email">E-mailadres <span>*</span></label><input id="email" name="email" type="email" required autoComplete="email" placeholder="jouw@email.be" value={velden.email} onChange={zet("email")} /></div>
+                    <div className="ct-veld"><label htmlFor="telefoon">Telefoonnummer <span>*</span></label><input id="telefoon" name="telefoon" type="tel" required autoComplete="tel" placeholder="0470 00 00 00" value={velden.telefoon} onChange={zet("telefoon")} /></div>
+                    <div className="ct-veld"><label htmlFor="postcode">Postcode <span>*</span></label><input id="postcode" name="postcode" required autoComplete="postal-code" placeholder="2500" value={velden.postcode} onChange={zet("postcode")} /></div>
+                    <div className="ct-veld"><label htmlFor="adres">Adres</label><input id="adres" name="adres" autoComplete="street-address" placeholder="Straat en nummer" value={velden.adres} onChange={zet("adres")} /></div>
+                    <div className="ct-veld breed">
+                      <label htmlFor="dienst">Interesse in <span>*</span></label>
+                      <select id="dienst" name="dienst" required value={velden.dienst} onChange={zet("dienst")}>
+                        <option value="" disabled>Kies een dienst</option>
+                        <option value="Dakreiniging">Dakontmossen</option>
+                        <option value="Dakcoating">Dakcoaten</option>
+                        <option value="MOS-X Dakzorg">MOS-X Dakzorg</option>
+                        <option value="Andere">Andere vraag</option>
                       </select>
                     </div>
-
-                    <div>
-                      <label style={labelStyle}>Bericht (optioneel)</label>
-                      <textarea name="bericht" rows={4}
-                        placeholder="Extra informatie over je dak of situatie..."
-                        value={bericht} onChange={e => setBericht(e.target.value)}
-                        style={{ ...inputStyle, resize: "none" as const }} />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={status === 'sending'}
-                      className="w-full flex items-center justify-center gap-2 contact-submit-btn"
-                      onMouseEnter={() => setBtnHovered(true)}
-                      onMouseLeave={() => { setBtnHovered(false); setBtnActive(false); }}
-                      onMouseDown={() => setBtnActive(true)}
-                      onMouseUp={() => setBtnActive(false)}
-                      style={{
-                        background: status === 'sending' ? "#C6DFAE" : btnHovered ? "#7AB54E" : "#9BCB6C",
-                        color: "#FFFFFF", borderRadius: "8px",
-                        padding: "14px 24px", border: "none",
-                        cursor: status === 'sending' ? "not-allowed" : "pointer",
-                        fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                        fontWeight: 700, fontSize: "15px",
-                        transform: btnActive && status !== 'sending' ? "scale(0.97)" : "scale(1)",
-                        transition: "background 160ms ease, transform 90ms ease",
-                        outline: "none",
-                      }}
-                    >
-                      {status === 'sending'
-                        ? "Versturen…"
-                        : <>Verstuur mijn aanvraag <ChevronRight className="w-5 h-5" /></>}
-                    </button>
-
-                    {status === 'error' && (
-                      <div style={{ background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: "8px", padding: "12px 14px" }}>
-                        <p style={{ margin: 0, fontSize: "13.5px", lineHeight: 1.55, color: "#C0392B", fontWeight: 600, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                          Er ging iets mis bij het versturen. Probeer het opnieuw, of bel Yannick op{" "}
-                          <a href="tel:+32468352869" style={{ color: "#C0392B", textDecoration: "underline" }}>+32 468 35 28 69</a>.
-                        </p>
-                      </div>
-                    )}
-
-                    {/* 3 trust-chips onder de knop */}
-                    <div className="contact-trust-chips" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginTop: "4px" }}>
-                      {includes.map((item, i) => (
-                        <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: "#F7F8F6", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "8px 6px" }}>
-                          <CheckCircle size={13} color="#9BCB6C" style={{ flexShrink: 0 }} />
-                          <span style={{ fontSize: "11px", fontWeight: 600, color: "#555555", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1, whiteSpace: "nowrap" }}>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </form>
-                </>
+                    <div className="ct-veld breed"><label htmlFor="bericht">Bericht</label><textarea id="bericht" name="bericht" rows={4} placeholder="Vertel kort over je dak of je vraag" value={velden.bericht} onChange={zet("bericht")} /></div>
+                  </div>
+                  <button type="submit" className="do-knop do-knop-g ct-verstuur" disabled={status === "sending"}>
+                    {status === "sending" ? <Loader2 size={18} className="ct-spin" /> : <Send size={17} />}
+                    {status === "sending" ? "Bezig met versturen" : "Verstuur mijn aanvraag"}
+                  </button>
+                  {status === "error" && <p className="ct-fout" role="alert">Er ging iets mis. Probeer opnieuw of bel ons even.</p>}
+                  <p className="ct-noot">Vrijblijvend. We delen je gegevens met niemand.</p>
+                </form>
               )}
             </div>
 
-            {/* ── Sidebar ── */}
-            <div className="space-y-5">
+            <div className="ct-zij">
+              <div className="ct-snel">
+                <h3>Liever meteen contact?</h3>
+                <p>Bel of stuur een bericht, ook met foto&apos;s van je dak.</p>
+                <a className="do-knop ct-wa" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer"><WhatsAppIcoon />Stuur een WhatsApp</a>
+                <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+              </div>
 
-              {/* Direct contact */}
-              <div className="contact-direct-card rounded-xl p-6" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)" }}>
-                <p className="font-black mb-5"
-                  style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: "#111111" }}>
-                  Liever direct contact?
-                </p>
-<div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                  {[
-                    { href: "tel:+32468352869",   Icon: Phone,  text: "+32 468 35 28 69",      sub: null },
-                    { href: "mailto:info@mos-x.be", Icon: Mail, text: "info@mos-x.be",          sub: null },
-                    { href: null,                  Icon: MapPin, text: "Bovenpad 100",           sub: "2280 Grobbendonk" },
-                    { href: null,                  Icon: Clock,  text: "Ma - Za: 08:00 - 17:00", sub: "Zo: Gesloten" },
-                  ].map(({ href, Icon, text, sub }, i) => {
-                    const inner = (
-                      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                        <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: "#9BCB6C", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          <Icon size={16} color="#FFFFFF" strokeWidth={2} />
-                        </div>
-                        <div>
-                          <p style={{ fontSize: "13.5px", fontWeight: 600, color: "#111111", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>{text}</p>
-                          {sub && <p style={{ fontSize: "12px", color: "#888888", fontFamily: "var(--font-inter), system-ui, sans-serif", margin: 0 }}>{sub}</p>}
-                        </div>
-                      </div>
-                    );
-                    return href
-                      ? <a key={i} href={href} style={{ textDecoration: "none" }}>{inner}</a>
-                      : <div key={i}>{inner}</div>;
-                  })}
-                  <iframe
-                    src="https://maps.google.com/maps?q=MOS-X+Dakontmossing+Coating+Grobbendonk&output=embed"
-                    width="100%"
-                    height="160"
-                    style={{ border: "none", borderRadius: "8px", display: "block" }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                  <div className="flex gap-2 mt-4 justify-center">
-                    {[
-                      { href: "https://www.facebook.com/profile.php?id=61551512872835", label: "Facebook", path: "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" },
-                      { href: "https://www.instagram.com/mosx.be/", label: "Instagram", path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" },
-                      { href: "https://www.linkedin.com/in/yannick-gysen-3b0018247/", label: "LinkedIn", path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" },
-                    ].map(s => (
-                      <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                        style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "36px", height: "36px", borderRadius: "8px", background: "#F7F8F6", color: "#9BCB6C", transition: "background 150ms ease" }}
-                        onMouseEnter={e => (e.currentTarget.style.background = "#E8F5D9")}
-                        onMouseLeave={e => (e.currentTarget.style.background = "#F7F8F6")}
-                      >
-                        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d={s.path} /></svg>
-                      </a>
-                    ))}
-                  </div>
+              <div className="ct-info">
+                <ul>
+                  <li><i><Mail size={18} color="#9BCB6C" /></i><div><b>E-mail</b><a href="mailto:info@mos-x.be">info@mos-x.be</a></div></li>
+                  <li><i><MapPin size={18} color="#9BCB6C" /></i><div><b>Onze vestigingen</b><span>Pastorijstraat 47, 2590 Berlaar</span><span>Bovenpad 100, 2280 Grobbendonk</span></div></li>
+                  <li><i><Clock size={18} color="#9BCB6C" /></i><div><b>Openingsuren</b><span>Ma - za: 08:00 - 17:00</span><span>Zo: gesloten</span></div></li>
+                </ul>
+                <div className="ct-kaart">
+                  <iframe title="MOS-X op de kaart" src="https://maps.google.com/maps?q=MOS-X+Dakontmossing+Coating+Grobbendonk&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>
       </section>
-
-      {/* ── Reviews ── */}
-      <section style={{ background: "#F7F8F6", padding: "4px 0 30px" }}>
-        <div className="site-wrap">
-          <div className="contact-reviews-card" style={{ background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.07)", padding: "16px 24px" }}>
-            <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", color: "#1A1A1A", marginBottom: "8px", textAlign: "center" }}>
-              Correcte afspraken. Duidelijke communicatie. <span style={{ color: "#9BCB6C" }}>Proper werk.</span>
-            </h2>
-            {/* Trustindex widget — negatieve marge compenseert kaart-padding zodat widget breed genoeg is voor 3 cards */}
-            <div id="trustindex-widget" className="contact-reviews-widget" style={{ margin: "0 -24px -16px" }} />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Werkgebied kaart ── */}
-      <section style={{ background: "#F7F8F6", padding: "0 0 48px" }}>
-        <div className="site-wrap">
-          <div className="werkgebied-card" style={{
-            position: "relative",
-            background: "#FFFFFF",
-            border: "1px solid #E5E7EB",
-            borderRadius: "16px",
-            boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
-            overflow: "hidden",
-            minHeight: "250px",
-          }}>
-
-            {/* Links: tekst — neemt linkerhelft (op mobiel: bovenaan, volle breedte) */}
-            <div className="werkgebied-text" style={{ width: "50%", padding: "32px 64px 32px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <h2 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.028em", lineHeight: 1.1, color: "#1A1A1A", marginBottom: "10px" }}>
-                Actief in <span style={{ color: "#9BCB6C" }}>jouw regio.</span>
-              </h2>
-              <p style={{ fontSize: "14px", color: "#555555", lineHeight: 1.6, marginBottom: "16px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                MOS-X is actief in Antwerpen, Limburg en Vlaams-Brabant.
-              </p>
-              <div className="werkgebied-regions" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-                {["Antwerpen", "Limburg", "Vlaams-Brabant"].map(r => (
-                  <div key={r} style={{ display: "flex", alignItems: "center", gap: "8px", background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "10px", padding: "9px 14px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
-                    <MapPin size={14} color="#9BCB6C" style={{ flexShrink: 0 }} />
-                    <span style={{ fontSize: "13.5px", color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700 }}>{r}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Rechts: kaart — absoluut gepositioneerd, start vroeg genoeg voor de pijl.
-                Op mobiel: gewoon in de flow, onder de tekst. */}
-            <div className="werkgebied-media hidden lg:block" style={{ position: "absolute", top: 0, bottom: 0, left: "calc(50% - 60px)", right: 0, overflow: "hidden" }}>
-              <img
-                src="/images/Regiokaart pc.png"
-                alt="Werkgebied MOS-X — Antwerpen, Vlaams-Brabant, Limburg"
-                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transform: "scale(1.3) translateX(3%)", display: "block" }}
-              />
-
-              {/* Mobiel: chevron loopt van de linker- naar de rechterrand en komt samen
-                  in één punt exact in het midden — overgang van tekst naar kaart */}
-              <svg
-                className="werkgebied-arrow-mobile"
-                preserveAspectRatio="none"
-                viewBox="0 0 100 100"
-                aria-hidden="true"
-              >
-                <polygon points="0,0 100,0 100,10 50,50 0,10" fill="white" />
-                <polyline points="0,10 50,50 100,10" fill="none" stroke="#9BCB6C" strokeWidth="1.4" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
-              </svg>
-            </div>
-
-            {/* Desktop: pijl/chevron SVG overgang naar rechts */}
-            <svg
-              className="werkgebied-arrow-desktop"
-              style={{ position: "absolute", top: 0, left: "calc(50% - 60px)", width: "120px", height: "100%", zIndex: 10, pointerEvents: "none" }}
-              preserveAspectRatio="none"
-              viewBox="0 0 100 100"
-              aria-hidden="true"
-            >
-              {/* Wit vlak met ">"-vorm rechtsrand */}
-              <polygon points="0,0 40,0 70,50 40,100 0,100" fill="white" />
-              {/* Groene pijllijn */}
-              <polyline points="40,0 70,50 40,100" fill="none" stroke="#9BCB6C" strokeWidth="1.2" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
-            </svg>
-
-            {/* Mobiel: volle-breedte chevron boven kaart, gelijke gekleurde ruimte */}
-            <div className="block lg:hidden" style={{ paddingTop: "10px" }}>
-              <svg
-                style={{ display: "block", width: "100%", height: "42px" }}
-                preserveAspectRatio="none"
-                viewBox="0 0 100 42"
-                aria-hidden="true"
-              >
-                <polygon points="0,4 50,40 100,4 100,42 0,42" fill="#FAF8F6" />
-                <polyline points="0,4 50,40 100,4" fill="none" stroke="#9BCB6C" strokeWidth="1.4" vectorEffect="non-scaling-stroke" strokeLinejoin="round" strokeLinecap="round" />
-              </svg>
-              <div style={{ background: "#FAF8F6", padding: "20px 0" }}>
-                <img
-                  src="/images/Werkgebied donkere achtergrond 2.0.png"
-                  alt="Werkgebied MOS-X - Antwerpen, Vlaams-Brabant, Limburg"
-                  style={{ width: "100%", height: "250px", objectFit: "cover", objectPosition: "center", display: "block" }}
-                />
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
     </PageLayout>
   );
 }
