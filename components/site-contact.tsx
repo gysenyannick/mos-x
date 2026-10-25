@@ -135,7 +135,7 @@ export default function SiteContact() {
             <p className="ct-groep">Ontdekken</p>
             <div className="ct-opties">
               <Optie icoon={<Euro size={20} />} titel="Wat kost mijn dak?" sub="Bereken je richtprijs in 1 minuut" href="/#calculator" />
-              <Optie icoon={<Palette size={20} />} titel="Zie mijn dak in een nieuwe kleur" sub="Upload een foto van je huis" href="/dakkleur" />
+              <Optie icoon={<Palette size={20} />} titel="Zie mijn dak in een nieuwe kleur" sub="Upload een foto van je huis" href="/#dakkleur" />
             </div>
 
             <p className="ct-groep ct-groep-start">Klaar om te starten</p>

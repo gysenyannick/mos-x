@@ -42,8 +42,8 @@ const OVER_CSS = `
   .oo-handtekening small { font-size: 13.5px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
 
   .oo-kies { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: center; }
-  .oo-redenen { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .oo-reden { display: flex; gap: 14px; align-items: center; padding: 18px 20px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+  .oo-redenen { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 36px; }
+  .oo-reden { display: flex; gap: 14px; align-items: center; padding: 16px 4px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .oo-reden svg { flex: none; }
   .oo-reden b { display: block; font-size: 15.5px; color: #FFFFFF; font-family: var(--font-montserrat), system-ui, sans-serif; }
   .oo-reden > div { min-width: 0; }
@@ -58,6 +58,11 @@ const OVER_CSS = `
   .oo-trends b { display: block; margin-bottom: 6px; font-size: 16px; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; text-wrap: balance; }
   .oo-trends p { margin: 0; font-size: 14.5px; line-height: 1.6; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: balance; }
 
+  @media (max-width: 1180px) and (min-width: 961px) {
+    .oo-trends { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .oo-trends li:nth-child(3) { border-left: 0; }
+    .oo-trends li:nth-child(n+3) { border-top: 1px solid #E5E7EB; }
+  }
   @media (max-width: 960px) {
     .do-hero > img { width: 100%; }
     .oo-brief { grid-template-columns: minmax(0, 1fr); gap: 36px; }

@@ -10,18 +10,18 @@ import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 
 const voordelen = [
-  { Icoon: Leaf, titel: "Mos krijgt geen kans om terug te komen" },
-  { Icoon: Eye, titel: "Kleine gebreken vroeg opgemerkt" },
-  { Icoon: Droplets, titel: "Dakgoten die vrij blijven" },
-  { Icoon: Wallet, titel: "Geen grote, dure achterstand" },
-  { Icoon: Sparkles, titel: "Je dak blijft langer mooi" },
-  { Icoon: ClipboardList, titel: "Een rapport na elk bezoek" },
+  { Icoon: Leaf, titel: "Mos blijft weg" },
+  { Icoon: Eye, titel: "Gebreken vroeg gezien" },
+  { Icoon: Droplets, titel: "Vrije dakgoten" },
+  { Icoon: Wallet, titel: "Geen dure achterstand" },
+  { Icoon: Sparkles, titel: "Langer mooi" },
+  { Icoon: ClipboardList, titel: "Rapport na elk bezoek" },
 ];
 
 const stappen = [
-  { nr: "01", titel: "Plaatsbezoek en advies", tekst: "We bekijken je dak en bespreken wat het nodig heeft." },
-  { nr: "02", titel: "Jij kiest wat erin zit", tekst: "Een volledige onderhoudsbeurt, of enkel je dakgoten of kleine herstellingen. Elk jaar of om de 2 jaar." },
-  { nr: "03", titel: "Wij volgen het op", tekst: "We plannen je onderhoud zelf in. Jij hoeft er niet meer aan te denken." },
+  { nr: "01", titel: "Plaatsbezoek en advies", tekst: "We bekijken wat je dak nodig heeft." },
+  { nr: "02", titel: "Jij kiest wat erin zit", tekst: "Volledig, of enkel wat jij wilt." },
+  { nr: "03", titel: "Wij volgen het op", tekst: "We plannen je onderhoud zelf in." },
 ];
 
 const inbegrepen = [
@@ -33,18 +33,11 @@ const inbegrepen = [
   { titel: "Rapport in je klantenzone", tekst: "Na elk bezoek vind je de foto's en onze bevindingen terug in je klantenzone." },
 ];
 
-const zonder = [
-  "Mos en algen groeien ongemerkt aan",
-  "Dakgoten raken verstopt en lopen over",
-  "Kleine scheurtjes worden grote schade",
-  "Onverwachte, dure herstellingen",
-];
-
-const met = [
-  "Je dak wordt op vaste momenten nagekeken",
-  "Dakgoten blijven vrij en functioneel",
-  "Problemen worden vroeg opgemerkt en opgelost",
-  "Een duidelijke prijs, vooraf afgesproken",
+const vergelijk = [
+  { zonder: "Mos groeit ongemerkt aan", met: "Vaste controles" },
+  { zonder: "Verstopte dakgoten", met: "Goten blijven vrij" },
+  { zonder: "Kleine schade wordt groot", met: "Problemen vroeg opgelost" },
+  { zonder: "Onverwachte kosten", met: "Vaste prijs vooraf" },
 ];
 
 const faqs = [
@@ -65,6 +58,13 @@ const DAKZORG_CSS = `
   .dz-stap p { margin: 0; font-size: 15px; line-height: 1.6; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
   .do-hero .do-p, .dz-stap p, .do-antwoord p, .do-cta p { text-wrap: balance; }
 
+  .dz-vgl { max-width: 860px; margin: 0 auto; border-radius: 20px; overflow: hidden; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .dz-vgl-kop, .dz-vgl-rij { display: grid; grid-template-columns: 1fr 1fr; }
+  .dz-vgl-kop span { padding: 16px 26px; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; color: #8E8E89; background: #F7F8F6; }
+  .dz-vgl-kop span + span { color: #FFFFFF; background: #9BCB6C; }
+  .dz-vgl-rij span { display: flex; align-items: center; gap: 12px; padding: 17px 26px; border-top: 1px solid #E5E7EB; font-size: 15.5px; color: #8E8E89; white-space: nowrap; font-family: var(--font-inter), system-ui, sans-serif; }
+  .dz-vgl-rij span + span { color: #1A1A1A; font-weight: 600; background: #FBFDF9; border-left: 1px solid #E5E7EB; }
+  .dz-vgl-rij span svg { flex: none; }
   .dc-vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .dc-kaart { padding: 32px; border-radius: 20px; border: 1px solid #E5E7EB; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
   .dc-kaart.goed { border-color: #CFE5B8; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 0 0 3px rgba(155,203,108,0.15); }
@@ -98,6 +98,13 @@ const DAKZORG_CSS = `
     .dz-plan { padding: 26px 22px; }
     .do-hero > img { width: 100%; }
     .dz-stappen, .dc-vs { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .dz-vgl-kop { display: none; }
+    .dz-vgl-rij { grid-template-columns: minmax(0, 1fr); padding: 14px 18px; border-top: 1px solid #E5E7EB; }
+    .dz-vgl-rij:first-of-type { border-top: 0; }
+    .dz-vgl-rij span, .dz-vgl-rij span + span { padding: 3px 0; border: 0; background: none; font-size: 14.5px; }
+    .dz-vgl-rij span:first-child { color: #A3A8A0; text-decoration: line-through; text-decoration-color: rgba(163,168,160,0.6); }
     .dc-kaart { padding: 24px; }
   }
 `;
@@ -238,15 +245,14 @@ export default function MosXDakzorgPage() {
             </div>
             <p className="do-p">Een dak dat regelmatig onderhouden wordt, gaat jaren langer mee.</p>
           </div>
-          <div className="dc-vs">
-            <div className="dc-kaart">
-              <h3>Zonder Dakzorg</h3>
-              <ul>{zonder.map((t) => <li key={t}><X size={18} color="#8E8E89" aria-hidden="true" />{t}</li>)}</ul>
-            </div>
-            <div className="dc-kaart goed">
-              <h3>Met MOS-X Dakzorg</h3>
-              <ul>{met.map((t) => <li key={t}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{t}</li>)}</ul>
-            </div>
+          <div className="dz-vgl">
+            <div className="dz-vgl-kop"><span>Zonder Dakzorg</span><span>Met MOS-X Dakzorg</span></div>
+            {vergelijk.map((v) => (
+              <div key={v.met} className="dz-vgl-rij">
+                <span><X size={17} color="#B0B6AC" aria-hidden="true" />{v.zonder}</span>
+                <span><CheckCircle2 size={17} color="#9BCB6C" aria-hidden="true" />{v.met}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>

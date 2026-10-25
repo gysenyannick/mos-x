@@ -11,7 +11,7 @@ import SiteWerkgebied      from "@/components/site-werkgebied";
 import SiteReviews         from "@/components/site-reviews";
 import SiteWerkwijze       from "@/components/site-werkwijze";
 import SiteFaq             from "@/components/site-faq";
-import SiteDakkleurBanner  from "@/components/site-dakkleur-banner";
+import SiteDakkleur        from "@/components/site-dakkleur";
 import SiteContact         from "@/components/site-contact";
 import SiteFooter          from "@/components/site-footer";
 
@@ -50,7 +50,7 @@ export default function HomePage() {
         <SiteWerkwijze />
 
         {/* Dakkleur-tool */}
-        <SiteDakkleurBanner />
+        <SiteDakkleur />
 
         {/* 8 · FAQ */}
         <SiteFaq />

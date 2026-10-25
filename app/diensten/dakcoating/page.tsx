@@ -139,8 +139,8 @@ export default function DakcoatingPage() {
               <p className="do-p">Een coating geeft je pannen opnieuw een beschermlaag, net zoals de originele laag uit de fabriek. Je dak ziet er weer als nieuw uit en gaat jaren langer mee, zonder dat je het moet vervangen.</p>
             </div>
             <dl className="do-feiten">
-              <div><dt>Als nieuw</dt><dd>zoals uit de fabriek</dd></div>
-              <div><dt>10 jaar</dt><dd>garantie op hechting</dd></div>
+              <div><dt>Als nieuw</dt><dd>zoals origineel</dd></div>
+              <div><dt>10 jaar</dt><dd>op hechting</dd></div>
               <div><dt>1 dag</dt><dd>meestal klaar</dd></div>
             </dl>
           </div>
@@ -225,7 +225,7 @@ export default function DakcoatingPage() {
             </div>
             <p className="dc-merk" style={{ marginBottom: 28 }}>De kleuren op je scherm zijn een benadering. Tijdens het plaatsbezoek tonen we je de echte stalen.</p>
             <div className="dc-knoppen">
-              <Link className="do-knop do-knop-g" href="/dakkleur"><Palette size={18} />Zie je dak in een nieuwe kleur</Link>
+              <Link className="do-knop do-knop-g" href="/#dakkleur"><Palette size={18} />Zie je dak in een nieuwe kleur</Link>
             </div>
           </div>
           <div>

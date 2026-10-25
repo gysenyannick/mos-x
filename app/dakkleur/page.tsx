@@ -1,16 +1,6 @@
-import type { Metadata } from "next";
-import PageLayout from "@/components/page-layout";
-import SiteDakkleur from "@/components/site-dakkleur";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Dakkleur-tool | MOS-X",
-  description: "Upload een foto van je woning en zie je dak meteen in een nieuwe coatingkleur. Gratis en vrijblijvend.",
-};
-
+/** De dakkleur-tool staat nu rechtstreeks op de homepage. */
 export default function DakkleurPagina() {
-  return (
-    <PageLayout>
-      <SiteDakkleur pagina />
-    </PageLayout>
-  );
+  redirect("/#dakkleur");
 }

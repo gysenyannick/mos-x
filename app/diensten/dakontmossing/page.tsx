@@ -19,12 +19,12 @@ const stappen = [
 ];
 
 const voordelen = [
-  { Icoon: Leaf, titel: "Geen loskomend mos rond je woning" },
-  { Icoon: Droplets, titel: "Minder kans op verstopte dakgoten" },
-  { Icoon: CloudRain, titel: "Minder kans op vochtproblemen" },
-  { Icoon: ShieldCheck, titel: "Een langere levensduur voor je dak" },
-  { Icoon: Sparkles, titel: "Een frisse uitstraling voor je woning" },
-  { Icoon: CheckCircle2, titel: "2 jaar mosvrij, gegarandeerd" },
+  { Icoon: Leaf, titel: "Geen los mos meer" },
+  { Icoon: Droplets, titel: "Vrije dakgoten" },
+  { Icoon: CloudRain, titel: "Minder vochtproblemen" },
+  { Icoon: ShieldCheck, titel: "Langere levensduur" },
+  { Icoon: Sparkles, titel: "Frisse uitstraling" },
+  { Icoon: CheckCircle2, titel: "2 jaar mosvrij" },
 ];
 
 const daktypes = [
