@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Check, ChevronLeft, ChevronRight, House, Loader2, RotateCcw, Sparkles, Sun, Upload } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Check, ChevronLeft, ChevronRight, House, Loader2, RotateCcw, Sparkles, Sun, Upload, X } from "lucide-react";
 import { DAKKLEUREN, type DakkleurId } from "@/lib/dakkleuren";
 
 /** Verkleint de foto in de browser, zodat het uploaden snel gaat en de AI niet te veel kost. */
@@ -39,8 +39,8 @@ function VoorNa({ voor, na }: { voor: string; na: string }) {
 
 const STAPPEN = ["Foto", "Kleur", "Resultaat"];
 
-/** Dakkleur-tool in drie stappen, rechtstreeks op de pagina. */
-export default function SiteDakkleur() {
+/** Dakkleur-tool in drie stappen, als venster dat opent vanuit de banner. */
+export default function DakkleurVenster({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [stap, setStap] = useState(0);
   const [foto, setFoto] = useState<string | null>(null);
   const [kleur, setKleur] = useState<DakkleurId | null>(null);
@@ -73,20 +73,34 @@ export default function SiteDakkleur() {
     }
   }
 
+  useEffect(() => {
+    if (!open) return;
+    const toets = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", toets);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", toets); };
+  }, [open, onClose]);
+
   function opnieuw() { setStap(0); setFoto(null); setKleur(null); setBeeld(null); setFout(null); }
 
+  if (!open) return null;
+
   return (
-    <section id="dakkleur" className="dk">
+    <div className="dk" role="dialog" aria-modal="true" aria-label="Dakkleur-tool" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <style>{`
-        .dk { padding: 96px 24px; background: radial-gradient(800px 420px at 50% 0%, rgba(155,203,108,0.16), transparent 65%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 75%); }
+        .dk { position: fixed; inset: 0; z-index: 2000; overflow-y: auto; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: 32px 16px; background: rgba(6,10,7,0.78); backdrop-filter: blur(4px); animation: dk-in .2s ease; }
+        @keyframes dk-in { from { opacity: 0; } to { opacity: 1; } }
+        .dk-sluit { position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; border: 0; display: grid; place-items: center; background: #F2F4F0; color: #1A1A1A; cursor: pointer; transition: background-color .2s ease; }
+        .dk-sluit:hover { background: #E3E8DE; }
+        .dk-sluit:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
         .dk-kop { max-width: 640px; margin: 0 auto 36px; text-align: center; }
         .dk-oog { margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #B9DE95; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .dk-kop h2 { margin: 0 0 14px; font-size: clamp(1.9rem, 3.4vw, 2.7rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.028em; color: #FFFFFF; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .dk-kop h2 span { display: block; color: #9BCB6C; }
         .dk-kop p { margin: 0; font-size: 16.5px; line-height: 1.7; color: rgba(255,255,255,0.72); font-family: var(--font-inter), system-ui, sans-serif; }
 
-        .dk-kaart { max-width: 880px; margin: 0 auto; padding: 30px 36px 32px; border-radius: 24px; background: #FFFFFF; box-shadow: 0 40px 90px -40px rgba(0,0,0,0.8); }
-        .dk-stappen { display: flex; justify-content: center; gap: 8px; margin: 0 0 26px; padding: 0 0 20px; border-bottom: 1px solid #E5E7EB; }
+        .dk-kaart { position: relative; width: 100%; max-width: 880px; margin: 0 auto; padding: 30px 36px 32px; border-radius: 24px; background: #FFFFFF; box-shadow: 0 40px 90px -40px rgba(0,0,0,0.8); }
+        .dk-stappen { display: flex; justify-content: center; gap: 8px; margin: 0 0 26px; padding: 8px 48px 20px; border-bottom: 1px solid #E5E7EB; }
         .dk-stappen li { list-style: none; display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #B0B6AC; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .dk-stappen li + li::before { content: ""; width: 34px; height: 2px; margin-right: 8px; border-radius: 1px; background: #E5E7EB; }
         .dk-stappen i { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 12px; letter-spacing: 0; background: #F2F4F0; color: #8E8E89; }
@@ -147,9 +161,11 @@ export default function SiteDakkleur() {
         .dk-noot { margin: 16px 0 0; text-align: center; font-size: 12.5px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
 
         @media (max-width: 760px) {
-          .dk { padding: 72px 16px; }
+          .dk { padding: 12px; align-items: start; }
           .dk-kaart { padding: 22px 18px 24px; border-radius: 20px; }
-          .dk-stappen li + li::before { width: 14px; margin-right: 4px; }
+          .dk-stappen li + li::before { width: 10px; margin-right: 2px; }
+          .dk-stappen { padding: 4px 36px 16px 0; justify-content: flex-start; gap: 6px; }
+          .dk-sluit { top: 12px; right: 12px; width: 36px; height: 36px; }
           .dk-stappen li { font-size: 11px; gap: 6px; }
           .dk-tip > i { display: none; }
           .dk-pc { display: none; }
@@ -162,13 +178,8 @@ export default function SiteDakkleur() {
         @media (prefers-reduced-motion: reduce) { .dk-laden svg { animation: none; } }
       `}</style>
 
-      <div className="dk-kop">
-        <p className="dk-oog">Dakkleur-tool</p>
-        <h2>Benieuwd hoe je dak eruitziet <span>in een nieuwe kleur?</span></h2>
-        <p>Upload een foto van je woning, kies een kleur en onze AI toont meteen het resultaat. Gratis en vrijblijvend.</p>
-      </div>
-
       <div className="dk-kaart">
+        <button type="button" className="dk-sluit" onClick={onClose} aria-label="Sluiten"><X size={20} /></button>
         <ol className="dk-stappen" aria-label="Stappen">
           {STAPPEN.map((s, i) => (
             <li key={s} className={i === stap ? "aan" : i < stap ? "klaar" : ""}><i>{i < stap ? <Check size={13} strokeWidth={3} /> : i + 1}</i>{s}</li>
@@ -251,7 +262,7 @@ export default function SiteDakkleur() {
             <div className="dk-knoppen">
               <button type="button" className="dk-knop dk-knop-l" onClick={() => setStap(1)} disabled={bezig}><ChevronLeft size={17} />Andere kleur</button>
               {beeld ? (
-                <a className="dk-knop dk-knop-g" href="#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
+                <a className="dk-knop dk-knop-g" href="/#calculator" onClick={onClose}>Bereken je richtprijs<ChevronRight size={17} /></a>
               ) : (
                 <button type="button" className="dk-knop dk-knop-l" onClick={opnieuw} disabled={bezig}><RotateCcw size={16} />Opnieuw</button>
               )}
@@ -261,6 +272,6 @@ export default function SiteDakkleur() {
 
         <p className="dk-noot">AI-voorbeeld: de echte kleur kan licht afwijken. Je foto wordt niet bewaard.</p>
       </div>
-    </section>
+    </div>
   );
 }
