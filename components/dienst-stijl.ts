@@ -63,16 +63,13 @@ export const DIENST_CSS = `
         .do-feiten dd { margin: 2px 0 0; font-size: 14.5px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
 
         /* Garantie */
-        .do-garantie { position: relative; overflow: hidden; display: grid; justify-items: center; text-align: center; gap: 0; max-width: 820px; margin: 0 auto; padding: 52px 48px 48px; border-radius: 28px; color: #FFFFFF; background: radial-gradient(520px 300px at 50% 0%, rgba(155,203,108,0.22), transparent 70%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 80%); box-shadow: 0 30px 70px -30px rgba(11,15,12,0.6); border: 1px solid rgba(155,203,108,0.35); }
+        .do-garantie { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 40px; align-items: center; padding: 44px 48px; border-radius: 24px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
         .do-garantie .do-p, .do-uitleg .do-p { text-wrap: balance; }
-        .do-zegel { width: 112px; height: 112px; margin-bottom: 22px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 30% 25%, #B8DC94, #9BCB6C 60%); color: #0B0F0C; box-shadow: 0 0 0 8px rgba(155,203,108,0.15), 0 0 0 16px rgba(155,203,108,0.07); font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .do-zegel b { display: block; font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
-        .do-zegel small { display: block; margin-top: 2px; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
-        .do-garantie h2 { margin: 0 0 12px; font-size: clamp(1.6rem, 2.6vw, 2.1rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.028em; color: #FFFFFF; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .do-zegel { width: 132px; height: 132px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 30% 25%, #B8DC94, #9BCB6C 60%); color: #FFFFFF; box-shadow: 0 0 0 8px rgba(155,203,108,0.15); font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .do-zegel b { display: block; font-size: 46px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+        .do-zegel small { display: block; font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+        .do-garantie h2 { margin: 0 0 12px; font-size: clamp(1.4rem, 2.1vw, 1.75rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .do-garantie h2 span { color: #9BCB6C; }
-        .do-garantie .do-oog { color: #B9DE95; }
-        .do-garantie .do-p { margin: 0 auto 28px !important; max-width: 520px !important; color: rgba(255,255,255,0.72); }
-        .do-garantie .do-knop:focus-visible { outline-color: #FFFFFF; }
 
         /* Werkwijze */
         .do-donker { position: relative; overflow: hidden; isolation: isolate; padding: 96px 24px; background: radial-gradient(700px 420px at 100% 0%, rgba(155,203,108,0.14), transparent 65%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 75%); }
@@ -144,6 +141,15 @@ export const DIENST_CSS = `
           .do-voordelen { grid-template-columns: minmax(0, 1fr); }
         }
         @media (max-width: 960px) {
+          .do-garantie { position: relative; overflow: hidden; display: grid; justify-items: center; text-align: center; gap: 0; max-width: 820px; margin: 0 auto; padding: 52px 48px 48px; border-radius: 28px; color: #FFFFFF; background: radial-gradient(520px 300px at 50% 0%, rgba(155,203,108,0.22), transparent 70%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 80%); box-shadow: 0 30px 70px -30px rgba(11,15,12,0.6); border: 1px solid rgba(155,203,108,0.35); }
+          .do-zegel { width: 112px; height: 112px; margin-bottom: 22px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 30% 25%, #B8DC94, #9BCB6C 60%); color: #0B0F0C; box-shadow: 0 0 0 8px rgba(155,203,108,0.15), 0 0 0 16px rgba(155,203,108,0.07); font-family: var(--font-montserrat), system-ui, sans-serif; }
+          .do-zegel b { display: block; font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+          .do-zegel small { display: block; margin-top: 2px; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+          .do-garantie h2 { margin: 0 0 12px; font-size: clamp(1.6rem, 2.6vw, 2.1rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.028em; color: #FFFFFF; font-family: var(--font-montserrat), system-ui, sans-serif; }
+          .do-garantie .do-oog { color: #B9DE95; }
+          .do-garantie .do-p { margin: 0 auto 28px !important; max-width: 520px !important; color: rgba(255,255,255,0.72); }
+          .do-garantie .do-knop:focus-visible { outline-color: #FFFFFF; }
+          .do-garantie { grid-template-columns: minmax(0, 1fr); padding: 40px 22px 36px; border-radius: 22px; }
           .do-sectie, .do-donker { padding: 72px 16px; }
           .do-hero { padding: 120px 16px 96px; }
           .do-hero::after { height: 36px; }
@@ -151,7 +157,6 @@ export const DIENST_CSS = `
           .do-hero::before { background: linear-gradient(to bottom, rgba(11,15,12,0.92), rgba(11,15,12,0.82) 50%, rgba(11,15,12,0.95)); }
           .do-waarom, .do-werk { grid-template-columns: minmax(0, 1fr); gap: 40px; }
           .do-werk-foto { position: relative; top: 0; aspect-ratio: 16 / 10; }
-          .do-garantie { padding: 40px 22px 36px; border-radius: 22px; }
           .do-types, .do-resultaten { grid-template-columns: repeat(2, minmax(0, 1fr)); }
           .do-resultaten { grid-template-columns: minmax(0, 1fr); }
           .do-faq { grid-template-columns: minmax(0, 1fr); }
