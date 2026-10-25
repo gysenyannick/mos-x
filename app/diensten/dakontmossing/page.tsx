@@ -19,12 +19,12 @@ const stappen = [
 ];
 
 const voordelen = [
-  { Icoon: Leaf, titel: "Geen los mos meer" },
-  { Icoon: Droplets, titel: "Vrije dakgoten" },
-  { Icoon: CloudRain, titel: "Minder vochtproblemen" },
-  { Icoon: ShieldCheck, titel: "Langere levensduur" },
-  { Icoon: Sparkles, titel: "Frisse uitstraling" },
-  { Icoon: CheckCircle2, titel: "2 jaar mosvrij" },
+  { Icoon: Leaf, titel: "Geen los mos meer", lang: "Geen los mos meer op je oprit" },
+  { Icoon: Droplets, titel: "Vrije dakgoten", lang: "Lege, vrije dakgoten" },
+  { Icoon: CloudRain, titel: "Minder vochtproblemen", lang: "Minder kans op vochtproblemen" },
+  { Icoon: ShieldCheck, titel: "Langere levensduur", lang: "Je dak gaat langer mee" },
+  { Icoon: Sparkles, titel: "Frisse uitstraling", lang: "Een frisse uitstraling" },
+  { Icoon: CheckCircle2, titel: "2 jaar mosvrij", lang: "2 jaar mosvrij-garantie" },
 ];
 
 const daktypes = [
@@ -117,8 +117,8 @@ export default function DakontmossingPage() {
             <p className="do-oog">Waarom ontmossen?</p>
             <h2 className="do-h2">Voorkom problemen. <span>Geniet opnieuw van een verzorgd dak.</span></h2>
             <ul className="do-voordelen">
-              {voordelen.map(({ Icoon, titel }) => (
-                <li key={titel}><i><Icoon size={20} color="#9BCB6C" /></i>{titel}</li>
+              {voordelen.map(({ Icoon, titel, lang }) => (
+                <li key={titel}><i><Icoon size={20} color="#9BCB6C" /></i><span className="vd-kort">{titel}</span><span className="vd-lang">{lang}</span></li>
               ))}
             </ul>
           </div>
