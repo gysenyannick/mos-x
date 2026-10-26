@@ -79,6 +79,30 @@ function kleurstaal(hex: string, maat = 64): string {
   ]).toString("base64");
 }
 
+/** Breedte en hoogte uit een JPEG of PNG, zodat het resultaat dezelfde verhouding krijgt als de foto. */
+function afmetingen(buf: Buffer): { w: number; h: number } | null {
+  if (buf.readUInt32BE(0) === 0x89504e47) return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+  let i = 2;
+  while (i + 9 < buf.length && buf[i] === 0xff) {
+    const marker = buf[i + 1];
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) return { w: buf.readUInt16BE(i + 7), h: buf.readUInt16BE(i + 5) };
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
+/** De verhouding uit de lijst die Gemini kent, die het dichtst bij de foto ligt. */
+function verhouding(maat: { w: number; h: number } | null): string | undefined {
+  if (!maat) return undefined;
+  const opties = ["1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9"];
+  const doel = maat.w / maat.h;
+  return opties.reduce((best, o) => {
+    const [a, b] = o.split(":").map(Number);
+    const [c, d] = best.split(":").map(Number);
+    return Math.abs(Math.log(a / b / doel)) < Math.abs(Math.log(c / d / doel)) ? o : best;
+  });
+}
+
 /** Belgisch of internationaal nummer naar het formaat van wa.me (enkel cijfers, met landcode). */
 function waNummer(telefoon: string): string {
   let n = telefoon.replace(/[^\d+]/g, "");
@@ -160,7 +184,7 @@ export async function POST(req: Request) {
   }
 
   const opdracht =
-    `The first image is a photo of a house. The second image is a flat colour sample of the exact target colour.\n` +
+    `The first image is a flat colour sample of the exact target colour. The second image is a photo of a house.\n` +
     `Edit the photo so that ALL visible pitched roof covering (every roof tile or slate, on every roof plane) looks professionally ` +
     `coated with an opaque, uniform matte roof coating in ${kleur.en}, hex ${kleur.hex}. Match the colour sample: the roof must ` +
     `clearly read as this colour, and no trace of the original roof colour, moss or stains may remain.\n` +
@@ -179,10 +203,10 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         contents: [{ role: "user", parts: [
           { text: opdracht },
-          { inlineData: { mimeType: match[1], data: match[2] } },
           { inlineData: { mimeType: "image/png", data: kleurstaal(kleur.hex) } },
+          { inlineData: { mimeType: match[1], data: match[2] } },
         ] }],
-        generationConfig: { responseModalities: ["IMAGE"] },
+        generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: verhouding(afmetingen(Buffer.from(match[2], "base64"))) } },
       }),
     });
   } catch {

@@ -25,10 +25,11 @@ function verkleinFoto(bestand: File, max = 1536): Promise<string> {
 
 function VoorNa({ voor, na }: { voor: string; na: string }) {
   const [pos, setPos] = useState(50);
+  const [verh, setVerh] = useState(4 / 3);
   return (
-    <div className="dk-vn">
+    <div className="dk-vn" style={{ aspectRatio: verh, maxWidth: `calc(68vh * ${verh})` }}>
       <img src={na} alt="Na: dak in de nieuwe kleur" />
-      <img src={voor} alt="Voor: dak zoals het nu is" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }} />
+      <img src={voor} alt="Voor: dak zoals het nu is" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }} onLoad={(e) => setVerh(e.currentTarget.naturalWidth / e.currentTarget.naturalHeight)} />
       <div className="dk-vn-lijn" style={{ left: `${pos}%` }}><span>‹ ›</span></div>
       <span className="dk-vn-tag">Voor</span>
       <span className="dk-vn-tag dk-vn-na">Na</span>
@@ -170,8 +171,8 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
         .dk-kleur[aria-pressed="true"] i svg { opacity: 1; }
         .dk-kleur-noot { margin: 14px 0 0; font-size: 13px; color: #8E8E89; text-align: center; font-family: var(--font-inter), system-ui, sans-serif; }
 
-        .dk-vn { position: relative; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; background: #F7F8F6; user-select: none; }
-        .dk-vn img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .dk-vn { position: relative; aspect-ratio: 4 / 3; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #F7F8F6; user-select: none; }
+        .dk-vn img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
         .dk-vn-lijn { position: absolute; top: 0; bottom: 0; width: 3px; margin-left: -1.5px; background: #fff; pointer-events: none; }
         .dk-vn-lijn span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42px; height: 42px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; letter-spacing: 2px; box-shadow: 0 4px 14px rgba(0,0,0,0.25); }
         .dk-vn-tag { position: absolute; top: 14px; left: 14px; padding: 6px 11px; border-radius: 999px; background: rgba(11,15,12,0.72); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
