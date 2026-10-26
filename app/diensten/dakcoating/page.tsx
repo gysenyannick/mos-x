@@ -151,7 +151,7 @@ export default function DakcoatingPage() {
       <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="do-garantie">
-            <div className="do-zegel" aria-hidden="true"><div><b>10</b><small>jaar garantie</small></div></div>
+            <div className="do-zegel" aria-hidden="true"><div><b>10</b><small>jaar<span className="zg-x"> garantie</span></small></div></div>
             <div>
               <p className="do-oog">Onze garantie</p>
               <h2>10&nbsp;jaar garantie <span>op de hechting.</span></h2>

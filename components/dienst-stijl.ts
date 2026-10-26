@@ -153,6 +153,11 @@ export const DIENST_CSS = `
           .do-garantie .do-oog { color: #B9DE95; }
           .do-garantie .do-p { margin: 0 auto 28px !important; max-width: 520px !important; color: rgba(255,255,255,0.72); }
           .do-garantie .do-knop:focus-visible { outline-color: #FFFFFF; }
+          .do-zegel { width: 124px; height: 124px; margin-bottom: 26px; background: rgba(155,203,108,0.1); border: 2px solid #9BCB6C; color: #FFFFFF; box-shadow: 0 0 0 10px rgba(155,203,108,0.06), 0 18px 40px -18px rgba(155,203,108,0.55); }
+          .do-zegel b { font-size: 52px; letter-spacing: -0.05em; }
+          .do-zegel small { margin-top: 6px; font-size: 11px; letter-spacing: 0.24em; color: #9BCB6C; }
+          .do-zegel .zg-x { display: none; }
+          .do-garantie .do-p { max-width: 310px !important; font-size: 15.5px; line-height: 1.7; text-wrap: balance; }
           .do-garantie { grid-template-columns: minmax(0, 1fr); padding: 40px 22px 36px; border-radius: 22px; }
           .do-sectie, .do-donker { padding: 72px 16px; }
           .do-hero { padding: 120px 16px 96px; }

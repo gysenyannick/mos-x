@@ -129,11 +129,11 @@ export default function DakontmossingPage() {
       <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="do-garantie">
-            <div className="do-zegel" aria-hidden="true"><div><b>2</b><small>jaar mosvrij</small></div></div>
+            <div className="do-zegel" aria-hidden="true"><div><b>2</b><small>jaar<span className="zg-x"> mosvrij</span></small></div></div>
             <div>
               <p className="do-oog">Onze garantie</p>
               <h2>2 jaar mosvrij. <span>Gegarandeerd.</span></h2>
-              <p className="do-p" style={{ maxWidth: 560 }}>Komt er binnen 2 jaar na de ontmossing toch opnieuw mos op je dak? Dan komen we langs en brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan.</p>
+              <p className="do-p" style={{ maxWidth: 560 }}>Komt er binnen 2 jaar toch mos terug? Dan brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan.</p>
             </div>
             <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
           </div>
