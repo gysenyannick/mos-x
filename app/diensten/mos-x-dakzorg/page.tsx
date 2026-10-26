@@ -19,18 +19,18 @@ const voordelen = [
 ];
 
 const stappen = [
-  { nr: "01", titel: "Plaatsbezoek en advies", tekst: "We bekijken wat je dak nodig heeft." },
-  { nr: "02", titel: "Jij kiest wat erin zit", tekst: "Volledig, of enkel wat jij wilt." },
-  { nr: "03", titel: "Wij volgen het op", tekst: "We plannen je onderhoud zelf in." },
+  { nr: "01", titel: "Plaatsbezoek", tekst: "We bekijken je dak en geven je een prijs." },
+  { nr: "02", titel: "Onderhoudsbeurt", tekst: "Antimosbehandeling en volledige inspectie." },
+  { nr: "03", titel: "Rapport", tekst: "Je vindt alles terug in je klantenzone." },
 ];
 
 const inbegrepen = [
-  { titel: "Volledige dakcontrole", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
-  { titel: "Dakgoten en afvoer", tekst: "We maken je dakgoten en afvoeren vrij, zodat het water goed wegloopt." },
-  { titel: "Ontmossing en antimos", tekst: "We houden je dak mosvrij. Zit dit in je plan, dan krijg je 2 jaar mosvrij-garantie." },
-  { titel: "Veluxen, zinkwerk en aansluitingen", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
-  { titel: "Kleine herstellingen", tekst: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
-  { titel: "Rapport in je klantenzone", tekst: "Na elk bezoek vind je de foto's en onze bevindingen terug in je klantenzone." },
+  { titel: "Antimosbehandeling", tekst: "We spuiten je volledige dak in met een antimosmiddel, zodat mos geen kans krijgt." },
+  { titel: "Volledige dakinspectie", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
+  { titel: "Dakgoten en afvoer", tekst: "We controleren je dakgoten en afvoeren, zodat het water goed wegloopt." },
+  { titel: "Veluxen en zinkwerk", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
+  { titel: "Losse of kapotte pannen", tekst: "Losse of beschadigde pannen vervangen we meteen waar mogelijk." },
+  { titel: "Rapport in je klantenzone", tekst: "Na de beurt krijg je een volledig rapport met foto's van hoe je dak erbij ligt." },
 ];
 
 const vergelijk = [
@@ -41,12 +41,10 @@ const vergelijk = [
 ];
 
 const faqs = [
-  { q: "Wat is MOS-X Dakzorg?", a: "Een onderhoudsplan dat je zelf samenstelt. Je kiest wat erin zit, van een volledige onderhoudsbeurt tot enkel je dakgoten of kleine herstellingen, en wij komen op vaste momenten langs." },
-  { q: "Krijg ik met Dakzorg ook 2 jaar mosvrij-garantie?", a: "Ja, als je plan een ontmossing bevat. Dan blijft je dak 2 jaar mosvrij. Komt er toch opnieuw mos, dan brengen we gratis een nieuwe antimosbehandeling aan. Kies je enkel bijvoorbeeld dakgoten of herstellingen, dan geldt die garantie niet." },
-  { q: "Hoe vaak komen jullie langs?", a: "Elk jaar of om de 2 jaar. Dat hangt af van de ligging van je woning, de bomen rondom en de staat van je dak. We stellen het plan samen met jou op." },
-  { q: "Wat kost een Dakzorg-plan?", a: "Een onderhoudsbeurt kost vanaf €249. De exacte prijs hangt af van je dak, wat je kiest en hoe vaak we langskomen. Na het plaatsbezoek krijg je een duidelijke prijs, vooraf afgesproken." },
+  { q: "Wat is MOS-X Dakzorg?", a: "Een onderhoudsbeurt voor je dak. We spuiten je dak in met een antimosmiddel en je krijgt meteen een volledige dakinspectie, met een rapport van hoe je dak erbij ligt." },
+  { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €249. De exacte prijs hangt af van de grootte en het type van je dak. Na het plaatsbezoek krijg je een duidelijke prijs, vooraf afgesproken." },
   { q: "Is Dakzorg geschikt voor elk dak?", a: "Ja. Of je nu pannen of leien hebt, we stemmen het onderhoud af op jouw type dak." },
-  { q: "Kan ik het plan stopzetten?", a: "Ja. Je zit nergens aan vast en kunt het plan stopzetten wanneer je wilt." },
+  { q: "Zit ik ergens aan vast?", a: "Nee. Je zit nergens aan vast en betaalt enkel per onderhoudsbeurt." },
 ];
 
 const DAKZORG_CSS = `
@@ -126,10 +124,10 @@ export default function MosXDakzorgPage() {
             <BackLink href="/diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
             <p className="do-oog">MOS-X Dakzorg</p>
-            <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
-            <p className="do-p">Een onderhoudsplan dat je zelf samenstelt. Jij kiest wat je dak nodig heeft, wij komen op vaste momenten langs en houden alles in orde.</p>
+            <h1 className="do-h1">Onderhoud en inspectie. <span>In één beurt.</span></h1>
+            <p className="do-p">Eén onderhoudsbeurt voor je hele dak. We behandelen je dak met een antimosmiddel en je krijgt meteen een volledige dakinspectie met rapport.</p>
             <div className="do-hero-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan op maat aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
             <div className="do-hero-bewijs">
@@ -164,9 +162,9 @@ export default function MosXDakzorgPage() {
           <div className="do-kop">
             <div>
               <p className="do-oog">Zo werkt het</p>
-              <h2 className="do-h2">Een plan <span>op maat van jouw dak.</span></h2>
+              <h2 className="do-h2">In drie stappen <span>naar een verzorgd dak.</span></h2>
             </div>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan aan<ChevronRight size={17} /></button>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
           </div>
           <div className="dz-stappen">
             {stappen.map((s) => (
@@ -183,8 +181,8 @@ export default function MosXDakzorgPage() {
             <img src="/images/4.jpg" alt="Hoogwerker van MOS-X bij een woning voor een onderhoudsbeurt" style={{ objectPosition: "45% center" }} />
           </div>
           <div>
-            <p className="do-oog">Stel je plan samen</p>
-            <h2 className="do-h2">Kies wat <span style={{ display: "block" }}>jouw dak nodig heeft.</span></h2>
+            <p className="do-oog">Wat zit erin?</p>
+            <h2 className="do-h2">Alles in <span style={{ display: "block" }}>één onderhoudsbeurt.</span></h2>
             <div className="do-stappen">
               {inbegrepen.map((s, i) => {
                 const open = openStap === i;
@@ -211,11 +209,11 @@ export default function MosXDakzorgPage() {
           <div>
             <p className="do-oog">Prijs</p>
             <h2 className="do-h2">Een vaste prijs, <span style={{ display: "block" }}>vooraf afgesproken.</span></h2>
-            <p className="do-p" style={{ marginTop: 18 }}>Je betaalt enkel voor wat je kiest. Na het plaatsbezoek krijg je een duidelijke prijs, zonder verrassingen achteraf.</p>
+            <p className="do-p" style={{ marginTop: 18 }}>Na het plaatsbezoek krijg je een duidelijke prijs voor je dak, zonder verrassingen achteraf.</p>
             <ul className="dz-zekerheden">
               <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen kosten voor het plaatsbezoek</li>
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Stop wanneer je wilt</li>
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />2 jaar mosvrij bij een ontmossing</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Je zit nergens aan vast</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Volledig rapport na de beurt</li>
             </ul>
           </div>
           <div className="dz-plan">
@@ -224,12 +222,12 @@ export default function MosXDakzorgPage() {
               <span className="dz-plan-label">Op maat</span>
             </div>
             <div className="dz-plan-prijs"><small>vanaf</small><b>€249</b><span>per onderhoudsbeurt</span></div>
-            <p className="dz-plan-ritme">Elk jaar of om de 2 jaar.</p>
-            <p className="dz-plan-kies">Stel samen uit</p>
+            <p className="dz-plan-ritme">Antimosbehandeling en volledige dakinspectie.</p>
+            <p className="dz-plan-kies">Inbegrepen</p>
             <ul>
               {inbegrepen.map((i) => <li key={i.titel}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{i.titel}</li>)}
             </ul>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan op maat aan<ChevronRight size={17} /></button>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
             <p className="dz-plan-noot">Gratis plaatsbezoek, vrijblijvend</p>
           </div>
         </div>
@@ -289,10 +287,10 @@ export default function MosXDakzorgPage() {
           <div className="do-cta">
             <div>
               <h2>Klaar voor een <span style={{ whiteSpace: "nowrap" }}>zorgeloos dak?</span></h2>
-              <p>Al vanaf €249 per onderhoudsbeurt. We stellen samen je plan op maat op.</p>
+              <p>Antimosbehandeling en volledige dakinspectie, al vanaf €249.</p>
             </div>
             <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag je plan op maat aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>
