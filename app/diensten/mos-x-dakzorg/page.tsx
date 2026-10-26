@@ -19,14 +19,14 @@ const voordelen = [
 ];
 
 const stappen = [
-  { nr: "01", titel: "Plaatsbezoek", tekst: "We bekijken je dak en geven je een prijs." },
-  { nr: "02", titel: "Onderhoudsbeurt", tekst: "Antimosbehandeling en volledige inspectie." },
-  { nr: "03", titel: "Rapport", tekst: "Je vindt alles terug in je klantenzone." },
+  { nr: "01", titel: "Aanvragen", tekst: "Je vraagt Dakzorg aan, wij plannen een datum." },
+  { nr: "02", titel: "Onderhoudsbeurt", tekst: "We behandelen je dak opnieuw met antimos." },
+  { nr: "03", titel: "Gratis dakinspectie", tekst: "Met een volledig rapport in je klantenzone." },
 ];
 
 const inbegrepen = [
   { titel: "Antimosbehandeling", tekst: "We spuiten je volledige dak in met een antimosmiddel, zodat mos geen kans krijgt." },
-  { titel: "Volledige dakinspectie", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
+  { titel: "Gratis dakinspectie", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
   { titel: "Dakgoten en afvoer", tekst: "We controleren je dakgoten en afvoeren, zodat het water goed wegloopt." },
   { titel: "Veluxen en zinkwerk", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
   { titel: "Losse of kapotte pannen", tekst: "Losse of beschadigde pannen vervangen we meteen waar mogelijk." },
@@ -41,9 +41,9 @@ const vergelijk = [
 ];
 
 const faqs = [
-  { q: "Wat is MOS-X Dakzorg?", a: "Een onderhoudsbeurt voor je dak. We spuiten je dak in met een antimosmiddel en je krijgt meteen een volledige dakinspectie, met een rapport van hoe je dak erbij ligt." },
-  { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €249. De exacte prijs hangt af van de grootte en het type van je dak. Na het plaatsbezoek krijg je een duidelijke prijs, vooraf afgesproken." },
-  { q: "Is Dakzorg geschikt voor elk dak?", a: "Ja. Of je nu pannen of leien hebt, we stemmen het onderhoud af op jouw type dak." },
+  { q: "Wat is MOS-X Dakzorg?", a: "Een onderhoudsbeurt voor daken die we al gereinigd hebben. We spuiten je dak opnieuw in met een antimosmiddel en je krijgt er gratis een volledige dakinspectie bij, met een rapport van hoe je dak erbij ligt." },
+  { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Omdat we je dak al kennen, krijg je die prijs meteen, zonder plaatsbezoek." },
+  { q: "Voor wie is Dakzorg?", a: "Voor klanten van wie we het dak al gereinigd hebben. We kennen je dak dus al, daarom is er geen plaatsbezoek nodig." },
   { q: "Zit ik ergens aan vast?", a: "Nee. Je zit nergens aan vast en betaalt enkel per onderhoudsbeurt." },
 ];
 
@@ -124,15 +124,15 @@ export default function MosXDakzorgPage() {
             <BackLink href="/diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
             <p className="do-oog">MOS-X Dakzorg</p>
-            <h1 className="do-h1">Onderhoud en inspectie. <span>In één beurt.</span></h1>
-            <p className="do-p">Eén onderhoudsbeurt voor je hele dak. We behandelen je dak met een antimosmiddel en je krijgt meteen een volledige dakinspectie met rapport.</p>
+            <h1 className="do-h1">Onderhoudsbeurt met <span>gratis dakinspectie.</span></h1>
+            <p className="do-p">Voor daken die we al gereinigd hebben. We behandelen je dak opnieuw met een antimosmiddel en je krijgt er een volledige dakinspectie met rapport gratis bij.</p>
             <div className="do-hero-knoppen">
               <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
             <div className="do-hero-bewijs">
               <GoogleBalk />
-              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" />Vanaf <b>€249</b> per onderhoudsbeurt</span>
+              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" />Vanaf <b>€250</b> per onderhoudsbeurt</span>
             </div>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function MosXDakzorgPage() {
                 );
               })}
             </div>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Vraag Dakzorg aan</button>
           </div>
         </div>
       </section>
@@ -209,11 +209,11 @@ export default function MosXDakzorgPage() {
           <div>
             <p className="do-oog">Prijs</p>
             <h2 className="do-h2">Een vaste prijs, <span style={{ display: "block" }}>vooraf afgesproken.</span></h2>
-            <p className="do-p" style={{ marginTop: 18 }}>Na het plaatsbezoek krijg je een duidelijke prijs voor je dak, zonder verrassingen achteraf.</p>
+            <p className="do-p" style={{ marginTop: 18 }}>We kennen je dak al van de reiniging. Daarom krijg je meteen een duidelijke prijs, zonder plaatsbezoek.</p>
             <ul className="dz-zekerheden">
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen kosten voor het plaatsbezoek</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen plaatsbezoek nodig</li>
               <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Je zit nergens aan vast</li>
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Volledig rapport na de beurt</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Gratis dakinspectie met rapport</li>
             </ul>
           </div>
           <div className="dz-plan">
@@ -221,14 +221,14 @@ export default function MosXDakzorgPage() {
               <span className="dz-plan-naam">MOS-X Dakzorg</span>
               <span className="dz-plan-label">Op maat</span>
             </div>
-            <div className="dz-plan-prijs"><small>vanaf</small><b>€249</b><span>per onderhoudsbeurt</span></div>
-            <p className="dz-plan-ritme">Antimosbehandeling en volledige dakinspectie.</p>
+            <div className="dz-plan-prijs"><small>vanaf</small><b>€250</b><span>per onderhoudsbeurt</span></div>
+            <p className="dz-plan-ritme">Antimosbehandeling met gratis dakinspectie.</p>
             <p className="dz-plan-kies">Inbegrepen</p>
             <ul>
               {inbegrepen.map((i) => <li key={i.titel}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{i.titel}</li>)}
             </ul>
             <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
-            <p className="dz-plan-noot">Gratis plaatsbezoek, vrijblijvend</p>
+            <p className="dz-plan-noot">Geen plaatsbezoek nodig</p>
           </div>
         </div>
       </section>
@@ -287,7 +287,7 @@ export default function MosXDakzorgPage() {
           <div className="do-cta">
             <div>
               <h2>Klaar voor een <span style={{ whiteSpace: "nowrap" }}>zorgeloos dak?</span></h2>
-              <p>Antimosbehandeling en volledige dakinspectie, al vanaf €249.</p>
+              <p>Antimosbehandeling met gratis dakinspectie, al vanaf €250.</p>
             </div>
             <div className="do-cta-knoppen">
               <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
@@ -297,7 +297,7 @@ export default function MosXDakzorgPage() {
         </div>
       </section>
 
-      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Dakzorg" bron="Dakzorg pagina" />
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Dakzorg" bron="Dakzorg pagina" titel="Vraag Dakzorg aan" subtitel="We kennen je dak al en plannen een datum." voorbeeld="Bv. Mijn dak werd vorig jaar gereinigd. Een beurt in het voorjaar zou ideaal zijn." />
     </PageLayout>
   );
 }

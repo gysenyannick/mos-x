@@ -32,9 +32,20 @@ interface Props {
   onClose: () => void;
   defaultDienst?: string;
   bron?: string;
+  titel?: string;
+  subtitel?: string;
+  voorbeeld?: string;
 }
 
-export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "Website" }: Props) {
+export function PlaatsbezoekModal({
+  open,
+  onClose,
+  defaultDienst = "",
+  bron = "Website",
+  titel = "Plan een gratis plaatsbezoek",
+  subtitel = "Yannick komt langs en bekijkt je dak persoonlijk.",
+  voorbeeld = "Bv. Ik zou graag eens naar mijn dak laten kijken. Een plaatsbezoek op vrijdag rond 18.00 u zou ideaal zijn.",
+}: Props) {
   const [diensten, setDiensten] = useState<string[]>(defaultDienst ? [defaultDienst] : []);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
 
@@ -217,10 +228,10 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
           ) : (
             <>
               <p className="pv-title" style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "20px", color: "#9BCB6C", marginBottom: "6px", lineHeight: 1.2, paddingRight: "32px" }}>
-                Plan een gratis plaatsbezoek
+                {titel}
               </p>
               <p className="pv-subtitle" style={{ fontSize: "13px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "28px", lineHeight: 1.55 }}>
-                Yannick komt langs en bekijkt je dak persoonlijk.
+                {subtitel}
               </p>
 
               <form onSubmit={handleSubmit} className="pv-form" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -320,7 +331,7 @@ export function PlaatsbezoekModal({ open, onClose, defaultDienst = "", bron = "W
                   <textarea
                     name="bericht"
                     rows={3}
-                    placeholder="Bv. Ik zou graag eens naar mijn dak laten kijken. Een plaatsbezoek op vrijdag rond 18.00 u zou ideaal zijn."
+                    placeholder={voorbeeld}
                     className="pv-input"
                     style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const, resize: "none" as const }}
                   />
