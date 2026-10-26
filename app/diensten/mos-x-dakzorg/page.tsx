@@ -20,16 +20,16 @@ const voordelen = [
 
 const stappen = [
   { nr: "01", titel: "Aanvragen", tekst: "Je vraagt Dakzorg aan, wij plannen een datum." },
-  { nr: "02", titel: "Onderhoudsbeurt", tekst: "We behandelen je dak opnieuw met antimos." },
-  { nr: "03", titel: "Gratis dakinspectie", tekst: "Met een volledig rapport in je klantenzone." },
+  { nr: "02", titel: "Antimosbehandeling", tekst: "We houden het mos preventief weg." },
+  { nr: "03", titel: "Dakinspectie", tekst: "Met een rapport in je klantenzone." },
 ];
 
 const inbegrepen = [
-  { titel: "Antimosbehandeling", tekst: "We spuiten je volledige dak in met een antimosmiddel, zodat mos geen kans krijgt." },
-  { titel: "Gratis dakinspectie", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
+  { titel: "Antimosbehandeling", tekst: "We behandelen je dak preventief met een antimosmiddel, zodat het mos niet terugkomt." },
+  { titel: "Dakinspectie", tekst: "We kijken of er pannen verschoven zijn of er na een storm iets gebeurd is." },
   { titel: "Dakgoten en afvoer", tekst: "We controleren je dakgoten en afvoeren, zodat het water goed wegloopt." },
   { titel: "Veluxen en zinkwerk", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
-  { titel: "Losse of kapotte pannen", tekst: "Losse of beschadigde pannen vervangen we meteen waar mogelijk." },
+  { titel: "Kleine herstellingen", tekst: "Verschoven of losse pannen leggen we meteen goed. Voor grotere herstellingen krijg je een aparte offerte." },
   { titel: "Rapport in je klantenzone", tekst: "Na de beurt krijg je een volledig rapport met foto's van hoe je dak erbij ligt." },
 ];
 
@@ -41,10 +41,10 @@ const vergelijk = [
 ];
 
 const faqs = [
-  { q: "Wat is MOS-X Dakzorg?", a: "Een onderhoudsbeurt voor daken die we al gereinigd hebben. We spuiten je dak opnieuw in met een antimosmiddel en je krijgt er gratis een volledige dakinspectie bij, met een rapport van hoe je dak erbij ligt." },
-  { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Omdat we je dak al kennen, krijg je die prijs meteen, zonder plaatsbezoek." },
-  { q: "Voor wie is Dakzorg?", a: "Voor klanten van wie we het dak al gereinigd hebben. We kennen je dak dus al, daarom is er geen plaatsbezoek nodig." },
-  { q: "Zit ik ergens aan vast?", a: "Nee. Je zit nergens aan vast en betaalt enkel per onderhoudsbeurt." },
+  { q: "Wat is MOS-X Dakzorg?", a: "Onderhoud voor een dak dat al gereinigd is. We behandelen je dak preventief met een antimosmiddel, zodat het mos niet terugkomt en een volledige reiniging niet meer nodig is. Tegelijk kijken we je hele dak na." },
+  { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Je kent die prijs vooraf, zonder verrassingen." },
+  { q: "Voor wie is Dakzorg?", a: "Voor wie zijn dak al heeft laten reinigen en het graag zo houdt. Omdat je dak al proper is, volstaat een antimosbehandeling." },
+  { q: "Wat met grotere herstellingen?", a: "Kleine herstellingen nemen we meteen mee. Voor grotere herstellingen maken we eerst een aparte offerte, zodat je vooraf weet waar je aan toe bent." },
 ];
 
 const DAKZORG_CSS = `
@@ -124,8 +124,8 @@ export default function MosXDakzorgPage() {
             <BackLink href="/diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
             <p className="do-oog">MOS-X Dakzorg</p>
-            <h1 className="do-h1">Onderhoudsbeurt met <span>gratis dakinspectie.</span></h1>
-            <p className="do-p">Voor daken die we al gereinigd hebben. We behandelen je dak opnieuw met een antimosmiddel en je krijgt er een volledige dakinspectie met rapport gratis bij.</p>
+            <h1 className="do-h1">Eén keer gereinigd. <span>Altijd proper.</span></h1>
+            <p className="do-p">Met een preventieve antimosbehandeling houden we je dak mosvrij, zodat een volledige reiniging niet meer nodig is. Meteen kijken we ook je hele dak na.</p>
             <div className="do-hero-knoppen">
               <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
@@ -209,11 +209,11 @@ export default function MosXDakzorgPage() {
           <div>
             <p className="do-oog">Prijs</p>
             <h2 className="do-h2">Een vaste prijs, <span style={{ display: "block" }}>vooraf afgesproken.</span></h2>
-            <p className="do-p" style={{ marginTop: 18 }}>We kennen je dak al van de reiniging. Daarom krijg je meteen een duidelijke prijs, zonder plaatsbezoek.</p>
+            <p className="do-p" style={{ marginTop: 18 }}>De prijs hangt af van de grootte van je dak. Zo betaal je nooit meer voor een volledige reiniging.</p>
             <ul className="dz-zekerheden">
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen plaatsbezoek nodig</li>
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Je zit nergens aan vast</li>
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Gratis dakinspectie met rapport</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen volledige reiniging meer nodig</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Kleine herstellingen inbegrepen</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Rapport na elke beurt</li>
             </ul>
           </div>
           <div className="dz-plan">
@@ -222,13 +222,13 @@ export default function MosXDakzorgPage() {
               <span className="dz-plan-label">Op maat</span>
             </div>
             <div className="dz-plan-prijs"><small>vanaf</small><b>€250</b><span>per onderhoudsbeurt</span></div>
-            <p className="dz-plan-ritme">Antimosbehandeling met gratis dakinspectie.</p>
+            <p className="dz-plan-ritme">Antimosbehandeling met dakinspectie.</p>
             <p className="dz-plan-kies">Inbegrepen</p>
             <ul>
               {inbegrepen.map((i) => <li key={i.titel}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{i.titel}</li>)}
             </ul>
             <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
-            <p className="dz-plan-noot">Geen plaatsbezoek nodig</p>
+            <p className="dz-plan-noot">Grote herstellingen via aparte offerte</p>
           </div>
         </div>
       </section>
@@ -287,7 +287,7 @@ export default function MosXDakzorgPage() {
           <div className="do-cta">
             <div>
               <h2>Klaar voor een <span style={{ whiteSpace: "nowrap" }}>zorgeloos dak?</span></h2>
-              <p>Antimosbehandeling met gratis dakinspectie, al vanaf €250.</p>
+              <p>Antimos en dakinspectie in één beurt, al vanaf €250.</p>
             </div>
             <div className="do-cta-knoppen">
               <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
@@ -297,7 +297,7 @@ export default function MosXDakzorgPage() {
         </div>
       </section>
 
-      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Dakzorg" bron="Dakzorg pagina" titel="Vraag Dakzorg aan" subtitel="We kennen je dak al en plannen een datum." voorbeeld="Bv. Mijn dak werd vorig jaar gereinigd. Een beurt in het voorjaar zou ideaal zijn." />
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Dakzorg" bron="Dakzorg pagina" titel="Vraag Dakzorg aan" subtitel="We nemen contact op en plannen een datum." voorbeeld="Bv. Mijn dak werd vorig jaar gereinigd. Een beurt in het voorjaar zou ideaal zijn." />
     </PageLayout>
   );
 }
