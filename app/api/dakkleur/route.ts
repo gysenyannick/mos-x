@@ -78,14 +78,14 @@ async function verstuurResultaat(o: { voornaam: string; email: string; telefoon:
       subject: `🎨 Dakkleur | ${o.voornaam} | ${o.kleur}`,
       html: dakkleurInternHtml({ ...o, waLink }),
       attachments: [bijlage],
-    }, idempotencyKey("dakkleur-intern", o.email, o.kleur)),
+    }, idempotencyKey("dakkleur-intern", o.email, o.kleur, o.beeld.data.slice(-48))),
     sendMail(apiKey, {
       from: FROM_KLANT,
       to: [o.email],
       subject: `Je dak in ${o.kleur.toLowerCase()} | MOS-X`,
       html: dakkleurKlantHtml({ voornaam: o.voornaam, kleur: o.kleur }),
       attachments: [bijlage],
-    }, idempotencyKey("dakkleur-klant", o.email, o.kleur)),
+    }, idempotencyKey("dakkleur-klant", o.email, o.kleur, o.beeld.data.slice(-48))),
   ]);
   if (!intern.ok) console.error("dakkleur: interne mail", intern.error);
   if (!klant.ok) console.warn("dakkleur: klantmail", klant.error);
