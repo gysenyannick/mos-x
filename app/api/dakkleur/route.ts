@@ -10,7 +10,7 @@ import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempot
  *
  * Nodig in Vercel:
  *   GEMINI_API_KEY         → sleutel uit Google AI Studio (met betaalaccount)
- *   GEMINI_IMAGE_MODEL     → optioneel, standaard gemini-2.5-flash-image
+ *   GEMINI_IMAGE_MODEL     → optioneel, standaard gemini-3-pro-image-preview
  *
  * De foto wordt niet bewaard. Per IP en per dag is het aantal beurten beperkt,
  * plus een totaal per dag, zodat de kosten nooit ontsporen.
@@ -23,8 +23,8 @@ import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempot
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const PER_IP_PER_DAG = 40;
-const TOTAAL_PER_DAG = 300;
+const PER_IP_PER_DAG = 12;
+const TOTAAL_PER_DAG = 100;
 const MAX_BASE64 = 4_000_000;
 
 function redis() {
