@@ -41,7 +41,7 @@ const vergelijk = [
 ];
 
 const faqs = [
-  { q: "Wat is MOS-X Dakzorg?", a: "Onderhoud voor een dak dat al gereinigd is. We behandelen je dak preventief met een antimosmiddel, zodat het mos niet terugkomt en een volledige reiniging niet meer nodig is. Tegelijk kijken we je hele dak na." },
+  { q: "Wat is MOS-X Dakzorg?", a: "Onderhoud voor een dak dat al gereinigd is. We behandelen je dak preventief met een antimosmiddel, zodat het mos geen kans krijgt. Tegelijk kijken we je hele dak na." },
   { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Je kent die prijs vooraf, zonder verrassingen." },
   { q: "Voor wie is Dakzorg?", a: "Voor wie zijn dak al heeft laten reinigen en het graag zo houdt. Omdat je dak al proper is, volstaat een antimosbehandeling." },
   { q: "Wat met grotere herstellingen?", a: "Kleine herstellingen nemen we meteen mee. Voor grotere herstellingen maken we eerst een aparte offerte, zodat je vooraf weet waar je aan toe bent." },
@@ -125,7 +125,7 @@ export default function MosXDakzorgPage() {
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
             <p className="do-oog">MOS-X Dakzorg</p>
             <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
-            <p className="do-p">Wij houden het mos weg en je dak in het oog. Zo blijft het in topvorm en is een nieuwe reiniging niet nodig.</p>
+            <p className="do-p">Wij houden het mos weg en je dak in het oog. Zo ligt het er jarenlang mooi bij.</p>
             <div className="do-hero-knoppen">
               <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
@@ -209,9 +209,9 @@ export default function MosXDakzorgPage() {
           <div>
             <p className="do-oog">Prijs</p>
             <h2 className="do-h2">Een vaste prijs, <span style={{ display: "block" }}>vooraf afgesproken.</span></h2>
-            <p className="do-p" style={{ marginTop: 18 }}>De prijs hangt af van de grootte van je dak. Zo betaal je nooit meer voor een volledige reiniging.</p>
+            <p className="do-p" style={{ marginTop: 18 }}>De prijs hangt af van de grootte van je dak. Je weet vooraf exact waar je aan toe bent.</p>
             <ul className="dz-zekerheden">
-              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Geen volledige reiniging meer nodig</li>
+              <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Mos krijgt geen kans</li>
               <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Kleine herstellingen inbegrepen</li>
               <li><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />Rapport na elke beurt</li>
             </ul>
