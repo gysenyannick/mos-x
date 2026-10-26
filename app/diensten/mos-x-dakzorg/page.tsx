@@ -26,10 +26,10 @@ const stappen = [
 
 const inbegrepen = [
   { titel: "Antimosbehandeling", tekst: "We behandelen je dak preventief met een antimosmiddel, zodat het mos niet terugkomt." },
-  { titel: "Dakinspectie", tekst: "We kijken of er pannen verschoven zijn of er na een storm iets gebeurd is." },
+  { titel: "Volledige dakcontrole", tekst: "We controleren je dakpannen, nokken en de algemene staat van je dak." },
   { titel: "Dakgoten en afvoer", tekst: "We controleren je dakgoten en afvoeren, zodat het water goed wegloopt." },
   { titel: "Veluxen en zinkwerk", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
-  { titel: "Kleine herstellingen", tekst: "Verschoven of losse pannen leggen we meteen goed. Voor grotere herstellingen krijg je een aparte offerte." },
+  { titel: "Kleine herstellingen", tekst: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
   { titel: "Rapport in je klantenzone", tekst: "Na de beurt krijg je een volledig rapport met foto's van hoe je dak erbij ligt." },
 ];
 
@@ -124,8 +124,8 @@ export default function MosXDakzorgPage() {
             <BackLink href="/diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
             <p className="do-oog">MOS-X Dakzorg</p>
-            <h1 className="do-h1">Eén keer gereinigd. <span>Altijd proper.</span></h1>
-            <p className="do-p">Met een preventieve antimosbehandeling houden we je dak mosvrij, zodat een volledige reiniging niet meer nodig is. Meteen kijken we ook je hele dak na.</p>
+            <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
+            <p className="do-p">Wij houden het mos weg en je dak in het oog. Zo blijft het in topvorm en is een nieuwe reiniging niet nodig.</p>
             <div className="do-hero-knoppen">
               <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
