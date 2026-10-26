@@ -153,7 +153,7 @@ async function verstuurResultaat(o: { voornaam: string; email: string; telefoon:
   return klant.ok;
 }
 
-type GeminiPart = { text?: string; inlineData?: { mimeType: string; data: string }; inline_data?: { mime_type: string; data: string } };
+type GeminiPart = { text?: string; thought?: boolean; inlineData?: { mimeType: string; data: string }; inline_data?: { mime_type: string; data: string } };
 
 export async function POST(req: Request) {
   const sleutel = process.env.GEMINI_API_KEY;
@@ -220,7 +220,8 @@ export async function POST(req: Request) {
 
   const data = await antwoord.json();
   const delen: GeminiPart[] = data?.candidates?.[0]?.content?.parts ?? [];
-  const beeld = delen.map((d) => d.inlineData ?? (d.inline_data && { mimeType: d.inline_data.mime_type, data: d.inline_data.data })).find(Boolean);
+  const beeld = delen.filter((d) => !d.thought).map((d) => d.inlineData ?? (d.inline_data && { mimeType: d.inline_data.mime_type, data: d.inline_data.data })).filter(Boolean).pop();
+  if (!beeld) console.error("dakkleur: geen beeld", data?.candidates?.[0]?.finishReason, JSON.stringify(data?.promptFeedback ?? {}), delen.map((d) => d.text?.slice(0, 200) ?? Object.keys(d).join("+")).join(" | "));
   if (!beeld) return NextResponse.json({ fout: "Het lukte niet om je dak in te kleuren. Probeer een foto waarop het dak goed zichtbaar is." }, { status: 502 });
 
   const gemaild = await verstuurResultaat({ voornaam, email, telefoon, kleur: kleur.naam, beeld, eerste: body.eerste === true }).catch((e) => {
