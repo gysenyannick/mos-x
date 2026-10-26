@@ -15,7 +15,7 @@ const stappen = [
   { titel: "Professionele dakreiniging", tekst: "Mos, algen en vervuiling verwijderen we met een (stoom)hogedrukunit, aangevuld met een vuilfrees die ook de moeilijkste hoekjes bereikt. Zo blijft de druk laag en je dakbedekking veilig." },
   { titel: "Controle na de reiniging", tekst: "Na het reinigen controleren we het volledige dak opnieuw, zodat verborgen aandachtspunten zichtbaar worden." },
   { titel: "Antimosbehandeling", tekst: "We behandelen je dak met een preventief, biologisch afbreekbaar antimosmiddel, zodat mos minder snel terugkomt." },
-  { titel: "Omgeving netjes achtergelaten", tekst: "We maken muren, terras en dakgoten netjes op, zodat je meteen kan genieten van een volledig verzorgd resultaat." },
+  { titel: "Alles netjes achtergelaten", tekst: "We maken muren, terras en dakgoten netjes op, zodat je meteen kan genieten van een volledig verzorgd resultaat." },
 ];
 
 const voordelen = [
