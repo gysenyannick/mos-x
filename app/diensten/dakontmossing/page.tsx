@@ -200,7 +200,7 @@ export default function DakontmossingPage() {
           <div className="do-asbest">
             <div>
               <i><AlertTriangle size={20} color="#9BCB6C" /></i>
-              <span><b>Zitten er misschien asbestleien op je dak?</b><small>Asbesthoudende daken mogen we niet ontmossen. Check het zelf met onze gratis checklist.</small></span>
+              <span><b>Asbestleien op je dak?</b><small>Die mogen we niet ontmossen. Check het met onze gratis checklist.</small></span>
             </div>
             <a className="do-knop do-knop-g" style={{ height: 46 }} href="/downloads/MOS-X-asbestchecklist.pdf" download><Download size={17} />Download de checklist</a>
           </div>

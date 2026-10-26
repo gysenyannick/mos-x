@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Palette, Phone, ShieldCheck, X } from "lucide-react";
+import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Palette, Phone, ShieldCheck, X } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -20,17 +20,17 @@ const stappen = [
 ];
 
 const vervangen = [
-  "Hoge investering die snel oploopt",
-  "Volledig dak uitbreken en vervangen",
-  "Weken wachten op planning en materialen",
-  "Lawaai, stof, containers en overlast",
+  "Hoge investering",
+  "Volledig dak uitbreken",
+  "Weken wachten op materiaal",
+  "Lawaai, stof en containers",
 ];
 
 const coaten = [
-  "Je bestaande dak blijft behouden",
-  "Een nieuwe beschermlaag",
-  "Geen zware afbraakwerken nodig",
-  "Een betaalbare manier om je dak langer te behouden",
+  "Een fractie van de prijs",
+  "Je bestaande dak blijft",
+  "Meestal in 1 dag klaar",
+  "Geen afbraak of overlast",
 ];
 
 const geschikt = [
@@ -170,7 +170,7 @@ export default function DakcoatingPage() {
               <p className="do-oog">Vervangen of coaten?</p>
               <h2 className="do-h2">Een vernieuwd dak, <span>zonder renovatie.</span></h2>
             </div>
-            <p className="do-p">Is je dak nog gezond, dan hoeft het niet vervangen te worden. Een coating geeft het een tweede leven.</p>
+            <p className="do-p">Is je dak nog gezond? Dan geeft een coating het een tweede leven.</p>
           </div>
           <div className="dc-vs">
             <div className="dc-kaart">
@@ -232,7 +232,13 @@ export default function DakcoatingPage() {
             <div className="dc-geschikt">
               {geschikt.map((t) => <div key={t.label} className="do-type"><img src={t.img} alt={t.label} loading="lazy" /><span>{t.label}</span></div>)}
             </div>
-            <p className="do-p" style={{ marginTop: 16, fontSize: 15 }}>Dakcoating is geschikt voor betonpannen en kunstleien. Oudere leien kunnen asbest bevatten: <a href="/downloads/MOS-X-asbestchecklist.pdf" download style={{ color: "#1A1A1A", fontWeight: 600 }}>download onze gratis checklist</a> om het zelf te controleren.</p>
+            <div className="do-asbest">
+              <div>
+                <i><AlertTriangle size={20} color="#9BCB6C" /></i>
+                <span><b>Voor betonpannen en kunstleien</b><small>Oudere leien kunnen asbest bevatten. Check het met onze gratis checklist.</small></span>
+              </div>
+              <a className="do-knop do-knop-g" style={{ height: 46 }} href="/downloads/MOS-X-asbestchecklist.pdf" download><Download size={17} />Download de checklist</a>
+            </div>
           </div>
         </div>
       </section>

@@ -194,6 +194,9 @@ export const DIENST_CSS = `
           .do-types { gap: 10px; }
           .do-type span { left: 12px; bottom: 10px; font-size: 14px; }
           .do-stap-tekst p { padding-left: 20px; }
+          .do-asbest { padding: 20px; }
+          .do-asbest > div { flex-direction: column; align-items: flex-start; gap: 12px; }
+          .do-asbest .do-knop { width: 100%; }
           .do-stap button { grid-template-columns: 34px minmax(0, 1fr) 18px; gap: 12px; padding: 12px 14px 12px 12px; font-size: 15px; }
           .do-stap-nr { width: 34px; height: 34px; border-radius: 10px; font-size: 13px; }
         }
