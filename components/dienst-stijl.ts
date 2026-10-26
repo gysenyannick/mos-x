@@ -52,6 +52,21 @@ export const DIENST_CSS = `
         .do-voordelen { margin: 32px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
         .do-voordelen li { white-space: nowrap; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; background: #F7F8F6; border: 1px solid #E5E7EB; font-size: 14.5px; font-weight: 700; line-height: 1.35; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .do-voordelen i { width: 40px; height: 40px; border-radius: 11px; flex: none; display: grid; place-items: center; background: #FFFFFF; border: 1px solid #E5E7EB; }
+        .vd-acc { margin: 28px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+        .vd-acc li { border-radius: 14px; background: #F7F8F6; border: 1px solid #E5E7EB; transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+        .vd-acc li.open { background: #FFFFFF; border-color: rgba(155,203,108,0.55); box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+        .vd-acc button { width: 100%; display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: none; border: 0; border-radius: 14px; cursor: pointer; text-align: left; font-size: 14.5px; font-weight: 700; line-height: 1.35; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .vd-acc button:hover .vd-pijl { color: #7AB54E; }
+        .vd-acc button:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+        .vd-acc button:active { transform: scale(0.99); }
+        .vd-acc i { width: 40px; height: 40px; border-radius: 11px; flex: none; display: grid; place-items: center; background: #FFFFFF; border: 1px solid #E5E7EB; }
+        .vd-pijl { margin-left: auto; flex: none; color: #545454; transition: transform 0.25s ease, color 0.2s ease; }
+        .vd-acc li.open .vd-pijl { transform: rotate(180deg); color: #9BCB6C; }
+        .vd-tekst { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
+        .vd-acc li.open .vd-tekst { grid-template-rows: 1fr; }
+        .vd-tekst > div { overflow: hidden; }
+        .vd-tekst p { margin: 0; padding: 0 20px 16px 70px; font-size: 14.5px; line-height: 1.65; color: #545454; text-wrap: balance; font-family: var(--font-inter), system-ui, sans-serif; }
+        @media (max-width: 560px) { .vd-tekst p { padding: 0 16px 16px; } .vd-acc button { gap: 12px; padding: 11px 14px; font-size: 14px; } .vd-acc i { width: 36px; height: 36px; border-radius: 10px; } }
         .do-slider { border-radius: 20px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(30,51,36,0.45); }
 
         .do-uitleg { margin-top: 24px; display: grid; gap: 16px; }
@@ -140,11 +155,8 @@ export const DIENST_CSS = `
         @media (max-width: 1180px) and (min-width: 961px) {
           .do-voordelen { grid-template-columns: minmax(0, 1fr); }
         }
-        .vd-lang { display: none; }
         @media (max-width: 760px) { .do-voordelen { grid-template-columns: minmax(0, 1fr); } }
         @media (max-width: 960px) {
-          .vd-kort { display: none; }
-          .vd-lang { display: inline; }
           .do-garantie { position: relative; overflow: hidden; display: grid; justify-items: center; text-align: center; gap: 0; max-width: 820px; margin: 0 auto; padding: 52px 48px 48px; border-radius: 28px; color: #FFFFFF; background: radial-gradient(520px 300px at 50% 0%, rgba(155,203,108,0.22), transparent 70%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 80%); box-shadow: 0 30px 70px -30px rgba(11,15,12,0.6); border: 1px solid rgba(155,203,108,0.35); }
           .do-zegel { width: 112px; height: 112px; margin-bottom: 22px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 30% 25%, #B8DC94, #9BCB6C 60%); color: #0B0F0C; box-shadow: 0 0 0 8px rgba(155,203,108,0.15), 0 0 0 16px rgba(155,203,108,0.07); font-family: var(--font-montserrat), system-ui, sans-serif; }
           .do-zegel b { display: block; font-size: 42px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }

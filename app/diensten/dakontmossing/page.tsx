@@ -19,12 +19,12 @@ const stappen = [
 ];
 
 const voordelen = [
-  { Icoon: Leaf, titel: "Geen los mos meer", lang: "Geen los mos meer op je oprit" },
-  { Icoon: Droplets, titel: "Vrije dakgoten", lang: "Lege, vrije dakgoten" },
-  { Icoon: CloudRain, titel: "Minder vochtproblemen", lang: "Minder kans op vochtproblemen" },
-  { Icoon: ShieldCheck, titel: "Langere levensduur", lang: "Je dak gaat langer mee" },
-  { Icoon: Sparkles, titel: "Frisse uitstraling", lang: "Een frisse uitstraling" },
-  { Icoon: CheckCircle2, titel: "2 jaar mosvrij", lang: "2 jaar mosvrij-garantie" },
+  { Icoon: Leaf, titel: "Geen los mos meer op je oprit", tekst: "Bij regen en wind waaien mosbolletjes van je dak op je oprit en terras. Na een ontmossing hoef je die niet meer telkens op te ruimen." },
+  { Icoon: Droplets, titel: "Lege, vrije dakgoten", tekst: "Het mos in je dakgoten komt van je dak. Is je dak mosvrij, dan raken je goten niet meer verstopt en loopt het regenwater vlot weg." },
+  { Icoon: CloudRain, titel: "Minder vochtproblemen", tekst: "Mos werkt als een spons. Het houdt water vast en kruipt tussen je pannen, waardoor er water onder kan lopen. Zonder mos blijft je dak droog." },
+  { Icoon: ShieldCheck, titel: "Je dak gaat langer mee", tekst: "Mos houdt je pannen voortdurend nat. Bij vorst zet dat water uit en barsten je pannen. Een mosvrij dak droogt sneller op en gaat jaren langer mee." },
+  { Icoon: Sparkles, titel: "Een frisse uitstraling", tekst: "Een proper dak geeft je hele woning een verzorgde look. Dat valt meteen op in de straat en verhoogt de waarde van je woning als je ooit verkoopt." },
+  { Icoon: CheckCircle2, titel: "2 jaar mosvrij-garantie", tekst: "We staan achter ons werk. Blijft je dak geen 2 jaar mosvrij, dan komen we gratis terug voor een nieuwe antimosbehandeling." },
 ];
 
 const daktypes = [
@@ -79,6 +79,7 @@ function Antwoord({ tekst }: { tekst: string }) {
 export default function DakontmossingPage() {
   const [openStap, setOpenStap] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openVoordeel, setOpenVoordeel] = useState<number | null>(null);
   const [bezoekOpen, setBezoekOpen] = useState(false);
 
   return (
@@ -116,10 +117,22 @@ export default function DakontmossingPage() {
           <div>
             <p className="do-oog">Waarom ontmossen?</p>
             <h2 className="do-h2">Voorkom problemen. <span>Geniet opnieuw van een verzorgd dak.</span></h2>
-            <ul className="do-voordelen">
-              {voordelen.map(({ Icoon, titel, lang }) => (
-                <li key={titel}><i><Icoon size={20} color="#9BCB6C" /></i><span className="vd-kort">{titel}</span><span className="vd-lang">{lang}</span></li>
-              ))}
+            <ul className="vd-acc">
+              {voordelen.map(({ Icoon, titel, tekst }, i) => {
+                const open = openVoordeel === i;
+                return (
+                  <li key={titel} className={open ? "open" : undefined}>
+                    <button type="button" aria-expanded={open} aria-controls={`voordeel-${i}`} onClick={() => setOpenVoordeel(open ? null : i)}>
+                      <i><Icoon size={20} color="#9BCB6C" /></i>
+                      <span>{titel}</span>
+                      <ChevronDown className="vd-pijl" size={18} aria-hidden="true" />
+                    </button>
+                    <div className="vd-tekst" id={`voordeel-${i}`}>
+                      <div><p>{tekst}</p></div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
