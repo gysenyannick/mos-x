@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronLeft, ChevronRight, House, Loader2, RotateCcw, Sparkles, Sun, Upload, X } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, House, Loader2, Mail, MessageCircle, RotateCcw, Sparkles, Sun, Upload, X } from "lucide-react";
 import { DAKKLEUREN, type DakkleurId } from "@/lib/dakkleuren";
 
 /** Verkleint de foto in de browser, zodat het uploaden snel gaat en de AI niet te veel kost. */
@@ -37,9 +37,17 @@ function VoorNa({ voor, na }: { voor: string; na: string }) {
   );
 }
 
-const STAPPEN = ["Foto", "Kleur", "Resultaat"];
+const STAPPEN = ["Foto", "Kleur", "Gegevens", "Resultaat"];
 
-/** Dakkleur-tool in drie stappen, als venster dat opent vanuit de banner. */
+type Gegevens = { voornaam: string; email: string; telefoon: string };
+const LEEG: Gegevens = { voornaam: "", email: "", telefoon: "" };
+const OPSLAG = "mosx-dakkleur-gegevens";
+
+function geldig(g: Gegevens) {
+  return g.voornaam.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g.email.trim()) && g.telefoon.replace(/\D/g, "").length >= 8;
+}
+
+/** Dakkleur-tool in vier stappen, als venster dat opent vanuit de banner. */
 export default function DakkleurVenster({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [stap, setStap] = useState(0);
   const [foto, setFoto] = useState<string | null>(null);
@@ -48,6 +56,10 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState<string | null>(null);
   const [sleep, setSleep] = useState(false);
+  const [gegevens, setGegevens] = useState<Gegevens>(LEEG);
+  const [bevestigd, setBevestigd] = useState(false);
+  const [gemaild, setGemaild] = useState(false);
+  const [aantal, setAantal] = useState(0);
   const invoer = useRef<HTMLInputElement>(null);
   const gekozen = DAKKLEUREN.find((k) => k.id === kleur);
 
@@ -58,14 +70,36 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
     try { setFoto(await verkleinFoto(bestand)); } catch { setFout("Die foto kunnen we niet openen. Probeer een JPG of PNG."); }
   }
 
+  useEffect(() => {
+    try {
+      const bewaard = JSON.parse(localStorage.getItem(OPSLAG) ?? "null");
+      if (bewaard && typeof bewaard === "object") setGegevens({ ...LEEG, ...bewaard });
+    } catch {}
+  }, []);
+
+  function naarResultaat() {
+    if (bevestigd && geldig(gegevens)) kleurIn();
+    else setStap(2);
+  }
+
+  function bevestig(e: React.FormEvent) {
+    e.preventDefault();
+    if (!geldig(gegevens)) { setFout("Vul je voornaam, e-mail en telefoonnummer in."); return; }
+    try { localStorage.setItem(OPSLAG, JSON.stringify(gegevens)); } catch {}
+    setBevestigd(true);
+    kleurIn();
+  }
+
   async function kleurIn() {
     if (!foto || !kleur) return;
-    setStap(2); setBezig(true); setFout(null); setBeeld(null);
+    setStap(3); setBezig(true); setFout(null); setBeeld(null); setGemaild(false);
     try {
-      const r = await fetch("/api/dakkleur", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ foto, kleur }) });
+      const r = await fetch("/api/dakkleur", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ foto, kleur, ...gegevens, eerste: aantal === 0 }) });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || !d.beeld) throw new Error(d.fout ?? "Het lukte niet om je dak in te kleuren.");
       setBeeld(d.beeld);
+      setGemaild(d.gemaild === true);
+      setAantal((n) => n + 1);
     } catch (e) {
       setFout(e instanceof Error ? e.message : "Er ging iets mis.");
     } finally {
@@ -158,6 +192,18 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
         .dk-knop-l { background: #FFFFFF; color: #1A1A1A; border: 1px solid #E5E7EB; }
         .dk-knop-l:hover { border-color: #9BCB6C; background: #F7FBF3; }
         .dk-knop-l:disabled { opacity: 0.5; cursor: default; }
+        .dk-form { display: grid; gap: 14px; }
+        .dk-form h3 { margin-bottom: 0; }
+        .dk-intro { margin: 0 0 4px; font-size: 15px; line-height: 1.65; color: #545454; text-wrap: balance; font-family: var(--font-inter), system-ui, sans-serif; }
+        .dk-veld { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
+        .dk-veld small { font-size: 13.5px; font-weight: 400; color: #8E8E89; }
+        .dk-veld input { height: 50px; padding: 0 14px; border-radius: 10px; border: 1px solid #E5E7EB; background: #F7F8F6; font-size: 16px; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; transition: border-color .2s ease, background-color .2s ease; }
+        .dk-veld input:hover { border-color: #CFE5B8; }
+        .dk-veld input:focus { outline: none; border-color: #9BCB6C; background: #FFFFFF; box-shadow: 0 0 0 3px rgba(155,203,108,0.2); }
+        .dk-rij { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .dk-belofte { margin: 4px 0 0; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; background: #F4FBF0; border: 1px solid #CFE5B8; font-size: 14px; line-height: 1.55; color: #1A1A1A; text-wrap: balance; font-family: var(--font-inter), system-ui, sans-serif; }
+        .dk-belofte i { flex: none; display: flex; gap: 6px; }
+        .dk-verstuurd { margin: 14px 0 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; color: #545454; text-align: center; font-family: var(--font-inter), system-ui, sans-serif; }
         .dk-noot { margin: 16px 0 0; text-align: center; font-size: 12.5px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
 
         @media (max-width: 760px) {
@@ -167,6 +213,7 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
           .dk-stappen { padding: 4px 36px 16px 0; justify-content: flex-start; gap: 6px; }
           .dk-sluit { top: 12px; right: 12px; width: 36px; height: 36px; }
           .dk-stappen li { font-size: 11px; gap: 6px; }
+          .dk-stappen li:not(.aan) { font-size: 0; gap: 0; }
           .dk-tip > i { display: none; }
           .dk-pc { display: none; }
           .dk-gsm { display: block; }
@@ -174,6 +221,8 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
           .dk-kleur { padding: 10px 4px; font-size: 12px; }
           .dk-kleur i { width: 40px; height: 40px; }
           .dk-knop { padding: 0 18px; }
+          .dk-rij { grid-template-columns: minmax(0, 1fr); }
+          .dk-belofte i { display: none; }
         }
         @media (prefers-reduced-motion: reduce) { .dk-laden svg { animation: none; } }
       `}</style>
@@ -248,16 +297,41 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
             <p className="dk-kleur-noot">De kleuren op je scherm zijn een benadering. Tijdens het plaatsbezoek tonen we je de echte stalen.</p>
             <div className="dk-knoppen">
               <button type="button" className="dk-knop dk-knop-l" onClick={() => setStap(0)}><ChevronLeft size={17} />Terug</button>
-              <button type="button" className="dk-knop dk-knop-g" disabled={!kleur} onClick={kleurIn}><Sparkles size={17} />Toon mijn dak</button>
+              <button type="button" className="dk-knop dk-knop-g" disabled={!kleur} onClick={naarResultaat}><Sparkles size={17} />Toon mijn dak</button>
             </div>
           </>
         )}
 
         {stap === 2 && (
+          <form className="dk-form" onSubmit={bevestig} noValidate>
+            <h3>Waar mogen we je resultaat naartoe sturen?</h3>
+            <p className="dk-intro">Laat je gegevens achter en je ziet meteen je dak in de nieuwe kleur.</p>
+            <label className="dk-veld">Voornaam
+              <input name="voornaam" autoComplete="given-name" required value={gegevens.voornaam} onChange={(e) => setGegevens({ ...gegevens, voornaam: e.target.value })} />
+            </label>
+            <div className="dk-rij">
+              <label className="dk-veld">E-mail
+                <input name="email" type="email" autoComplete="email" inputMode="email" required value={gegevens.email} onChange={(e) => setGegevens({ ...gegevens, email: e.target.value })} />
+              </label>
+              <label className="dk-veld"><span>Telefoon <small>(WhatsApp)</small></span>
+                <input name="telefoon" type="tel" autoComplete="tel" inputMode="tel" required placeholder="0470 12 34 56" value={gegevens.telefoon} onChange={(e) => setGegevens({ ...gegevens, telefoon: e.target.value })} />
+              </label>
+            </div>
+            <p className="dk-belofte"><i><Mail size={18} color="#9BCB6C" /><MessageCircle size={18} color="#9BCB6C" /></i>We sturen je resultaat ook naar je e‑mail en WhatsApp, zodat je het rustig kunt bekijken en bewaren.</p>
+            {fout && <p className="dk-fout" role="alert">{fout}</p>}
+            <div className="dk-knoppen">
+              <button type="button" className="dk-knop dk-knop-l" onClick={() => { setFout(null); setStap(1); }}><ChevronLeft size={17} />Terug</button>
+              <button type="submit" className="dk-knop dk-knop-g"><Sparkles size={17} />Toon mijn dak</button>
+            </div>
+          </form>
+        )}
+
+        {stap === 3 && (
           <>
             <h3>{bezig ? "Je dak wordt ingekleurd" : beeld ? `Jouw dak in ${gekozen?.naam.toLowerCase()}` : "Dat lukte niet"}</h3>
             {bezig && <div className="dk-laden"><Loader2 size={34} color="#9BCB6C" />Even geduld, dit duurt een paar seconden.</div>}
             {!bezig && beeld && foto && <VoorNa voor={foto} na={beeld} />}
+            {!bezig && beeld && gemaild && <p className="dk-verstuurd"><Check size={16} color="#9BCB6C" strokeWidth={3} />We stuurden je resultaat ook naar {gegevens.email}.</p>}
             {!bezig && fout && <p className="dk-fout" role="alert">{fout}</p>}
             <div className="dk-knoppen">
               <button type="button" className="dk-knop dk-knop-l" onClick={() => setStap(1)} disabled={bezig}><ChevronLeft size={17} />Andere kleur</button>
@@ -270,7 +344,7 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
           </>
         )}
 
-        <p className="dk-noot">AI-voorbeeld: de echte kleur kan licht afwijken. Je foto wordt niet bewaard.</p>
+        <p className="dk-noot">{stap === 2 ? "We gebruiken je gegevens enkel om je resultaat te sturen en je verder te helpen." : "AI-voorbeeld: de echte kleur kan licht afwijken."}</p>
       </div>
     </div>
   );

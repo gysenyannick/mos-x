@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
 import { DAKKLEUREN } from "@/lib/dakkleuren";
+import { sendToBeavr } from "@/lib/beavr";
+import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempotencyKey, sendMail } from "@/lib/mail";
 
 /**
  * Dakkleur-tool: kleurt het dak op een foto in een Ardocolor-kleur via Google Gemini.
@@ -11,6 +13,10 @@ import { DAKKLEUREN } from "@/lib/dakkleuren";
  *
  * De foto wordt niet bewaard. Per IP en per dag is het aantal beurten beperkt,
  * plus een totaal per dag, zodat de kosten nooit ontsporen.
+ *
+ * De bezoeker laat eerst voornaam, e-mail en telefoon (WhatsApp) achter. Het
+ * resultaat gaat per mail naar de klant, en als lead naar MOS-X met een
+ * WhatsApp-knop om het door te sturen.
  */
 
 export const runtime = "nodejs";
@@ -36,13 +42,63 @@ async function binnenLimiet(ip: string): Promise<boolean> {
   return perIp <= PER_IP_PER_DAG && totaal <= TOTAAL_PER_DAG;
 }
 
+/** Belgisch of internationaal nummer naar het formaat van wa.me (enkel cijfers, met landcode). */
+function waNummer(telefoon: string): string {
+  let n = telefoon.replace(/[^d+]/g, "");
+  if (n.startsWith("+")) n = n.slice(1);
+  else if (n.startsWith("00")) n = n.slice(2);
+  else if (n.startsWith("0")) n = "32" + n.slice(1);
+  return n.replace(/D/g, "");
+}
+
+async function verstuurResultaat(o: { voornaam: string; email: string; telefoon: string; kleur: string; beeld: { mimeType: string; data: string }; eerste: boolean }): Promise<boolean> {
+  const bijlage = { filename: `dak-${o.kleur.toLowerCase().replace(/s+/g, "-")}.${o.beeld.mimeType.includes("png") ? "png" : "jpg"}`, content: o.beeld.data, content_id: "dakkleur" };
+
+  if (o.eerste) {
+    await sendToBeavr({
+      name: o.voornaam, email: o.email, phone: o.telefoon,
+      service: "Dakcoating",
+      note: `Dakkleur-tool: koos ${o.kleur}`,
+      answers: { Aanvraag: "Dakkleur-tool", Kleur: o.kleur },
+      page: "https://www.mos-x.be/#dakkleur",
+    });
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return false;
+
+  const tekst = `Dag ${o.voornaam}, hier is je dak in ${o.kleur.toLowerCase()}, zoals je het via onze dakkleur-tool bekeek. Groetjes, MOS-X`;
+  const waLink = `https://wa.me/${waNummer(o.telefoon)}?text=${encodeURIComponent(tekst)}`;
+
+  const [intern, klant] = await Promise.all([
+    sendMail(apiKey, {
+      from: FROM_INTERN,
+      to: [process.env.CONTACT_EMAIL ?? "info@mos-x.be"],
+      reply_to: o.email,
+      subject: `🎨 Dakkleur | ${o.voornaam} | ${o.kleur}`,
+      html: dakkleurInternHtml({ ...o, waLink }),
+      attachments: [bijlage],
+    }, idempotencyKey("dakkleur-intern", o.email, o.kleur)),
+    sendMail(apiKey, {
+      from: FROM_KLANT,
+      to: [o.email],
+      subject: `Je dak in ${o.kleur.toLowerCase()} | MOS-X`,
+      html: dakkleurKlantHtml({ voornaam: o.voornaam, kleur: o.kleur }),
+      attachments: [bijlage],
+    }, idempotencyKey("dakkleur-klant", o.email, o.kleur)),
+  ]);
+  if (!intern.ok) console.error("dakkleur: interne mail", intern.error);
+  if (!klant.ok) console.warn("dakkleur: klantmail", klant.error);
+  return klant.ok;
+}
+
 type GeminiPart = { text?: string; inlineData?: { mimeType: string; data: string }; inline_data?: { mime_type: string; data: string } };
 
 export async function POST(req: Request) {
   const sleutel = process.env.GEMINI_API_KEY;
   if (!sleutel) return NextResponse.json({ fout: "De dakkleur-tool is nog niet actief." }, { status: 503 });
 
-  let body: { foto?: string; kleur?: string };
+  let body: { foto?: string; kleur?: string; voornaam?: string; email?: string; telefoon?: string; eerste?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -53,6 +109,13 @@ export async function POST(req: Request) {
   const match = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(body.foto ?? "");
   if (!kleur || !match) return NextResponse.json({ fout: "Kies een foto en een kleur." }, { status: 400 });
   if (match[2].length > MAX_BASE64) return NextResponse.json({ fout: "Die foto is te groot." }, { status: 413 });
+
+  const voornaam = (body.voornaam ?? "").trim().slice(0, 60);
+  const email = (body.email ?? "").trim().slice(0, 120);
+  const telefoon = (body.telefoon ?? "").trim().slice(0, 30);
+  if (!voornaam || !/^[^s@]+@[^s@]+.[^s@]+$/.test(email) || telefoon.replace(/D/g, "").length < 8) {
+    return NextResponse.json({ fout: "Vul je voornaam, e-mail en telefoonnummer in." }, { status: 400 });
+  }
 
   const ip = (req.headers.get("x-forwarded-for") ?? "onbekend").split(",")[0].trim();
   if (!(await binnenLimiet(ip))) {
@@ -91,5 +154,10 @@ export async function POST(req: Request) {
   const beeld = delen.map((d) => d.inlineData ?? (d.inline_data && { mimeType: d.inline_data.mime_type, data: d.inline_data.data })).find(Boolean);
   if (!beeld) return NextResponse.json({ fout: "Het lukte niet om je dak in te kleuren. Probeer een foto waarop het dak goed zichtbaar is." }, { status: 502 });
 
-  return NextResponse.json({ beeld: `data:${beeld.mimeType};base64,${beeld.data}` });
+  const gemaild = await verstuurResultaat({ voornaam, email, telefoon, kleur: kleur.naam, beeld, eerste: body.eerste === true }).catch((e) => {
+    console.error("dakkleur: versturen", e);
+    return false;
+  });
+
+  return NextResponse.json({ beeld: `data:${beeld.mimeType};base64,${beeld.data}`, gemaild });
 }

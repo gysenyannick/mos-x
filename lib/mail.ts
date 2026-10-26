@@ -256,6 +256,85 @@ export function contactKlantHtml(opts: { voornaam: string; dienst: string; beric
   `;
 }
 
+/** Mail naar de klant met zijn dak in de gekozen kleur (afbeelding inline via cid:dakkleur). */
+export function dakkleurKlantHtml(opts: { voornaam: string; kleur: string }): string {
+  const voornaam = esc(opts.voornaam);
+  const kleur = esc(opts.kleur.toLowerCase());
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; color: #1A1A1A;">
+
+      <!-- 1. HEADER -->
+      <div style="background: #FFFFFF; padding: 28px 32px 20px; text-align: center; border-bottom: 3px solid #9BCB6C;">
+        <img src="${SITE}/images/Logo%20Mos-x%20png.png" alt="MOS-X" width="160" style="display: inline-block; max-width: 160px; height: auto;" />
+      </div>
+
+      <!-- 2. HERO -->
+      <div style="padding: 32px 32px 24px; text-align: center;">
+        <h1 style="font-size: 22px; font-weight: 800; color: #1A1A1A; margin: 0 0 16px; line-height: 1.35;">
+          Zo ziet jouw dak eruit in ${kleur}
+        </h1>
+        <p style="font-size: 15px; font-weight: 700; color: #1A1A1A; margin: 0 0 10px;">Dag ${voornaam},</p>
+        <p style="font-size: 15px; color: #545454; margin: 0; line-height: 1.7;">
+          Hier is je voorbeeld, zodat je het rustig kunt bekijken en bewaren.<br>
+          De afbeelding zit ook als bijlage bij deze mail.
+        </p>
+      </div>
+
+      <!-- 3. RESULTAAT -->
+      <div style="margin: 0 32px 12px;">
+        <img src="cid:dakkleur" alt="Jouw dak in ${kleur}" width="536" style="display: block; width: 100%; max-width: 536px; height: auto; border-radius: 14px;" />
+      </div>
+      <p style="margin: 0 32px 28px; font-size: 12px; color: #888; text-align: center;">AI-voorbeeld: de echte kleur kan licht afwijken. Tijdens het plaatsbezoek tonen we je de echte stalen.</p>
+
+      <!-- 4. VOLGENDE STAP -->
+      <div style="margin: 0 32px 28px; background: #F4FBF0; border: 1px solid #9BCB6C; border-radius: 16px; padding: 22px 24px; text-align: center;">
+        <p style="margin: 0 0 14px; font-size: 15px; color: #1A1A1A; line-height: 1.6;">Benieuwd wat een coating voor jouw dak kost?</p>
+        <a href="${SITE}/#calculator" style="display: inline-block; background: #9BCB6C; color: #FFFFFF; font-size: 15px; font-weight: 700; text-decoration: none; padding: 14px 26px; border-radius: 10px;">Bereken je richtprijs</a>
+      </div>
+
+      <div style="margin: 0 32px;">${CONTACT_BLOK}</div>
+
+      <!-- 5. FOOTER -->
+      <div style="margin-top: 28px; padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
+        <p style="margin: 0 0 4px; font-size: 13px; font-weight: 700; color: #1A1A1A;">MOS-X</p>
+        <p style="margin: 0; font-size: 12px; color: #888;">Voor een proper, beschermd en verzorgd dak.</p>
+      </div>
+
+    </div>
+  `;
+}
+
+/** Interne leadmail na de dakkleur-tool, met een WhatsApp-knop om het resultaat door te sturen. */
+export function dakkleurInternHtml(opts: { voornaam: string; email: string; telefoon: string; kleur: string; waLink: string }): string {
+  const rij = (label: string, waarde: string) => `
+    <tr>
+      <td style="padding: 7px 0; color: #888; font-size: 13px; width: 110px; vertical-align: top;">${label}</td>
+      <td style="padding: 7px 0; font-size: 14px; font-weight: 600; color: #1A1A1A;">${waarde}</td>
+    </tr>`;
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFFFFF; color: #1A1A1A;">
+      <div style="padding: 18px 32px 14px; text-align: center; background: #F4FBF0; border-bottom: 1px solid #E5E7EB;">
+        <p style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #9BCB6C; text-transform: uppercase; letter-spacing: 0.10em;">NIEUWE LEAD · DAKKLEUR-TOOL</p>
+        <p style="margin: 0; font-size: 13px; color: #545454;">Gekozen kleur: <strong style="color: #1A1A1A;">${esc(opts.kleur)}</strong></p>
+      </div>
+      <div style="padding: 24px 32px 0;">
+        <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 800; color: #1A1A1A;">${esc(opts.voornaam)}</h1>
+        <table style="width: 100%; border-collapse: collapse;">
+          ${rij("Telefoon", `<a href="tel:${esc(opts.telefoon)}" style="color: #1A1A1A; text-decoration: none;">${esc(opts.telefoon)}</a>`)}
+          ${rij("E-mail", `<a href="mailto:${esc(opts.email)}" style="color: #1A1A1A; text-decoration: none;">${esc(opts.email)}</a>`)}
+        </table>
+      </div>
+      <div style="padding: 24px 32px 0; text-align: center;">
+        <a href="${esc(opts.waLink)}" style="display: inline-block; background: #9BCB6C; color: #FFFFFF; font-size: 15px; font-weight: 700; text-decoration: none; padding: 14px 24px; border-radius: 10px;">Stuur het resultaat via WhatsApp</a>
+        <p style="margin: 10px 0 0; font-size: 12px; color: #888;">Het bericht staat klaar. Voeg de bijlage <em>na</em> toe en verstuur.</p>
+      </div>
+      <div style="padding: 24px 32px 32px;">
+        <img src="cid:dakkleur" alt="Resultaat" width="536" style="display: block; width: 100%; max-width: 536px; height: auto; border-radius: 12px;" />
+      </div>
+    </div>
+  `;
+}
+
 /** Mail naar de klant met de berekende richtprijs. */
 export function richtprijsKlantHtml(opts: {
   voornaam: string;
