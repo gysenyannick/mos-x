@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { deflateSync } from "zlib";
 import { Redis } from "@upstash/redis";
 import { DAKKLEUREN } from "@/lib/dakkleuren";
 import { sendToBeavr } from "@/lib/beavr";
@@ -40,6 +41,42 @@ async function binnenLimiet(ip: string): Promise<boolean> {
   if (perIp === 1) await r.expire(`mx:dakkleur:${dag}:${ip}`, 172800);
   if (totaal === 1) await r.expire(`mx:dakkleur:${dag}:totaal`, 172800);
   return perIp <= PER_IP_PER_DAG && totaal <= TOTAAL_PER_DAG;
+}
+
+/** Effen kleurstaal als PNG (base64), dat de AI als referentie voor de exacte kleur meekrijgt. */
+function kleurstaal(hex: string, maat = 64): string {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const rij = Buffer.alloc(1 + maat * 3);
+  for (let x = 0; x < maat; x++) rij.set([r, g, b], 1 + x * 3);
+  const ruw = Buffer.concat(Array.from({ length: maat }, () => rij));
+  const crcTabel = Array.from({ length: 256 }, (_, n) => {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    return c >>> 0;
+  });
+  const crc = (buf: Buffer) => {
+    let c = 0xffffffff;
+    for (const byte of buf) c = crcTabel[(c ^ byte) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  };
+  const blok = (type: string, data: Buffer) => {
+    const lengte = Buffer.alloc(4);
+    lengte.writeUInt32BE(data.length);
+    const td = Buffer.concat([Buffer.from(type), data]);
+    const c = Buffer.alloc(4);
+    c.writeUInt32BE(crc(td));
+    return Buffer.concat([lengte, td, c]);
+  };
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(maat, 0);
+  ihdr.writeUInt32BE(maat, 4);
+  ihdr.set([8, 2, 0, 0, 0], 8);
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    blok("IHDR", ihdr),
+    blok("IDAT", deflateSync(ruw)),
+    blok("IEND", Buffer.alloc(0)),
+  ]).toString("base64");
 }
 
 /** Belgisch of internationaal nummer naar het formaat van wa.me (enkel cijfers, met landcode). */
@@ -123,11 +160,15 @@ export async function POST(req: Request) {
   }
 
   const opdracht =
-    `Edit this photo of a house. Recolor ONLY the pitched roof covering (the roof tiles or slates) as if it was professionally ` +
-    `coated with a uniform matte roof coating in the colour "${kleur.en}", close to ${kleur.hex}. Keep the tile shapes, texture, ` +
-    `shadows and daylight realistic. Keep everything else exactly identical: walls, windows, gutters, chimneys, solar panels, ` +
-    `skylights, ridge details, sky, trees, people, cars, framing, perspective and image size. Do not add, remove or move anything. ` +
-    `If no roof is visible, return the photo unchanged.`;
+    `The first image is a photo of a house. The second image is a flat colour sample of the exact target colour.\n` +
+    `Edit the photo so that ALL visible pitched roof covering (every roof tile or slate, on every roof plane) looks professionally ` +
+    `coated with an opaque, uniform matte roof coating in ${kleur.en}, hex ${kleur.hex}. Match the colour sample: the roof must ` +
+    `clearly read as this colour, and no trace of the original roof colour, moss or stains may remain.\n` +
+    `Keep the tile shapes, joints, texture, shadows and daylight realistic, so lit areas are slightly lighter and shaded areas ` +
+    `slightly darker than the sample.\n` +
+    `Keep everything else pixel-identical: walls and facade cladding, windows, gutters, chimneys, solar panels (keep every panel ` +
+    `exactly where it is), skylights, ridge details, sky, trees, people, cars, framing, perspective and image size. ` +
+    `Do not add, remove or move anything. If no roof is visible, return the photo unchanged.`;
 
   const model = process.env.GEMINI_IMAGE_MODEL ?? "gemini-2.5-flash-image";
   let antwoord: Response;
@@ -136,7 +177,11 @@ export async function POST(req: Request) {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-goog-api-key": sleutel },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: opdracht }, { inlineData: { mimeType: match[1], data: match[2] } }] }],
+        contents: [{ role: "user", parts: [
+          { text: opdracht },
+          { inlineData: { mimeType: match[1], data: match[2] } },
+          { inlineData: { mimeType: "image/png", data: kleurstaal(kleur.hex) } },
+        ] }],
         generationConfig: { responseModalities: ["IMAGE"] },
       }),
     });
