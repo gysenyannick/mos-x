@@ -23,7 +23,7 @@ import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempot
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const PER_IP_PER_DAG = 12;
+const PER_IP_PER_DAG = 40;
 const TOTAAL_PER_DAG = 300;
 const MAX_BASE64 = 4_000_000;
 
@@ -194,7 +194,7 @@ export async function POST(req: Request) {
     `exactly where it is), skylights, ridge details, sky, trees, people, cars, framing, perspective and image size. ` +
     `Do not add, remove or move anything. If no roof is visible, return the photo unchanged.`;
 
-  const model = process.env.GEMINI_IMAGE_MODEL ?? "gemini-2.5-flash-image";
+  const model = process.env.GEMINI_IMAGE_MODEL ?? "gemini-3-pro-image-preview";
   let antwoord: Response;
   try {
     antwoord = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
