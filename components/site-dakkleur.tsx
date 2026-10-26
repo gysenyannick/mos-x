@@ -203,7 +203,8 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
         .dk-rij { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
         .dk-belofte { margin: 4px 0 0; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; background: #F4FBF0; border: 1px solid #CFE5B8; font-size: 14px; line-height: 1.55; color: #1A1A1A; text-wrap: balance; font-family: var(--font-inter), system-ui, sans-serif; }
         .dk-belofte i { flex: none; display: flex; gap: 6px; }
-        .dk-verstuurd { margin: 14px 0 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; color: #545454; text-align: center; font-family: var(--font-inter), system-ui, sans-serif; }
+        .dk-verstuurd { margin: 14px 0 0; font-size: 14px; line-height: 1.5; color: #545454; text-align: center; text-wrap: balance; font-family: var(--font-inter), system-ui, sans-serif; }
+        .dk-verstuurd svg { display: inline-block; vertical-align: -3px; margin-right: 6px; }
         .dk-noot { margin: 16px 0 0; text-align: center; font-size: 12.5px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
 
         @media (max-width: 760px) {
@@ -225,6 +226,8 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
           .dk-kleur { padding: 10px 4px; font-size: 12px; }
           .dk-kleur i { width: 40px; height: 40px; }
           .dk-knop { padding: 0 18px; }
+          .dk-knoppen { flex-wrap: wrap; }
+          .dk-knop { flex: 1 1 auto; white-space: nowrap; }
           .dk-rij { grid-template-columns: minmax(0, 1fr); }
           .dk-belofte i { display: none; }
         }
