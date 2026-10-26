@@ -215,6 +215,10 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
           .dk-stappen li { font-size: 11px; gap: 6px; }
           .dk-stappen li:not(.aan) { font-size: 0; gap: 0; }
           .dk-tip > i { display: none; }
+          .dk-tip { padding: 14px 14px 16px; }
+          .dk-chips { flex-wrap: nowrap; gap: 5px; }
+          .dk-chips span { padding: 5px 8px; font-size: 12.5px; white-space: nowrap; }
+          .dk-chips svg { display: none; }
           .dk-pc { display: none; }
           .dk-gsm { display: block; }
           .dk-kleuren { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
@@ -244,8 +248,8 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
                 <b>Tip voor de beste foto</b>
                 <div className="dk-chips">
                   <span><Sun size={14} color="#9BCB6C" />Bij daglicht</span>
-                  <span><House size={14} color="#9BCB6C" />Recht van voren</span>
-                  <span><Check size={14} color="#9BCB6C" />Dak goed in beeld</span>
+                  <span><House size={14} color="#9BCB6C" />Van voren</span>
+                  <span><Check size={14} color="#9BCB6C" />Dak in beeld</span>
                 </div>
               </div>
             </div>
