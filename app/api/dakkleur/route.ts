@@ -12,8 +12,8 @@ import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempot
  *   GEMINI_API_KEY         → sleutel uit Google AI Studio (met betaalaccount)
  *   GEMINI_IMAGE_MODEL     → optioneel, standaard gemini-3-pro-image-preview
  *
- * De foto wordt niet bewaard. Per IP en per dag is het aantal beurten beperkt,
- * plus een totaal per dag, zodat de kosten nooit ontsporen.
+ * De foto wordt niet bewaard. Per persoon en per verbinding is het aantal beurten beperkt,
+ * plus een totaal per maand (budget ±€20), zodat de kosten nooit ontsporen.
  *
  * De bezoeker laat eerst voornaam, e-mail en telefoon (WhatsApp) achter. Het
  * resultaat gaat per mail naar de klant, en als lead naar MOS-X met een
@@ -23,8 +23,10 @@ import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempot
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const PER_IP_PER_DAG = 12;
-const TOTAAL_PER_DAG = 100;
+/** Budget: ongeveer €0,13 per voorbeeld, max ±€20 per maand. */
+const PER_PERSOON = 3;
+const PER_IP_PER_DAG = 6;
+const TOTAAL_PER_MAAND = 150;
 const MAX_BASE64 = 4_000_000;
 
 function redis() {
@@ -33,14 +35,24 @@ function redis() {
   return url && token ? new Redis({ url, token }) : null;
 }
 
-async function binnenLimiet(ip: string): Promise<boolean> {
+/** Geeft de reden terug waarom er geen voorbeeld meer mag, of null als het mag. */
+async function limiet(ip: string, email: string): Promise<"persoon" | "maand" | null> {
   const r = redis();
-  if (!r) return true;
-  const dag = new Date().toISOString().slice(0, 10);
-  const [perIp, totaal] = await Promise.all([r.incr(`mx:dakkleur:${dag}:${ip}`), r.incr(`mx:dakkleur:${dag}:totaal`)]);
-  if (perIp === 1) await r.expire(`mx:dakkleur:${dag}:${ip}`, 172800);
-  if (totaal === 1) await r.expire(`mx:dakkleur:${dag}:totaal`, 172800);
-  return perIp <= PER_IP_PER_DAG && totaal <= TOTAAL_PER_DAG;
+  if (!r) return null;
+  const nu = new Date().toISOString();
+  const tel = async (sleutel: string, seconden: number) => {
+    const n = await r.incr(sleutel);
+    if (n === 1) await r.expire(sleutel, seconden);
+    return n;
+  };
+  const [persoon, perIp] = await Promise.all([
+    tel(`mx:dakkleur:persoon:${email.toLowerCase()}`, 60 * 60 * 24 * 90),
+    tel(`mx:dakkleur:${nu.slice(0, 10)}:${ip}`, 60 * 60 * 48),
+  ]);
+  if (persoon > PER_PERSOON || perIp > PER_IP_PER_DAG) return "persoon";
+  // De maandteller telt alleen beurten die echt naar de AI gaan.
+  if ((await tel(`mx:dakkleur:maand:${nu.slice(0, 7)}`, 60 * 60 * 24 * 40)) > TOTAAL_PER_MAAND) return "maand";
+  return null;
 }
 
 /** Effen kleurstaal als PNG (base64), dat de AI als referentie voor de exacte kleur meekrijgt. */
@@ -179,8 +191,12 @@ export async function POST(req: Request) {
   }
 
   const ip = (req.headers.get("x-forwarded-for") ?? "onbekend").split(",")[0].trim();
-  if (!(await binnenLimiet(ip))) {
-    return NextResponse.json({ fout: "Je hebt vandaag al enkele voorbeelden gemaakt. Probeer morgen opnieuw of vraag een staal aan." }, { status: 429 });
+  const grens = await limiet(ip, email);
+  if (grens === "persoon") {
+    return NextResponse.json({ fout: `Je hebt al ${PER_PERSOON} voorbeelden gemaakt. Wil je nog een kleur zien? Vraag een gratis plaatsbezoek aan, dan tonen we je de echte stalen.` }, { status: 429 });
+  }
+  if (grens === "maand") {
+    return NextResponse.json({ fout: "De dakkleur-tool is deze maand volzet. Vraag een gratis plaatsbezoek aan, dan tonen we je de echte stalen." }, { status: 429 });
   }
 
   const opdracht =
