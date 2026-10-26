@@ -23,7 +23,7 @@ import { FROM_INTERN, FROM_KLANT, dakkleurInternHtml, dakkleurKlantHtml, idempot
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const PER_IP_PER_DAG = 12;
+const PER_IP_PER_DAG = 40;
 const TOTAAL_PER_DAG = 300;
 const MAX_BASE64 = 4_000_000;
 
