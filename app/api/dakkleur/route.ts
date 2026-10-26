@@ -190,8 +190,10 @@ export async function POST(req: Request) {
     `clearly read as this colour, and no trace of the original roof colour, moss or stains may remain.\n` +
     `Keep the tile shapes, joints, texture, shadows and daylight realistic, so lit areas are slightly lighter and shaded areas ` +
     `slightly darker than the sample.\n` +
-    `Keep everything else pixel-identical: walls and facade cladding, windows, gutters, chimneys, solar panels (keep every panel ` +
-    `exactly where it is), skylights, ridge details, sky, trees, people, cars, framing, perspective and image size. ` +
+    `Solar panels and roof windows are dark glass mounted on top of the roof: they are NOT roof covering. Never recolor them; ` +
+    `every solar panel keeps its original dark blue-black glass look and stays exactly where it is.\n` +
+    `Keep everything else pixel-identical: walls and facade cladding, windows, gutters, chimneys, ` +
+    `ridge details, sky, trees, people, cars, framing, perspective and image size. ` +
     `Do not add, remove or move anything. If no roof is visible, return the photo unchanged.`;
 
   const model = process.env.GEMINI_IMAGE_MODEL ?? "gemini-3-pro-image-preview";
