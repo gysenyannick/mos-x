@@ -44,15 +44,15 @@ async function binnenLimiet(ip: string): Promise<boolean> {
 
 /** Belgisch of internationaal nummer naar het formaat van wa.me (enkel cijfers, met landcode). */
 function waNummer(telefoon: string): string {
-  let n = telefoon.replace(/[^d+]/g, "");
+  let n = telefoon.replace(/[^\d+]/g, "");
   if (n.startsWith("+")) n = n.slice(1);
   else if (n.startsWith("00")) n = n.slice(2);
   else if (n.startsWith("0")) n = "32" + n.slice(1);
-  return n.replace(/D/g, "");
+  return n.replace(/\D/g, "");
 }
 
 async function verstuurResultaat(o: { voornaam: string; email: string; telefoon: string; kleur: string; beeld: { mimeType: string; data: string }; eerste: boolean }): Promise<boolean> {
-  const bijlage = { filename: `dak-${o.kleur.toLowerCase().replace(/s+/g, "-")}.${o.beeld.mimeType.includes("png") ? "png" : "jpg"}`, content: o.beeld.data, content_id: "dakkleur" };
+  const bijlage = { filename: `dak-${o.kleur.toLowerCase().replace(/\s+/g, "-")}.${o.beeld.mimeType.includes("png") ? "png" : "jpg"}`, content: o.beeld.data, content_id: "dakkleur" };
 
   if (o.eerste) {
     await sendToBeavr({
@@ -113,7 +113,7 @@ export async function POST(req: Request) {
   const voornaam = (body.voornaam ?? "").trim().slice(0, 60);
   const email = (body.email ?? "").trim().slice(0, 120);
   const telefoon = (body.telefoon ?? "").trim().slice(0, 30);
-  if (!voornaam || !/^[^s@]+@[^s@]+.[^s@]+$/.test(email) || telefoon.replace(/D/g, "").length < 8) {
+  if (!voornaam || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || telefoon.replace(/\D/g, "").length < 8) {
     return NextResponse.json({ fout: "Vul je voornaam, e-mail en telefoonnummer in." }, { status: 400 });
   }
 
