@@ -3,7 +3,7 @@ import PageLayout from "@/components/page-layout";
 import LinkAanvraag from "@/components/klantenzone/link-aanvraag";
 
 export const metadata: Metadata = {
-  title: "Klantenzone | MOS-X",
+  title: "Klantenzone",
   description: "Log in op je klantenzone van MOS-X: je planning, foto's van de werken, je documenten, garantie en onderhoud.",
   robots: { index: false, follow: true },
 };

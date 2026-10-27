@@ -14,6 +14,9 @@ import SiteFaq             from "@/components/site-faq";
 import SiteDakkleurBanner  from "@/components/site-dakkleur-banner";
 import SiteContact         from "@/components/site-contact";
 import SiteFooter          from "@/components/site-footer";
+import type { Metadata }   from "next";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function HomePage() {
   return (

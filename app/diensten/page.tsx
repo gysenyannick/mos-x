@@ -6,6 +6,8 @@ import { Phone, ShieldCheck, ChevronRight } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import { ServiceCard, serviceCards } from "@/components/service-card";
+import JsonLd from "@/components/json-ld";
+import { kruimelSchema } from "@/lib/seo";
 
 export default function DienstenPage() {
   const [homeHovered, setHomeHovered] = useState(false);
@@ -44,6 +46,7 @@ export default function DienstenPage() {
 
   return (
     <PageLayout>
+      <JsonLd data={kruimelSchema([["Diensten", "/diensten"]])} />
 
       {/* ── Page header ── */}
       <section style={{ background: "#F7F8F6", paddingTop: "120px", paddingBottom: "0px" }}>

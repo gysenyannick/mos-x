@@ -4,6 +4,8 @@ import "./globals.css";
 import MobileContactBar from "@/components/mobile-contact-bar";
 import CalculatorScroll from "@/components/calculator-scroll";
 import SiteChrome from "@/components/site-chrome";
+import JsonLd from "@/components/json-ld";
+import { SITE, bedrijfSchema, websiteSchema } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,28 +30,29 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "MOS-X | Specialist in dakreiniging & dakcoating",
+  metadataBase: new URL(SITE),
+  title: {
+    default: "MOS-X | Dakontmossing en dakcoating in Vlaanderen",
+    template: "%s | MOS-X",
+  },
   description:
-    "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
-  keywords: [
-    "dakontmossing",
-    "dakcoating",
-    "dakreiniging",
-    "gratis dakdiagnose",
-    "Oost-Vlaanderen",
-    "MOS-X",
-  ],
+    "MOS-X ontmost, reinigt en coat daken in de provincies Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg. 2 jaar mosvrij-garantie, 10 jaar garantie op de hechting en een duidelijke prijs vooraf.",
+  applicationName: "MOS-X",
   icons: {
     icon: "/images/Favicon Mos-x.png",
     shortcut: "/images/Favicon Mos-x.png",
     apple: "/images/Favicon Mos-x.png",
   },
   openGraph: {
-    title: "MOS-X | Specialist in dakreiniging & dakcoating",
-    description: "MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.",
+    siteName: "MOS-X",
+    title: "MOS-X | Dakontmossing en dakcoating in Vlaanderen",
+    description: "Je dak opnieuw proper en beschermd. Dakontmossing, dakcoating en dakonderhoud door MOS-X.",
     type: "website",
     locale: "nl_BE",
+    url: SITE,
+    images: [{ url: "/images/16.JPEG", alt: "Een verzorgd dak na de werken van MOS-X" }],
   },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };
 
@@ -59,6 +62,7 @@ export default function RootLayout({
   return (
     <html lang="nl" className={`${inter.variable} ${montserrat.variable} ${playfair.variable}`}>
       <body className="antialiased" style={{ overflowX: "clip" }}>
+        <JsonLd data={[bedrijfSchema, websiteSchema]} />
         {children}
         <CalculatorScroll />
         <SiteChrome>

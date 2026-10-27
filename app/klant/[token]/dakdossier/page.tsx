@@ -11,7 +11,7 @@ import PrintKnop from "@/components/klantenzone/print-knop";
 import d from "./dossier.module.css";
 
 export const metadata: Metadata = {
-  title: "Dakdossier | MOS-X",
+  title: "Dakdossier",
   robots: { index: false, follow: false },
 };
 export const dynamic = "force-dynamic";

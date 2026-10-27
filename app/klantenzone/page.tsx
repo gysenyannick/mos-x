@@ -7,7 +7,8 @@ import PageLayout from "@/components/page-layout";
 import kz from "@/components/klantenzone/kz.module.css";
 
 export const metadata: Metadata = {
-  title: "Jouw klantenzone | MOS-X",
+  title: "Jouw klantenzone",
+  alternates: { canonical: "/klantenzone" },
   description:
     "Elke klant van MOS-X krijgt een eigen pagina: de stand van je werken, je startdatum, werffoto's, offerte, factuur en garantie. Geen login, gewoon je eigen link.",
 };

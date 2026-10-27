@@ -46,7 +46,7 @@ interface RegioPageProps {
 const defaultServices: ServiceItem[] = [
   { title: "Dak reinigen", desc: "biologische verwijdering van mos, algen en korstmos" },
   { title: "Dak coaten",   desc: "beschermende coating met schriftelijke garantie" },
-  { title: "Dakabonnement", desc: "jaarlijkse controle en preventieve behandeling" },
+  { title: "MOS-X Dakzorg", desc: "preventief onderhoud na een reiniging" },
 ];
 
 export default function RegioPage({
@@ -181,7 +181,7 @@ export default function RegioPage({
               Dakontmossing in <span style={{ color: "#9BCB6C" }}>{province}</span>
             </h1>
             <p className="text-base lg:text-lg leading-relaxed" style={{ color: "#545454" }}>
-              {heroSubtitle ?? `Erkende dakspecialist, actief in heel ${province}. Persoonlijk contact met Yannick.`}
+              {heroSubtitle ?? `Specialist in dakontmossing en dakcoating, actief in heel ${province}.`}
             </p>
           </div>
         </section>
@@ -208,7 +208,7 @@ export default function RegioPage({
               Dakontmossing in {province}
             </h1>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "18px", maxWidth: "600px" }}>
-              {heroSubtitle ?? `Erkende dakspecialist, actief in heel ${province}. Persoonlijk contact met Yannick.`}
+              {heroSubtitle ?? `Specialist in dakontmossing en dakcoating, actief in heel ${province}.`}
             </p>
           </div>
         </section>

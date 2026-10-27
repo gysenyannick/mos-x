@@ -10,7 +10,7 @@ import kz from "@/components/klantenzone/kz.module.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Beheer klantenzone | MOS-X",
+  title: "Beheer klantenzone",
   robots: { index: false, follow: false },
 };
 

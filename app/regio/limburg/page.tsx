@@ -3,8 +3,9 @@ import PageLayout from "@/components/page-layout";
 import RegioPage  from "@/components/regio-page";
 
 export const metadata: Metadata = {
-  title: "Dakontmossing Limburg | MOS-X — Erkende Dakspecialist",
-  description: "MOS-X verzorgt professionele dakontmossing en dakcoating in heel Limburg. Actief in Hasselt, Genk, Sint-Truiden en 27 andere gemeenten. Vaste prijs, garantie op de uitgevoerde werken.",
+  title: "Dakontmossing en dakcoating in Limburg",
+  alternates: { canonical: "/regio/limburg" },
+  description: "MOS-X verzorgt professionele dakontmossing en dakcoating in heel Limburg. Actief in Hasselt, Genk, Sint-Truiden en 27 andere gemeenten. Duidelijke prijs vooraf en schriftelijke garantie.",
 };
 
 const municipalities = [
@@ -57,8 +58,8 @@ const climateParas = [
 
 const services = [
   { title: "Dakreiniging",  desc: "professionele verwijdering van mos, algen en vervuiling", href: "/diensten/dakontmossing" },
-  { title: "Dakcoating",    desc: "beschermende coating met 10 jaar garantie",                href: "/diensten/dakcoating" },
-  { title: "MOS-X Dakzorg", desc: "jaarlijkse controle en preventief onderhoud",              href: "/diensten/mos-x-dakzorg" },
+  { title: "Dakcoating",    desc: "beschermende coating met 10 jaar garantie op de hechting", href: "/diensten/dakcoating" },
+  { title: "MOS-X Dakzorg", desc: "preventief onderhoud na een reiniging", href: "/diensten/mos-x-dakzorg" },
 ];
 
 export default function LimburgPage() {

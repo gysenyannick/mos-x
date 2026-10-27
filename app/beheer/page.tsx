@@ -175,6 +175,7 @@ export default async function BeheerOverzicht({ searchParams }: { searchParams: 
                   <option>Dakreiniging en dakcoating</option>
                   <option>Dakcoating</option>
                   <option>MOS-X Dakzorg</option>
+                  <option>Gevelreiniging</option>
                 </select>
               </div>
             </div>

@@ -187,10 +187,10 @@ export default function SiteFooter() {
             &copy; 2026 MOS-X.be – Alle rechten voorbehouden
           </span>
           <span style={{ display: "flex", gap: "24px" }}>
-            {(["Privacyverklaring", "Algemene voorwaarden"] as const).map(l => (
+            {([["Privacyverklaring", "/privacyverklaring"], ["Algemene voorwaarden", "/algemene-voorwaarden"]] as const).map(([l, href]) => (
               <Link
                 key={l}
-                href="#"
+                href={href}
                 style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", transition: "color 150ms ease", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
                 onMouseEnter={e => (e.currentTarget.style.color = GREEN)}
                 onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
