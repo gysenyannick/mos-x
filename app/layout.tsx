@@ -34,9 +34,7 @@ export const metadata: Metadata = {
   keywords: [
     "dakontmossing",
     "dakcoating",
-    "gevelreiniging",
     "dakreiniging",
-    "drone inspectie dak",
     "gratis dakdiagnose",
     "Oost-Vlaanderen",
     "MOS-X",

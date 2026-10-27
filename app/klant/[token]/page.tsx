@@ -978,14 +978,14 @@ function Diensten({ k, controle, dienstFotos, acties }: Ctx) {
       <section className={kz.dienstHero}>
         <span className={kz.buurOog}>Enkel voor klanten</span>
         <p className={kz.buurTitel}>{naWerken ? "Nu je dak proper is, zorgen we ook voor de rest" : "Ook voor de rest van je woning"}</p>
-        <p className={kz.buurSub}>Dakgoten, gevel, oprit en terras. Altijd eerst een eerlijke prijs.</p>
+        <p className={kz.buurSub}>Dakgoten, oprit en terras. Altijd eerst een eerlijke prijs.</p>
       </section>
 
       <section id="combi" className={kz.combiKaart}>
         <span className={kz.combiProcent}>−20%</span>
         <div className={kz.combiTekst}>
           <p className={kz.combiTitel}>Combineer twee diensten en krijg tot 20% korting</p>
-          <p className={kz.combiSub}>Bijvoorbeeld je dakgoten samen met je oprit of gevel. Alles op één dag, dus voordeliger voor jou.</p>
+          <p className={kz.combiSub}>Bijvoorbeeld je dakgoten samen met je oprit. Alles op één dag, dus voordeliger voor jou.</p>
         </div>
         <div className={kz.combiKnop}>
           <AanvraagKnop klantId={k.id} soort="extra" voorvoegsel="Combinatie van twee diensten" metFotos={false} klein alGevraagd={gevraagd("extra", "Combinatie")} alGevraagdTekst="Aangevraagd"
@@ -1099,7 +1099,7 @@ function Voordelen(ctx: Ctx) {
         <span className={kz.combiProcent}>−20%</span>
         <div className={kz.combiTekst}>
           <p className={kz.combiTitel}>Combineer twee diensten en krijg tot 20% korting</p>
-          <p className={kz.combiSub}>Bijvoorbeeld je dakgoten samen met je oprit of gevel.</p>
+          <p className={kz.combiSub}>Bijvoorbeeld je dakgoten samen met je oprit.</p>
         </div>
         <ArrowRight size={20} className={kz.combiPijl} />
       </Link>

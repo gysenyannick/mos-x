@@ -81,7 +81,7 @@ export function BeheerDak({ k }: { k: Klant }) {
             <div className={kz.veld}>
               <label htmlFor="wnaam">Werk</label>
               <select id="wnaam" name="naam" className={kz.invoer}>
-                {[...Object.keys(WERK_UITLEG), "Gevelreiniging"].map((x) => <option key={x}>{x}</option>)}
+                {Object.keys(WERK_UITLEG).map((x) => <option key={x}>{x}</option>)}
               </select>
             </div>
             <div className={kz.veld}><label htmlFor="wdatum">Geplande dag (optioneel)</label><input id="wdatum" name="datum" type="date" className={kz.invoer} /></div>

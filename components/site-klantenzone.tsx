@@ -138,7 +138,7 @@ export default function SiteKlantenzone() {
                   <div className="kzp-foto">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/images/15.JPEG" alt="" />
-                    <span>Dronefoto · 1 oktober</span>
+                    <span>Foto · 1 oktober</span>
                   </div>
                   <div className="kzp-vakman">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

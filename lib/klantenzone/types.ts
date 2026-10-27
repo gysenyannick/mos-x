@@ -504,9 +504,8 @@ export const VERZET_UREN = 48;
 /** Extra diensten die de klant er met één klik bij kan vragen. */
 /** Diensten die een klant kan aanvragen. De foto kan Yannick vervangen via Instellingen. */
 export const EXTRAS: readonly { id: string; naam: string; tekst: string; foto?: string }[] = [
-  { id: "coating", naam: "Dakcoating", tekst: "Na een reiniging zijn je pannen open en poreus. Een coating sluit ze af, geeft je dak zijn kleur terug en houdt het langer proper, met tot 10 jaar garantie.", foto: "/images/IMG_4584%20Vooraanzicht%20dakcoating.JPEG" },
+  { id: "coating", naam: "Dakcoating", tekst: "Na een reiniging zijn je pannen open en poreus. Een coating sluit ze af, geeft je dak zijn kleur terug en houdt het langer proper, met 10 jaar garantie op de hechting.", foto: "/images/IMG_4584%20Vooraanzicht%20dakcoating.JPEG" },
   { id: "goten", naam: "Dakgoten reinigen", tekst: "Bladeren, mos en vuil eruit, zodat het regenwater weer vlot weg kan en niet op de onderste pannen blijft staan.", foto: "/images/Goot%20na.JPEG" },
   { id: "herstelling", naam: "Kleine herstellingen", tekst: "Een gebroken of verschoven pan, losse nokpannen of verweerde voegen: snel hersteld voor er water binnenkomt.", foto: "/images/Dakpan%20herstelling.png" },
-  { id: "gevel", naam: "Gevelreiniging", tekst: "Groene aanslag en vuil van je gevel, zacht gereinigd en zonder schade aan steen of voegen. Zo past je gevel weer bij je propere dak.", foto: "https://images.unsplash.com/photo-1601041597271-71988152f98b?fm=jpg&q=70&w=1200&auto=format&fit=crop" },
   { id: "oprit", naam: "Oprit en terras", tekst: "Mos en onkruid tussen de klinkers weg, op lage druk, zodat het zand in de voegen blijft.", foto: "https://images.unsplash.com/photo-1551394846-d03c5a4bc4bc?fm=jpg&q=70&w=1200&auto=format&fit=crop" },
 ];
