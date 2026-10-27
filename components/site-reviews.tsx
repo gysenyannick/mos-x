@@ -97,7 +97,7 @@ export default function SiteReviews() {
     <section className="site-pad site-reviews-section" id="reviews" style={{ background: "#0B0F0C", position: "relative", overflow: "hidden" }}>
 
       {/* Moss texture - left side (zelfde stijl als diensten) */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/mos-texture.png"
         alt=""
         aria-hidden="true"
@@ -156,7 +156,7 @@ export default function SiteReviews() {
       </div>
 
       {/* Moss texture image */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/mos-texture.png"
         alt=""
         className="reviews-mos reviews-mos-rechts"

@@ -8,6 +8,7 @@ import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import GoogleBalk from "@/components/google-balk";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
+import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 
 const redenen = [
@@ -195,9 +196,12 @@ export default function OverOnsPage() {
               <h2>Nog een vraag <span>voor ons?</span></h2>
               <p>Stuur ons gerust een bericht of bel even. We helpen je graag verder.</p>
             </div>
-            <div className="do-cta-knoppen">
-              <a className="do-knop do-knop-g" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer">Stuur een WhatsApp<ChevronRight size={17} /></a>
-              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+            <div className="do-cta-rechts">
+              <div className="do-cta-knoppen">
+                <a className="do-knop do-knop-g" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer">Stuur een WhatsApp<ChevronRight size={17} /></a>
+                <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+              </div>
+              <GoogleScore donker />
             </div>
           </div>
         </div>

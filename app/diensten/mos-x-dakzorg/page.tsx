@@ -7,6 +7,7 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import GoogleBalk from "@/components/google-balk";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
+import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 
 const voordelen = [
@@ -289,9 +290,12 @@ export default function MosXDakzorgPage() {
               <h2>Klaar voor een <span style={{ whiteSpace: "nowrap" }}>zorgeloos dak?</span></h2>
               <p>Antimos en dakinspectie in één beurt, al vanaf €250.</p>
             </div>
-            <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
-              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+            <div className="do-cta-rechts">
+              <div className="do-cta-knoppen">
+                <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+                <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+              </div>
+              <GoogleScore donker />
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import MobileContactBar from "@/components/mobile-contact-bar";
 import CalculatorScroll from "@/components/calculator-scroll";
 import SiteChrome from "@/components/site-chrome";
 import JsonLd from "@/components/json-ld";
+import ExitPopup from "@/components/exit-popup";
 import { SITE, bedrijfSchema, websiteSchema } from "@/lib/seo";
 
 const inter = Inter({
@@ -67,6 +68,7 @@ export default function RootLayout({
         <CalculatorScroll />
         <SiteChrome>
         <MobileContactBar />
+        <ExitPopup />
         <div className="hidden lg:block">
           <a
             href="https://wa.me/32468352869"

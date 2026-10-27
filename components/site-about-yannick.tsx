@@ -29,7 +29,7 @@ export default function SiteAboutYannick() {
               height: "100%",
               minHeight: "460px",
             }}>
-              <img
+              <img loading="lazy" decoding="async"
                 src="/images/yannick-op-dak-srgb.JPEG"
                 alt="Yannick - oprichter MOS-X"
                 className="about-yannick-photo"

@@ -81,8 +81,17 @@ export function ServiceCard({ s, imageHeight = 380, isActive = false, onMount }:
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !s.video) return;
-    video.muted = true;
-    video.play().catch(() => {});
+    // Pas laden wanneer de kaart bijna in beeld is, zodat de pagina snel opent.
+    const bron = s.video;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      video.muted = true;
+      video.src = bron;
+      video.play().catch(() => {});
+    }, { rootMargin: "200px" });
+    io.observe(video);
+    return () => io.disconnect();
   }, [s.video]);
 
   const cardBoxShadow = isActive
@@ -115,7 +124,7 @@ export function ServiceCard({ s, imageHeight = 380, isActive = false, onMount }:
       >
         <div className="relative overflow-hidden service-card-media" style={{ height: `${imageHeight}px`, borderRadius: "16px 16px 0 0" }}>
           {!s.video && (
-            <img
+            <img loading="lazy" decoding="async"
               src={s.img}
               alt={s.title}
               className="absolute inset-0 w-full h-full object-cover"
@@ -125,13 +134,11 @@ export function ServiceCard({ s, imageHeight = 380, isActive = false, onMount }:
           {s.video && (
             <video
               ref={videoRef}
-              src={s.video}
               poster={s.img}
-              autoPlay
               muted
               loop
               playsInline
-              preload="auto"
+              preload="none"
               style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: s.videoPosition ?? "center 65%", opacity: 1 }}
             />
           )}
@@ -212,7 +219,7 @@ export function ServiceCard({ s, imageHeight = 380, isActive = false, onMount }:
       </Link>
 
       {s.badge === "10 jaar garantie" && (
-        <img
+        <img loading="lazy" decoding="async"
           src="/images/10 jaar garantie badge.png"
           alt="10 jaar garantie"
           style={{

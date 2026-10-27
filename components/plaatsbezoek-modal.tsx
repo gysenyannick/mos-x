@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import GoogleScore from "@/components/google-score";
 import { ChevronRight, X, Check } from "lucide-react";
 
 const DIENSTEN = ["Dakreiniging", "Dakcoating", "MOS-X Dakzorg"];
@@ -363,6 +364,7 @@ export function PlaatsbezoekModal({
                     <>Aanvraag versturen <ChevronRight size={16} strokeWidth={2.5} /></>
                   )}
                 </button>
+                <GoogleScore midden />
 
               </form>
             </>

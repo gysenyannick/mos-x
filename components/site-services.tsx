@@ -56,8 +56,17 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !s.video) return;
-    video.muted = true;
-    video.play().catch(() => {});
+    // Pas laden wanneer de kaart bijna in beeld is, zodat de pagina snel opent.
+    const bron = s.video;
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      video.muted = true;
+      video.src = bron;
+      video.play().catch(() => {});
+    }, { rootMargin: "200px" });
+    io.observe(video);
+    return () => io.disconnect();
   }, [s.video]);
 
   const cardBoxShadow = isActive
@@ -85,7 +94,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
       {/* Media area */}
       <div className="relative overflow-hidden service-card-media" style={{ height: "460px", borderRadius: "16px" }}>
         {!s.video && (
-          <img
+          <img loading="lazy" decoding="async"
             src={s.img}
             alt={s.title}
             className="absolute inset-0 w-full h-full object-cover"
@@ -95,13 +104,11 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
         {s.video && (
           <video
             ref={videoRef}
-            src={s.video}
             poster={s.img}
-            autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="none"
             style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: s.videoPosition ?? "center 65%", opacity: 1 }}
           />
         )}
@@ -217,7 +224,7 @@ export default function SiteServices() {
       overflow: "hidden",
     }}>
       {/* Moss texture - right side (zelfde stijl als de reviews) */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/mos-texture.png"
         alt=""
         aria-hidden="true"
@@ -235,7 +242,7 @@ export default function SiteServices() {
       />
 
       {/* Moss texture - left side */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/mos-texture.png"
         alt=""
         className="diensten-mos-texture"
@@ -250,7 +257,7 @@ export default function SiteServices() {
         }}
       />
       {/* Moss texture - bottom right */}
-      <img
+      <img loading="lazy" decoding="async"
         src="/images/mos-texture.png"
         alt=""
         className="diensten-mos-texture-bottom"

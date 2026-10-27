@@ -75,7 +75,7 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
       }}
     >
       {imgSrc && (
-        <img
+        <img loading="lazy" decoding="async"
           src={imgSrc}
           alt={label}
           style={{ width: "72px", height: "56px", borderRadius: "8px", objectFit: "cover", flexShrink: 0 }}
@@ -117,7 +117,7 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
     >
       <div className="cc-img-wrap" style={{ position: "relative", flexShrink: 0 }}>
         {imgSrc ? (
-          <img src={imgSrc} alt={label} className="cc-img" style={{ width: "100%", height: `${imgHeight}px`, objectFit: "cover", display: "block" }} />
+          <img loading="lazy" decoding="async" src={imgSrc} alt={label} className="cc-img" style={{ width: "100%", height: `${imgHeight}px`, objectFit: "cover", display: "block" }} />
         ) : (
           <div style={{ width: "100%", height: `${imgHeight}px`, background: "#F0F0F0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", color: "#AAA" }}>
             Geen foto
@@ -651,7 +651,7 @@ export default function SitePricing() {
               overflow: "hidden",
             }}>
               {/* Dakfoto — absoluut onderaan, van rand tot rand */}
-              <img
+              <img loading="lazy" decoding="async"
                 src="/images/Grijze_foto_dak_calculator_.png"
                 alt=""
                 aria-hidden="true"
@@ -1319,7 +1319,7 @@ export default function SitePricing() {
                       <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
                         {photoPreviews.map((src, i) => (
                           <div key={i} style={{ position: "relative", width: "72px", height: "72px", borderRadius: "8px", overflow: "visible" }}>
-                            <img
+                            <img loading="lazy" decoding="async"
                               src={src}
                               alt={photos[i]?.name}
                               style={{ width: "72px", height: "72px", objectFit: "cover", borderRadius: "8px", border: "1.5px solid #E5E7EB", display: "block" }}

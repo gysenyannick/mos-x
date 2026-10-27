@@ -78,7 +78,7 @@ function ContactCard() {
         padding: "12px 14px", marginBottom: "16px",
       }}>
         <div style={{ position: "relative", width: "64px", height: "64px", flexShrink: 0, borderRadius: "50%", border: "2px solid #9BCB6C", overflow: "hidden" }}>
-          <img
+          <img loading="lazy" decoding="async"
             src="/images/yannick-avatar.jpg"
             alt="Yannick"
             style={{

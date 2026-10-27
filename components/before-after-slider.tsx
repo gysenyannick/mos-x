@@ -123,7 +123,7 @@ export default function BeforeAfterSlider({
       }}
     >
       {/* Before image */}
-      <img
+      <img loading="lazy" decoding="async"
         src={beforeSrc}
         alt="Voor"
         style={{
@@ -137,7 +137,7 @@ export default function BeforeAfterSlider({
 
       {/* After image (clipped from left) */}
       <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 0 0 ${position}%)` }}>
-        <img
+        <img loading="lazy" decoding="async"
           src={afterSrc}
           alt="Na"
           style={{

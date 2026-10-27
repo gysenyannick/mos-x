@@ -137,12 +137,12 @@ export default function SiteKlantenzone() {
                   <div className="kzp-stappen"><span>Gepland</span><b>Start</b><span>Bezig</span><span>Klaar</span></div>
                   <div className="kzp-foto">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/15.JPEG" alt="" />
+                    <img loading="lazy" decoding="async" src="/images/15.JPEG" alt="" />
                     <span>Foto · 1 oktober</span>
                   </div>
                   <div className="kzp-vakman">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/images/yannick-avatar.jpg" alt="" />
+                    <img loading="lazy" decoding="async" src="/images/yannick-avatar.jpg" alt="" />
                     <span><b>Yannick</b><small>Je vakman</small></span>
                   </div>
                 </div>

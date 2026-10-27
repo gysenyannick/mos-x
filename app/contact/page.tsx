@@ -6,6 +6,7 @@ import { CheckCircle2, ChevronRight, Clock, Loader2, Mail, MapPin, Phone, Send }
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import GoogleBalk from "@/components/google-balk";
+import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 
 function WhatsAppIcoon() {
@@ -178,6 +179,7 @@ export default function ContactPage() {
                     {status === "sending" ? "Bezig met versturen" : "Verstuur mijn aanvraag"}
                   </button>
                   {status === "error" && <p className="ct-fout" role="alert">Er ging iets mis. Probeer opnieuw of bel ons even.</p>}
+                  <GoogleScore />
                   <p className="ct-noot">Vrijblijvend. We delen je gegevens met niemand.</p>
                 </form>
               )}

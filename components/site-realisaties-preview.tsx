@@ -76,6 +76,7 @@ Resultaten die je <span style={{ color: "#9BCB6C" }}>ziet.</span>
             <video
               ref={videoRef}
               src="/videos/video-dakreiniging.mp4"
+              preload="none"
               poster="/images/IMG_4543.JPEG"
               muted
               playsInline
@@ -114,14 +115,14 @@ Resultaten die je <span style={{ color: "#9BCB6C" }}>ziet.</span>
           {/* Rechts: 2 foto's die de volledige hoogte vullen */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", height: "500px" }}>
             <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
-              <img
+              <img loading="lazy" decoding="async"
                 src="/images/IMG_5898.JPEG"
                 alt="Dakreiniging resultaat"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
             <div style={{ flex: 1, borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
-              <img
+              <img loading="lazy" decoding="async"
                 src="/images/IMG_5942.JPEG"
                 alt="Dakreiniging resultaat"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
