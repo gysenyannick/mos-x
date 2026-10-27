@@ -64,14 +64,20 @@ export default function AlgemeneVoorwaarden() {
         werken toch opnieuw mos op het dak, dan brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan.
       </p>
       <p>
-        4.2 Op een dakcoating geeft MOS-X 10 jaar garantie op de hechting: we garanderen dat de coating 10 jaar lang stevig op
-        de pannen blijft zitten en niet afbladert.
+        4.2 Op een dakcoating geeft MOS-X 10 jaar garantie op de hechting: de coating blijft gehecht aan de pannen en bladert
+        niet af. Deze garantie geldt enkel voor de hechting, niet voor de kleur of het uitzicht van het dak.
       </p>
-      <p>
-        4.3 De garanties vervallen bij schade door derden, werken van derden aan het dak, mechanische schade, storm of andere
-        overmacht, en bij gebreken die al aanwezig waren voor de werken. Een garantiegeval meldt de klant met foto&apos;s via
-        info@mos-x.be of via de klantenzone.
-      </p>
+      <p>4.3 Vallen niet onder de garanties:</p>
+      <ul>
+        <li>kleurverschil, verbleken of vervagen van de coating door zon, regen en weer;</li>
+        <li>normale veroudering en slijtage;</li>
+        <li>nieuwe vervuiling, algen of aanslag op het dak, met uitzondering van mos binnen de mosvrij-garantie van 4.1;</li>
+        <li>loskomen van de coating door poreuze, gebarsten of beschadigde pannen, of door vocht van onder het dak;</li>
+        <li>schade door het betreden van het dak, door derden of door werken van derden aan het dak;</li>
+        <li>mechanische schade, storm, hagel, vallende takken of andere overmacht;</li>
+        <li>gebreken die al aanwezig waren voor de werken.</li>
+      </ul>
+      <p>4.4 Een garantiegeval meldt de klant met foto&apos;s via info@mos-x.be of via de klantenzone.</p>
 
       <h2>Artikel 5: Facturatie en betalingen</h2>
       <p>
