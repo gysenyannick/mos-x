@@ -1,5 +1,0 @@
-/** Een klein mosbolletje als SVG, gebruikt als cursor en als volger in de hero. */
-export const MOS_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><defs><radialGradient id="m" cx="38%" cy="32%" r="70%"><stop offset="0" stop-color="#C8E6A8"/><stop offset=".45" stop-color="#9BCB6C"/><stop offset="1" stop-color="#5E8F38"/></radialGradient></defs><circle cx="16" cy="16" r="11" fill="url(#m)" stroke="#FFFFFF" stroke-width="2"/><g fill="#4F7A2E" opacity=".55"><circle cx="12" cy="18" r="1.6"/><circle cx="18.5" cy="12.5" r="1.3"/><circle cx="19.5" cy="19.5" r="1.7"/><circle cx="14" cy="11.5" r="1"/><circle cx="22" cy="15.5" r="1"/><circle cx="11" cy="14" r="1"/></g><g fill="#E4F3D2" opacity=".7"><circle cx="13" cy="13" r="1.2"/><circle cx="16.5" cy="20.5" r="0.9"/></g></svg>`;
-
-/** CSS-waarde voor `cursor`: het mosbolletje, met de gewone schuifcursor als terugval. */
-export const MOS_CURSOR = `url("data:image/svg+xml,${encodeURIComponent(MOS_SVG)}") 16 16, ew-resize`;

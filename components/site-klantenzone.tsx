@@ -11,7 +11,7 @@ export default function SiteKlantenzone() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
   return (
     <section style={{
-      background: "radial-gradient(700px 460px at 80% 50%, rgba(155,203,108,0.10), transparent 65%), #FFFFFF",
+      background: "radial-gradient(700px 460px at 80% 50%, rgba(155,203,108,0.10), transparent 65%), linear-gradient(to bottom, #FFFFFF 55%, #F7F8F6 100%)",
       padding: "64px 0", overflow: "hidden", position: "relative", isolation: "isolate",
     }}>
       <svg aria-hidden="true" viewBox="0 0 600 600" style={{ position: "absolute", right: "-120px", top: "50%", transform: "translateY(-50%)", width: "760px", height: "760px", zIndex: 0 }}>
@@ -26,6 +26,8 @@ export default function SiteKlantenzone() {
         <circle cx="300" cy="300" r="270" fill="none" stroke="#9BCB6C" strokeOpacity="0.10" strokeWidth="1" />
       </svg>
       <MosAchtergrond hoek="linksonder" />
+      {/* Onderaan zacht laten uitvloeien in de achtergrond van het volgende blok */}
+      <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "220px", zIndex: -1, pointerEvents: "none", background: "linear-gradient(to bottom, rgba(247,248,246,0), #F7F8F6 85%)" }} />
       <style>{`
         .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 40px; align-items: center; max-width: 1080px; margin: 0 auto; }
         .kzp-oog { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9BCB6C; font-family: var(--font-montserrat), system-ui, sans-serif; }
