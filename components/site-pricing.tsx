@@ -421,7 +421,7 @@ export default function SitePricing() {
   }, [phase]);
 
   const priceRange = calcPrice(opp, extra);
-  const extraLabel = extra === "coating" ? "Dakcoating + reiniging" : extra === "geen" ? "Alleen dakreiniging" : "Advies gewenst";
+  const extraLabel = extra === "coating" ? "Reiniging + dakcoating" : extra === "geen" ? "Reiniging + antimos" : "Advies gewenst";
   const fmt = (n: number) => "€ " + n.toLocaleString("nl-BE");
 
   const dienstParam = extra === "coating" ? "Dakcoating" : "Dakontmossen";
@@ -484,9 +484,9 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Ja, met dakcoating", subtitle: "Geschikt voor betonpannen en leien.", badge: "10 jaar garantie", bullets: ["Herstelt kleur en uitstraling", "Vermindert vochtopname", "Beschermt tegen weer, UV & mos"] },
-    { id: "geen", title: "Nee, alleen dakreiniging", subtitle: "Inclusief standaard behandeling tegen mos- en algengroei.", badge: null, bullets: [] },
-    { id: "advies", title: "Ik twijfel nog", subtitle: "Adviseer mij welke behandeling het beste bij mijn dak past.", badge: null, bullets: [] },
+    { id: "coating", title: "Met een dakcoating", subtitle: "Een nieuwe beschermlaag en kleur voor betonpannen en kunstleien.", badge: "10 jaar garantie op de hechting", bullets: ["Je dak weer als nieuw", "Neemt minder vocht op", "Mos krijgt minder vat"] },
+    { id: "geen", title: "Met een antimosbehandeling", subtitle: "Na de reiniging behandelen we je dak preventief tegen mos en algen.", badge: "2 jaar mosvrij", bullets: ["Houdt je dak langer proper", "Geschikt voor elk daktype"] },
+    { id: "advies", title: "Ik twijfel nog", subtitle: "We bekijken je dak en adviseren wat het best past. Eerlijk, zonder verplichting.", badge: null, bullets: [] },
   ];
 
   return (
@@ -578,6 +578,7 @@ export default function SitePricing() {
             grid-template-columns: 1fr !important;
             gap: 14px !important;
           }
+          .foto-formaat { display: none; }
           .naam-tel-grid > div,
           .postcode-adres-grid > div {
             min-width: 0 !important;
@@ -1099,7 +1100,7 @@ export default function SitePricing() {
               {step === 4 && (
                 <div>
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
-                    Wil je je dak na de reiniging ook laten coaten?
+                    Hoe wil je je dak na de reiniging beschermen?
                   </h3>
                   <div className="extra-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", alignItems: "stretch", marginTop: "60px", marginBottom: "60px" }}>
                     {extraOpties.map(o => {
@@ -1209,7 +1210,7 @@ export default function SitePricing() {
                   <div className="naam-tel-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "12px", marginBottom: "14px" }}>
                     <div>
                       <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                        Voornaam &amp; Achternaam *
+                        Naam *
                       </label>
                       <div className="naam-wrapper" style={{ display: "flex", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", overflow: "hidden", transition: "border-color 0.18s ease" }}>
                         <input
@@ -1237,12 +1238,15 @@ export default function SitePricing() {
                                         </div>
                   </div>
 
+                  <p style={{ fontSize: "12.5px", color: "#777", margin: "2px 0 10px", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                    <b style={{ color: "#333", fontWeight: 600 }}>Optioneel:</b> geef je adres mee, dan bekijken we je dak alvast op de kaart.
+                  </p>
                   {/* Postcode + Adres — 2 kolommen */}
                   <div className="postcode-adres-grid" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "12px", marginBottom: "14px" }}>
 
                     {/* Postcode met dropdown */}
                     <div style={{ position: "relative" }}>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Postcode *</label>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Postcode</label>
                       <input
                         type="text" placeholder="bv. 2000" value={form.postcode} autoComplete="off"
                         onChange={e => {
@@ -1274,7 +1278,7 @@ export default function SitePricing() {
 
                     {/* Adres met autocomplete */}
                     <div style={{ position: "relative" }}>
-                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Adres *</label>
+                      <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Adres</label>
                       <input
                         type="text" placeholder="bv. Kerkstraat 12" value={form.adres} autoComplete="off"
                         onChange={e => {
@@ -1385,7 +1389,7 @@ export default function SitePricing() {
                         >
                           <span style={{ fontSize: "18px", lineHeight: 1 }}>+</span>
                           Foto toevoegen
-                          <span style={{ fontSize: "11px", color: "#AAA", fontWeight: 400 }}>
+                          <span className="foto-formaat" style={{ fontSize: "11px", color: "#AAA", fontWeight: 400 }}>
                             JPG, PNG of HEIC · max. {3 - photos.length} foto{3 - photos.length !== 1 ? "\'s" : ""}
                           </span>
                         </button>
@@ -1419,8 +1423,8 @@ export default function SitePricing() {
                     <div style={{ flex: 1 }}>
                       <NextBtn
                         onClick={handleSubmit}
-                        disabled={!form.voornaam || !form.achternaam || !form.tel || !form.email || !form.postcode || !form.adres || submitting}
-                        label={submitting ? "Versturen…" : "Ontvang mijn richtprijs"}
+                        disabled={!form.voornaam.trim() || !form.tel.trim() || !/^[^s@]+@[^s@]+.[^s@]+$/.test(form.email.trim()) || submitting}
+                        label={submitting ? "Versturen…" : "Ontvang richtprijs"}
                       />
                     </div>
                   </div>

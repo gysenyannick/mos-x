@@ -12,15 +12,15 @@ import {
 export const runtime = "nodejs";
 
 const EXTRA_LABELS: Record<string, string> = {
-  coating: "Dakcoating",
-  geen:    "Dakreiniging",
+  coating: "Dakreiniging + dakcoating",
+  geen:    "Dakreiniging + antimosbehandeling",
   advies:  "Advies gewenst",
 };
 
 // Zinsvorm voor de AANVRAAG-card ("Plaatsbezoek voor …")
 const EXTRA_DIENST: Record<string, string> = {
-  coating: "Dakcoating",
-  geen:    "Dakreiniging",
+  coating: "Dakreiniging + dakcoating",
+  geen:    "Dakreiniging + antimosbehandeling",
   advies:  "advies over de behandeling",
 };
 
