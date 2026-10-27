@@ -3,6 +3,9 @@
  * Elk artikel beantwoordt één vraag waar mensen op zoeken, en eindigt met een logische volgende stap.
  */
 
+/** Zet op true om de kennisbank weer online te zetten (links, sitemap en pagina's). */
+export const KENNISBANK_ONLINE = false;
+
 export type Categorie = "mos" | "daktypes" | "tips";
 
 export type Sectie = { kop: string; tekst: string[]; lijst?: string[] };

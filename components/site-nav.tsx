@@ -22,9 +22,7 @@ const links = [
 
 const mobileLinks = [
   { label: "Home",        href: "/" },
-  links[0],
-  { label: "Kennisbank",  href: "/kennisbank" },
-  ...links.slice(1),
+  ...links,
 ];
 
 const linkStijl: React.CSSProperties = {

@@ -4,7 +4,8 @@ import PageLayout from "@/components/page-layout";
 import JsonLd from "@/components/json-ld";
 import KennisbankKaart from "@/components/kennisbank-kaart";
 import { KENNISBANK_CSS } from "@/components/kennisbank-stijl";
-import { ARTIKELS, CATEGORIEEN } from "@/lib/kennisbank";
+import { notFound } from "next/navigation";
+import { ARTIKELS, CATEGORIEEN, KENNISBANK_ONLINE } from "@/lib/kennisbank";
 import { SITE, kruimelSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default function Kennisbank() {
+  if (!KENNISBANK_ONLINE) notFound();
   return (
     <PageLayout>
       <style>{KENNISBANK_CSS}</style>

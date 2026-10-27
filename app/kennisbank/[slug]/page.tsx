@@ -5,7 +5,7 @@ import PageLayout from "@/components/page-layout";
 import JsonLd from "@/components/json-ld";
 import KennisbankKaart from "@/components/kennisbank-kaart";
 import { KENNISBANK_CSS } from "@/components/kennisbank-stijl";
-import { ARTIKELS, CATEGORIEEN, artikelVoor, type Artikel } from "@/lib/kennisbank";
+import { ARTIKELS, CATEGORIEEN, KENNISBANK_ONLINE, artikelVoor, type Artikel } from "@/lib/kennisbank";
 import { SITE, faqSchema, kruimelSchema } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -50,7 +50,7 @@ const CTA: Record<Artikel["cta"], { titel: string; tekst: string; knoppen: [stri
 
 export default async function KennisbankArtikel({ params }: Props) {
   const a = artikelVoor((await params).slug);
-  if (!a) notFound();
+  if (!a || !KENNISBANK_ONLINE) notFound();
   const categorie = CATEGORIEEN.find((c) => c.id === a.categorie)!;
   const verwant = a.verwant.map(artikelVoor).filter((x): x is Artikel => !!x);
   const cta = CTA[a.cta];
