@@ -98,7 +98,7 @@ export default function DakontmossingPage() {
             <h1 className="do-h1">Geef je dak opnieuw <span>jaren bescherming.</span></h1>
             <p className="do-p">Mos en vuil houden vocht vast en laten je dak sneller verouderen. We verwijderen ze veilig, zonder hoge druk, en beschermen je dak met een antimosbehandeling.</p>
             <div className="do-hero-knoppen">
-              <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
+              <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
               <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
             </div>
             <div className="do-hero-bewijs">
@@ -274,7 +274,7 @@ export default function DakontmossingPage() {
               <GoogleScore donker />
             </div>
             <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>

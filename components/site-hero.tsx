@@ -115,6 +115,7 @@ export default function SiteHero() {
             {/* CTAs */}
             <div className="hero-ctas flex flex-wrap gap-3 mb-8">
               <BtnPress
+                className="mx-glow"
                 href="/#calculator"
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",

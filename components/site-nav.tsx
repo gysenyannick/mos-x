@@ -64,6 +64,13 @@ export default function SiteNav() {
       <style>{`
         main :is(h1, h2, h3, h4, button, li, dt, dd, label, small, b, blockquote) { text-wrap: balance; }
         main p { text-wrap: balance; }
+        @keyframes mx-glow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(155,203,108,0.6), 0 0 16px 0 rgba(155,203,108,0.35), 0 10px 24px -12px rgba(122,181,78,0.9); }
+          50% { box-shadow: 0 0 0 10px rgba(155,203,108,0), 0 0 30px 6px rgba(155,203,108,0.6), 0 12px 30px -10px rgba(122,181,78,1); }
+        }
+        .mx-glow { animation: mx-glow 2.6s ease-in-out infinite; }
+        .mx-glow:hover, .mx-glow:focus-visible { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) { .mx-glow { animation: none; box-shadow: 0 0 0 4px rgba(155,203,108,0.28), 0 12px 28px -10px rgba(122,181,78,0.95) !important; } }
         .nav-diensten { position: relative; }
         .nav-diensten-knop { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 0; cursor: pointer; }
         .nav-diensten-knop:hover { color: #9BCB6C !important; }

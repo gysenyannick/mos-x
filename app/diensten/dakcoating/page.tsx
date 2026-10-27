@@ -115,7 +115,7 @@ export default function DakcoatingPage() {
             <h1 className="do-h1">Geef je dak opnieuw <span>kleur en bescherming.</span></h1>
             <p className="do-p">Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag en hun kleur. Na een grondige reiniging geven we je dak met een professionele coating een nieuwe afwerking, zonder het te moeten vervangen.</p>
             <div className="do-hero-knoppen">
-              <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
+              <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
               <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
             </div>
             <div className="do-hero-bewijs">
@@ -310,7 +310,7 @@ export default function DakcoatingPage() {
               <GoogleScore donker />
             </div>
             <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>

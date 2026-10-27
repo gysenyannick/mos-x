@@ -101,7 +101,7 @@ export default function OverOnsPage() {
             <h1 className="do-h1 over-h1">Wij zorgen voor daken. <span>En voor gemoedsrust.</span></h1>
             <p className="do-p">We helpen huiseigenaars hun dak zo lang mogelijk in topconditie te houden, met vakkundig onderhoud, eerlijk advies en een persoonlijke aanpak.</p>
             <div className="do-hero-knoppen">
-              <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
+              <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
               <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
             </div>
             <div className="do-hero-bewijs">
@@ -198,7 +198,7 @@ export default function OverOnsPage() {
               <GoogleScore donker />
             </div>
             <div className="do-cta-knoppen">
-              <a className="do-knop do-knop-g" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer">Stuur een WhatsApp<ChevronRight size={17} /></a>
+              <a className="do-knop do-knop-g mx-glow" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer">Stuur een WhatsApp<ChevronRight size={17} /></a>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>

@@ -228,8 +228,8 @@ function Field({ label, placeholder, value, onChange, type = "text" }: { label: 
   );
 }
 
-const NextBtn = ({ onClick, disabled, label }: { onClick: () => void; disabled?: boolean; label?: string }) => (
-  <button onClick={onClick} disabled={disabled} className="calc-volgende" style={{
+const NextBtn = ({ onClick, disabled, label, glow }: { onClick: () => void; disabled?: boolean; label?: string; glow?: boolean }) => (
+  <button onClick={onClick} disabled={disabled} className={glow && !disabled ? "calc-volgende mx-glow" : "calc-volgende"} style={{
     width: "100%", padding: "14px", borderRadius: "8px", border: "none", whiteSpace: "nowrap",
     background: disabled ? "#DDD" : GREEN, color: disabled ? "#AAA" : "#fff",
     fontWeight: 700, fontSize: "15px", cursor: disabled ? "not-allowed" : "pointer",
@@ -974,6 +974,7 @@ export default function SitePricing() {
                     </div>
                     <button
                       onClick={handlePlaatsbezoek}
+                      className={plaatsbezoekStatus === 'sending' ? undefined : "mx-glow"}
                       disabled={plaatsbezoekStatus === 'sending'}
                       style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: plaatsbezoekStatus === 'sending' ? "#AAA" : "#9BCB6C", color: "#fff", padding: "10px 18px", borderRadius: "8px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "13px", border: "none", cursor: plaatsbezoekStatus === 'sending' ? "not-allowed" : "pointer", boxShadow: plaatsbezoekStatus === 'sending' ? "none" : "0 3px 12px rgba(90,158,47,0.25)", whiteSpace: "nowrap", flexShrink: 0, transition: "background 0.18s ease, box-shadow 0.18s ease" }}
                       onMouseEnter={e => { if (plaatsbezoekStatus !== 'sending') { e.currentTarget.style.background = "#7AB54E"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(90,158,47,0.38)"; } }}
@@ -1365,6 +1366,7 @@ export default function SitePricing() {
                       <NextBtn
                         onClick={handleSubmit}
                         disabled={!form.voornaam.trim() || !form.tel.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) || submitting}
+                        glow
                         label={submitting ? "Versturen…" : "Toon mijn richtprijs"}
                       />
                     </div>

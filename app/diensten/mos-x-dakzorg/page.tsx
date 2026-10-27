@@ -128,7 +128,7 @@ export default function MosXDakzorgPage() {
             <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
             <p className="do-p">Wij houden het mos weg en je dak in het oog. Zo ligt het er jarenlang mooi bij.</p>
             <div className="do-hero-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
             <div className="do-hero-bewijs">
@@ -292,7 +292,7 @@ export default function MosXDakzorgPage() {
               <GoogleScore donker />
             </div>
             <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>

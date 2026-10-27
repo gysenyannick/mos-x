@@ -84,7 +84,7 @@ export default function SiteDakkleurBanner() {
       <div className="dkb-inhoud">
         <h2 className="dkb-titel">Benieuwd hoe je dak eruitziet <span>in een nieuwe kleur?</span></h2>
         <p className="dkb-tekst">Upload een foto van je woning, kies een coatingkleur en onze AI toont meteen het resultaat. Gratis en vrijblijvend.</p>
-        <button type="button" className="dkb-knop" onClick={() => setOpen(true)}>Probeer de dakkleur-tool<ChevronRight size={18} /></button>
+        <button type="button" className="dkb-knop mx-glow" onClick={() => setOpen(true)}>Probeer de dakkleur-tool<ChevronRight size={18} /></button>
         <div className="dkb-kleuren">
           <span>{DAKKLEUREN.map((k) => <i key={k.id} style={{ background: k.hex }} />)}</span>
           7 kleuren uit ons coatinggamma
