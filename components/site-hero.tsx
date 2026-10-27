@@ -16,8 +16,8 @@ export default function SiteHero() {
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    // Gsm krijgt een lichtere versie; tot die geladen is, toont de poster meteen een beeld.
-    v.src = window.matchMedia("(max-width: 767px)").matches ? "/videos/yannick-hero-gsm.mp4" : "/videos/yannick-hero.mp4";
+    // Tot de video geladen is, toont de poster meteen een beeld.
+    v.src = "/videos/yannick-hero.mp4";
     v.play().catch(() => {});
   }, []);
 
