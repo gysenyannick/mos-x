@@ -21,9 +21,6 @@ function calcPrice(opp: number, extra: string): { low: number; high: number } {
   };
 }
 
-/** Op deze daktypes raden we een coating af; een antimosbehandeling past beter. */
-const GEEN_COATING = ["Keramische pannen", "Tegelpannen", "Natuurleien", "Metalen daken"];
-
 /** Eerste inschatting van de dakoppervlakte op basis van het woningtype. */
 const OPP_VOOR_WONING: Record<string, number> = { "Rijwoning": 75, "Halfopen bebouwing": 137, "Vrijstaande woning": 212 };
 
@@ -486,11 +483,9 @@ export default function SitePricing() {
   const oppPresets = [
     { label: "Klein",       sub: "tot 100 m²",   value: 75,  img: "/images/Rijtjes.png" },
     { label: "Gemiddeld",   sub: "100 - 175 m²", value: 137, img: "/images/halfopen.png" },
-    { label: "Groot",       sub: "175 - 250 m²", value: 212, img: "/images/vrijstaand.png" },
-    { label: "Extra groot", sub: "250+ m²",      value: 300, img: "/images/Foto dak.jpg" },
+    { label: "Groot",       sub: "175+ m²", value: 212, img: "/images/vrijstaand.png" },
   ];
   const kiesOpp = (v: number, preset: boolean) => { setOpp(v); setOppInput(String(v)); setOppPreset(preset ? v : null); };
-  const coatingOk = !GEEN_COATING.includes(dak);
 
   const dakTypes = [
     { label: "Betonpannen",       img: "/images/Betonpannen.jpg" },
@@ -502,8 +497,8 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Dakcoating", subtitle: "Je dak weer als nieuw.", badge: "10 jaar garantie op de hechting", bullets: [] as string[] },
-    { id: "geen", title: "Antimosbehandeling", subtitle: "Houdt je dak langer proper.", badge: "2 jaar mosvrij", bullets: [] as string[] },
+    { id: "coating", title: "Dakcoating", subtitle: "Je dak weer als nieuw.", badge: null, bullets: [] as string[] },
+    { id: "geen", title: "Antimosbehandeling", subtitle: "Houdt je dak langer proper.", badge: null, bullets: [] as string[] },
     { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, bullets: [] as string[] },
   ];
 
@@ -568,9 +563,14 @@ export default function SitePricing() {
              min-width:0 is nodig omdat de nowrap-tekst anders de kolommen
              oprekt tot max-content en de vierde kaart buiten beeld duwt. */
           .opp-preset-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
+            grid-template-columns: repeat(3, 1fr) !important;
             gap: 8px !important;
           }
+          .opp-preset-grid .cc-img { height: 74px !important; }
+          .opp-preset-grid .cc-footer { padding: 9px 10px 10px !important; }
+          .opp-preset-grid .cc-footer > div { display: none !important; }
+          .opp-preset-grid .cc-footer > span { font-size: 13px !important; }
+          .opp-preset-grid .cc-footer small { font-size: 11px !important; }
           .opp-preset-grid > button {
             min-width: 0 !important;
           }
@@ -1015,10 +1015,10 @@ export default function SitePricing() {
                   </h3>
                   <div className="dak-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "10px" }}>
                     {dakTypes.filter(d => d.label !== "Ik weet het niet").map(d => (
-                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => { setDak(d.label); if (GEEN_COATING.includes(d.label) && extra === "coating") setExtra(""); setTimeout(next, 220); }} />
+                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => { setDak(d.label); setTimeout(next, 220); }} />
                     ))}
                   </div>
-                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => { setDak("Ik weet het niet"); if (GEEN_COATING.includes("Ik weet het niet") && extra === "coating") setExtra(""); setTimeout(next, 220); }} />
+                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => { setDak("Ik weet het niet"); setTimeout(next, 220); }} />
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "18px" }}>
                     <button onClick={prev} className="calc-terug" style={{
                       padding: "10px 20px", borderRadius: "8px",
@@ -1048,13 +1048,13 @@ export default function SitePricing() {
                   <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: "#888", marginBottom: "20px" }}>
                     {OPP_VOOR_WONING[woning] ? "We maakten al een inschatting op basis van je woning." : "Kies wat het best past. Een schatting volstaat."}
                   </p>
-                  <div className="opp-preset-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "18px" }}>
+                  <div className="opp-preset-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "18px" }}>
                     {oppPresets.map(p => (
                       <ChoiceCard key={p.label} label={p.label} sub={p.sub} imgSrc={p.img} imgHeight={96} selected={oppPreset === p.value} onClick={() => kiesOpp(p.value, true)} />
                     ))}
                   </div>
-                  <div className="opp-exact" style={{ display: "flex", alignItems: "center", gap: "14px", padding: "10px 16px", borderRadius: "12px", background: "#F7F8F6", border: "1px solid #E5E7EB", marginBottom: "28px" }}>
-                    <span style={{ fontSize: "13.5px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Of exact:</span>
+                  <div className="opp-exact" style={{ display: "flex", alignItems: "center", gap: "14px", padding: "10px 16px", borderRadius: "12px", background: "#F7F8F6", border: "1px solid #E5E7EB", marginBottom: "8px" }}>
+                    <span style={{ fontSize: "13.5px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Ongeveer:</span>
                     <input type="range" min={50} max={500} step={5} value={opp} aria-label="Dakoppervlakte in m²"
                       onChange={e => kiesOpp(Number(e.target.value), false)}
                       style={{ flex: 1, minWidth: 0, accentColor: GREEN }}
@@ -1079,6 +1079,7 @@ export default function SitePricing() {
                       m²
                     </span>
                   </div>
+                  <p style={{ fontSize: "12.5px", color: "#999", margin: "0 0 26px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Groter dan 250 m²? Schuif naar rechts.</p>
                   {/* Terug links, Ga verder rechts */}
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <button onClick={prev} className="calc-terug" style={{
@@ -1131,8 +1132,8 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
                     Hoe wil je je dak na de reiniging beschermen?
                   </h3>
-                  <div className="extra-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${coatingOk ? 3 : 2}, 1fr)`, gap: "12px", alignItems: "stretch", marginTop: "44px", marginBottom: coatingOk ? "44px" : "14px" }}>
-                    {extraOpties.filter(o => o.id !== "coating" || coatingOk).map(o => {
+                  <div className="extra-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", alignItems: "stretch", marginTop: "44px", marginBottom: "44px" }}>
+                    {extraOpties.map(o => {
                       const selected = extra === o.id;
                       return (
                         <button
@@ -1141,7 +1142,7 @@ export default function SitePricing() {
                           onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.98)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
                           style={{
                             display: "flex", flexDirection: "column", alignItems: "flex-start",
-                            padding: "28px 16px 16px", borderRadius: "16px", cursor: "pointer",
+                            padding: "20px 16px 16px", borderRadius: "16px", cursor: "pointer",
                             position: "relative",
                             border: selected ? `2px solid ${GREEN}` : "2px solid #E5E7EB",
                             background: selected ? "rgba(155,203,108,0.06)" : "#FFFFFF",
@@ -1203,11 +1204,6 @@ export default function SitePricing() {
                       );
                     })}
                   </div>
-                  {!coatingOk && (
-                    <p style={{ fontSize: "13px", color: "#888", textAlign: "center", margin: "0 0 30px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      Voor {dak.toLowerCase()} raden we geen coating aan.
-                    </p>
-                  )}
                   {/* Terug links, Ga verder rechts */}
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "16px" }}>
                     <button onClick={prev} className="calc-terug" style={{
