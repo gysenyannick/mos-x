@@ -16,7 +16,7 @@ export default function Privacyverklaring() {
     >
       <h2>Wie is verantwoordelijk?</h2>
       <p>
-        MOS-X, met ondernemingsnummer BE0805.594.502 en zetel aan de Pastorijstraat 47, 2590 Berlaar, is verantwoordelijk voor de
+        MOS-X, met ondernemingsnummer BE0805.594.502 en hoofdzetel aan het Bovenpad 100, 2280 Grobbendonk, is verantwoordelijk voor de
         verwerking van je persoonsgegevens via deze website en bij de uitvoering van onze diensten. We volgen de Algemene
         Verordening Gegevensbescherming (AVG of GDPR) en de Belgische privacywetgeving.
       </p>

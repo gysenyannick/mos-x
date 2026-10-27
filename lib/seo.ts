@@ -12,9 +12,10 @@ export const BEDRIJF = {
   telefoon: "+32 468 35 28 69",
   telefoonLink: "+32468352869",
   email: "info@mos-x.be",
+  /** De eerste vestiging is de hoofdzetel. */
   vestigingen: [
-    { straat: "Pastorijstraat 47", postcode: "2590", gemeente: "Berlaar" },
     { straat: "Bovenpad 100", postcode: "2280", gemeente: "Grobbendonk" },
+    { straat: "Pastorijstraat 47", postcode: "2590", gemeente: "Berlaar" },
   ],
   provincies: ["Antwerpen", "Oost-Vlaanderen", "Vlaams-Brabant", "Limburg"],
   socials: [
