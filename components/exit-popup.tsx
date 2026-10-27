@@ -56,12 +56,9 @@ export default function ExitPopup() {
             @keyframes ep-in { from { opacity: 0; } to { opacity: 1; } }
             .ep-kaart { position: relative; width: 100%; max-width: 760px; display: grid; grid-template-columns: 300px minmax(0, 1fr); overflow: hidden; border-radius: 24px; background: #FFFFFF; box-shadow: 0 40px 90px -40px rgba(0,0,0,0.75); animation: ep-op .3s ease; }
             @keyframes ep-op { from { transform: translateY(12px); } to { transform: none; } }
-            .ep-beeld { position: relative; min-height: 380px; background: url("/images/dakkleur-voorbeeld-na.jpg") center / cover; }
-            .ep-beeld::before { content: ""; position: absolute; inset: 0; background: url("/images/dakkleur-voorbeeld-voor.jpg") center / cover; clip-path: inset(0 50% 0 0); }
-            .ep-beeld::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; margin-left: -1.5px; background: #FFFFFF; }
+            .ep-beeld { position: relative; min-height: 380px; background: url("/images/IMG_4584%20Vooraanzicht%20dakcoating.JPEG") 50% 40% / cover; }
             .ep-tag { position: absolute; top: 14px; z-index: 1; padding: 6px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
-            .ep-tag.voor { left: 14px; background: rgba(11,15,12,0.72); color: #FFFFFF; }
-            .ep-tag.na { right: 14px; background: #9BCB6C; color: #0B0F0C; }
+            .ep-tag.na { left: 14px; background: #9BCB6C; color: #0B0F0C; }
             .ep-tekst { padding: 40px 36px 34px; display: flex; flex-direction: column; justify-content: center; }
             .ep-tekst .ep-oog { margin: 0 0 12px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9BCB6C; font-family: var(--font-montserrat), system-ui, sans-serif; }
             .ep-tekst h2 { margin: 0 0 12px; font-size: 27px; font-weight: 800; line-height: 1.15; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; text-wrap: balance; }
@@ -81,9 +78,8 @@ export default function ExitPopup() {
           `}</style>
           <div className="ep-kaart">
             <button type="button" className="ep-sluit" onClick={() => setZichtbaar(false)} aria-label="Sluiten"><X size={18} /></button>
-            <div className="ep-beeld" role="img" aria-label="Voorbeeld: een rood dak in antraciet">
-              <span className="ep-tag voor">Voor</span>
-              <span className="ep-tag na">Na</span>
+            <div className="ep-beeld" role="img" aria-label="Een woning met een nieuw gecoat dak">
+              <span className="ep-tag na">Na coating</span>
             </div>
             <div className="ep-tekst">
               <p className="ep-oog">Nog even dit</p>

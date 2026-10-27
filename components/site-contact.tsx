@@ -5,6 +5,7 @@ import { useState } from "react";
 import { CalendarCheck, ChevronRight, Euro, House, Mail, MapPin, Palette, Phone, ShieldCheck } from "lucide-react";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import MosAchtergrond from "@/components/mos-achtergrond";
+import GoogleBalk from "@/components/google-balk";
 
 function WhatsAppIcoon() {
   return (
@@ -56,8 +57,7 @@ export default function SiteContact() {
         .ct-bewijs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding-top: 28px; border-top: 1px solid #E5E7EB; font-size: 14.5px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
         .ct-bewijs > span { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
         .ct-bewijs b { color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .ct-bewijs i { width: 1px; height: 22px; background: #E5E7EB; }
-        .ct-sterren { color: #9BCB6C; letter-spacing: 2px; }
+        .ct-bewijs > i { width: 1px; height: 22px; background: #E5E7EB; }
 
         .ct-kaart { border-radius: 20px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); overflow: hidden; }
         .ct-kop { padding: 28px 30px 22px; border-bottom: 1px solid #E5E7EB; }
@@ -91,7 +91,7 @@ export default function SiteContact() {
           .ct-optie { grid-template-columns: 42px minmax(0, 1fr) 16px; gap: 12px; padding: 12px 14px 12px 12px; }
           .ct-icoon { width: 42px; height: 42px; }
           .ct-bewijs { font-size: 13.5px; }
-          .ct-bewijs i { display: none; }
+          .ct-bewijs > i { display: none; }
         }
       `}</style>
 
@@ -120,7 +120,7 @@ export default function SiteContact() {
             </li>
           </ul>
           <div className="ct-bewijs">
-            <span><span className="ct-sterren" aria-hidden="true">★★★★★</span><b>5,0</b> op Google</span>
+            <GoogleBalk compact />
             <i aria-hidden="true" />
             <span><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>10 jaar</b> garantie</span>
           </div>

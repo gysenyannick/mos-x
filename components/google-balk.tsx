@@ -15,11 +15,15 @@ function GoogleG() {
   );
 }
 
-/** Dezelfde Google-balk als in de hero van de homepage: Trustindex-widget op desktop, compacte badge op gsm. */
-export default function GoogleBalk() {
+/**
+ * Dezelfde Google-balk als in de hero van de homepage: Trustindex-widget op desktop, compacte badge op gsm.
+ * Met `compact` altijd de badge: de Trustindex-widget kan maar één keer per pagina geladen worden.
+ */
+export default function GoogleBalk({ compact = false }: { compact?: boolean }) {
   const widget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (compact) return;
     const el = widget.current;
     if (!el || el.querySelector('script[src*="trustindex"]')) return;
     const s = document.createElement("script");
@@ -27,7 +31,7 @@ export default function GoogleBalk() {
     s.defer = true;
     s.src = "https://cdn.trustindex.io/loader.js?1b15ba67596980480f76d1d0d69";
     el.appendChild(s);
-  }, []);
+  }, [compact]);
 
   return (
     <>
@@ -45,10 +49,10 @@ export default function GoogleBalk() {
           .gb-mini { display: inline-flex; }
         }
       `}</style>
-      <a className="gb-mini" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" aria-label="5,0 op Google, 16 reviews">
+      <a className="gb-mini" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer" aria-label="5,0 op Google, 16 reviews" style={compact ? { display: "inline-flex" } : undefined}>
         <GoogleG /><b>5.0</b><i aria-hidden="true">★★★★★</i><span>16 reviews</span>
       </a>
-      <div className="gb-widget"><div ref={widget} /></div>
+      {!compact && <div className="gb-widget"><div ref={widget} /></div>}
     </>
   );
 }

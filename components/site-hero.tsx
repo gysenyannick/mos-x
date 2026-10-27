@@ -4,6 +4,7 @@ import { Phone, Tv, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { BtnPress } from "@/components/btn-press";
 import { useRef, useEffect, useState } from "react";
+import { preload } from "react-dom";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
@@ -11,10 +12,12 @@ export default function SiteHero() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
   // Op gsm een staande video, anders wordt de liggende video te sterk ingezoomd
   const videoRef = useRef<HTMLVideoElement>(null);
+  preload("/images/yannick-hero-poster.jpg", { as: "image", fetchPriority: "high" });
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    v.src = "/videos/yannick-hero.mp4";
+    // Gsm krijgt een lichtere versie; tot die geladen is, toont de poster meteen een beeld.
+    v.src = window.matchMedia("(max-width: 767px)").matches ? "/videos/yannick-hero-gsm.mp4" : "/videos/yannick-hero.mp4";
     v.play().catch(() => {});
   }, []);
 
@@ -37,6 +40,7 @@ export default function SiteHero() {
       {/* Video background */}
       <video
         ref={videoRef}
+        poster="/images/yannick-hero-poster.jpg"
         autoPlay muted loop playsInline
         style={{
           position: "absolute", top: 0, left: 0,
