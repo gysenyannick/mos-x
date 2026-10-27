@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, ChevronRight, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, UserRound, MessageCircle } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 const diensten = [
@@ -20,9 +20,17 @@ const links = [
   { label: "Klantenzone", href: "/klant" },
 ];
 
-const mobileLinks = [
-  { label: "Home",        href: "/" },
-  ...links,
+const mobieleDiensten = [
+  { label: "Dakontmossen",  sub: "Mos en algen weg, 2 jaar mosvrij", href: "/diensten/dakontmossing", Icoon: Droplets },
+  { label: "Dakcoaten",     sub: "Je dak weer als nieuw",           href: "/diensten/dakcoating",    Icoon: Paintbrush },
+  { label: "MOS-X Dakzorg", sub: "Preventief onderhoud",            href: "/diensten/mos-x-dakzorg",  Icoon: CalendarCheck },
+];
+
+const mobieleLinks = [
+  { label: "Realisaties", href: "/realisaties", Icoon: Images },
+  { label: "Over ons",    href: "/over-ons",    Icoon: Users },
+  { label: "Contact",     href: "/contact",     Icoon: Mail },
+  { label: "Klantenzone", href: "/klant",       Icoon: UserRound },
 ];
 
 const linkStijl: React.CSSProperties = {
@@ -38,11 +46,19 @@ const linkStijl: React.CSSProperties = {
 export default function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dienstenOpen, setDienstenOpen] = useState(false);
-  const [mobielDienstenOpen, setMobielDienstenOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isDakzorg = pathname === "/diensten/mos-x-dakzorg";
+
+  // Gsm-menu: de pagina eronder scrolt niet mee, Escape sluit het menu
+  useEffect(() => {
+    if (!mobileOpen) return;
+    document.body.style.overflow = "hidden";
+    const toets = (e: KeyboardEvent) => { if (e.key === "Escape") setMobileOpen(false); };
+    window.addEventListener("keydown", toets);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", toets); };
+  }, [mobileOpen]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -268,6 +284,7 @@ export default function SiteNav() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(true)}
+            aria-expanded={mobileOpen}
             className="lg:hidden p-2 rounded-lg"
             style={{ color: "#1A1A1A" }}
             aria-label="Menu openen"
@@ -277,115 +294,112 @@ export default function SiteNav() {
         </nav>
       </header>
 
-      {/* ── Mobile drawer ── */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[1100] flex">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
-          <div
-            className="relative ml-auto w-72 h-full flex flex-col p-6"
-            style={{ background: "#FFFFFF", borderLeft: "1px solid rgba(0,0,0,0.08)" }}
-          >
-            <div className="flex items-center justify-between mb-8">
-              <Link href="/" onClick={() => setMobileOpen(false)}>
-                <Image src="/images/logo.avif" alt="MOS-X" width={260} height={125}
-                  style={{ height: "52px", width: "auto", objectFit: "contain" }} />
-              </Link>
-              <button onClick={() => setMobileOpen(false)} className="p-1 rounded-lg"
-                style={{ color: "#1A1A1A" }} aria-label="Menu sluiten">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      {/* ── Gsm-menu ── */}
+      <div className={`mm${mobileOpen ? " open" : ""}`} aria-hidden={!mobileOpen}>
+        <style>{`
+          .mm { position: fixed; inset: 0; z-index: 1100; pointer-events: none; }
+          .mm.open { pointer-events: auto; }
+          .mm-scherm { position: absolute; inset: 0; background: rgba(6,10,7,0.55); backdrop-filter: blur(3px); opacity: 0; transition: opacity .3s ease; }
+          .mm.open .mm-scherm { opacity: 1; }
+          .mm-paneel { position: absolute; top: 0; right: 0; bottom: 0; width: min(100%, 420px); display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; background: radial-gradient(420px 260px at 100% 0%, rgba(155,203,108,0.12), transparent 70%), #FFFFFF; box-shadow: -30px 0 60px -30px rgba(11,15,12,0.45); transform: translateX(100%); transition: transform .38s cubic-bezier(.2,.8,.2,1); font-family: var(--font-montserrat), system-ui, sans-serif; }
+          .mm.open .mm-paneel { transform: none; }
+          .mm-kop { display: flex; align-items: center; justify-content: space-between; padding: 22px 20px 14px; }
+          .mm-sluit { width: 44px; height: 44px; border-radius: 50%; border: 0; display: grid; place-items: center; background: #F2F4F0; color: #1A1A1A; cursor: pointer; transition: background-color .2s ease, transform .2s ease; }
+          .mm-sluit:hover { background: #E3E8DE; }
+          .mm-sluit:active { transform: scale(.94); }
+          .mm-sluit:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+          .mm-inhoud { padding: 6px 20px 20px; flex: 1; }
+          .mm-oog { margin: 14px 4px 10px; font-size: 11.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
+          .mm-diensten { display: grid; gap: 8px; }
+          .mm-dienst { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 14px; background: #F7F8F6; border: 1px solid #E5E7EB; text-decoration: none; color: #1A1A1A; transition: border-color .2s ease, background-color .2s ease, transform .15s ease; }
+          .mm-dienst:hover { border-color: #CFE5B8; background: #F2F8EC; }
+          .mm-dienst:active { transform: scale(.985); }
+          .mm-dienst:focus-visible, .mm-link:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+          .mm-dienst.actief { border-color: #9BCB6C; background: #F2F8EC; }
+          .mm-dienst i { width: 42px; height: 42px; flex: none; display: grid; place-items: center; border-radius: 12px; background: #FFFFFF; border: 1px solid #E5E7EB; color: #9BCB6C; }
+          .mm-dienst b { display: block; font-size: 15.5px; font-weight: 700; }
+          .mm-dienst small { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 500; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
+          .mm-dienst > svg { margin-left: auto; color: #B0B6AC; }
+          .mm-links { margin-top: 6px; }
+          .mm-link { display: flex; align-items: center; gap: 14px; padding: 15px 6px; border-bottom: 1px solid #EEF0EC; text-decoration: none; font-size: 18px; font-weight: 700; color: #1A1A1A; transition: color .2s ease; }
+          .mm-link:hover { color: #7AB54E; }
+          .mm-link > svg:first-child { color: #9BCB6C; }
+          .mm-link > svg:last-child { margin-left: auto; color: #C7CCC2; }
+          .mm-link.actief { color: #7AB54E; }
+          .mm-voet { position: sticky; bottom: 0; padding: 16px 20px 22px; box-shadow: 0 -18px 30px -24px rgba(11,15,12,0.25); border-top: 1px solid #EEF0EC; background: #FFFFFF; display: grid; gap: 10px; }
+          .mm-knop { display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; border-radius: 12px; font-size: 15.5px; font-weight: 700; text-decoration: none; transition: background-color .2s ease, border-color .2s ease, transform .15s ease; }
+          .mm-knop:active { transform: translateY(1px); }
+          .mm-knop:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+          .mm-knop-g { background: #9BCB6C; color: #FFFFFF; }
+          .mm-knop-g:hover { background: #7AB54E; }
+          .mm-rij { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+          .mm-knop-l { background: #F7F8F6; color: #1A1A1A; border: 1px solid #E5E7EB; font-size: 14.5px; }
+          .mm-knop-l:hover { border-color: #9BCB6C; background: #F2F8EC; }
+          .mm-knop-l svg { color: #9BCB6C; }
+          .mm-socials { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
+          .mm-socials a { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; color: #9BCB6C; border: 1px solid rgba(155,203,108,0.35); transition: background-color .2s ease, border-color .2s ease; }
+          .mm-socials a:hover { background: rgba(155,203,108,0.1); border-color: #9BCB6C; }
+          .mm-socials a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+          .mm.open .mm-in { animation: mm-in .45s cubic-bezier(.2,.8,.2,1) both; }
+          @keyframes mm-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+          @media (max-height: 760px) { .mm-kop { padding-top: 16px; padding-bottom: 6px; } .mm-oog { margin-top: 8px; } .mm-dienst { padding: 10px 12px; } .mm-link { padding: 12px 6px; font-size: 17px; } .mm-socials { display: none; } }
+          @media (prefers-reduced-motion: reduce) { .mm-paneel, .mm-scherm { transition: none; } .mm.open .mm-in { animation: none; } }
+        `}</style>
+        <div className="mm-scherm" onClick={() => setMobileOpen(false)} />
+        <div className="mm-paneel" role="dialog" aria-modal="true" aria-label="Menu">
+          <div className="mm-kop">
+            <Link href="/" onClick={() => setMobileOpen(false)} aria-label="Naar de homepage">
+              <Image src="/images/logo.avif" alt="MOS-X" width={260} height={125} style={{ height: "44px", width: "auto", objectFit: "contain" }} />
+            </Link>
+            <button type="button" className="mm-sluit" onClick={() => setMobileOpen(false)} aria-label="Menu sluiten"><X size={20} /></button>
+          </div>
 
-            <nav className="flex flex-col gap-1 flex-1 items-center">
-              <Link href="/" onClick={() => setMobileOpen(false)}
-                className="px-3 py-3 rounded-lg font-semibold text-center w-full"
-                style={{ fontFamily: "var(--font-montserrat)", color: "var(--color-brand-green)", textDecoration: "none", fontSize: "20px" }}>
-                Home
-              </Link>
-              <button type="button" onClick={() => setMobielDienstenOpen(o => !o)} aria-expanded={mobielDienstenOpen}
-                className="px-3 py-3 rounded-lg font-semibold w-full flex items-center justify-center gap-1"
-                style={{ fontFamily: "var(--font-montserrat)", color: "var(--color-brand-green)", fontSize: "20px", background: "none", border: 0, cursor: "pointer" }}>
-                Diensten
-                <ChevronDown size={18} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: mobielDienstenOpen ? "rotate(180deg)" : "none" }} />
-              </button>
-              {mobielDienstenOpen && diensten.map(d => (
-                <Link key={d.href} href={d.href} onClick={() => setMobileOpen(false)}
-                  className="px-3 py-2 rounded-lg text-center w-full"
-                  style={{ fontFamily: "var(--font-montserrat)", color: "#1A1A1A", textDecoration: "none", fontSize: "16px", fontWeight: 600 }}>
-                  {d.label}
+          <div className="mm-inhoud">
+            <p className="mm-oog mm-in" style={{ animationDelay: "40ms" }}>Onze diensten</p>
+            <div className="mm-diensten">
+              {mobieleDiensten.map((d, i) => (
+                <Link key={d.href} href={d.href} onClick={() => setMobileOpen(false)} className={`mm-dienst mm-in${pathname === d.href ? " actief" : ""}`} style={{ animationDelay: `${70 + i * 45}ms` }}>
+                  <i><d.Icoon size={20} /></i>
+                  <span><b>{d.label}</b><small>{d.sub}</small></span>
+                  <ChevronRight size={18} />
                 </Link>
               ))}
-              {mobileLinks.filter(l => l.href !== "/").map(l => (
-                <Link
-                  key={l.href} href={l.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-3 py-3 rounded-lg font-semibold text-center w-full"
-                  style={{ fontFamily: "var(--font-montserrat)", color: "var(--color-brand-green)", textDecoration: "none", fontSize: "20px" }}
-                >
+            </div>
+
+            <nav className="mm-links" aria-label="Menu">
+              {mobieleLinks.map((l, i) => (
+                <Link key={l.href} href={l.href} onClick={() => setMobileOpen(false)} className={`mm-link mm-in${pathname === l.href ? " actief" : ""}`} style={{ animationDelay: `${210 + i * 40}ms` }}>
+                  <l.Icoon size={20} />
                   {l.label}
+                  <ChevronRight size={18} />
                 </Link>
               ))}
             </nav>
+          </div>
 
-            <div className="flex gap-3 pb-6 justify-center">
+          <div className="mm-voet">
+            {isDakzorg ? (
+              <a href="#dakzorg-prijs" onClick={() => setMobileOpen(false)} className="mm-knop mm-knop-g mx-glow">MOS-X Dakzorg aanvragen<ChevronRight size={17} /></a>
+            ) : (
+              <Link href="/#calculator" onClick={() => setMobileOpen(false)} className="mm-knop mm-knop-g mx-glow">Bereken mijn richtprijs<ChevronRight size={17} /></Link>
+            )}
+            <div className="mm-rij">
+              <a href="tel:+32468352869" className="mm-knop mm-knop-l"><Phone size={17} />Bellen</a>
+              <a href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer" className="mm-knop mm-knop-l"><MessageCircle size={17} />WhatsApp</a>
+            </div>
+            <div className="mm-socials">
               {[
                 { href: "https://www.facebook.com/profile.php?id=61551512872835", label: "Facebook", path: "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" },
                 { href: "https://www.instagram.com/mosx.be/", label: "Instagram", path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" },
               ].map(s => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-                  style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "40px", height: "40px", borderRadius: "8px", background: "#F7F8F6", color: "#9BCB6C", transition: "background 150ms ease" }}
-                  onMouseEnter={e => (e.currentTarget.style.background = "#E8F5D9")}
-                  onMouseLeave={e => (e.currentTarget.style.background = "#F7F8F6")}
-                >
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
                   <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d={s.path} /></svg>
                 </a>
               ))}
             </div>
-
-            <div className="space-y-3 pt-6" style={{ borderTop: "1px solid rgba(0,0,0,0.1)" }}>
-              <BtnPress href="tel:+32468352869" className="flex items-center justify-center gap-2 text-sm font-semibold"
-                style={{
-                  color: "#1A1A1A", border: "2px solid #9BCB6C", borderRadius: "50px",
-                  padding: "12px 20px", textDecoration: "none", fontFamily: "var(--font-montserrat)",
-                }}>
-                <Phone className="w-4 h-4" style={{ color: "#1A1A1A" }} />
-                +32 468 35 28 69
-              </BtnPress>
-              {isDakzorg ? (
-                <a
-                  href="#dakzorg-prijs"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center w-full text-sm font-bold"
-                  style={{
-                    background: "#9BCB6C", color: "#FFFFFF", borderRadius: "50px",
-                    padding: "12px 20px", textDecoration: "none",
-                    fontFamily: "var(--font-montserrat)",
-                    transition: "background 200ms ease",
-                    gap: "6px", display: "flex",
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#7AB54E"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#9BCB6C"; }}
-                >
-                  MOS-X Dakzorg aanvragen
-                  <ChevronRight size={13} strokeWidth={2.5} />
-                </a>
-              ) : (
-                <Link href="/#calculator" onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center w-full text-sm font-bold mx-glow"
-                  style={{
-                    background: "#9BCB6C", color: "#FFFFFF", borderRadius: "50px",
-                    padding: "12px 20px", textDecoration: "none",
-                    fontFamily: "var(--font-montserrat)",
-                  }}
-                >
-                  Bereken mijn richtprijs
-                  <ChevronRight size={13} strokeWidth={2.5} />
-                </Link>
-              )}
-            </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
