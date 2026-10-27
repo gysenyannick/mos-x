@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { trackBeavr } from "@/lib/beavr-track";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
+import GoogleScore from "@/components/google-score";
 
 const GREEN = "#9BCB6C";
 const TOTAL_STEPS = 5;
@@ -19,6 +20,12 @@ function calcPrice(opp: number, extra: string): { low: number; high: number } {
     high: Math.max(650, Math.round(opp * 14 / 50) * 50),
   };
 }
+
+/** Op deze daktypes raden we een coating af; een antimosbehandeling past beter. */
+const GEEN_COATING = ["Keramische pannen", "Tegelpannen", "Natuurleien", "Metalen daken"];
+
+/** Eerste inschatting van de dakoppervlakte op basis van het woningtype. */
+const OPP_VOOR_WONING: Record<string, number> = { "Rijwoning": 75, "Halfopen bebouwing": 137, "Vrijstaande woning": 212 };
 
 const STEP_NAMES = ["Woningtype", "Daktype", "Oppervlakte", "Behandeling", "Richtprijs"];
 
@@ -97,7 +104,7 @@ function ChoiceRow({ label, onClick, selected, imgSrc }: { label: string; onClic
   );
 }
 
-function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardClass = "" }: { label: string; onClick: () => void; selected: boolean; imgSrc?: string; imgHeight?: number; cardClass?: string }) {
+function ChoiceCard({ label, sub, onClick, selected, imgSrc, imgHeight = 190, cardClass = "" }: { label: string; sub?: string; onClick: () => void; selected: boolean; imgSrc?: string; imgHeight?: number; cardClass?: string }) {
   return (
     <button
       onClick={onClick}
@@ -143,6 +150,7 @@ function ChoiceCard({ label, onClick, selected, imgSrc, imgHeight = 190, cardCla
       <div className="cc-footer" style={{ padding: "12px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
         <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#111", lineHeight: 1.3 }}>
           {label}
+          {sub && <small style={{ display: "block", marginTop: "2px", fontFamily: "var(--font-inter), system-ui, sans-serif", fontWeight: 500, fontSize: "12px", color: "#777", whiteSpace: "nowrap" }}>{sub}</small>}
         </span>
         <div style={{
           width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
@@ -224,8 +232,8 @@ function Field({ label, placeholder, value, onChange, type = "text" }: { label: 
 }
 
 const NextBtn = ({ onClick, disabled, label }: { onClick: () => void; disabled?: boolean; label?: string }) => (
-  <button onClick={onClick} disabled={disabled} style={{
-    width: "100%", padding: "14px", borderRadius: "8px", border: "none",
+  <button onClick={onClick} disabled={disabled} className="calc-volgende" style={{
+    width: "100%", padding: "14px", borderRadius: "8px", border: "none", whiteSpace: "nowrap",
     background: disabled ? "#DDD" : GREEN, color: disabled ? "#AAA" : "#fff",
     fontWeight: 700, fontSize: "15px", cursor: disabled ? "not-allowed" : "pointer",
     fontFamily: "var(--font-montserrat), system-ui, sans-serif",
@@ -272,6 +280,7 @@ export default function SitePricing() {
   const [dak, setDak] = useState("");
   const [extra, setExtra] = useState("");
   const [form, setForm] = useState({ voornaam: "", achternaam: "", tel: "", email: "", postcode: "", adres: "" });
+  const [naamVol, setNaamVol] = useState("");
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -406,7 +415,7 @@ export default function SitePricing() {
 
   useEffect(() => {
     if (phase !== 'animating') return;
-    const duration = 6000;
+    const duration = 3000;
     const start = Date.now();
     const id = setInterval(() => {
       const pct = Math.min(100, Math.round((Date.now() - start) / duration * 100));
@@ -474,6 +483,15 @@ export default function SitePricing() {
     { label: "Halfopen bebouwing", img: "/images/halfopen.png" },
     { label: "Vrijstaande woning", img: "/images/vrijstaand.png" },
   ];
+  const oppPresets = [
+    { label: "Klein",       sub: "tot 100 m²",   value: 75,  img: "/images/Rijtjes.png" },
+    { label: "Gemiddeld",   sub: "100 - 175 m²", value: 137, img: "/images/halfopen.png" },
+    { label: "Groot",       sub: "175 - 250 m²", value: 212, img: "/images/vrijstaand.png" },
+    { label: "Extra groot", sub: "250+ m²",      value: 300, img: "/images/Foto dak.jpg" },
+  ];
+  const kiesOpp = (v: number, preset: boolean) => { setOpp(v); setOppInput(String(v)); setOppPreset(preset ? v : null); };
+  const coatingOk = !GEEN_COATING.includes(dak);
+
   const dakTypes = [
     { label: "Betonpannen",       img: "/images/Betonpannen.jpg" },
     { label: "Keramische pannen", img: "/images/Keramische pannen.jpg" },
@@ -484,9 +502,9 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Met een dakcoating", subtitle: "Een nieuwe beschermlaag en kleur voor betonpannen en kunstleien.", badge: "10 jaar garantie op de hechting", bullets: ["Je dak weer als nieuw", "Neemt minder vocht op", "Mos krijgt minder vat"] },
-    { id: "geen", title: "Met een antimosbehandeling", subtitle: "Na de reiniging behandelen we je dak preventief tegen mos en algen.", badge: "2 jaar mosvrij", bullets: ["Houdt je dak langer proper", "Geschikt voor elk daktype"] },
-    { id: "advies", title: "Ik twijfel nog", subtitle: "We bekijken je dak en adviseren wat het best past. Eerlijk, zonder verplichting.", badge: null, bullets: [] },
+    { id: "coating", title: "Dakcoating", subtitle: "Je dak weer als nieuw.", badge: "10 jaar garantie op de hechting", bullets: [] as string[] },
+    { id: "geen", title: "Antimosbehandeling", subtitle: "Houdt je dak langer proper.", badge: "2 jaar mosvrij", bullets: [] as string[] },
+    { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, bullets: [] as string[] },
   ];
 
   return (
@@ -557,6 +575,8 @@ export default function SitePricing() {
             min-width: 0 !important;
           }
 
+          .calc-terug { padding: 10px 14px !important; }
+          .calc-volgende { font-size: 14.5px !important; padding: 14px 10px !important; }
           /* Stap 4 coating-keuze: 1 kolom op mobile */
           .extra-grid {
             grid-template-columns: 1fr !important;
@@ -819,25 +839,108 @@ export default function SitePricing() {
               </div>
               </div>
 
-              {/* Jouw keuzes */}
-              <div className="calc-r4" style={{ marginBottom: "24px" }}>
-                <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "10px", color: "#BBBBBB", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
-                  Jouw keuzes
-                </p>
-                <div className="keuzes-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px" }}>
-                  {([
-                    { label: "Woningtype", value: woning },
-                    { label: "Daktype", value: dak },
-                    { label: "Oppervlakte", value: `${opp} m²` },
-                    { label: "Behandeling", value: extraLabel },
-                  ] as {label: string; value: string}[]).map(item => (
-                    <div key={item.label} style={{ background: "#FFFFFF", borderRadius: "10px", padding: "12px 10px", textAlign: "center", border: "1.5px solid #E8ECE5", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
-                      <div style={{ fontSize: "12px", color: GREEN, fontFamily: "var(--font-inter), system-ui, sans-serif", marginBottom: "4px", letterSpacing: "0.02em", fontWeight: 600 }}>{item.label}</div>
-                      <div style={{ fontSize: "13px", fontWeight: 400, color: "#1A1A1A", fontFamily: "var(--font-inter), system-ui, sans-serif", lineHeight: 1.25 }}>{item.value}</div>
-                    </div>
-                  ))}
-                </div>
+              {/* Vertrouwen vlak voor de volgende stap */}
+              <div className="calc-r4" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px 22px", flexWrap: "wrap", marginBottom: "22px" }}>
+                <GoogleScore midden />
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", marginTop: "12px", fontSize: "13.5px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>
+                  <ShieldCheck size={16} color={GREEN} aria-hidden="true" />
+                  <b style={{ color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{extra === "coating" ? "10 jaar" : "2 jaar"}</b>
+                  {extra === "coating" ? "garantie op de hechting" : "mosvrij-garantie"}
+                </span>
               </div>
+
+              {plaatsbezoekStatus !== 'success' && (
+                <div className="calc-r4">
+                    {/* Foto-upload */}
+                    <div style={{ marginBottom: "16px" }}>
+                      <p style={{ fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                        Heb je een foto van je dak?
+                      </p>
+                      <p style={{ fontSize: "12px", color: "#999", marginBottom: "10px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                        Stuur ze mee met je aanvraag, dan wordt je prijs nauwkeuriger.
+                      </p>
+  
+                      {/* Previews */}
+                      {photoPreviews.length > 0 && (
+                        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
+                          {photoPreviews.map((src, i) => (
+                            <div key={i} style={{ position: "relative", width: "72px", height: "72px", borderRadius: "8px", overflow: "visible" }}>
+                              <img loading="lazy" decoding="async"
+                                src={src}
+                                alt={photos[i]?.name}
+                                style={{ width: "72px", height: "72px", objectFit: "cover", borderRadius: "8px", border: "1.5px solid #E5E7EB", display: "block" }}
+                                onError={e => {
+                                  // HEIC fallback: toon bestandsnaam
+                                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                                  const fallback = e.currentTarget.nextSibling as HTMLElement | null;
+                                  if (fallback) fallback.style.display = "flex";
+                                }}
+                              />
+                              <div style={{
+                                display: "none", width: "72px", height: "72px", borderRadius: "8px",
+                                border: "1.5px solid #E5E7EB", background: "#F0F0F0",
+                                alignItems: "center", justifyContent: "center",
+                                fontSize: "9px", color: "#777", textAlign: "center", padding: "4px",
+                                wordBreak: "break-all",
+                              }}>
+                                {photos[i]?.name}
+                              </div>
+                              <button
+                                onClick={() => removePhoto(i)}
+                                style={{
+                                  position: "absolute", top: "-6px", right: "-6px",
+                                  width: "18px", height: "18px", borderRadius: "50%",
+                                  background: "#1A1A1A", border: "none", cursor: "pointer",
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                  color: "#fff", fontSize: "10px", fontWeight: 700, lineHeight: 1,
+                                  zIndex: 1,
+                                }}
+                                aria-label="Foto verwijderen"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+  
+                      {/* Upload zone — alleen zichtbaar als < 3 foto's */}
+                      {photos.length < 3 && (
+                        <>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept=".jpg,.jpeg,.png,.heic,.heif"
+                            multiple
+                            style={{ display: "none" }}
+                            onChange={e => { if (e.target.files) { addPhotos(e.target.files); e.target.value = ""; } }}
+                          />
+                          <button
+                            onClick={() => fileInputRef.current?.click()}
+                            type="button"
+                            style={{
+                              width: "100%", padding: "14px", borderRadius: "10px",
+                              border: "1.5px dashed #C5DFA8", background: "#F9FCF5",
+                              cursor: "pointer", display: "flex", alignItems: "center",
+                              justifyContent: "center", gap: "8px",
+                              fontSize: "14px", fontWeight: 600, color: "#5A9E3A",
+                              fontFamily: "var(--font-inter), system-ui, sans-serif",
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.borderColor = GREEN; e.currentTarget.style.background = "rgba(155,203,108,0.1)"; }}
+                            onMouseLeave={e => { e.currentTarget.style.borderColor = "#C5DFA8"; e.currentTarget.style.background = "#F9FCF5"; }}
+                          >
+                            <span style={{ fontSize: "18px", lineHeight: 1 }}>+</span>
+                            Foto toevoegen
+                            <span className="foto-formaat" style={{ fontSize: "11px", color: "#AAA", fontWeight: 400 }}>
+                              JPG, PNG of HEIC · max. {3 - photos.length} foto{3 - photos.length !== 1 ? "\'s" : ""}
+                            </span>
+                          </button>
+                        </>
+                      )}
+                    </div>
+  
+                  </div>
+              )}
 
               {/* CTA — gratis plaatsbezoek */}
               <div className="calc-r5">
@@ -899,7 +1002,7 @@ export default function SitePricing() {
                   </h3>
                   <div className="woning-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "14px" }}>
                     {woningTypes.map(w => (
-                      <ChoiceCard key={w.label} label={w.label} imgSrc={w.img} selected={woning === w.label} onClick={() => { setWoning(w.label); setTimeout(next, 220); }} cardClass="choice-card-woning" />
+                      <ChoiceCard key={w.label} label={w.label} imgSrc={w.img} selected={woning === w.label} onClick={() => { setWoning(w.label); if (OPP_VOOR_WONING[w.label]) kiesOpp(OPP_VOOR_WONING[w.label], true); setTimeout(next, 220); }} cardClass="choice-card-woning" />
                     ))}
                   </div>
                 </div>
@@ -912,12 +1015,12 @@ export default function SitePricing() {
                   </h3>
                   <div className="dak-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "10px" }}>
                     {dakTypes.filter(d => d.label !== "Ik weet het niet").map(d => (
-                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => setDak(d.label)} />
+                      <ChoiceCard key={d.label} label={d.label} imgSrc={d.img} imgHeight={93} selected={dak === d.label} onClick={() => { setDak(d.label); if (GEEN_COATING.includes(d.label) && extra === "coating") setExtra(""); setTimeout(next, 220); }} />
                     ))}
                   </div>
-                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => setDak("Ik weet het niet")} />
+                  <ChoiceRow key="ik-weet-het-niet" label="Ik weet het niet" selected={dak === "Ik weet het niet"} onClick={() => { setDak("Ik weet het niet"); if (GEEN_COATING.includes("Ik weet het niet") && extra === "coating") setExtra(""); setTimeout(next, 220); }} />
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "18px" }}>
-                    <button onClick={prev} style={{
+                    <button onClick={prev} className="calc-terug" style={{
                       padding: "10px 20px", borderRadius: "8px",
                       background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
                       cursor: "pointer", fontSize: "15px", fontWeight: 700, color: GREEN,
@@ -942,117 +1045,43 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "8px" }}>
                     Hoe groot is je dak ongeveer?
                   </h3>
-                  <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: "#888", marginBottom: "24px" }}>
-                    Een schatting is voldoende.
+                  <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: "#888", marginBottom: "20px" }}>
+                    {OPP_VOOR_WONING[woning] ? "We maakten al een inschatting op basis van je woning." : "Kies wat het best past. Een schatting volstaat."}
                   </p>
-                  <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                    <div style={{
-                      display: "inline-flex", alignItems: "baseline", gap: "6px",
-                      background: "#F5F5F5", borderRadius: "8px", padding: "8px 20px",
-                      cursor: "text",
-                      border: "1.5px dashed #C5DFA8",
-                      transition: "border-color 0.18s ease",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.borderColor = GREEN)}
-                    onMouseLeave={e => (e.currentTarget.style.borderColor = "#C5DFA8")}
-                    >
+                  <div className="opp-preset-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "10px", marginBottom: "18px" }}>
+                    {oppPresets.map(p => (
+                      <ChoiceCard key={p.label} label={p.label} sub={p.sub} imgSrc={p.img} imgHeight={96} selected={oppPreset === p.value} onClick={() => kiesOpp(p.value, true)} />
+                    ))}
+                  </div>
+                  <div className="opp-exact" style={{ display: "flex", alignItems: "center", gap: "14px", padding: "10px 16px", borderRadius: "12px", background: "#F7F8F6", border: "1px solid #E5E7EB", marginBottom: "28px" }}>
+                    <span style={{ fontSize: "13.5px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>Of exact:</span>
+                    <input type="range" min={50} max={500} step={5} value={opp} aria-label="Dakoppervlakte in m²"
+                      onChange={e => kiesOpp(Number(e.target.value), false)}
+                      style={{ flex: 1, minWidth: 0, accentColor: GREEN }}
+                    />
+                    <span style={{ display: "inline-flex", alignItems: "baseline", gap: "4px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "16px", color: "#1A1A1A", whiteSpace: "nowrap" }}>
                       <input
                         className="opp-input"
-                        type="number"
-                        min={50} max={500}
+                        type="number" min={50} max={500} aria-label="Dakoppervlakte in m²"
                         value={oppInput}
                         onChange={e => {
                           setOppInput(e.target.value);
                           const v = parseInt(e.target.value, 10);
-                          if (!isNaN(v) && v >= 50 && v <= 500) {
-                            setOpp(v);
-                            setOppPreset(null);
-                          }
+                          if (!isNaN(v) && v >= 50 && v <= 500) { setOpp(v); setOppPreset(null); }
                         }}
                         onBlur={() => {
                           const v = parseInt(oppInput, 10);
-                          const clamped = isNaN(v) ? 150 : Math.min(500, Math.max(50, v));
-                          setOpp(clamped);
-                          setOppInput(String(clamped));
-                          setOppPreset(null);
+                          kiesOpp(isNaN(v) ? 150 : Math.min(500, Math.max(50, v)), false);
                         }}
                         onKeyDown={e => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-                        style={{
-                          background: "transparent", border: "none", outline: "none",
-                          fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                          fontWeight: 800, fontSize: "28px", color: "#1A1A1A",
-                          width: "72px", textAlign: "right", padding: 0,
-                          appearance: "textfield",
-                        } as React.CSSProperties}
+                        style={{ width: "48px", padding: 0, border: "none", borderBottom: "1.5px dashed #C5DFA8", outline: "none", background: "transparent", textAlign: "right", fontFamily: "inherit", fontWeight: 800, fontSize: "16px", color: "#1A1A1A", appearance: "textfield" } as React.CSSProperties}
                       />
-                      <span style={{
-                        fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                        fontWeight: 800, fontSize: "28px", color: "#1A1A1A",
-                      }}>m²</span>
-                    </div>
-                    <p style={{ fontSize: "11px", color: "#AAA", marginTop: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      klik op het getal om zelf te typen
-                    </p>
-                  </div>
-                  <input type="range" min={50} max={500} step={5} value={opp}
-                    onChange={e => { const v = Number(e.target.value); setOpp(v); setOppInput(String(v)); setOppPreset(null); }}
-                    style={{ width: "100%", accentColor: GREEN, marginBottom: "8px" }}
-                  />
-                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#AAA", marginBottom: "10px" }}>
-                    <span>50 m²</span>
-                    <span style={{ color: GREEN, fontSize: "12px", fontFamily: "var(--font-inter), system-ui, sans-serif", display: "flex", alignItems: "center", gap: "4px" }}>
-                      <ChevronLeft size={13} strokeWidth={2.5} /> sleep de slider <ChevronRight size={13} strokeWidth={2.5} />
+                      m²
                     </span>
-                    <span>500 m²</span>
-                  </div>
-                  {/* Preset size cards — 4 in één rij (mobiel: 2 × 2) */}
-                  <div className="opp-preset-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px", marginTop: "36px", marginBottom: "44px" }}>
-                    {([
-                      { label: "Klein",       sub: "tot 100 m²",  value: 75  },
-                      { label: "Gemiddeld",   sub: "100 - 175 m²",  value: 137 },
-                      { label: "Groot",       sub: "175 - 250 m²",  value: 212 },
-                      { label: "Extra groot", sub: "250+ m²",     value: 300 },
-                    ] as { label: string; sub: string; value: number }[]).map(p => {
-                      const active = oppPreset === p.value;
-                      return (
-                        <button
-                          key={p.label}
-                          onClick={() => { setOpp(p.value); setOppInput(String(p.value)); setOppPreset(p.value); }}
-                          style={{
-                            border: `2px solid ${active ? GREEN : "#E5E7EB"}`,
-                            borderRadius: "10px",
-                            background: active ? "rgba(155,203,108,0.10)" : "#FAFAFA",
-                            padding: "10px 10px",
-                            cursor: "pointer",
-                            textAlign: "center",
-                            boxShadow: active ? `0 2px 12px rgba(155,203,108,0.22)` : "none",
-                            transform: "translateY(0px)",
-                            transition: "border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
-                          }}
-                          onMouseEnter={e => {
-                            if (opp !== p.value) {
-                              e.currentTarget.style.borderColor = "rgba(155,203,108,0.6)";
-                              e.currentTarget.style.boxShadow = "0 4px 14px rgba(155,203,108,0.18)";
-                            }
-                            e.currentTarget.style.transform = "translateY(-2px)";
-                          }}
-                          onMouseLeave={e => {
-                            if (opp !== p.value) {
-                              e.currentTarget.style.borderColor = "#E5E7EB";
-                              e.currentTarget.style.boxShadow = "none";
-                            }
-                            e.currentTarget.style.transform = "translateY(0px)";
-                          }}
-                        >
-                          <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "12px", color: active ? "#1A5C36" : "#111", margin: 0, whiteSpace: "nowrap" }}>{p.label}</p>
-                          <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "11px", color: active ? "#2d7a4f" : "#888", margin: "3px 0 0", whiteSpace: "nowrap" }}>{p.sub}</p>
-                        </button>
-                      );
-                    })}
                   </div>
                   {/* Terug links, Ga verder rechts */}
                   <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <button onClick={prev} style={{
+                    <button onClick={prev} className="calc-terug" style={{
                       padding: "10px 20px", borderRadius: "8px",
                       background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
                       cursor: "pointer",
@@ -1102,8 +1131,8 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
                     Hoe wil je je dak na de reiniging beschermen?
                   </h3>
-                  <div className="extra-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", alignItems: "stretch", marginTop: "60px", marginBottom: "60px" }}>
-                    {extraOpties.map(o => {
+                  <div className="extra-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${coatingOk ? 3 : 2}, 1fr)`, gap: "12px", alignItems: "stretch", marginTop: "44px", marginBottom: coatingOk ? "44px" : "14px" }}>
+                    {extraOpties.filter(o => o.id !== "coating" || coatingOk).map(o => {
                       const selected = extra === o.id;
                       return (
                         <button
@@ -1174,9 +1203,14 @@ export default function SitePricing() {
                       );
                     })}
                   </div>
+                  {!coatingOk && (
+                    <p style={{ fontSize: "13px", color: "#888", textAlign: "center", margin: "0 0 30px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                      Voor {dak.toLowerCase()} raden we geen coating aan.
+                    </p>
+                  )}
                   {/* Terug links, Ga verder rechts */}
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "16px" }}>
-                    <button onClick={prev} style={{
+                    <button onClick={prev} className="calc-terug" style={{
                       padding: "10px 20px", borderRadius: "8px",
                       background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
                       cursor: "pointer",
@@ -1212,20 +1246,19 @@ export default function SitePricing() {
                       <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
                         Naam *
                       </label>
-                      <div className="naam-wrapper" style={{ display: "flex", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", overflow: "hidden", transition: "border-color 0.18s ease" }}>
-                        <input
-                          type="text" placeholder="Voornaam" value={form.voornaam}
-                          onChange={e => setForm(f => ({ ...f, voornaam: e.target.value }))}
-                          style={{ flex: 1, padding: "13px 14px", border: "none", outline: "none", background: "transparent", fontSize: "15px", color: "#111", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
-                        />
-                        <div style={{ width: "1px", background: "#E5E7EB", flexShrink: 0 }} />
-                        <input
-                          type="text" placeholder="Achternaam" value={form.achternaam}
-                          onChange={e => setForm(f => ({ ...f, achternaam: e.target.value }))}
-                          style={{ flex: 1, padding: "13px 14px", border: "none", outline: "none", background: "transparent", fontSize: "15px", color: "#111", fontFamily: "var(--font-inter), system-ui, sans-serif" }}
-                        />
-                      </div>
-                    </div>
+                      <input
+                        type="text" placeholder="Voornaam en naam" value={naamVol} autoComplete="name"
+                        onChange={e => {
+                          const v = e.target.value;
+                          setNaamVol(v);
+                          const [voornaam = "", ...rest] = v.trim().split(/\s+/);
+                          setForm(f => ({ ...f, voornaam, achternaam: rest.join(" ") }));
+                        }}
+                        onFocus={e => (e.currentTarget.style.borderColor = "#9BCB6C")}
+                        onBlur={e => (e.currentTarget.style.borderColor = "#E5E7EB")}
+                        style={{ width: "100%", padding: "13px 16px", borderRadius: "10px", border: "1.5px solid #E5E7EB", background: "#F8F8F8", fontSize: "15px", color: "#111", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" }}
+                      />
+                                        </div>
                     <div>
                                           <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "6px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>Telefoon *</label>
                                           <input
@@ -1309,94 +1342,6 @@ export default function SitePricing() {
 
                   </div>
 
-                  {/* Foto-upload */}
-                  <div style={{ marginBottom: "16px" }}>
-                    <p style={{ fontSize: "13px", fontWeight: 600, color: "#333", marginBottom: "4px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      Heb je een foto van je dak? <span style={{ fontWeight: 400, color: "#888" }}>(optioneel)</span>
-                    </p>
-                    <p style={{ fontSize: "12px", color: "#999", marginBottom: "10px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                      Niet verplicht, maar helpt ons om je dak beter in te schatten.
-                    </p>
-
-                    {/* Previews */}
-                    {photoPreviews.length > 0 && (
-                      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
-                        {photoPreviews.map((src, i) => (
-                          <div key={i} style={{ position: "relative", width: "72px", height: "72px", borderRadius: "8px", overflow: "visible" }}>
-                            <img loading="lazy" decoding="async"
-                              src={src}
-                              alt={photos[i]?.name}
-                              style={{ width: "72px", height: "72px", objectFit: "cover", borderRadius: "8px", border: "1.5px solid #E5E7EB", display: "block" }}
-                              onError={e => {
-                                // HEIC fallback: toon bestandsnaam
-                                (e.currentTarget as HTMLImageElement).style.display = "none";
-                                const fallback = e.currentTarget.nextSibling as HTMLElement | null;
-                                if (fallback) fallback.style.display = "flex";
-                              }}
-                            />
-                            <div style={{
-                              display: "none", width: "72px", height: "72px", borderRadius: "8px",
-                              border: "1.5px solid #E5E7EB", background: "#F0F0F0",
-                              alignItems: "center", justifyContent: "center",
-                              fontSize: "9px", color: "#777", textAlign: "center", padding: "4px",
-                              wordBreak: "break-all",
-                            }}>
-                              {photos[i]?.name}
-                            </div>
-                            <button
-                              onClick={() => removePhoto(i)}
-                              style={{
-                                position: "absolute", top: "-6px", right: "-6px",
-                                width: "18px", height: "18px", borderRadius: "50%",
-                                background: "#1A1A1A", border: "none", cursor: "pointer",
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                color: "#fff", fontSize: "10px", fontWeight: 700, lineHeight: 1,
-                                zIndex: 1,
-                              }}
-                              aria-label="Foto verwijderen"
-                            >
-                              ×
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Upload zone — alleen zichtbaar als < 3 foto's */}
-                    {photos.length < 3 && (
-                      <>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept=".jpg,.jpeg,.png,.heic,.heif"
-                          multiple
-                          style={{ display: "none" }}
-                          onChange={e => { if (e.target.files) { addPhotos(e.target.files); e.target.value = ""; } }}
-                        />
-                        <button
-                          onClick={() => fileInputRef.current?.click()}
-                          type="button"
-                          style={{
-                            width: "100%", padding: "14px", borderRadius: "10px",
-                            border: "1.5px dashed #C5DFA8", background: "#F9FCF5",
-                            cursor: "pointer", display: "flex", alignItems: "center",
-                            justifyContent: "center", gap: "8px",
-                            fontSize: "14px", fontWeight: 600, color: "#5A9E3A",
-                            fontFamily: "var(--font-inter), system-ui, sans-serif",
-                          }}
-                          onMouseEnter={e => { e.currentTarget.style.borderColor = GREEN; e.currentTarget.style.background = "rgba(155,203,108,0.1)"; }}
-                          onMouseLeave={e => { e.currentTarget.style.borderColor = "#C5DFA8"; e.currentTarget.style.background = "#F9FCF5"; }}
-                        >
-                          <span style={{ fontSize: "18px", lineHeight: 1 }}>+</span>
-                          Foto toevoegen
-                          <span className="foto-formaat" style={{ fontSize: "11px", color: "#AAA", fontWeight: 400 }}>
-                            JPG, PNG of HEIC · max. {3 - photos.length} foto{3 - photos.length !== 1 ? "\'s" : ""}
-                          </span>
-                        </button>
-                      </>
-                    )}
-                  </div>
-
                   {/* Foutmelding */}
                   {submitError && (
                     <p style={{ fontSize: "13px", color: "#C0392B", marginBottom: "8px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
@@ -1406,7 +1351,7 @@ export default function SitePricing() {
 
                   {/* Terug + Submit */}
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "8px" }}>
-                    <button onClick={prev} style={{
+                    <button onClick={prev} className="calc-terug" style={{
                       padding: "10px 20px", borderRadius: "8px",
                       background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
                       cursor: "pointer",
@@ -1423,8 +1368,8 @@ export default function SitePricing() {
                     <div style={{ flex: 1 }}>
                       <NextBtn
                         onClick={handleSubmit}
-                        disabled={!form.voornaam.trim() || !form.tel.trim() || !/^[^s@]+@[^s@]+.[^s@]+$/.test(form.email.trim()) || submitting}
-                        label={submitting ? "Versturen…" : "Ontvang richtprijs"}
+                        disabled={!form.voornaam.trim() || !form.tel.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) || submitting}
+                        label={submitting ? "Versturen…" : "Toon mijn richtprijs"}
                       />
                     </div>
                   </div>
@@ -1433,7 +1378,7 @@ export default function SitePricing() {
 
               {step > 1 && step !== 2 && step !== 3 && step !== 4 && step !== 5 && (
                 <div style={{ marginTop: "18px", display: "flex", justifyContent: "flex-start" }}>
-                  <button onClick={prev} style={{
+                  <button onClick={prev} className="calc-terug" style={{
                     padding: "10px 20px", borderRadius: "8px",
                     background: "rgba(155,203,108,0.12)", border: "1.5px solid rgba(155,203,108,0.5)",
                     cursor: "pointer",
