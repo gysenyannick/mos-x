@@ -85,7 +85,7 @@ export default function ExitPopup() {
               <p className="ep-oog">Nog even dit</p>
               <h2 id="ep-titel">Benieuwd hoe jouw dak eruitziet <span>in een nieuwe kleur?</span></h2>
               <p className="ep-uitleg">Upload een foto van je woning en kies een kleur. Je ziet meteen het resultaat, gratis.</p>
-              <button type="button" className="ep-knop" onClick={() => { setZichtbaar(false); setToolOpen(true); }}>
+              <button type="button" className="ep-knop mx-glow" onClick={() => { setZichtbaar(false); setToolOpen(true); }}>
                 <Palette size={18} />Probeer het op mijn dak
               </button>
               <button type="button" className="ep-nee" onClick={() => setZichtbaar(false)}>Nee, bedankt</button>

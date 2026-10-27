@@ -174,7 +174,7 @@ export default function ContactPage() {
                     </div>
                     <div className="ct-veld breed"><label htmlFor="bericht">Bericht</label><textarea id="bericht" name="bericht" rows={4} placeholder="Vertel kort over je dak of je vraag" value={velden.bericht} onChange={zet("bericht")} /></div>
                   </div>
-                  <button type="submit" className="do-knop do-knop-g ct-verstuur" disabled={status === "sending"}>
+                  <button type="submit" className="do-knop do-knop-g ct-verstuur mx-glow" disabled={status === "sending"}>
                     {status === "sending" ? <Loader2 size={18} className="ct-spin" /> : <Send size={17} />}
                     {status === "sending" ? "Bezig met versturen" : "Verstuur mijn aanvraag"}
                   </button>

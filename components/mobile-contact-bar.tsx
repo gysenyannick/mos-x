@@ -49,7 +49,7 @@ export default function MobileContactBar() {
         <button
           type="button"
           onClick={() => setBezoekOpen(true)}
-          className="mcb-knop"
+          className="mcb-knop mx-glow"
           style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             height: "44px", padding: "0 14px 0 12px", borderRadius: "999px", border: 0,

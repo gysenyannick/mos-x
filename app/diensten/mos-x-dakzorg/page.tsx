@@ -199,7 +199,7 @@ export default function MosXDakzorgPage() {
                 );
               })}
             </div>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Vraag Dakzorg aan</button>
+            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Vraag Dakzorg aan</button>
           </div>
         </div>
       </section>

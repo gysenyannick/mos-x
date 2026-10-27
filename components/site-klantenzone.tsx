@@ -116,7 +116,7 @@ export default function SiteKlantenzone() {
               <li><span className="kzp-vink"><Check size={15} strokeWidth={3} /></span><span className="kzp-lang">Exclusieve voordelen en acties, enkel voor klanten.</span><span className="kzp-kort">Exclusieve voordelen en acties</span></li>
             </ul>
             <div className="kzp-knoppen">
-              <Link href="/klant" className="kzp-knop">Naar je klantenzone <ChevronRight size={16} strokeWidth={2.5} /></Link>
+              <Link href="/klant" className="kzp-knop mx-glow">Naar je klantenzone <ChevronRight size={16} strokeWidth={2.5} /></Link>
               <button type="button" onClick={() => setBezoekOpen(true)} className="kzp-knop kzp-knop-licht">Plan een gratis plaatsbezoek</button>
             </div>
           </div>

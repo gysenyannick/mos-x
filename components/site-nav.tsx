@@ -68,9 +68,20 @@ export default function SiteNav() {
           0%, 100% { box-shadow: 0 0 0 0 rgba(155,203,108,0.6), 0 0 16px 0 rgba(155,203,108,0.35), 0 10px 24px -12px rgba(122,181,78,0.9); }
           50% { box-shadow: 0 0 0 10px rgba(155,203,108,0), 0 0 30px 6px rgba(155,203,108,0.6), 0 12px 30px -10px rgba(122,181,78,1); }
         }
-        .mx-glow { animation: mx-glow 2.6s ease-in-out infinite; }
+        .mx-glow { animation: mx-glow 2.6s ease-in-out infinite; position: relative; overflow: hidden; isolation: isolate; }
+        /* Een lichtstreep die af en toe over de knop glijdt */
+        .mx-glow::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 40%; pointer-events: none; z-index: 1; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.38), transparent); transform: skewX(-18deg); animation: mx-glans 5.5s ease-in-out infinite; }
+        @keyframes mx-glans { 0%, 62% { left: -60%; } 82%, 100% { left: 130%; } }
+        /* Pijltje schuift mee bij hover */
+        :is(.do-knop, .btn-press, .mx-glow, .kzp-knop, .rz-knop) svg:last-child { transition: transform .2s ease; }
+        :is(.do-knop, .btn-press, .mx-glow, .kzp-knop, .rz-knop):hover svg:last-child { transform: translateX(3px); }
+        /* Selectie en scrollbalk in de huisstijl */
+        ::selection { background: rgba(155,203,108,0.35); color: #1A1A1A; }
+        @media (hover: hover) and (pointer: fine) {
+          html { scrollbar-color: #9BCB6C #F2F4F0; scrollbar-width: thin; }
+        }
         .mx-glow:hover, .mx-glow:focus-visible { animation-play-state: paused; }
-        @media (prefers-reduced-motion: reduce) { .mx-glow { animation: none; box-shadow: 0 0 0 4px rgba(155,203,108,0.28), 0 12px 28px -10px rgba(122,181,78,0.95) !important; } }
+        @media (prefers-reduced-motion: reduce) { .mx-glow::after { display: none; } :is(.do-knop, .btn-press, .mx-glow, .kzp-knop, .rz-knop):hover svg:last-child { transform: none; } .mx-glow { animation: none; box-shadow: 0 0 0 4px rgba(155,203,108,0.28), 0 12px 28px -10px rgba(122,181,78,0.95) !important; } }
         .nav-diensten { position: relative; }
         .nav-diensten-knop { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 0; cursor: pointer; }
         .nav-diensten-knop:hover { color: #9BCB6C !important; }
@@ -230,6 +241,7 @@ export default function SiteNav() {
               </BtnPress>
             ) : (
               <BtnPress
+                className="mx-glow"
                 href="/#calculator"
                 style={{
                   background: "#9BCB6C",
@@ -359,7 +371,7 @@ export default function SiteNav() {
                 </a>
               ) : (
                 <Link href="/#calculator" onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center w-full text-sm font-bold"
+                  className="flex items-center justify-center w-full text-sm font-bold mx-glow"
                   style={{
                     background: "#9BCB6C", color: "#FFFFFF", borderRadius: "50px",
                     padding: "12px 20px", textDecoration: "none",

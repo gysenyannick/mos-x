@@ -214,7 +214,7 @@ export default function RealisatiesPage() {
             <p>Ontvang binnen 1 minuut een persoonlijke richtprijs.</p>
           </div>
           <div className="rz-cta-knoppen">
-            <Link className="rz-knop rz-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></Link>
+            <Link className="rz-knop rz-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></Link>
             <a className="rz-knop rz-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
           </div>
         </div>

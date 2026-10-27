@@ -210,7 +210,7 @@ export default function DakcoatingPage() {
                 );
               })}
             </div>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
+            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
           </div>
         </div>
       </section>
@@ -226,7 +226,7 @@ export default function DakcoatingPage() {
             </div>
             <p className="dc-merk" style={{ marginBottom: 28 }}>De kleuren op je scherm zijn een benadering. Tijdens het plaatsbezoek tonen we je de echte stalen.</p>
             <div className="dc-knoppen">
-              <Link className="do-knop do-knop-g" href="/#dakkleur"><Palette size={18} />Zie je dak in een nieuwe kleur</Link>
+              <Link className="do-knop do-knop-g mx-glow" href="/#dakkleur"><Palette size={18} />Zie je dak in een nieuwe kleur</Link>
             </div>
           </div>
           <div>
