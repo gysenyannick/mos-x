@@ -58,16 +58,31 @@ export default function AlgemeneVoorwaarden() {
         worden gefactureerd in verhouding tot de werkelijk uitgevoerde werken.
       </p>
 
-      <h2>Artikel 4: Facturatie en betalingen</h2>
+      <h2>Artikel 4: Garanties</h2>
       <p>
-        4.1 De prijszetting gebeurt aan de hand van een eenheidsprijs per m². Deze eenheidsprijs wordt vermenigvuldigd met de
+        4.1 Na een dakontmossing met antimosbehandeling geeft MOS-X 2 jaar mosvrij-garantie: komt er binnen 2 jaar na de
+        werken toch opnieuw mos op het dak, dan brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan.
+      </p>
+      <p>
+        4.2 Op een dakcoating geeft MOS-X 10 jaar garantie op de hechting: we garanderen dat de coating 10 jaar lang stevig op
+        de pannen blijft zitten en niet afbladert.
+      </p>
+      <p>
+        4.3 De garanties vervallen bij schade door derden, werken van derden aan het dak, mechanische schade, storm of andere
+        overmacht, en bij gebreken die al aanwezig waren voor de werken. Een garantiegeval meldt de klant met foto&apos;s via
+        info@mos-x.be of via de klantenzone.
+      </p>
+
+      <h2>Artikel 5: Facturatie en betalingen</h2>
+      <p>
+        5.1 De prijszetting gebeurt aan de hand van een eenheidsprijs per m². Deze eenheidsprijs wordt vermenigvuldigd met de
         vermoedelijke hoeveelheid. Indien enkel een totaalprijs wordt vermeld, bedraagt de eenheidsprijs de totaalprijs gedeeld
         door de vermelde vermoedelijke hoeveelheid. De definitieve opmeting gebeurt na uitvoering van de werken. Indien uit de
         opmeting blijkt dat de werkelijke hoeveelheid meer bedraagt dan de vermoedelijke hoeveelheid, zal het verschil worden
         bijgefactureerd tegen dezelfde eenheidsprijs per m².
       </p>
       <p>
-        4.2 De betalingstermijn bedraagt 14 dagen, tenzij onderling schriftelijk een andere termijn werd afgesproken. Bij
+        5.2 De betalingstermijn bedraagt 14 dagen, tenzij onderling schriftelijk een andere termijn werd afgesproken. Bij
         niet-betaling of niet-volledige betaling van de prijs op de vervaldag wordt het openstaande gedeelte van de factuur van
         rechtswege en zonder ingebrekestelling vermeerderd met een interest van 1% per maand, met als minimum de wettelijke
         interesten. Ingeval van gehele of gedeeltelijke niet-betaling van de schuld op de vervaldag zonder ernstige redenen
@@ -77,16 +92,16 @@ export default function AlgemeneVoorwaarden() {
         recht op interesten en ons recht om een hogere schade te bewijzen.
       </p>
 
-      <h2>Artikel 5: Opzegging van het contract</h2>
+      <h2>Artikel 6: Opzegging van het contract</h2>
       <p>
-        5.1 Binnen de 14 kalenderdagen, te rekenen vanaf de dag die volgt op de ondertekening van dit contract, heeft de
+        6.1 Binnen de 14 kalenderdagen, te rekenen vanaf de dag die volgt op de ondertekening van dit contract, heeft de
         particulier het recht om zonder kosten van zijn aankoop af te zien, op voorwaarde dat hij de verkoper hiervan bij een
         per post aangetekende brief op de hoogte brengt. Elk beding waarbij de particulier aan dit recht zou verzaken, is nietig.
         Wat betreft het in acht nemen van de termijn, is het voldoende dat de kennisgeving wordt verstuurd vóór het verstrijken
         van deze termijn. Deze clausule is niet van toepassing voor btw-plichtigen.
       </p>
 
-      <h2>Artikel 6: Bevoegdheid en toepasselijk recht</h2>
+      <h2>Artikel 7: Bevoegdheid en toepasselijk recht</h2>
       <p>
         Het Belgische recht is van toepassing op alle geschillen die verband houden met of die voortvloeien uit onze
         aanbiedingen en/of overeenkomsten. In geval van geschillen of betwisting zijn enkel de rechtbanken van het gerechtelijk
