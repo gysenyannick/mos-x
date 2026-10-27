@@ -1268,9 +1268,6 @@ export default function SitePricing() {
                                         </div>
                   </div>
 
-                  <p style={{ fontSize: "12.5px", color: "#777", margin: "2px 0 10px", lineHeight: 1.5, fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                    <b style={{ color: "#333", fontWeight: 600 }}>Optioneel:</b> geef je adres mee, dan bekijken we je dak alvast op de kaart.
-                  </p>
                   {/* Postcode + Adres — 2 kolommen */}
                   <div className="postcode-adres-grid" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "12px", marginBottom: "14px" }}>
 
