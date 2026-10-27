@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { MOS_CURSOR } from "@/lib/mos-cursor";
 
 export interface BeforeAfterSliderProps {
   beforeSrc: string;
@@ -104,7 +105,7 @@ export default function BeforeAfterSlider({
     position: "relative",
     overflow: "hidden",
     borderRadius,
-    cursor: "ew-resize",
+    cursor: MOS_CURSOR,
     userSelect: "none",
     ...(height ? { height } : { aspectRatio }),
     ...(minHeight ? { minHeight } : {}),

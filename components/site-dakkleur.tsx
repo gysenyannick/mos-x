@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronLeft, ChevronRight, House, Loader2, Mail, MessageCircle, RotateCcw, Sparkles, Sun, Upload, X } from "lucide-react";
 import { DAKKLEUREN, type DakkleurId } from "@/lib/dakkleuren";
+import { MOS_CURSOR } from "@/lib/mos-cursor";
 
 /** Verkleint de foto in de browser, zodat het uploaden snel gaat en de AI niet te veel kost. */
 function verkleinFoto(bestand: File, max = 1536): Promise<string> {
@@ -177,7 +178,7 @@ export default function DakkleurVenster({ open, onClose }: { open: boolean; onCl
         .dk-vn-lijn span { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 42px; height: 42px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; letter-spacing: 2px; box-shadow: 0 4px 14px rgba(0,0,0,0.25); }
         .dk-vn-tag { position: absolute; top: 14px; left: 14px; padding: 6px 11px; border-radius: 999px; background: rgba(11,15,12,0.72); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .dk-vn-na { left: auto; right: 14px; background: #9BCB6C; color: #0B0F0C; }
-        .dk-vn input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+        .dk-vn input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ${MOS_CURSOR}; }
         .dk-laden { min-height: 300px; display: grid; place-items: center; align-content: center; gap: 14px; border-radius: 16px; background: #F7F8F6; text-align: center; font-size: 15px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
         .dk-laden svg { animation: dk-draai 1s linear infinite; }
         @keyframes dk-draai { to { transform: rotate(360deg); } }

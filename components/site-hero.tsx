@@ -6,6 +6,7 @@ import { BtnPress } from "@/components/btn-press";
 import { useRef, useEffect, useState } from "react";
 import { preload } from "react-dom";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
+import MosVolger from "@/components/mos-volger";
 
 export default function SiteHero() {
   const trustindexRef = useRef<HTMLDivElement>(null);
@@ -37,6 +38,8 @@ export default function SiteHero() {
       className="relative overflow-hidden hero-sectie"
       style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#1A1A1A", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
+      <MosVolger />
+
       {/* Video background */}
       <video
         ref={videoRef}

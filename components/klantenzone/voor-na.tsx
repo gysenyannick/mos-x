@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { MoveHorizontal } from "lucide-react";
 import kz from "./kz.module.css";
+import { MOS_CURSOR } from "@/lib/mos-cursor";
 
 /** Voor/na-vergelijking: sleep de schuif om het verschil te zien. */
 export default function VoorNa({ voor, na }: { voor: string; na: string }) {
@@ -38,6 +39,7 @@ export default function VoorNa({ voor, na }: { voor: string; na: string }) {
         onChange={(e) => setPos(Number(e.target.value))}
         aria-label="Schuif tussen voor en na"
         className={kz.voorNaRange}
+        style={{ cursor: MOS_CURSOR }}
       />
     </div>
   );
