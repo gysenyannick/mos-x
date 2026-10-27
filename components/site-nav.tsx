@@ -21,9 +21,9 @@ const links = [
 ];
 
 const mobieleDiensten = [
-  { label: "Dakontmossen",  sub: "Mos en algen weg, 2 jaar mosvrij", href: "/diensten/dakontmossing", Icoon: Droplets },
-  { label: "Dakcoaten",     sub: "Je dak weer als nieuw",           href: "/diensten/dakcoating",    Icoon: Paintbrush },
-  { label: "MOS-X Dakzorg", sub: "Preventief onderhoud",            href: "/diensten/mos-x-dakzorg",  Icoon: CalendarCheck },
+  { label: "Dakontmossen",  sub: "", href: "/diensten/dakontmossing", Icoon: Droplets },
+  { label: "Dakcoaten",     sub: "", href: "/diensten/dakcoating",    Icoon: Paintbrush },
+  { label: "MOS-X Dakzorg", sub: "",                                href: "/diensten/mos-x-dakzorg",  Icoon: CalendarCheck },
 ];
 
 const mobieleLinks = [
@@ -360,7 +360,7 @@ export default function SiteNav() {
               {mobieleDiensten.map((d, i) => (
                 <Link key={d.href} href={d.href} onClick={() => setMobileOpen(false)} className={`mm-dienst mm-in${pathname === d.href ? " actief" : ""}`} style={{ animationDelay: `${70 + i * 45}ms` }}>
                   <i><d.Icoon size={20} /></i>
-                  <span><b>{d.label}</b><small>{d.sub}</small></span>
+                  <span><b>{d.label}</b>{d.sub && <small>{d.sub}</small>}</span>
                   <ChevronRight size={18} />
                 </Link>
               ))}
