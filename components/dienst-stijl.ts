@@ -150,7 +150,7 @@ export const DIENST_CSS = `
         .do-cta h2 span { color: #9BCB6C; }
         .do-cta p { margin: 0; font-size: 16px; color: rgba(255,255,255,0.7); font-family: var(--font-inter), system-ui, sans-serif; }
         .do-cta-knoppen { display: flex; gap: 10px; flex-wrap: wrap; }
-        @media (max-width: 960px) { .do-cta-rechts .gs-score { justify-content: center !important; } }
+        .do-cta .gs-score { margin-top: 16px; }
         .do-cta .do-knop:focus-visible { outline-color: #FFFFFF; }
 
         @media (max-width: 1180px) and (min-width: 961px) {
@@ -200,7 +200,7 @@ export const DIENST_CSS = `
           .do-asbest .do-knop { width: 100%; }
           .do-stap button { grid-template-columns: 34px minmax(0, 1fr) 18px; gap: 12px; padding: 12px 14px 12px 12px; font-size: 15px; }
           .do-stap-nr { width: 34px; height: 34px; border-radius: 10px; font-size: 13px; }
-          .do-hero-knoppen .do-knop, .do-cta-rechts, .do-cta-knoppen, .do-cta-knoppen .do-knop { width: 100%; }
+          .do-hero-knoppen .do-knop, .do-cta-knoppen, .do-cta-knoppen .do-knop { width: 100%; }
         }
         @media (max-width: 380px) {
           .do-stap button { font-size: 14px; gap: 10px; padding-right: 12px; }

@@ -195,13 +195,11 @@ export default function OverOnsPage() {
             <div>
               <h2>Nog een vraag <span>voor ons?</span></h2>
               <p>Stuur ons gerust een bericht of bel even. We helpen je graag verder.</p>
-            </div>
-            <div className="do-cta-rechts">
-              <div className="do-cta-knoppen">
-                <a className="do-knop do-knop-g" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer">Stuur een WhatsApp<ChevronRight size={17} /></a>
-                <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
-              </div>
               <GoogleScore donker />
+            </div>
+            <div className="do-cta-knoppen">
+              <a className="do-knop do-knop-g" href="https://wa.me/32468352869" target="_blank" rel="noopener noreferrer">Stuur een WhatsApp<ChevronRight size={17} /></a>
+              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>
         </div>

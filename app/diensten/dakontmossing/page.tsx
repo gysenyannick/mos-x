@@ -271,13 +271,11 @@ export default function DakontmossingPage() {
             <div>
               <h2>Benieuwd wat <span style={{ whiteSpace: "nowrap" }}>jouw dak</span> nodig heeft?</h2>
               <p>We bekijken je dak en adviseren enkel wat écht nodig is.</p>
-            </div>
-            <div className="do-cta-rechts">
-              <div className="do-cta-knoppen">
-                <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
-                <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
-              </div>
               <GoogleScore donker />
+            </div>
+            <div className="do-cta-knoppen">
+              <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
+              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>
         </div>
