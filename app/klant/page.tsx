@@ -16,7 +16,7 @@ export default function KlantenzoneIngang() {
       <style>{`
         .kzl { min-height: 100vh; min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); background: #FFFFFF; font-family: var(--font-inter), system-ui, sans-serif; }
 
-        .kzl-foto { position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 56px; background: #0F1A12 url("/images/yannick-op-dak-srgb.JPEG") center 28% / cover no-repeat; color: #FFFFFF; }
+        .kzl-foto { position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 56px; background: #0F1A12 url("/images/4.jpg") 60% 30% / cover no-repeat; color: #FFFFFF; }
         .kzl-foto::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,15,12,0.05) 30%, rgba(15,26,18,0.72) 62%, #0F1A12 96%); }
         .kzl-foto > div { position: relative; max-width: 520px; }
         .kzl-foto img { display: block; height: 46px; width: auto; margin-bottom: 28px; }
@@ -53,7 +53,7 @@ export default function KlantenzoneIngang() {
 
         @media (max-width: 900px) {
           .kzl { grid-template-columns: minmax(0, 1fr); }
-          .kzl-foto { min-height: 360px; padding: 28px 20px; background-position: 40% 62%; }
+          .kzl-foto { min-height: 360px; padding: 28px 20px; background-position: 60% 30%; }
           .kzl-foto img { height: 38px; margin-bottom: 18px; }
           .kzl-punten { display: none; }
           .kzl-foto h2 { margin: 0; }
