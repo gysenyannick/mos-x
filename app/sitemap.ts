@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/seo";
+import { ARTIKELS } from "@/lib/kennisbank";
 
 /** Alle openbare pagina's voor Google. De klantenzone en het beheer staan er bewust niet in. */
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -24,6 +25,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     pagina("/regio/oost-vlaanderen", 0.7),
     pagina("/regio/vlaams-brabant", 0.7),
     pagina("/regio/limburg", 0.7),
+    pagina("/kennisbank", 0.7, "weekly"),
+    ...ARTIKELS.map((a) => pagina(`/kennisbank/${a.slug}`, 0.6)),
     pagina("/klantenzone", 0.4),
     pagina("/privacyverklaring", 0.2, "yearly"),
     pagina("/algemene-voorwaarden", 0.2, "yearly"),
