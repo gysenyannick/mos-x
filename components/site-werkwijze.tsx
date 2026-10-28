@@ -11,7 +11,7 @@ const delen = [
     stappen: [
       { titel: "Richtprijs berekenen", tekst: "Vul in een paar stappen je woning en je dak in, en je ziet meteen een richtprijs. Vrijblijvend: je zit nergens aan vast." },
       { titel: "Kies je volgende stap", tekst: "Plan een gratis plaatsbezoek, of stuur foto's van je dak, dan bekijken we het op afstand." },
-      { titel: "Offerte op maat", tekst: "Je krijgt een duidelijke offerte, afgestemd op jouw dak. Zo weet je vooraf wat we doen en wat het kost." },
+      { titel: "Offerte op maat gemaakt", tekst: "Je krijgt een duidelijke offerte, afgestemd op jouw dak. Zo weet je vooraf wat we doen en wat het kost." },
     ],
   },
   {
