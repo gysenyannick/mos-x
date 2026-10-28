@@ -95,10 +95,11 @@ export default function SiteReviews() {
 
   return (
     <section className="site-pad site-reviews-section" id="reviews" style={{ background: "#0B0F0C", position: "relative", overflow: "hidden" }}>
+      <style>{`@media (max-width: 1023px) { .site-reviews-section .reviews-mos { opacity: 0.3 !important; } }`}</style>
 
       {/* Moss texture - left side (zelfde stijl als diensten) */}
-      <img loading="lazy" decoding="async"
-        src="/images/mos-texture.png"
+      <img decoding="async"
+        src="/images/mos-texture.jpg"
         alt=""
         aria-hidden="true"
         className="reviews-mos"
@@ -156,8 +157,8 @@ export default function SiteReviews() {
       </div>
 
       {/* Moss texture image */}
-      <img loading="lazy" decoding="async"
-        src="/images/mos-texture.png"
+      <img decoding="async"
+        src="/images/mos-texture.jpg"
         alt=""
         className="reviews-mos reviews-mos-rechts"
         style={{

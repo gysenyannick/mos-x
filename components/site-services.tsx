@@ -224,8 +224,8 @@ export default function SiteServices() {
       overflow: "hidden",
     }}>
       {/* Moss texture - right side (zelfde stijl als de reviews) */}
-      <img loading="lazy" decoding="async"
-        src="/images/mos-texture.png"
+      <img decoding="async"
+        src="/images/mos-texture.jpg"
         alt=""
         aria-hidden="true"
         className="hidden lg:block"
@@ -242,8 +242,8 @@ export default function SiteServices() {
       />
 
       {/* Moss texture - left side */}
-      <img loading="lazy" decoding="async"
-        src="/images/mos-texture.png"
+      <img decoding="async"
+        src="/images/mos-texture.jpg"
         alt=""
         className="diensten-mos-texture"
         style={{
@@ -257,8 +257,8 @@ export default function SiteServices() {
         }}
       />
       {/* Moss texture - bottom right */}
-      <img loading="lazy" decoding="async"
-        src="/images/mos-texture.png"
+      <img decoding="async"
+        src="/images/mos-texture.jpg"
         alt=""
         className="diensten-mos-texture-bottom"
         style={{

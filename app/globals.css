@@ -1009,7 +1009,7 @@ body > div:has(img[src*="trustindex.io/assets/platform/Trustindex/logo.svg"]) {
 
 /* Reviews: mos-textuur ook op gsm, zachter */
 @media (max-width: 1023px) {
-  .reviews-mos { opacity: 0.1 !important; height: 100% !important; max-width: none !important; width: auto !important; }
+  .reviews-mos { opacity: 0.3 !important; height: 100% !important; max-width: none !important; width: auto !important; }
   .reviews-mos-rechts { right: -60px !important; }
 }
 
