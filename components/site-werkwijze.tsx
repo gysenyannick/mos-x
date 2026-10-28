@@ -20,7 +20,7 @@ const delen = [
     stappen: [
       { titel: "Professionele uitvoering", tekst: "We werken op het afgesproken moment, netjes en zorgvuldig. In je klantenzone zie je de planning, foto's van de werken en hoe ver we staan." },
       { titel: "Oplevering & nazorg", tekst: "We leveren pas op als alles netjes is. Je documenten en garantie vind je in je klantenzone, en we blijven bereikbaar voor je vragen." },
-      { titel: "Onderhoudsplan & opvolging", tekst: "Met het MOS-X Onderhoudsplan volgen we je dak op, zodat het jarenlang verzorgd blijft." },
+      { titel: "Onderhoud & opvolging", tekst: "Met het MOS-X Onderhoudsplan volgen we je dak op, zodat het jarenlang verzorgd blijft." },
     ],
   },
 ];
@@ -70,6 +70,7 @@ export default function SiteWerkwijze() {
         .ww-antw > div { overflow: hidden; }
         .ww-stap-tekst { margin: 0; padding: 0 0 18px 48px; font-size: 14.5px; line-height: 1.6; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
         @media (prefers-reduced-motion: reduce) { .ww-antw, .ww-plus { transition: none; } }
+        @media (min-width: 1025px) and (max-width: 1180px) { .ww-stap-titel { font-size: 15px; } }
         @media (max-width: 1024px) {
           .ww-raster { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
           .ww-foto { grid-column: 1 / -1; min-height: 280px; }
