@@ -1,16 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight, Plus } from "lucide-react";
+import { CalendarCheck, Camera, ChevronRight, Plus } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
-const delen = [
+type Stap = { titel: string; tekst: string; knoppen?: boolean };
+
+const delen: { label: string; titel: string; stappen: Stap[] }[] = [
   {
     label: "Deel 1",
     titel: "Je offerte",
     stappen: [
       { titel: "Richtprijs berekenen", tekst: "Vul in een paar stappen je woning en je dak in, en je ziet meteen een richtprijs. Vrijblijvend: je zit nergens aan vast." },
-      { titel: "Plaatsbezoek", tekst: "Plan een gratis plaatsbezoek, of stuur foto's van je dak, dan bekijken we het op afstand." },
+      { titel: "Plaatsbezoek", tekst: "We komen gratis langs en bekijken je dak ter plaatse. Liever geen plaatsbezoek? Upload na je richtprijs foto's van je dak, dan bekijken we het op afstand.", knoppen: true },
       { titel: "Offerte op maat gemaakt", tekst: "Je krijgt een duidelijke offerte, afgestemd op jouw dak. Zo weet je vooraf wat we doen en wat het kost." },
     ],
   },
@@ -28,6 +31,7 @@ const delen = [
 export default function SiteWerkwijze() {
   // Welke stap open staat; standaard alles dicht, zodat het blok rustig oogt
   const [open, setOpen] = useState<number | null>(null);
+  const [bezoekOpen, setBezoekOpen] = useState(false);
   return (
     <section style={{
       background: "radial-gradient(900px 500px at 85% 40%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(800px 500px at 10% 100%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
@@ -69,6 +73,13 @@ export default function SiteWerkwijze() {
         .ww-antw.open { grid-template-rows: 1fr; }
         .ww-antw > div { overflow: hidden; }
         .ww-stap-tekst { margin: 0; padding: 0 0 18px 48px; font-size: 14.5px; line-height: 1.6; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
+        .ww-acties { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 0 18px 48px; margin-top: -4px; }
+        .ww-actie { display: inline-flex; align-items: center; gap: 7px; height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #CFE5B8; background: #fff; color: #1A1A1A; font-size: 13.5px; font-weight: 700; text-decoration: none; cursor: pointer; font-family: var(--font-montserrat), system-ui, sans-serif; transition: background-color .2s ease, border-color .2s ease, transform .15s ease; }
+        .ww-actie:hover { background: #EEF6E6; border-color: #9BCB6C; }
+        .ww-actie:active { transform: translateY(1px); }
+        .ww-actie:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+        .ww-actie-g { background: #9BCB6C; border-color: #9BCB6C; color: #fff; box-shadow: 0 8px 18px -10px rgba(122,181,78,0.8); }
+        .ww-actie-g:hover { background: #7AB54E; border-color: #7AB54E; }
         @media (prefers-reduced-motion: reduce) { .ww-antw, .ww-plus { transition: none; } }
         @media (max-width: 1024px) {
           .ww-raster { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -84,6 +95,7 @@ export default function SiteWerkwijze() {
           .ww-plus { width: 26px; height: 26px; }
           .ww-stap-titel { font-size: 15px; }
           .ww-stap-tekst { padding-left: 42px; }
+          .ww-acties { padding-left: 42px; }
         }
       `}</style>
       <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
@@ -129,7 +141,19 @@ export default function SiteWerkwijze() {
                         <span className="ww-plus"><Plus size={16} strokeWidth={2.5} /></span>
                       </button>
                       <div id={`ww-stap-${nr}`} className={`ww-antw${isOpen ? " open" : ""}`}>
-                        <div><p className="ww-stap-tekst">{s.tekst}</p></div>
+                        <div>
+                          <p className="ww-stap-tekst">{s.tekst}</p>
+                          {s.knoppen && (
+                            <div className="ww-acties">
+                              <button type="button" className="ww-actie ww-actie-g" onClick={() => setBezoekOpen(true)}>
+                                <CalendarCheck size={15} strokeWidth={2.2} />Plan een plaatsbezoek
+                              </button>
+                              <a href="/#calculator" className="ww-actie">
+                                <Camera size={15} strokeWidth={2.2} />Foto&apos;s uploaden
+                              </a>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </li>
                   );
@@ -158,6 +182,7 @@ export default function SiteWerkwijze() {
         </div>
 
       </div>
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Homepage werkwijze" />
     </section>
   );
 }
