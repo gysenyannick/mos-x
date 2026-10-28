@@ -497,8 +497,8 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Dakcoating", subtitle: "Je dak weer als nieuw.", badge: null, bullets: [] as string[] },
-    { id: "geen", title: "Antimosbehandeling", subtitle: "Houdt je dak langer proper.", badge: null, bullets: [] as string[] },
+    { id: "coating", title: "Dakcoating", subtitle: "Aangeraden als je dak ouder is dan 15 jaar.", badge: null, bullets: [] as string[] },
+    { id: "geen", title: "Antimosbehandeling", subtitle: "Houdt je dak langer mosvrij.", badge: null, bullets: [] as string[] },
     { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, bullets: [] as string[] },
   ];
 
