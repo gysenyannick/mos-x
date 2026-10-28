@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { trackBeavr } from "@/lib/beavr-track";
-import { ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Info, ShieldCheck } from "lucide-react";
 import GoogleScore from "@/components/google-score";
 
 const GREEN = "#9BCB6C";
@@ -497,14 +497,21 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Dakcoating", subtitle: "Aangeraden als je dak ouder is dan 15 jaar.", badge: null, bullets: [] as string[] },
-    { id: "geen", title: "Antimosbehandeling", subtitle: "Houdt je dak langer mosvrij.", badge: null, bullets: [] as string[] },
-    { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, bullets: [] as string[] },
+    { id: "coating", title: "Dakcoating", subtitle: "Een nieuwe beschermlaag voor je dak.", badge: "10 jaar garantie", info: "Meestal aangeraden als je dak ouder is dan 15 jaar.", bullets: [] as string[] },
+    { id: "geen", title: "Antimosbehandeling", subtitle: "Bestrijdt verdere mosgroei.", badge: "2 jaar mosvrij-garantie", info: "", bullets: [] as string[] },
+    { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, info: "", bullets: [] as string[] },
   ];
 
   return (
     <section ref={sectionRef} id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
       <style>{`
+        /* Info-bolletje met uitleg bij een keuze */
+        .calc-info { position: relative; display: inline-flex; vertical-align: -2px; margin-left: 6px; color: #9BCB6C; cursor: help; outline: none; }
+        .calc-info:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 50%; }
+        .calc-info-tip { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); width: 210px; padding: 9px 12px; border-radius: 10px; background: #1A1A1A; color: #FFFFFF; font-family: var(--font-inter), system-ui, sans-serif; font-size: 12.5px; font-weight: 500; line-height: 1.45; text-align: left; box-shadow: 0 10px 24px -10px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: opacity .18s ease; z-index: 20; }
+        .calc-info-tip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border: 6px solid transparent; border-top-color: #1A1A1A; }
+        .calc-info:hover .calc-info-tip, .calc-info:focus .calc-info-tip { opacity: 1; }
+        @media (max-width: 640px) { .calc-info-tip { left: -12px; transform: none; } .calc-info-tip::after { left: 19px; margin-left: 0; } }
         /* ── Calculator animations ── */
         @keyframes calc-check-pop {
           from { opacity: 0; transform: scale(0.55); }
@@ -1173,6 +1180,12 @@ export default function SitePricing() {
                           {/* Title */}
                           <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#111", lineHeight: 1.35, marginBottom: "6px" }}>
                             {o.title}
+                            {o.info && (
+                              <span className="calc-info" tabIndex={0} aria-label={o.info} onClick={e => e.stopPropagation()}>
+                                <Info size={14} strokeWidth={2.4} aria-hidden="true" />
+                                <span className="calc-info-tip" role="tooltip">{o.info}</span>
+                              </span>
+                            )}
                           </span>
                           {/* Subtitle */}
                           <p style={{ fontSize: "12px", color: "#777", lineHeight: 1.5, marginBottom: o.bullets.length ? "10px" : "0", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
