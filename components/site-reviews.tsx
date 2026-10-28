@@ -95,7 +95,7 @@ export default function SiteReviews() {
 
   return (
     <section className="site-pad site-reviews-section" id="reviews" style={{ background: "#0B0F0C", position: "relative", overflow: "hidden" }}>
-      <style>{`@media (max-width: 1023px) { .site-reviews-section .reviews-mos { opacity: 0.3 !important; } }`}</style>
+      <style>{`@media (max-width: 1023px) { .site-reviews-section .reviews-mos { opacity: 0.18 !important; } }`}</style>
 
       {/* Moss texture - left side (zelfde stijl als diensten) */}
       <img decoding="async"
