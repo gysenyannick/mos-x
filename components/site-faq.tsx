@@ -326,9 +326,9 @@ export default function SiteFaq() {
             Veelgestelde vragen
           </p>
           <h2 style={{
-            fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
+            fontSize: "clamp(1.35rem, 6.4vw, 2.5rem)", fontWeight: 800, color: "#1A1A1A",
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-            letterSpacing: "-0.028em", lineHeight: 1.15,
+            letterSpacing: "-0.028em", lineHeight: 1.15, whiteSpace: "nowrap",
           }}>
             Nog vragen over je dak?
           </h2>
