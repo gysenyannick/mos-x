@@ -40,7 +40,7 @@ export default function SiteWerkwijze() {
         <path d="M0,330 C300,290 600,300 860,330 C1100,358 1280,350 1440,320 L1440,420 L0,420 Z" fill="#9BCB6C" fillOpacity="0.04" />
       </svg>
       {/* Bolletjes rechtsboven */}
-      <svg aria-hidden="true" width="140" height="110" viewBox="0 0 140 110" style={{ position: "absolute", top: "40px", right: "6%", zIndex: 0 }}>
+      <svg aria-hidden="true" className="ww-bollen" width="140" height="110" viewBox="0 0 140 110" style={{ position: "absolute", top: "40px", right: "6%", zIndex: 0 }}>
         <circle cx="30" cy="38" r="17" fill="#9BCB6C" fillOpacity="0.22" />
         <circle cx="92" cy="14" r="8" fill="#9BCB6C" fillOpacity="0.28" />
         <circle cx="82" cy="78" r="12" fill="#9BCB6C" fillOpacity="0.18" />
@@ -78,6 +78,7 @@ export default function SiteWerkwijze() {
           .ww-raster { grid-template-columns: minmax(0, 1fr); gap: 16px; }
           .ww-foto { min-height: 220px; }
           .ww-kop { padding: 22px 20px 20px; }
+          .ww-bollen { display: none; }
           .ww-stappen { padding: 4px 6px 8px; }
           .ww-vraag { grid-template-columns: 30px minmax(0, 1fr) 26px; gap: 10px; padding: 14px 6px; }
           .ww-nr { width: 30px; height: 30px; font-size: 13px; }
@@ -97,14 +98,14 @@ export default function SiteWerkwijze() {
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
             letterSpacing: "-0.028em", lineHeight: 1.15, marginBottom: "16px",
           }}>
-            Zo verloopt <span style={{ color: "#9BCB6C" }}>jouw traject</span> met MOS-X.
+            Van richtprijs tot <span style={{ color: "#9BCB6C", whiteSpace: "nowrap" }}>verzorgd dak.</span>
           </h2>
           <p style={{
             fontSize: "16px", color: "#545454", lineHeight: 1.7,
             fontFamily: "var(--font-inter), system-ui, sans-serif",
             maxWidth: "800px", margin: "0 auto", textWrap: "balance",
           }}>
-            Duidelijk, transparant en zonder verrassingen. Van eerste richtprijs tot een levenslang verzorgd dak.
+            Zes duidelijke stappen, zonder verrassingen.
           </p>
         </div>
 
