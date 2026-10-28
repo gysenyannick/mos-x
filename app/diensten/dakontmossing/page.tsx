@@ -44,15 +44,15 @@ const resultaten = [
 ];
 
 const faqs: { q: string; a: string; cta?: boolean }[] = [
-  { q: "Wat houdt de 2 jaar mosvrij-garantie in?", a: "Na een dakontmossing bij MOS-X blijft je dak 2 jaar mosvrij. Komt er binnen die 2 jaar toch opnieuw mos op je dak, dan komen we langs en brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan." },
+  { q: "Hoe werkt de mosvrij-garantie?", a: "Na een dakontmossing bij MOS-X blijft je dak 2 jaar mosvrij. Komt er binnen die 2 jaar toch opnieuw mos op je dak, dan komen we langs en brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan." },
   { q: "Wat kost een dakreiniging?", a: "Geen enkel dak is hetzelfde. De prijs hangt af van de oppervlakte, bereikbaarheid, vervuiling, het type dakbedekking en de gekozen afwerking.\n\nDaarom werken we niet met standaardprijzen per m², maar bekijken we jouw dak persoonlijk, zodat je een correcte richtprijs ontvangt.", cta: true },
-  { q: "Hoe lang blijft mijn dak proper?", a: "Dat hangt af van de ligging van je woning, de hoeveelheid bomen rondom en de weersomstandigheden. Met de antimosbehandeling of MOS-X Dakzorg blijft je dak doorgaans langer proper." },
-  { q: "Hoe vaak moet je een dak laten reinigen?", a: "Een dak met veel schaduw, bomen of vocht vervuilt sneller dan een dak dat veel zon krijgt.\n\nGemiddeld volstaat een professionele reiniging om de 7 à 10 jaar. Een controle om de 2 à 3 jaar helpt om beginnende mosvorming tijdig op te merken." },
-  { q: "Is een dakcoating nodig na het reinigen?", a: "Niet verplicht, maar afhankelijk van de staat van je dak kan het sterk aanbevolen zijn. Een coating brengt opnieuw een beschermlaag aan die helpt tegen:\n✓ vochtopname\n✓ weersinvloeden\n✓ vorstschade\n✓ nieuwe mosvorming" },
+  { q: "Hoe lang blijft je dak proper?", a: "Dat hangt af van de ligging van je woning, de hoeveelheid bomen rondom en de weersomstandigheden. Met de antimosbehandeling of MOS-X Dakzorg blijft je dak doorgaans langer proper." },
+  { q: "Hoe vaak reinig je best je dak?", a: "Een dak met veel schaduw, bomen of vocht vervuilt sneller dan een dak dat veel zon krijgt.\n\nGemiddeld volstaat een professionele reiniging om de 7 à 10 jaar. Een controle om de 2 à 3 jaar helpt om beginnende mosvorming tijdig op te merken." },
+  { q: "Is daarna een coating nodig?", a: "Niet verplicht, maar afhankelijk van de staat van je dak kan het sterk aanbevolen zijn. Een coating brengt opnieuw een beschermlaag aan die helpt tegen:\n✓ vochtopname\n✓ weersinvloeden\n✓ vorstschade\n✓ nieuwe mosvorming" },
   { q: "Wat doen jullie bewust niet?", a: "Een verkeerde aanpak kan meer schade veroorzaken dan oplossen. Daarom vermijden we:\n✓ extreem hoge werkdruk\n✓ agressieve producten zoals bleekwater, javel of chloor\n✓ schadelijke chemische behandelingen" },
-  { q: "Welke kleine herstellingen kunnen jullie uitvoeren?", a: "Kleine herstellingen nemen we vaak meteen mee:\n✓ beschadigde dakpannen vervangen\n✓ nokpannen herstellen of vernieuwen\n✓ nokken uitcementeren\n✓ vogelwering plaatsen\n✓ kleine herstellingen aan dakgoten of afvoer" },
-  { q: "Wat gebeurt er met mos en vuil na de reiniging?", a: "Alle losgekomen mos, vuil en resten verzamelen we zorgvuldig. We nemen het afval mee en verwerken het correct. Wil je het zelf gebruiken als groenafval of compost, laat het ons gerust weten." },
-  { q: "Reinigen jullie asbesthoudende daken?", a: "Nee. Asbesthoudende dakmaterialen mogen volgens de huidige regelgeving niet gereinigd of ontmost worden. Bij twijfel bekijken we dit vooraf." },
+  { q: "Doen jullie herstellingen?", a: "Kleine herstellingen nemen we vaak meteen mee:\n✓ beschadigde dakpannen vervangen\n✓ nokpannen herstellen of vernieuwen\n✓ nokken uitcementeren\n✓ vogelwering plaatsen\n✓ kleine herstellingen aan dakgoten of afvoer" },
+  { q: "Wat gebeurt er met het mos?", a: "Alle losgekomen mos, vuil en resten verzamelen we zorgvuldig. We nemen het afval mee en verwerken het correct. Wil je het zelf gebruiken als groenafval of compost, laat het ons gerust weten." },
+  { q: "Reinigen jullie asbestdaken?", a: "Nee. Asbesthoudende dakmaterialen mogen volgens de huidige regelgeving niet gereinigd of ontmost worden. Bij twijfel bekijken we dit vooraf." },
 ];
 
 function WhatsAppIcoon() {

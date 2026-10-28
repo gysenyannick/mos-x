@@ -27,7 +27,7 @@ function AccordionItem({ faq, open, onToggle }: {
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 p-6 text-left"
+        className="w-full flex items-center justify-between gap-3 px-4 py-5 sm:p-6 text-left"
       >
         <div className="flex items-start gap-4 flex-1 min-w-0">
           <span

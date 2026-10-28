@@ -43,7 +43,7 @@ const vergelijk = [
 
 const faqs = [
   { q: "Wat is MOS-X Dakzorg?", a: "Onderhoud voor een dak dat al gereinigd is. We behandelen je dak preventief met een antimosmiddel, zodat het mos geen kans krijgt. Tegelijk kijken we je hele dak na." },
-  { q: "Wat kost een onderhoudsbeurt?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Je kent die prijs vooraf, zonder verrassingen." },
+  { q: "Wat kost onderhoud?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Je kent die prijs vooraf, zonder verrassingen." },
   { q: "Voor wie is Dakzorg?", a: "Voor wie zijn dak al heeft laten reinigen en het graag zo houdt. Omdat je dak al proper is, volstaat een antimosbehandeling." },
   { q: "Wat met grotere herstellingen?", a: "Kleine herstellingen nemen we meteen mee. Voor grotere herstellingen maken we eerst een aparte offerte, zodat je vooraf weet waar je aan toe bent." },
 ];

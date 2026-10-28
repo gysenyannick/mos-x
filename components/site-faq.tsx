@@ -15,11 +15,11 @@ const faqs = [
     a: "Niet elk dak heeft een coating nodig. We bekijken de staat van je dak en adviseren alleen wat écht een meerwaarde biedt.",
   },
   {
-    q: "Welke daktypes behandelen jullie?",
+    q: "Welke daken behandelen jullie?",
     a: "We behandelen vrijwel alle soorten daken, waaronder betonnen dakpannen, keramische dakpannen en leien. Alleen asbestdaken mogen we wettelijk niet reinigen.",
   },
   {
-    q: "Kan een dakreiniging mijn dak beschadigen?",
+    q: "Beschadigt reinigen mijn dak?",
     a: "Nee. We stemmen onze reinigingsmethode af op het type dak en de staat van de dakpannen. Zo reinigen we veilig én met respect voor jouw dak.",
   },
   {
@@ -27,7 +27,7 @@ const faqs = [
     a: "Dat hangt af van de omgeving, het type dak en de hoeveelheid schaduw. Met de juiste bescherming en periodieke opvolging blijft je dak jarenlang in optimale conditie.",
   },
   {
-    q: "Moet ik thuis zijn tijdens de werken?",
+    q: "Moet ik thuis zijn?",
     a: "Nee. Zolang we toegang hebben tot de woning kunnen de werken in de meeste gevallen zonder jouw aanwezigheid uitgevoerd worden.",
   },
   {
@@ -35,7 +35,7 @@ const faqs = [
     a: "De meeste projecten worden binnen één tot 2 werkdagen afgerond. Bij grotere of complexere daken informeren we je vooraf over de verwachte duur.",
   },
   {
-    q: "Is er garantie op de uitgevoerde werken?",
+    q: "Is er garantie op de werken?",
     a: "Ja. Afhankelijk van de gekozen behandeling of coating bieden we garantie op onze werkzaamheden. We leggen dit vooraf duidelijk uit in de offerte.",
   },
 ];
