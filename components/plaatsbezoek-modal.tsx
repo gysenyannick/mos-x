@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import GoogleScore from "@/components/google-score";
 import { ChevronRight, X, Check } from "lucide-react";
+import { FotoKiezer } from "@/components/foto-kiezer";
 
 const DIENSTEN = ["Dakreiniging", "Dakcoating", "MOS-X Dakzorg"];
 
@@ -49,11 +50,13 @@ export function PlaatsbezoekModal({
 }: Props) {
   const [diensten, setDiensten] = useState<string[]>(defaultDienst ? [defaultDienst] : []);
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [fotos, setFotos] = useState<File[]>([]);
 
   useEffect(() => {
     if (open) {
       setDiensten(defaultDienst ? [defaultDienst] : []);
       setStatus("idle");
+      setFotos([]);
     }
   }, [open, defaultDienst]);
 
@@ -86,6 +89,7 @@ export function PlaatsbezoekModal({
     const fd = new FormData(e.currentTarget);
     fd.set("dienst", diensten.join(", "));
     fd.set("bron", bron);
+    fotos.forEach((f, i) => fd.append(`foto_${i}`, f, f.name));
     try {
       const res = await fetch("/api/bezoek", { method: "POST", body: fd });
       setStatus(res.ok ? "done" : "error");
@@ -336,6 +340,14 @@ export function PlaatsbezoekModal({
                     className="pv-input"
                     style={{ background: "#F8F8F8", border: "1px solid #E0E0E0", borderRadius: "8px", color: "#111111", width: "100%", padding: "12px 14px", fontSize: "14px", outline: "none", fontFamily: "var(--font-inter), system-ui, sans-serif", boxSizing: "border-box" as const, resize: "none" as const }}
                   />
+                </div>
+
+                {/* Foto's (optioneel) */}
+                <div>
+                  <label className="pv-field-label" style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#555555", marginBottom: "5px", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>
+                    Foto&apos;s van je dak <span className="pv-optioneel" style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span>
+                  </label>
+                  <FotoKiezer fotos={fotos} onChange={setFotos} label="Foto's toevoegen" />
                 </div>
 
                 {status === "error" && (

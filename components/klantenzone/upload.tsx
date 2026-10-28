@@ -4,23 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, Loader2 } from "lucide-react";
 import kz from "./kz.module.css";
-
-/** Verkleint een foto in de browser (max. 1800 px, JPEG) zodat uploaden snel gaat. */
-async function comprimeer(file: File): Promise<Blob> {
-  if (!file.type.startsWith("image/") || file.type === "image/gif") return file;
-  try {
-    const bitmap = await createImageBitmap(file);
-    const schaal = Math.min(1, 1800 / Math.max(bitmap.width, bitmap.height));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(bitmap.width * schaal);
-    canvas.height = Math.round(bitmap.height * schaal);
-    canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/jpeg", 0.82));
-    return blob && blob.size < file.size ? blob : file;
-  } catch {
-    return file; // bv. HEIC in een browser die het niet kan lezen: origineel sturen
-  }
-}
+import { comprimeer } from "@/lib/foto";
 
 type Props = {
   klantId: string;

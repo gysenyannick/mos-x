@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendToBeavr } from "@/lib/beavr";
+import { fotoBijlagen } from "@/lib/foto";
 import {
   FROM_INTERN,
   FROM_KLANT,
@@ -35,13 +36,14 @@ export async function POST(req: NextRequest) {
     const bericht  = (data.get("bericht")  as string) ?? "";
 
     const dienst = DIENST_LABELS[dienstRaw] ?? dienstRaw;
+    const bijlagen = await fotoBijlagen(data);
 
     // ── Ook naar Beavr ───────────────────────────────────────────────────────
     await sendToBeavr({
       name: naam, email, phone: telefoon, address: adres || postcode,
       service: dienst || "Contactformulier",
       note: bericht,
-      answers: { Aanvraag: "Contactformulier", Dienst: dienst, Postcode: postcode },
+      answers: { Aanvraag: "Contactformulier", Dienst: dienst, Postcode: postcode, "Foto's": bijlagen.length ? `${bijlagen.length} meegestuurd (zie de mail)` : "" },
       page: "https://www.mos-x.be/contact",
     });
 
@@ -118,6 +120,15 @@ export async function POST(req: NextRequest) {
         </div>
         ` : ""}
 
+        ${bijlagen.length ? `
+        <!-- FOTO'S -->
+        <div style="padding: 24px 32px 0;">
+          <div style="background: #F4FBF0; border: 1px solid #CFE5B8; border-radius: 10px; padding: 14px 16px; font-size: 14px; color: #1A1A1A;">
+            📷 ${bijlagen.length} foto${bijlagen.length > 1 ? "'s" : ""} van het dak meegestuurd (zie bijlage).
+          </div>
+        </div>
+        ` : ""}
+
         <!-- FOOTER -->
         <div style="margin-top: 32px; padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
           <p style="margin: 0 0 4px; font-size: 14px; font-weight: 800; color: #1A1A1A;">MOS-X</p>
@@ -136,6 +147,7 @@ export async function POST(req: NextRequest) {
         reply_to: email || undefined,
         subject: `✉️ Contactaanvraag | ${naam} | ${dienst}`,
         html: yannickHtml,
+        ...(bijlagen.length ? { attachments: bijlagen } : {}),
       },
       idempotencyKey("contact-intern", email || telefoon, dienstRaw, postcode, bericht),
     );

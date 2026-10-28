@@ -8,6 +8,7 @@ import {
   plaatsbezoekKlantHtml,
   sendMail,
 } from "@/lib/mail";
+import { fotoBijlagen } from "@/lib/foto";
 
 export const runtime = "nodejs";
 
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
     const dienst   = (data.get("dienst")   as string) ?? "";
     const bericht  = (data.get("bericht")  as string) ?? "";
     const bron     = (data.get("bron")     as string) ?? "Website";
+    const bijlagen = await fotoBijlagen(data);
 
     // ── Ook naar Beavr ───────────────────────────────────────────────────────
     await sendToBeavr({
@@ -31,7 +33,7 @@ export async function POST(req: NextRequest) {
       email, phone: tel, address: [postcode, gemeente].filter(Boolean).join(" "),
       service: dienst || "Plaatsbezoek",
       note: bericht,
-      answers: { Aanvraag: "Gratis plaatsbezoek", Dienst: dienst, Gemeente: gemeente, Postcode: postcode, Via: bron },
+      answers: { Aanvraag: "Gratis plaatsbezoek", Dienst: dienst, Gemeente: gemeente, Postcode: postcode, Via: bron, "Foto's": bijlagen.length ? `${bijlagen.length} meegestuurd (zie de mail)` : "" },
       page: `https://www.mos-x.be (plaatsbezoek, ${bron})`,
     });
 
@@ -106,6 +108,15 @@ export async function POST(req: NextRequest) {
         </div>
         ` : ""}
 
+        ${bijlagen.length ? `
+        <!-- FOTO'S -->
+        <div style="padding: 24px 32px 0;">
+          <div style="background: #F4FBF0; border: 1px solid #CFE5B8; border-radius: 10px; padding: 14px 16px; font-size: 14px; color: #1A1A1A;">
+            📷 ${bijlagen.length} foto${bijlagen.length > 1 ? "'s" : ""} van het dak meegestuurd (zie bijlage).
+          </div>
+        </div>
+        ` : ""}
+
         <!-- FOOTER -->
         <div style="margin-top: 32px; padding: 24px 32px; border-top: 1px solid #E5E7EB; text-align: center;">
           <p style="margin: 0 0 4px; font-size: 14px; font-weight: 800; color: #1A1A1A;">MOS-X</p>
@@ -127,6 +138,7 @@ export async function POST(req: NextRequest) {
         reply_to: email || undefined,
         subject: `🏠 Gratis plaatsbezoek | ${voornaam} ${naam} | ${dienst}`,
         html: yannickHtml,
+        ...(bijlagen.length ? { attachments: bijlagen } : {}),
       },
       idempotencyKey("bezoek-intern", email || tel, dienst, postcode, bericht),
     );

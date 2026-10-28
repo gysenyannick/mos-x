@@ -8,6 +8,7 @@ import PageLayout from "@/components/page-layout";
 import GoogleBalk from "@/components/google-balk";
 import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
+import { FotoKiezer } from "@/components/foto-kiezer";
 
 function WhatsAppIcoon() {
   return (
@@ -92,6 +93,7 @@ const CONTACT_CSS = `
 export default function ContactPage() {
   const [velden, setVelden] = useState({ voornaam: "", achternaam: "", email: "", telefoon: "", postcode: "", adres: "", dienst: "", bericht: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [fotos, setFotos] = useState<File[]>([]);
   const zet = (k: keyof typeof velden) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setVelden((v) => ({ ...v, [k]: e.target.value }));
 
   useEffect(() => {
@@ -111,6 +113,7 @@ export default function ContactPage() {
     try {
       const fd = new FormData();
       Object.entries(velden).forEach(([k, v]) => fd.append(k, v));
+      fotos.forEach((f, i) => fd.append(`foto_${i}`, f, f.name));
       const res = await fetch("/api/contact", { method: "POST", body: fd });
       if (!res.ok) throw new Error("send_failed");
       setStatus("success");
@@ -173,6 +176,7 @@ export default function ContactPage() {
                       </select>
                     </div>
                     <div className="ct-veld breed"><label htmlFor="bericht">Bericht</label><textarea id="bericht" name="bericht" rows={4} placeholder="Vertel kort over je dak of je vraag" value={velden.bericht} onChange={zet("bericht")} /></div>
+                    <div className="ct-veld breed"><label>Foto&apos;s van je dak <span style={{ fontWeight: 400, color: "#9CA3AF" }}>(optioneel)</span></label><FotoKiezer fotos={fotos} onChange={setFotos} /></div>
                   </div>
                   <button type="submit" className="do-knop do-knop-g ct-verstuur mx-glow" disabled={status === "sending"}>
                     {status === "sending" ? <Loader2 size={18} className="ct-spin" /> : <Send size={17} />}
