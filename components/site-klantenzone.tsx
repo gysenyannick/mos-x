@@ -27,7 +27,7 @@ export default function SiteKlantenzone() {
       </svg>
       <MosAchtergrond hoek="linksonder" />
       {/* Onderaan zacht laten uitvloeien in de achtergrond van het volgende blok */}
-      <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "220px", zIndex: -1, pointerEvents: "none", background: "linear-gradient(to bottom, rgba(247,248,246,0), #F7F8F6 85%)" }} />
+      <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "240px", zIndex: 0, pointerEvents: "none", background: "linear-gradient(to bottom, rgba(247,248,246,0), #F7F8F6 75%)" }} />
       <style>{`
         .kzp-raster { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 40px; align-items: center; max-width: 1080px; margin: 0 auto; }
         .kzp-oog { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #9BCB6C; font-family: var(--font-montserrat), system-ui, sans-serif; }
@@ -47,7 +47,7 @@ export default function SiteKlantenzone() {
         .kzp-link:hover { color: #7AB54E; }
 
         /* De gsm */
-        .kzp-gsm { position: relative; width: 290px; max-width: 100%; margin: 0 auto; aspect-ratio: 320 / 640; border-radius: 46px; padding: 11px; background: #0B0F0C; box-shadow: 0 40px 80px -30px rgba(11,15,12,0.55), inset 0 0 0 2px #2A2F2B; }
+        .kzp-gsm { position: relative; width: 290px; max-width: 100%; margin: 0 auto; aspect-ratio: 320 / 640; border-radius: 46px; padding: 11px; background: #0B0F0C; box-shadow: 0 28px 56px -28px rgba(11,15,12,0.55), inset 0 0 0 2px #2A2F2B; }
         .kzp-scherm { position: relative; height: 100%; border-radius: 36px; overflow: hidden; background: #F7F8F6; font-family: var(--font-inter), system-ui, sans-serif; }
         .kzp-kop { padding: 12px 22px 22px; background: linear-gradient(160deg, #1E3324 0%, #16261A 100%); color: #fff; }
         .kzp-status { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; }

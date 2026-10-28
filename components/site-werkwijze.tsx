@@ -27,7 +27,7 @@ const delen = [
 export default function SiteWerkwijze() {
   return (
     <section style={{
-      background: "radial-gradient(900px 500px at 85% 10%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(800px 500px at 10% 100%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
+      background: "radial-gradient(900px 500px at 85% 40%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(800px 500px at 10% 100%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
       padding: "100px 0", width: "100%", position: "relative", overflow: "hidden",
     }}>
       {/* Zachte golven onderaan, zoals een heuvellandschap */}
