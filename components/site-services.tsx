@@ -36,15 +36,15 @@ const services = [
   },
   {
     id: "dakabonnement",
-    title: "MOS-X Dakzorg",
+    title: "Onderhoudsplan",
     imgSubtitle: "Jaarlijkse controle en onderhoud.",
     badge: "Onderhoudsplan",
-    href: "/diensten/mos-x-dakzorg",
+    href: "/diensten/onderhoudsplan",
     img: "/images/Foto_dakzorg.png",
     video: null,
     Icon: CalendarCheck,
     desc: "Wij volgen je dak op en helpen het jarenlang verzorgd te houden.",
-    link: "Ontdek Dakzorg",
+    link: "Ontdek het onderhoudsplan",
   },
 ];
 

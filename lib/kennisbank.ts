@@ -186,7 +186,7 @@ export const ARTIKELS: Artikel[] = [
       {
         kop: "2. Preventief onderhoud",
         tekst: [
-          "Door je dak tijdig opnieuw te behandelen met een antimosmiddel, voorkom je dat er weer een dikke laag mos groeit. Zo is een volledige reiniging niet meer nodig. Met MOS-X Dakzorg doen we dat voor je, samen met een controle van je hele dak.",
+          "Door je dak tijdig opnieuw te behandelen met een antimosmiddel, voorkom je dat er weer een dikke laag mos groeit. Zo is een volledige reiniging niet meer nodig. Met het MOS-X Onderhoudsplan doen we dat voor je, samen met een controle van je hele dak.",
         ],
       },
       {
@@ -271,7 +271,7 @@ export const ARTIKELS: Artikel[] = [
       {
         kop: "Hoe lang blijft het proper?",
         tekst: [
-          "Dat hangt af van de ligging van je woning: veel schaduw en bomen betekenen sneller nieuwe groei. Na een dakontmossing bij MOS-X krijg je 2 jaar mosvrij-garantie, en met MOS-X Dakzorg houd je je dak daarna preventief proper.",
+          "Dat hangt af van de ligging van je woning: veel schaduw en bomen betekenen sneller nieuwe groei. Na een dakontmossing bij MOS-X krijg je 2 jaar mosvrij-garantie, en met het MOS-X Onderhoudsplan houd je je dak daarna preventief proper.",
         ],
       },
     ],
@@ -502,7 +502,7 @@ export const ARTIKELS: Artikel[] = [
       {
         kop: "Uitstellen met preventief onderhoud",
         tekst: [
-          "De slimste aanpak is je dak na de reiniging proper te houden, zodat er nooit meer een dikke laag mos groeit. Met MOS-X Dakzorg behandelen we je dak preventief met een antimosmiddel en controleren we meteen je hele dak. Zo is een volledige reiniging niet meer nodig.",
+          "De slimste aanpak is je dak na de reiniging proper te houden, zodat er nooit meer een dikke laag mos groeit. Met het MOS-X Onderhoudsplan behandelen we je dak preventief met een antimosmiddel en controleren we meteen je hele dak. Zo is een volledige reiniging niet meer nodig.",
         ],
       },
       {

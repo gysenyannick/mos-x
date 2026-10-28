@@ -134,7 +134,7 @@ export default function SiteFooter() {
             <span style={colTitle}>Diensten</span>
             <FLink href="/diensten/dakontmossing">Dakreiniging</FLink>
             <FLink href="/diensten/dakcoating">Dakcoating</FLink>
-            <FLink href="/contact">MOS-X Dakzorg</FLink>
+            <FLink href="/contact">Onderhoudsplan</FLink>
           </div>
 
           {/* Col 3 — Regio's */}

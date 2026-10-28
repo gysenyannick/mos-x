@@ -17,7 +17,7 @@ export const runtime = "nodejs";
 const DIENST_LABELS: Record<string, string> = {
   dakreiniging: "Dakreiniging",
   dakcoating: "Dakcoating",
-  dakabonnement: "MOS-X Dakzorg",
+  dakabonnement: "MOS-X Onderhoudsplan",
   "weet-niet": "Andere",
 };
 

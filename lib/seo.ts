@@ -71,7 +71,7 @@ export const bedrijfSchema = {
     itemListElement: [
       { "@type": "Offer", itemOffered: { "@id": `${SITE}/diensten/dakontmossing#dienst` } },
       { "@type": "Offer", itemOffered: { "@id": `${SITE}/diensten/dakcoating#dienst` } },
-      { "@type": "Offer", itemOffered: { "@id": `${SITE}/diensten/mos-x-dakzorg#dienst` } },
+      { "@type": "Offer", itemOffered: { "@id": `${SITE}/diensten/onderhoudsplan#dienst` } },
     ],
   },
 };

@@ -243,7 +243,7 @@ export const CAMPAGNE_TYPE_LABEL: Record<CampagneType, string> = {
   combinatie: "Combinatieactie",
   persoonlijk: "Persoonlijke klantactie",
   klanten: "Voordeel voor bestaande klanten",
-  dakzorg: "Dakzorg-ledenactie",
+  dakzorg: "Onderhoudsplan-ledenactie",
   capaciteit: "Vrije plaats in de planning",
   buurt: "Buurtactie",
 };

@@ -5,7 +5,7 @@ import GoogleScore from "@/components/google-score";
 import { ChevronRight, X, Check } from "lucide-react";
 import { FotoKiezer } from "@/components/foto-kiezer";
 
-const DIENSTEN = ["Dakreiniging", "Dakcoating", "MOS-X Dakzorg"];
+const DIENSTEN = ["Dakreiniging", "Dakcoating", "MOS-X Onderhoudsplan"];
 
 function formatBelgianPhone(raw: string): string {
   if (!raw) return raw;

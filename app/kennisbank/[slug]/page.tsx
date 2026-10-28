@@ -38,8 +38,8 @@ const CTA: Record<Artikel["cta"], { titel: string; tekst: string; knoppen: [stri
   },
   dakzorg: {
     titel: "Je dak proper houden?",
-    tekst: "Met MOS-X Dakzorg behandelen we je dak preventief tegen mos en controleren we meteen je hele dak.",
-    knoppen: [["Ontdek MOS-X Dakzorg", "/diensten/mos-x-dakzorg"], ["Bereken je richtprijs", "/#calculator"]],
+    tekst: "Met het MOS-X Onderhoudsplan behandelen we je dak preventief tegen mos en controleren we meteen je hele dak.",
+    knoppen: [["Ontdek het onderhoudsplan", "/diensten/onderhoudsplan"], ["Bereken je richtprijs", "/#calculator"]],
   },
   asbest: {
     titel: "Twijfel je over asbest?",

@@ -20,7 +20,7 @@ const delen = [
     stappen: [
       { titel: "Professionele uitvoering", tekst: "We werken op het afgesproken moment, netjes en zorgvuldig. In je klantenzone zie je de planning, foto's van de werken en hoe ver we staan." },
       { titel: "Oplevering & nazorg", tekst: "We leveren pas op als alles netjes is. Je documenten en garantie vind je in je klantenzone, en we blijven bereikbaar voor je vragen." },
-      { titel: "Opvolging met Dakzorg", tekst: "Met MOS-X Dakzorg volgen we je dak op, zodat het jarenlang verzorgd blijft." },
+      { titel: "Onderhoudsplan", tekst: "Met het MOS-X Onderhoudsplan volgen we je dak op, zodat het jarenlang verzorgd blijft." },
     ],
   },
 ];

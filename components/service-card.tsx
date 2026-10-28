@@ -56,10 +56,10 @@ export const serviceCards: ServiceCardData[] = [
   },
   {
     id: "dakabonnement",
-    title: "MOS-X Dakzorg",
+    title: "Onderhoudsplan",
     imgSubtitle: "Jaarlijkse controle en onderhoud.",
     badge: "Onderhoudsplan",
-    href: "/diensten/mos-x-dakzorg",
+    href: "/diensten/onderhoudsplan",
     img: "/images/Foto_dakzorg.png",
     video: null,
     Icon: CalendarCheck,
@@ -69,7 +69,7 @@ export const serviceCards: ServiceCardData[] = [
       "Jaarlijkse controle door een specialist",
       "Problemen oplossen vóór ze duur worden",
     ],
-    link: "Ontdek MOS-X Dakzorg",
+    link: "Ontdek het onderhoudsplan",
   },
 ];
 

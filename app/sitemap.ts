@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     pagina("/", 1, "weekly"),
     pagina("/diensten/dakontmossing", 0.9),
     pagina("/diensten/dakcoating", 0.9),
-    pagina("/diensten/mos-x-dakzorg", 0.8),
+    pagina("/diensten/onderhoudsplan", 0.8),
     pagina("/diensten", 0.7),
     pagina("/realisaties", 0.8, "weekly"),
     pagina("/over-ons", 0.6),

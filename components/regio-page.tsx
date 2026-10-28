@@ -46,7 +46,7 @@ interface RegioPageProps {
 const defaultServices: ServiceItem[] = [
   { title: "Dak reinigen", desc: "biologische verwijdering van mos, algen en korstmos" },
   { title: "Dak coaten",   desc: "beschermende coating met schriftelijke garantie" },
-  { title: "MOS-X Dakzorg", desc: "preventief onderhoud na een reiniging" },
+  { title: "Onderhoudsplan", desc: "preventief onderhoud na een reiniging" },
 ];
 
 export default function RegioPage({

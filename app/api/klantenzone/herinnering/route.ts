@@ -56,7 +56,7 @@ export async function GET(req: Request) {
         soort: "controle", sleutel: `c12-${c12.datum}`,
         onderwerp: "Je gratis dakcontrole komt eraan",
         tekst: `Rond ${fmtMaand(c12.datum)} komt Yannick je dak gratis nakijken, 12 maanden na je werken. Je krijgt nog een voorstel van datum.`,
-        knop: { label: "Bekijk je dakzorg", tab: "dakzorg" },
+        knop: { label: "Bekijk je onderhoud", tab: "dakzorg" },
       });
     }
 

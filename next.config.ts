@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
     return [
       // Gevelreiniging bieden we niet aan; oude links uit Google komen bij de diensten uit.
       { source: "/diensten/gevelreiniging", destination: "/diensten", permanent: true },
+      // MOS-X Dakzorg heet nu Onderhoudsplan.
+      { source: "/diensten/mos-x-dakzorg", destination: "/diensten/onderhoudsplan", permanent: true },
     ];
   },
 };

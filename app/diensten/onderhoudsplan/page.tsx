@@ -20,7 +20,7 @@ const voordelen = [
 ];
 
 const stappen = [
-  { nr: "01", titel: "Aanvragen", tekst: "Je vraagt Dakzorg aan, wij plannen een datum." },
+  { nr: "01", titel: "Aanvragen", tekst: "Je vraagt een onderhoudsplan aan, wij plannen een datum." },
   { nr: "02", titel: "Antimosbehandeling", tekst: "We houden het mos preventief weg." },
   { nr: "03", titel: "Dakinspectie", tekst: "Met een rapport in je klantenzone." },
 ];
@@ -42,9 +42,9 @@ const vergelijk = [
 ];
 
 const faqs = [
-  { q: "Wat is MOS-X Dakzorg?", a: "Onderhoud voor een dak dat al gereinigd is. We behandelen je dak preventief met een antimosmiddel, zodat het mos geen kans krijgt. Tegelijk kijken we je hele dak na." },
+  { q: "Wat is het onderhoudsplan?", a: "Onderhoud voor een dak dat al gereinigd is. We behandelen je dak preventief met een antimosmiddel, zodat het mos geen kans krijgt. Tegelijk kijken we je hele dak na." },
   { q: "Wat kost onderhoud?", a: "Een onderhoudsbeurt kost vanaf €250. De exacte prijs hangt af van de grootte van je dak. Je kent die prijs vooraf, zonder verrassingen." },
-  { q: "Voor wie is Dakzorg?", a: "Voor wie zijn dak al heeft laten reinigen en het graag zo houdt. Omdat je dak al proper is, volstaat een antimosbehandeling." },
+  { q: "Voor wie is het onderhoudsplan?", a: "Voor wie zijn dak al heeft laten reinigen en het graag zo houdt. Omdat je dak al proper is, volstaat een antimosbehandeling." },
   { q: "Wat met grotere herstellingen?", a: "Kleine herstellingen nemen we meteen mee. Voor grotere herstellingen maken we eerst een aparte offerte, zodat je vooraf weet waar je aan toe bent." },
 ];
 
@@ -123,12 +123,12 @@ export default function MosXDakzorgPage() {
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/diensten" dark />
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Dakzorg</p>
-            <p className="do-oog">MOS-X Dakzorg</p>
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Onderhoudsplan</p>
+            <p className="do-oog">MOS-X Onderhoudsplan</p>
             <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
             <p className="do-p">Wij houden het mos weg en je dak in het oog. Zo ligt het er jarenlang mooi bij.</p>
             <div className="do-hero-knoppen">
-              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag een onderhoudsplan aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
             <div className="do-hero-bewijs">
@@ -146,7 +146,7 @@ export default function MosXDakzorgPage() {
             <img src="/images/7.JPEG" alt="Verzorgde pannendaken na onderhoud" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
           </div>
           <div>
-            <p className="do-oog">Waarom Dakzorg?</p>
+            <p className="do-oog">Waarom een onderhoudsplan?</p>
             <h2 className="do-h2">Langer genieten van <span style={{ display: "block" }}>een verzorgd dak.</span></h2>
             <ul className="do-voordelen">
               {voordelen.map(({ Icoon, titel }) => (
@@ -165,7 +165,7 @@ export default function MosXDakzorgPage() {
               <p className="do-oog">Zo werkt het</p>
               <h2 className="do-h2">In drie stappen <span>naar een verzorgd dak.</span></h2>
             </div>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag een onderhoudsplan aan<ChevronRight size={17} /></button>
           </div>
           <div className="dz-stappen">
             {stappen.map((s) => (
@@ -199,7 +199,7 @@ export default function MosXDakzorgPage() {
                 );
               })}
             </div>
-            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Vraag Dakzorg aan</button>
+            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Vraag een onderhoudsplan aan</button>
           </div>
         </div>
       </section>
@@ -219,7 +219,7 @@ export default function MosXDakzorgPage() {
           </div>
           <div className="dz-plan">
             <div className="dz-plan-kop">
-              <span className="dz-plan-naam">MOS-X Dakzorg</span>
+              <span className="dz-plan-naam">MOS-X Onderhoudsplan</span>
               <span className="dz-plan-label">Op maat</span>
             </div>
             <div className="dz-plan-prijs"><small>vanaf</small><b>€250</b><span>per onderhoudsbeurt</span></div>
@@ -228,7 +228,7 @@ export default function MosXDakzorgPage() {
             <ul>
               {inbegrepen.map((i) => <li key={i.titel}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{i.titel}</li>)}
             </ul>
-            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+            <button type="button" className="do-knop do-knop-g" onClick={() => setBezoekOpen(true)}>Vraag een onderhoudsplan aan<ChevronRight size={17} /></button>
             <p className="dz-plan-noot">Grote herstellingen via aparte offerte</p>
           </div>
         </div>
@@ -240,12 +240,12 @@ export default function MosXDakzorgPage() {
           <div className="do-kop">
             <div>
               <p className="do-oog">Het verschil</p>
-              <h2 className="do-h2">Met of zonder <span>Dakzorg.</span></h2>
+              <h2 className="do-h2">Met of zonder <span>onderhoudsplan.</span></h2>
             </div>
             <p className="do-p">Een dak dat regelmatig onderhouden wordt, gaat jaren langer mee.</p>
           </div>
           <div className="dz-vgl">
-            <div className="dz-vgl-kop"><span>Zonder Dakzorg</span><span>Met MOS-X Dakzorg</span></div>
+            <div className="dz-vgl-kop"><span>Zonder onderhoudsplan</span><span>Met onderhoudsplan</span></div>
             {vergelijk.map((v) => (
               <div key={v.met} className="dz-vgl-rij">
                 <span><X size={17} color="#B0B6AC" aria-hidden="true" />{v.zonder}</span>
@@ -262,7 +262,7 @@ export default function MosXDakzorgPage() {
           <div className="do-kop">
             <div>
               <p className="do-oog">Veelgestelde vragen</p>
-              <h2 className="do-h2">Alles over <span>Dakzorg.</span></h2>
+              <h2 className="do-h2">Alles over het <span>onderhoudsplan.</span></h2>
             </div>
           </div>
           <div className="do-faq">
@@ -292,14 +292,14 @@ export default function MosXDakzorgPage() {
               <GoogleScore donker />
             </div>
             <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag Dakzorg aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag een onderhoudsplan aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
           </div>
         </div>
       </section>
 
-      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Dakzorg" bron="Dakzorg pagina" titel="Vraag Dakzorg aan" subtitel="We nemen contact op en plannen een datum." voorbeeld="Bv. Mijn dak werd vorig jaar gereinigd. Een beurt in het voorjaar zou ideaal zijn." />
+      <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} defaultDienst="MOS-X Onderhoudsplan" bron="Onderhoudsplan pagina" titel="Vraag een onderhoudsplan aan" subtitel="We nemen contact op en plannen een datum." voorbeeld="Bv. Mijn dak werd vorig jaar gereinigd. Een beurt in het voorjaar zou ideaal zijn." />
     </PageLayout>
   );
 }

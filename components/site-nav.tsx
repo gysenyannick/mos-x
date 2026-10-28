@@ -10,7 +10,7 @@ import { BtnPress } from "@/components/btn-press";
 const diensten = [
   { label: "Dakontmossen",  href: "/diensten/dakontmossing" },
   { label: "Dakcoaten",     href: "/diensten/dakcoating" },
-  { label: "MOS-X Dakzorg", href: "/diensten/mos-x-dakzorg" },
+  { label: "Onderhoudsplan", href: "/diensten/onderhoudsplan" },
 ];
 
 const links = [
@@ -23,7 +23,7 @@ const links = [
 const mobieleDiensten = [
   { label: "Dakontmossen",  sub: "", href: "/diensten/dakontmossing", Icoon: Droplets },
   { label: "Dakcoaten",     sub: "", href: "/diensten/dakcoating",    Icoon: Paintbrush },
-  { label: "MOS-X Dakzorg", sub: "",                                href: "/diensten/mos-x-dakzorg",  Icoon: CalendarCheck },
+  { label: "Onderhoudsplan", sub: "",                                href: "/diensten/onderhoudsplan",  Icoon: CalendarCheck },
 ];
 
 const mobieleLinks = [
@@ -49,7 +49,7 @@ export default function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const isDakzorg = pathname === "/diensten/mos-x-dakzorg";
+  const isDakzorg = pathname === "/diensten/onderhoudsplan";
 
   // Gsm-menu: de pagina eronder scrolt niet mee, Escape sluit het menu
   useEffect(() => {
@@ -252,7 +252,7 @@ export default function SiteNav() {
                 onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
               >
-                MOS-X Dakzorg aanvragen
+                Onderhoudsplan aanvragen
                 <ChevronRight size={13} strokeWidth={2.5} />
               </BtnPress>
             ) : (
@@ -379,7 +379,7 @@ export default function SiteNav() {
 
           <div className="mm-voet">
             {isDakzorg ? (
-              <a href="#dakzorg-prijs" onClick={() => setMobileOpen(false)} className="mm-knop mm-knop-g mx-glow">MOS-X Dakzorg aanvragen<ChevronRight size={17} /></a>
+              <a href="#dakzorg-prijs" onClick={() => setMobileOpen(false)} className="mm-knop mm-knop-g mx-glow">Onderhoudsplan aanvragen<ChevronRight size={17} /></a>
             ) : (
               <Link href="/#calculator" onClick={() => setMobileOpen(false)} className="mm-knop mm-knop-g mx-glow">Bereken mijn richtprijs<ChevronRight size={17} /></Link>
             )}

@@ -171,7 +171,7 @@ export default function ContactPage() {
                         <option value="" disabled>Kies een dienst</option>
                         <option value="Dakreiniging">Dakontmossen</option>
                         <option value="Dakcoating">Dakcoaten</option>
-                        <option value="MOS-X Dakzorg">MOS-X Dakzorg</option>
+                        <option value="MOS-X Onderhoudsplan">MOS-X Onderhoudsplan</option>
                         <option value="Andere">Andere vraag</option>
                       </select>
                     </div>

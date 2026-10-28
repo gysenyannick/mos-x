@@ -45,7 +45,7 @@ function werkenUitDienst(dienst: string) {
     d.includes("reiniging") && !d.includes("gevel") && "Dakreiniging",
     d.includes("coating") && "Dakcoating",
     d.includes("gevel") && "Gevelreiniging",
-    d.includes("dakzorg") && "Inspectie",
+    (d.includes("dakzorg") || d.includes("onderhoudsplan")) && "Inspectie",
   ].filter((x): x is string => !!x);
   return namen.map((naam) => ({ id: nieuwId(6), naam, status: "gepland" as const }));
 }
@@ -385,7 +385,7 @@ export async function bewaarDakzorg(id: string, fd: FormData) {
   const k = await laad(id);
   const actief = s(fd, "actief") === "ja";
   if (actief && !k.dakzorg?.actief) {
-    k.log.unshift({ datum: new Date().toISOString(), tekst: "Welkom bij MOS-X Dakzorg! Je dak wordt vanaf nu jaarlijks opgevolgd." });
+    k.log.unshift({ datum: new Date().toISOString(), tekst: "Welkom bij het MOS-X Onderhoudsplan! Je dak wordt vanaf nu jaarlijks opgevolgd." });
   }
   k.dakzorg = { actief, sinds: s(fd, "sinds") || (actief ? new Date().toISOString().slice(0, 10) : undefined), prijs: s(fd, "prijs") || undefined };
   await saveKlant(k);

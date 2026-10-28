@@ -244,7 +244,7 @@ export const AANVRAAG_LABEL: Record<AanvraagSoort, string> = {
   onderhoud: "Onderhoud inplannen",
   controle: "Dakcontrole",
   aanbeveling: "Aanbeveling laten uitvoeren",
-  dakzorg: "Interesse in MOS-X Dakzorg",
+  dakzorg: "Interesse in het MOS-X Onderhoudsplan",
   schade: "Stormschade of probleem",
   extra: "Extra dienst",
   verzetten: "Voorstel andere datum",
@@ -295,7 +295,7 @@ export type Dakzorg = {
   prijs?: string;
 };
 
-/** Wat in MOS-X Dakzorg zit (zelfde lijst als op de website). */
+/** Wat in MOS-X Onderhoudsplan zit (zelfde lijst als op de website). */
 export const DAKZORG_INBEGREPEN = [
   "Jaarlijkse inspectie van je dak",
   "Preventieve reiniging waar nodig",
