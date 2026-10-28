@@ -323,7 +323,7 @@ export default function SiteServices() {
             href="https://wa.me/32468352869"
             target="_blank"
             className="inline-flex items-center"
-            style={{ border: "none", color: "#FFFFFF", background: "#9BCB6C", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "background-color 0.2s ease", gap: "10px", width: "min(100%, 330px)", justifyContent: "center" }}
+            style={{ border: "none", color: "#FFFFFF", background: "#9BCB6C", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "background-color 0.2s ease", gap: "10px", width: "min(100%, 330px)", justifyContent: "center", whiteSpace: "nowrap", paddingLeft: "16px", paddingRight: "16px" }}
             onMouseEnter={e => (e.currentTarget.style.background = "#7AB54E")}
             onMouseLeave={e => (e.currentTarget.style.background = "#9BCB6C")}
           >
@@ -336,7 +336,7 @@ export default function SiteServices() {
             type="button"
             onClick={() => setBezoekOpen(true)}
             className="inline-flex items-center"
-            style={{ cursor: "pointer", border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease", gap: "8px", width: "min(100%, 330px)", justifyContent: "center" }}
+            style={{ cursor: "pointer", border: "1px solid rgba(155,203,108,0.5)", color: "#FFFFFF", background: "transparent", borderRadius: "10px", padding: "14px 28px", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", transition: "border-color 0.2s ease, color 0.2s ease", gap: "8px", width: "min(100%, 330px)", justifyContent: "center", whiteSpace: "nowrap", paddingLeft: "16px", paddingRight: "16px" }}
             onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
           >
