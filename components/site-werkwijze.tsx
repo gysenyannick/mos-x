@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { ChevronRight, Plus } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 const delen = [
@@ -25,6 +26,8 @@ const delen = [
 ];
 
 export default function SiteWerkwijze() {
+  // Welke stap open staat; standaard alles dicht, zodat het blok rustig oogt
+  const [open, setOpen] = useState<number | null>(null);
   return (
     <section style={{
       background: "radial-gradient(900px 500px at 85% 40%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(800px 500px at 10% 100%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
@@ -52,11 +55,21 @@ export default function SiteWerkwijze() {
         .ww-label { display: inline-block; padding: 6px 12px; border-radius: 999px; background: #1A1A1A; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .ww-titel { margin: 14px 0 10px; font-size: 24px; font-weight: 800; letter-spacing: -0.028em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
         .ww-stappen { list-style: none; margin: 0; padding: 0; }
-        .ww-stappen li { min-height: 104px; box-sizing: border-box; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 14px; padding: 18px 0; border-top: 1px solid #E5E7EB; }
+        .ww-stappen li { border-top: 1px solid #E5E7EB; }
         .ww-stappen li:first-child { border-top: 0; }
+        .ww-vraag { width: 100%; display: grid; grid-template-columns: 34px minmax(0, 1fr) 28px; align-items: center; gap: 14px; padding: 16px 0; border: 0; background: transparent; text-align: left; cursor: pointer; }
+        .ww-vraag:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 8px; }
+        .ww-vraag:hover .ww-plus { background: #DCEFC9; }
+        .ww-vraag:active .ww-plus { transform: scale(0.92); }
         .ww-nr { width: 34px; height: 34px; border-radius: 50%; background: #9BCB6C; color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 800; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .ww-stap-titel { margin: 5px 0 0; font-size: 16px; font-weight: 700; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .ww-stap-tekst { margin: 4px 0 0; max-width: 270px; font-size: 14.5px; line-height: 1.55; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: balance; }
+        .ww-stap-titel { font-size: 16px; font-weight: 700; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
+        .ww-plus { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #EEF6E6; color: #7AB54E; transition: transform .3s ease, background-color .2s ease, color .2s ease; }
+        .ww-vraag[aria-expanded="true"] .ww-plus { transform: rotate(45deg); background: #9BCB6C; color: #fff; }
+        .ww-antw { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+        .ww-antw.open { grid-template-rows: 1fr; }
+        .ww-antw > div { overflow: hidden; }
+        .ww-stap-tekst { margin: 0; padding: 0 0 18px 48px; font-size: 14.5px; line-height: 1.6; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
+        @media (prefers-reduced-motion: reduce) { .ww-antw, .ww-plus { transition: none; } }
         @media (max-width: 1024px) {
           .ww-raster { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
           .ww-foto { grid-column: 1 / -1; min-height: 280px; }
@@ -66,6 +79,11 @@ export default function SiteWerkwijze() {
           .ww-foto { min-height: 220px; }
           .ww-kaart { padding: 22px 20px 4px; }
           .ww-bollen { display: none; }
+          .ww-vraag { grid-template-columns: 30px minmax(0, 1fr) 26px; gap: 12px; }
+          .ww-nr { width: 30px; height: 30px; font-size: 13px; }
+          .ww-plus { width: 26px; height: 26px; }
+          .ww-stap-titel { font-size: 15px; }
+          .ww-stap-tekst { padding-left: 42px; }
         }
       `}</style>
       <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
@@ -100,15 +118,22 @@ export default function SiteWerkwijze() {
               <span className="ww-label">{d.label}</span>
               <h3 className="ww-titel">{d.titel}</h3>
               <ol className="ww-stappen">
-                {d.stappen.map((s, si) => (
-                  <li key={s.titel}>
-                    <span className="ww-nr">{di * 3 + si + 1}</span>
-                    <div>
-                      <p className="ww-stap-titel">{s.titel}</p>
-                      <p className="ww-stap-tekst">{s.tekst}</p>
-                    </div>
-                  </li>
-                ))}
+                {d.stappen.map((s, si) => {
+                  const nr = di * 3 + si + 1;
+                  const isOpen = open === nr;
+                  return (
+                    <li key={s.titel}>
+                      <button type="button" className="ww-vraag" aria-expanded={isOpen} aria-controls={`ww-stap-${nr}`} onClick={() => setOpen(isOpen ? null : nr)}>
+                        <span className="ww-nr">{nr}</span>
+                        <span className="ww-stap-titel">{s.titel}</span>
+                        <span className="ww-plus"><Plus size={16} strokeWidth={2.5} /></span>
+                      </button>
+                      <div id={`ww-stap-${nr}`} className={`ww-antw${isOpen ? " open" : ""}`}>
+                        <div><p className="ww-stap-tekst">{s.tekst}</p></div>
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
             </div>
           ))}
