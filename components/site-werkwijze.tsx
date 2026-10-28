@@ -17,7 +17,7 @@ const delen = [
     label: "Deel 2",
     titel: "Je dak",
     stappen: [
-      { titel: "Professionele uitvoering", tekst: "Vakkundig en zorgvuldig, op het afgesproken moment." },
+      { titel: "Professionele uitvoering", tekst: "Je volgt de werken op in je klantenzone." },
       { titel: "Oplevering & nazorg", tekst: "We leveren pas op als alles netjes is, en blijven bereikbaar." },
       { titel: "Jaarlijkse opvolging", tekst: "Met MOS-X Dakzorg blijft je dak jarenlang verzorgd." },
     ],
