@@ -10,7 +10,7 @@ const delen = [
     titel: "Je offerte",
     stappen: [
       { titel: "Richtprijs berekenen", tekst: "Vul in een paar stappen je woning en je dak in, en je ziet meteen een richtprijs. Vrijblijvend: je zit nergens aan vast." },
-      { titel: "Kies je volgende stap", tekst: "Wil je zekerheid? Dan komen we gratis langs voor een plaatsbezoek. Liever snel? Stuur foto's van je dak, dan bekijken we het op afstand." },
+      { titel: "Kies je volgende stap", tekst: "Plan een gratis plaatsbezoek, of stuur foto's van je dak, dan bekijken we het op afstand." },
       { titel: "Offerte op maat", tekst: "Je krijgt een duidelijke offerte, afgestemd op jouw dak. Zo weet je vooraf wat we doen en wat het kost." },
     ],
   },
@@ -78,8 +78,12 @@ export default function SiteWerkwijze() {
           .ww-raster { grid-template-columns: minmax(0, 1fr); gap: 16px; }
           .ww-foto { min-height: 220px; }
           .ww-kop { padding: 22px 20px 20px; }
-          .ww-stappen { padding: 4px 10px 8px; }
-          .ww-stap-tekst { padding-left: 56px; }
+          .ww-stappen { padding: 4px 6px 8px; }
+          .ww-vraag { grid-template-columns: 30px minmax(0, 1fr) 26px; gap: 10px; padding: 14px 6px; }
+          .ww-nr { width: 30px; height: 30px; font-size: 13px; }
+          .ww-plus { width: 26px; height: 26px; }
+          .ww-stap-titel { font-size: 15px; }
+          .ww-stap-tekst { padding: 0 6px 16px 46px; }
         }
       `}</style>
       <div className="site-wrap" style={{ position: "relative", zIndex: 1 }}>
