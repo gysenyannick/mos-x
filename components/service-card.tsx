@@ -12,6 +12,7 @@ export interface ServiceCardData {
   img: string;
   video: string | null;
   videoPosition?: string;
+  videoEinde?: number;
   Icon: React.ElementType;
   desc: string;
   checks: string[];
@@ -27,6 +28,8 @@ export const serviceCards: ServiceCardData[] = [
     href: "/diensten/dakontmossing",
     img: "/images/IMG_4543.JPEG",
     video: "/videos/dakreiniging-hero.mp4",
+    // Rond 24,5 s komt de persoon in beeld: daar stopt het filmpje en begint het opnieuw.
+    videoEinde: 24.3,
     videoPosition: "center 35%",
     Icon: Droplets,
     desc: "Mos, algen en vuil verwijderen voor een proper en gezond dak.",
@@ -91,8 +94,11 @@ export function ServiceCard({ s, imageHeight = 380, isActive = false, onMount }:
       video.play().catch(() => {});
     }, { rootMargin: "200px" });
     io.observe(video);
-    return () => io.disconnect();
-  }, [s.video]);
+    const einde = s.videoEinde;
+    const knip = () => { if (einde && video.currentTime >= einde) video.currentTime = 0; };
+    video.addEventListener("timeupdate", knip);
+    return () => { io.disconnect(); video.removeEventListener("timeupdate", knip); };
+  }, [s.video, s.videoEinde]);
 
   const cardBoxShadow = isActive
     ? "0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.06), 0 0 0 2px #9BCB6C"
