@@ -50,6 +50,7 @@ export default function SiteNav() {
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isDakzorg = pathname === "/diensten/onderhoudsplan";
+  const isZakelijk = pathname.startsWith("/zakelijk");
 
   // Gsm-menu: de pagina eronder scrolt niet mee, Escape sluit het menu
   useEffect(() => {
@@ -110,12 +111,24 @@ export default function SiteNav() {
         .nav-dienst:hover { background: #F2F8EC; color: #9BCB6C; }
         .nav-dienst:active { background: #EEF6E6; }
         .nav-dienst:focus-visible { outline: 2px solid #1A1A1A; outline-offset: -2px; }
+        .nav-kop { top: 16px; }
+        .nav-doelgroep { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: rgba(255,255,255,0.78); border: 1px solid rgba(229,231,235,0.9); box-shadow: 0 2px 12px rgba(0,0,0,0.06); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .nav-doelgroep a { padding: 5px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 600; line-height: 1.2; color: #545454; text-decoration: none; font-family: var(--font-inter), system-ui, sans-serif; transition: background-color 150ms ease, color 150ms ease; }
+        .nav-doelgroep a:hover { color: #1A1A1A; }
+        .nav-doelgroep a:active { background: #EEF6E6; }
+        .nav-doelgroep a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 1px; }
+        .nav-doelgroep a[aria-current="page"] { background: #1A1A1A; color: #FFFFFF; }
+        .nav-doelgroep-boven { position: absolute; right: 0; bottom: calc(100% + 8px); transition: opacity 200ms ease, transform 200ms ease; }
+        .nav-kop.gescrold .nav-doelgroep-boven { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+        @media (min-width: 1024px) { .nav-kop:not(.gescrold) { top: 52px; } }
+        @media (max-width: 1023px) { .nav-doelgroep-boven { display: none; } }
+        .mm-inhoud > .nav-doelgroep { margin: 2px 4px 8px; }
       `}</style>
       {/* ── Floating glassmorphism navbar ── */}
       <header
+        className={scrolled ? "nav-kop gescrold" : "nav-kop"}
         style={{
           position: "fixed",
-          top: "16px",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 1000,
@@ -124,6 +137,7 @@ export default function SiteNav() {
           transition: "all 0.3s ease",
         }}
       >
+        <Doelgroep zakelijk={isZakelijk} className="nav-doelgroep nav-doelgroep-boven" />
         <nav
           ref={navRef}
           style={{
@@ -355,6 +369,7 @@ export default function SiteNav() {
           </div>
 
           <div className="mm-inhoud">
+            <Doelgroep zakelijk={isZakelijk} className="nav-doelgroep mm-in" onKies={() => setMobileOpen(false)} />
             <p className="mm-oog mm-in" style={{ animationDelay: "40ms" }}>Onze diensten</p>
             <div className="mm-diensten">
               {mobieleDiensten.map((d, i) => (
@@ -401,5 +416,15 @@ export default function SiteNav() {
         </div>
       </div>
     </>
+  );
+}
+
+/** Kleine schakelaar tussen het aanbod voor particulieren en voor bedrijven. */
+function Doelgroep({ zakelijk, className, onKies }: { zakelijk: boolean; className: string; onKies?: () => void }) {
+  return (
+    <div className={className} aria-label="Kies je aanbod">
+      <Link href="/" onClick={onKies} aria-current={zakelijk ? undefined : "page"}>Particulier</Link>
+      <Link href="/zakelijk" onClick={onKies} aria-current={zakelijk ? "page" : undefined}>Zakelijk</Link>
+    </div>
   );
 }

@@ -34,17 +34,24 @@ export async function POST(req: NextRequest) {
     const adres    = (data.get("adres")    as string) ?? "";
     const dienstRaw = (data.get("dienst")  as string) ?? "";
     const bericht  = (data.get("bericht")  as string) ?? "";
+    // Alleen ingevuld via de zakelijke pagina
+    const firma    = (data.get("firma")    as string) ?? "";
+    const btw      = (data.get("btw")      as string) ?? "";
+    const gebouw   = (data.get("gebouw")   as string) ?? "";
+    const aantal   = (data.get("aantal")   as string) ?? "";
+    const zakelijk = !!firma;
+    const zakelijkeRijen = ([["Bedrijf", firma], ["Btw-nummer", btw], ["Type gebouw", gebouw], ["Aantal gebouwen", aantal]] as const).filter(([, w]) => w);
 
     const dienst = DIENST_LABELS[dienstRaw] ?? dienstRaw;
     const bijlagen = await fotoBijlagen(data);
 
     // ── Ook naar Beavr ───────────────────────────────────────────────────────
     await sendToBeavr({
-      name: naam, email, phone: telefoon, address: adres || postcode,
-      service: dienst || "Contactformulier",
+      name: zakelijk ? `${naam} (${firma})` : naam, email, phone: telefoon, address: adres || postcode,
+      service: dienst || (zakelijk ? "Zakelijk" : "Contactformulier"),
       note: bericht,
-      answers: { Aanvraag: "Contactformulier", Dienst: dienst, Postcode: postcode, "Foto's": bijlagen.length ? `${bijlagen.length} meegestuurd (zie de mail)` : "" },
-      page: "https://www.mos-x.be/contact",
+      answers: { Aanvraag: zakelijk ? "Zakelijke aanvraag" : "Contactformulier", Dienst: dienst, Postcode: postcode, ...Object.fromEntries(zakelijkeRijen), "Foto's": bijlagen.length ? `${bijlagen.length} meegestuurd (zie de mail)` : "" },
+      page: zakelijk ? "https://www.mos-x.be/zakelijk" : "https://www.mos-x.be/contact",
     });
 
     const apiKey = process.env.RESEND_API_KEY;
@@ -66,8 +73,8 @@ export async function POST(req: NextRequest) {
 
         <!-- CONTEXT -->
         <div style="padding: 18px 32px 14px; text-align: center; background: #F4FBF0; border-bottom: 1px solid #E5E7EB;">
-          <p style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #9BCB6C; text-transform: uppercase; letter-spacing: 0.10em;">NIEUWE AANVRAAG · CONTACT</p>
-          <p style="margin: 0; font-size: 13px; color: #545454;">Via contactformulier</p>
+          <p style="margin: 0 0 4px; font-size: 11px; font-weight: 700; color: #9BCB6C; text-transform: uppercase; letter-spacing: 0.10em;">NIEUWE AANVRAAG · ${zakelijk ? "ZAKELIJK" : "CONTACT"}</p>
+          <p style="margin: 0; font-size: 13px; color: #545454;">${zakelijk ? "Via de zakelijke pagina" : "Via contactformulier"}</p>
         </div>
 
         <!-- NAAM -->
@@ -85,6 +92,11 @@ export async function POST(req: NextRequest) {
         <div style="padding: 24px 32px 0;">
           <p style="margin: 0 0 12px; font-size: 11px; font-weight: 700; color: #545454; text-transform: uppercase; letter-spacing: 0.06em;">Contactgegevens</p>
           <table style="width: 100%; border-collapse: collapse;">
+            ${zakelijkeRijen.map(([label, waarde]) => `
+            <tr>
+              <td style="padding: 7px 0; color: #888; font-size: 13px; width: 110px; vertical-align: top;">${label}</td>
+              <td style="padding: 7px 0; font-size: 14px; font-weight: 600; color: #1A1A1A;">${esc(waarde)}</td>
+            </tr>`).join("")}
             <tr>
               <td style="padding: 7px 0; color: #888; font-size: 13px; width: 110px; vertical-align: top;">Naam</td>
               <td style="padding: 7px 0; font-size: 14px; font-weight: 600; color: #1A1A1A;">${esc(naam)}</td>
@@ -145,7 +157,7 @@ export async function POST(req: NextRequest) {
         from: FROM_INTERN,
         to: [toEmail],
         reply_to: email || undefined,
-        subject: `✉️ Contactaanvraag | ${naam} | ${dienst}`,
+        subject: zakelijk ? `🏢 Zakelijke aanvraag | ${firma} | ${naam}` : `✉️ Contactaanvraag | ${naam} | ${dienst}`,
         html: yannickHtml,
         ...(bijlagen.length ? { attachments: bijlagen } : {}),
       },
