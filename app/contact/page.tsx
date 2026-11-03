@@ -86,6 +86,10 @@ const CONTACT_CSS = `
   }
   @media (max-width: 560px) {
     .ct-velden { grid-template-columns: minmax(0, 1fr); }
+    .ct-noot { font-size: clamp(12px, 3.2vw, 13px); }
+    .ct-info { padding: 22px 18px; }
+    .ct-info li { gap: 12px; }
+    .ct-info span, .ct-info a { font-size: clamp(13.5px, 3.75vw, 14.5px); }
   }
   @media (prefers-reduced-motion: reduce) { .ct-spin { animation: none; } }
 `;

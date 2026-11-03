@@ -75,6 +75,8 @@ const OVER_CSS = `
   }
   @media (max-width: 560px) {
     .oo-redenen { grid-template-columns: minmax(0, 1fr); }
+    .oo-quote { padding: 20px 20px; font-size: clamp(18px, 5.2vw, 20px); }
+    .oo-quote span { display: block; white-space: nowrap; }
   }
   @media (max-width: 560px) {
     .oo-trends { grid-template-columns: minmax(0, 1fr); }

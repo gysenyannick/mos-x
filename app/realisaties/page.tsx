@@ -134,6 +134,7 @@ export default function RealisatiesPage() {
           .rz-cta-kaart { padding: 36px 24px; }
         }
         @media (max-width: 520px) {
+          .rz-p { font-size: clamp(15px, 4.2vw, 16.5px); }
           .rz-feed { gap: 6px; }
           .rz-cta-knoppen, .rz-cta-knoppen .rz-knop { width: 100%; justify-content: center; }
         }

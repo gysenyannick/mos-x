@@ -105,7 +105,7 @@ export default function SiteAboutYannick() {
             </p>
 
             {/* USPs */}
-            <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "15px", color: "#1A1A1A", marginBottom: "12px" }}>
+            <p style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "clamp(14px, 3.9vw, 15px)", color: "#1A1A1A", marginBottom: "12px" }}>
               Vier beloftes die we aan elke klant maken.
             </p>
             <div className="sm:w-fit" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "8px" }}>
@@ -122,7 +122,7 @@ export default function SiteAboutYannick() {
                   </span>
                   <p style={{
                     fontFamily: "var(--font-inter), system-ui, sans-serif",
-                    fontWeight: 400, fontSize: "14px", lineHeight: 1.7, color: "#666666",
+                    fontWeight: 400, fontSize: "clamp(13px, 3.65vw, 14px)", lineHeight: 1.7, color: "#666666",
                     margin: 0,
                   }}>{title}</p>
                 </div>

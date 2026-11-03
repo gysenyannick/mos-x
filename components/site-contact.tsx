@@ -92,6 +92,12 @@ export default function SiteContact() {
           .ct-icoon { width: 42px; height: 42px; }
           .ct-bewijs { font-size: 13.5px; }
           .ct-bewijs > i { display: none; }
+          .ct-lijst { padding: 4px 8px 16px; }
+          .ct-optie { grid-template-columns: 38px minmax(0, 1fr) 14px; gap: 10px; padding: 12px 12px 12px 10px; }
+          .ct-icoon { width: 38px; height: 38px; border-radius: 11px; }
+          .ct-optie-tekst b { font-size: clamp(13.5px, 3.75vw, 15.5px); letter-spacing: -0.01em; }
+          .ct-gegevens div > span, .ct-gegevens a { font-size: clamp(14.5px, 4.15vw, 15.5px); }
+          .ct-optie-tekst small { font-size: clamp(12.5px, 3.47vw, 13.5px); }
         }
       `}</style>
 

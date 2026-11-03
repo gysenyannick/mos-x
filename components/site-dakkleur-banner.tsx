@@ -48,7 +48,7 @@ export default function SiteDakkleurBanner() {
 
         .dkb-inhoud { position: relative; max-width: 860px; margin: 0 auto; text-align: center; color: #fff; }
         .dkb-oog { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 22px; padding: 7px 14px; border-radius: 999px; background: rgba(155,203,108,0.14); border: 1px solid rgba(155,203,108,0.45); color: #9BCB6C; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; font-family: var(--font-montserrat), system-ui, sans-serif; backdrop-filter: blur(6px); }
-        .dkb-titel { margin: 0 0 20px; font-size: clamp(2rem, 4.4vw, 3.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.028em; font-family: var(--font-montserrat), system-ui, sans-serif; text-shadow: 0 4px 30px rgba(0,0,0,0.45); }
+        .dkb-titel { margin: 0 0 20px; font-size: clamp(26px, 4.4vw, 3.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.028em; font-family: var(--font-montserrat), system-ui, sans-serif; text-shadow: 0 4px 30px rgba(0,0,0,0.45); }
         .dkb-titel span { display: block; color: #9BCB6C; }
         .dkb-tekst { margin: 0 auto 34px; max-width: 560px; font-size: 18px; line-height: 1.65; color: rgba(255,255,255,0.82); font-family: var(--font-inter), system-ui, sans-serif; text-wrap: balance; }
         .dkb-knop { display: inline-flex; align-items: center; gap: 8px; height: 54px; padding: 0 28px; border-radius: 10px; background: #9BCB6C; color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; border: 0; cursor: pointer; font-family: var(--font-montserrat), system-ui, sans-serif; box-shadow: 0 14px 34px -12px rgba(155,203,108,0.75); transition: background-color .2s ease, transform .15s ease; }

@@ -201,6 +201,11 @@ export const DIENST_CSS = `
           .do-stap button { grid-template-columns: 34px minmax(0, 1fr) 18px; gap: 12px; padding: 12px 14px 12px 12px; font-size: 15px; }
           .do-stap-nr { width: 34px; height: 34px; border-radius: 10px; font-size: 13px; }
           .do-hero-knoppen .do-knop, .do-cta-knoppen, .do-cta-knoppen .do-knop { width: 100%; }
+          /* Knopteksten, labels en daktypes op 1 regel, ook op smalle gsm's */
+          .do-knop { padding: 0 18px; font-size: clamp(13.5px, 3.85vw, 15px); white-space: nowrap; }
+          .do-type span { right: 10px; font-size: clamp(12.5px, 3.6vw, 14px); white-space: nowrap; }
+          .do-oog { letter-spacing: 0.1em; }
+          .do-h2 { font-size: clamp(1.65rem, 7.6vw, 1.9rem); }
         }
         @media (max-width: 380px) {
           .do-stap button { font-size: 14px; gap: 10px; padding-right: 12px; }

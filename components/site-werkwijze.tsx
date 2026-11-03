@@ -101,7 +101,7 @@ export default function SiteWerkwijze() {
             Van richtprijs tot <span style={{ color: "#9BCB6C", whiteSpace: "nowrap" }}>verzorgd dak.</span>
           </h2>
           <p style={{
-            fontSize: "16px", color: "#545454", lineHeight: 1.7,
+            fontSize: "clamp(14.5px, 4.05vw, 16px)", color: "#545454", lineHeight: 1.7,
             fontFamily: "var(--font-inter), system-ui, sans-serif",
             maxWidth: "800px", margin: "0 auto", textWrap: "balance",
           }}>
