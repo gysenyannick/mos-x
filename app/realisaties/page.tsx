@@ -33,11 +33,14 @@ const projecten = [
 ];
 
 const feed = [
+  { src: "/images/dak-antraciet-bestelwagen.webp", pos: "center" },
   { src: "/images/IMG_5898.JPEG", pos: "center 30%" },
+  { src: "/images/dak-zonnepanelen.webp", pos: "center 40%" },
   { src: "/images/15.JPEG", pos: "center" },
   { src: "/images/IMG_4496.JPEG", pos: "center" },
   { src: "/images/koningshooikt-na.jpg", pos: "center" },
   { src: "/images/12.jpg", pos: "center" },
+  { src: "/images/rood-dak-na.jpg", pos: "center 45%" },
   { src: "/images/IMG_4584 Vooraanzicht dakcoating.JPEG", pos: "center" },
 ];
 
