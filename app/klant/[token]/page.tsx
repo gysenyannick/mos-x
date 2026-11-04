@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GOOGLE_WRITE_REVIEW_URL } from "@/lib/google-review";
 import Link from "next/link";
 import {
   ArrowRight, CalendarDays, Camera, Check, CheckCircle2, ChevronDown, Circle, Clock, FileText, FolderOpen, Gift, Home, LayoutDashboard,
@@ -1371,7 +1372,7 @@ export default async function KlantPagina({
   const ctx: Ctx = {
     k, controle, refUrl, refCode, refQr, regels: ref, acties,
     burenVoordeel: instellingen.burenVoordeel,
-    reviewUrl: instellingen.googleReviewUrl,
+    reviewUrl: instellingen.googleReviewUrl || GOOGLE_WRITE_REVIEW_URL,
     reviewCitaat: instellingen.reviewCitaat,
     reviewNaam: instellingen.reviewNaam,
     dienstFotos: instellingen.dienstFotos ?? {},
