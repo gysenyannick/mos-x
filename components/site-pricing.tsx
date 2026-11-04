@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { trackBeavr } from "@/lib/beavr-track";
-import { ChevronLeft, ChevronRight, Info, ShieldCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Info, ShieldCheck, Lock, HelpCircle } from "lucide-react";
 import GoogleScore from "@/components/google-score";
 
 const GREEN = "#9BCB6C";
@@ -497,14 +497,24 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Dakcoating", subtitle: "Een nieuwe beschermlaag voor je dak.", badge: "10 jaar garantie", info: "Meestal aangeraden als je dak ouder is dan 15 jaar.", bullets: [] as string[] },
-    { id: "geen", title: "Antimosbehandeling", subtitle: "Bestrijdt verdere mosgroei.", badge: "2 jaar mosvrij-garantie", info: "", bullets: [] as string[] },
-    { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, info: "", bullets: [] as string[] },
+    { id: "coating", title: "Dakcoating", subtitle: "Een nieuwe beschermlaag voor je dak.", badge: "10 jaar garantie", info: "Meestal aangeraden als je dak ouder is dan 15 jaar.", bullets: [] as string[], img: "/images/calc-coating.webp" },
+    { id: "geen", title: "Antimosbehandeling", subtitle: "Bestrijdt verdere mosgroei.", badge: "2 jaar mosvrij-garantie", info: "", bullets: [] as string[], img: "/images/calc-antimos.webp" },
+    { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, info: "", bullets: [] as string[], img: "" },
   ];
 
   return (
     <section ref={sectionRef} id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
       <style>{`
+        /* Foto bovenaan de keuzes in stap 4 */
+        .extra-foto { display: flex; align-items: center; justify-content: center; margin: -20px -16px 14px; width: calc(100% + 32px); height: 110px; border-radius: 14px 14px 0 0; overflow: hidden; background: #F4FBF0; color: #9BCB6C; flex-shrink: 0; }
+        .extra-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        @media (max-width: 640px) { .extra-foto { height: 92px; } .extra-foto.leeg { display: none; } }
+        /* Vergrendelde prijs in de laatste stap */
+        .calc-slot { position: relative; display: flex; align-items: center; justify-content: center; height: 76px; border-radius: 12px; background: #F4FBF0; border: 1.5px solid rgba(155,203,108,0.4); margin-bottom: 18px; overflow: hidden; }
+        .calc-slot-prijs { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.025em; color: #111; filter: blur(6px); opacity: 0.8; user-select: none; white-space: nowrap; }
+        .calc-slot-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px; background: #FFFFFF; box-shadow: 0 2px 10px rgba(0,0,0,0.10); font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 700; font-size: 13px; color: #1A1A1A; white-space: nowrap; }
+        .calc-slot-label svg { color: #4A8A2A; flex-shrink: 0; }
+        @media (max-width: 380px) { .calc-slot-label { font-size: 12px; padding: 6px 12px; } .calc-slot-prijs { font-size: 28px; } }
         /* Info-bolletje met uitleg bij een keuze */
         .calc-info { position: relative; display: inline-flex; vertical-align: -2px; margin-left: 6px; color: #9BCB6C; cursor: help; outline: none; }
         .calc-info:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 50%; }
@@ -1164,7 +1174,7 @@ export default function SitePricing() {
                           {/* Badge — zit IN de border */}
                           {o.badge && (
                             <span style={{
-                              position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)",
+                              position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", zIndex: 2,
                               background: "#F4FBF0",
                               color: "#4A8A2A",
                               fontWeight: 700, fontSize: "10px",
@@ -1177,6 +1187,10 @@ export default function SitePricing() {
                               {o.badge}
                             </span>
                           )}
+                          {/* Foto van de behandeling (bij "Ik twijfel nog" een rustig vlak met een vraagteken) */}
+                          <span className={`extra-foto${o.img ? "" : " leeg"}`} aria-hidden="true">
+                            {o.img ? <img src={o.img} alt="" loading="lazy" decoding="async" style={{ objectPosition: o.id === "geen" ? "center 78%" : "center" }} /> : <HelpCircle size={30} strokeWidth={1.8} />}
+                          </span>
                           {/* Title */}
                           <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#111", lineHeight: 1.35, marginBottom: "6px" }}>
                             {o.title}
@@ -1244,8 +1258,17 @@ export default function SitePricing() {
               {step === 5 && (
                 <div>
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "20px" }}>
-                    Waar mogen we jouw richtprijs naartoe sturen?
+                    Je richtprijs staat klaar.
                   </h3>
+                  <p className="calc-slot-sub" style={{ fontSize: "14px", color: "#666", margin: "-12px 0 14px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
+                    Vul je gegevens in en je ziet hem meteen. Je zit nergens aan vast.
+                  </p>
+
+                  {/* Vergrendelde prijs: de echte prijs staat er niet in, alleen een wazige plaatshouder */}
+                  <div className="calc-slot" aria-hidden="true">
+                    <span className="calc-slot-prijs">€ 8.888 – € 8.888</span>
+                    <span className="calc-slot-label"><Lock size={14} strokeWidth={2.5} /> Vergrendeld</span>
+                  </div>
 
                   {/* E-mail — full width */}
                   <Field label="E-mailadres *" placeholder="bv. naam@email.be" value={form.email} onChange={v => setForm(f => ({ ...f, email: v }))} type="email" />
