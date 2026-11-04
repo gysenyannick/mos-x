@@ -142,7 +142,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           }}>
             {s.desc}
           </p>
-          <span style={{
+          <span className="dk-link" style={{
             marginTop: "16px", color: "#9BCB6C", fontSize: "14px", fontWeight: 700,
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
             display: "inline-flex", alignItems: "center", gap: "6px",
@@ -302,16 +302,20 @@ export default function SiteServices() {
         zIndex: 2,
       }} />
 
+      {/* Gsm: titel en ondertitel met meer lucht, kaarten verder uit elkaar */}
+
+      <style>{`@media (max-width: 1023px) { .services-grid { row-gap: 40px !important; } .diensten-kop { margin-bottom: 48px !important; } .diensten-kop h2 { line-height: 1.22 !important; } .diensten-kop p { margin-top: 18px !important; line-height: 1.65 !important; } .diensten-kop .dk-regel { display: block; } } @media (max-width: 400px) { .diensten-kop p { font-size: clamp(14.5px, 4.35vw, 16px) !important; } .dk-link { font-size: clamp(12.5px, 3.9vw, 14px) !important; white-space: nowrap; } }`}</style>
+
       <div className="site-wrap" style={{ position: "relative", zIndex: 4 }}>
 
         {/* Header */}
-        <div className="mb-14" style={{ textAlign: "center" }}>
+        <div className="mb-14 diensten-kop" style={{ textAlign: "center" }}>
           <h2 className="font-bold leading-tight"
-            style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", letterSpacing: "-0.028em", color: "#FFFFFF" }}>
+            style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 800, fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", lineHeight: 1.18, letterSpacing: "-0.028em", color: "#FFFFFF" }}>
             Voor elk dak de <span style={{ color: "#9BCB6C" }}>juiste aanpak.</span>
           </h2>
-          <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "16px", color: "rgba(255,255,255,0.7)", marginTop: "12px" }}>
-            Niet zeker wat je dak nodig heeft? We helpen je kiezen.
+          <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "16px", color: "rgba(255,255,255,0.7)", marginTop: "16px", lineHeight: 1.6 }}>
+            <span className="dk-regel">Niet zeker wat je dak nodig heeft?</span>{" "}<span className="dk-regel">We helpen je kiezen.</span>
           </p>
         </div>
 
