@@ -498,7 +498,7 @@ export default function SitePricing() {
   ];
   const extraOpties = [
     { id: "coating", title: "Dakcoating", subtitle: "Een nieuwe beschermlaag voor je dak.", badge: "10 jaar garantie", info: "Meestal aangeraden als je dak ouder is dan 15 jaar.", bullets: [] as string[], img: "/images/calc-coating-spuiten.webp" },
-    { id: "geen", title: "Antimosbehandeling", subtitle: "Bestrijdt verdere mosgroei.", badge: "2 jaar mosvrij-garantie", info: "", bullets: [] as string[], img: "/images/calc-antimos.webp" },
+    { id: "geen", title: "Antimosbehandeling", subtitle: "Bestrijdt verdere mosgroei.", badge: "2 jaar mosvrij-garantie", info: "", bullets: [] as string[], img: "/images/calc-antimos-schuim.webp" },
     { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, info: "", bullets: [] as string[], img: "" },
   ];
 
@@ -1189,7 +1189,7 @@ export default function SitePricing() {
                           )}
                           {/* Foto van de behandeling (bij "Ik twijfel nog" een rustig vlak met een vraagteken) */}
                           <span className={`extra-foto${o.img ? "" : " leeg"}`} aria-hidden="true">
-                            {o.img ? <img src={o.img} alt="" loading="lazy" decoding="async" style={{ objectPosition: o.id === "geen" ? "center 78%" : "center 60%" }} /> : <HelpCircle size={30} strokeWidth={1.8} />}
+                            {o.img ? <img src={o.img} alt="" loading="lazy" decoding="async" style={{ objectPosition: o.id === "geen" ? "center 45%" : "center 60%" }} /> : <HelpCircle size={30} strokeWidth={1.8} />}
                           </span>
                           {/* Title */}
                           <span style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "14px", color: "#111", lineHeight: 1.35, marginBottom: "6px" }}>
