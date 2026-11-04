@@ -506,9 +506,14 @@ export default function SitePricing() {
     <section ref={sectionRef} id="calculator" className="site-pricing-section" style={{ background: "transparent", padding: "0 clamp(12px, 4vw, 40px) 60px", marginTop: "-69px", position: "relative", zIndex: 10, scrollMarginTop: "130px" }}>
       <style>{`
         /* Foto bovenaan de keuzes in stap 4 */
-        .extra-foto { display: flex; align-items: center; justify-content: center; margin: -20px -16px 14px; width: calc(100% + 32px); height: 110px; border-radius: 14px 14px 0 0; overflow: hidden; background: #F4FBF0; color: #9BCB6C; flex-shrink: 0; }
+        .extra-foto { display: flex; align-items: center; justify-content: center; margin: -20px -12px 12px; width: calc(100% + 24px); height: 150px; border-radius: 14px 14px 0 0; overflow: hidden; background: #F4FBF0; color: #9BCB6C; flex-shrink: 0; }
         .extra-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        @media (max-width: 640px) { .extra-foto { height: 92px; } .extra-foto.leeg { display: none; } }
+        /* Compacte kaart: rondje rechtsboven op de foto, tekst op één regel, weinig wit onderaan */
+        .extra-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 10px !important; }
+        .extra-grid > button { padding: 20px 12px 14px !important; }
+        .extra-grid > button > div:last-child { position: absolute; top: 10px; right: 10px; width: auto !important; padding: 2px !important; margin: 0 !important; background: #FFFFFF; border-radius: 50%; box-shadow: 0 1px 6px rgba(0,0,0,0.18); z-index: 2; }
+        .extra-grid > button > p { white-space: nowrap; font-size: 11px !important; letter-spacing: -0.01em; }
+        @media (max-width: 640px) { .extra-foto { height: 120px; } .extra-foto.leeg { display: none; } .extra-grid > button > p { font-size: 12.5px !important; } }
         /* Vergrendelde prijs in de laatste stap */
         .calc-slot { position: relative; display: flex; align-items: center; justify-content: center; height: 76px; border-radius: 12px; background: #F4FBF0; border: 1.5px solid rgba(155,203,108,0.4); margin-bottom: 18px; overflow: hidden; }
         .calc-slot-prijs { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.025em; color: #111; filter: blur(6px); opacity: 0.8; user-select: none; white-space: nowrap; }
