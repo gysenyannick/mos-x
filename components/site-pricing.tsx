@@ -513,6 +513,12 @@ export default function SitePricing() {
         .extra-grid > button { padding: 20px 12px 14px !important; }
         .extra-grid > button > div:last-child { position: absolute; top: 10px; right: 10px; width: auto !important; padding: 2px !important; margin: 0 !important; background: #FFFFFF; border-radius: 50%; box-shadow: 0 1px 6px rgba(0,0,0,0.18); z-index: 2; }
         .extra-grid > button > p { white-space: nowrap; font-size: 11px !important; letter-spacing: -0.01em; }
+        .extra-grid { column-gap: 16px !important; }
+        @media (max-width: 640px) {
+          .extra-grid { row-gap: 30px !important; }
+          .calc-een-regel { white-space: nowrap; font-size: clamp(12px, 3.6vw, 14px) !important; }
+          .calc-zin { display: block; white-space: nowrap; font-size: clamp(12px, 3.6vw, 14px); }
+        }
         @media (max-width: 640px) { .extra-foto { height: 120px; } .extra-foto.leeg { display: none; } .extra-grid > button > p { font-size: 12.5px !important; } }
         /* Vergrendelde prijs in de laatste stap */
         .calc-slot { position: relative; display: flex; align-items: center; justify-content: center; height: 76px; border-radius: 12px; background: #F4FBF0; border: 1.5px solid rgba(155,203,108,0.4); margin-bottom: 18px; overflow: hidden; }
@@ -1068,12 +1074,12 @@ export default function SitePricing() {
                   <h3 style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontWeight: 700, fontSize: "18px", color: "#111", marginBottom: "8px" }}>
                     Hoe groot is je dak ongeveer?
                   </h3>
-                  <p style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: "#888", marginBottom: "20px" }}>
-                    {OPP_VOOR_WONING[woning] ? "We maakten al een inschatting op basis van je woning." : "Kies wat het best past. Een schatting volstaat."}
+                  <p className="calc-een-regel" style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "14px", color: "#888", marginBottom: "20px" }}>
+                    {OPP_VOOR_WONING[woning] ? "Al ingeschat op basis van je woning." : "Kies wat het best past. Een schatting volstaat."}
                   </p>
                   <div className="opp-preset-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "18px" }}>
                     {oppPresets.map(p => (
-                      <ChoiceCard key={p.label} label={p.label} sub={p.sub} imgSrc={p.img} imgHeight={96} selected={oppPreset === p.value} onClick={() => kiesOpp(p.value, true)} />
+                      <ChoiceCard key={p.label} label={p.label} sub={p.sub} imgSrc={p.img} imgHeight={96} selected={oppPreset === p.value} onClick={() => { kiesOpp(p.value, true); setTimeout(next, 220); }} />
                     ))}
                   </div>
                   <div className="opp-exact" style={{ display: "flex", alignItems: "center", gap: "14px", padding: "10px 16px", borderRadius: "12px", background: "#F7F8F6", border: "1px solid #E5E7EB", marginBottom: "8px" }}>
@@ -1161,7 +1167,7 @@ export default function SitePricing() {
                       return (
                         <button
                           key={o.id}
-                          onClick={() => setExtra(o.id)}
+                          onClick={() => { setExtra(o.id); setTimeout(next, 220); }}
                           onPointerDown={e => { const el = e.currentTarget; el.style.transform = 'scale(0.98)'; setTimeout(() => { el.style.transform = ''; }, 140); }}
                           style={{
                             display: "flex", flexDirection: "column", alignItems: "flex-start",
@@ -1266,7 +1272,7 @@ export default function SitePricing() {
                     Je richtprijs staat klaar.
                   </h3>
                   <p className="calc-slot-sub" style={{ fontSize: "14px", color: "#666", margin: "-12px 0 14px", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>
-                    Vul je gegevens in en je ziet hem meteen. Je zit nergens aan vast.
+                    <span className="calc-zin">Vul je gegevens in en je ziet hem meteen.</span> <span className="calc-zin">Je zit nergens aan vast.</span>
                   </p>
 
                   {/* Vergrendelde prijs: de echte prijs staat er niet in, alleen een wazige plaatshouder */}
