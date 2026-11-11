@@ -60,8 +60,10 @@ export default function AlgemeneVoorwaarden() {
 
       <h2>Artikel 4: Garanties</h2>
       <p>
-        4.1 Na een dakontmossing met antimosbehandeling geeft MOS-X 2 jaar mosvrij-garantie: komt er binnen 2 jaar na de
-        werken toch opnieuw mos op het dak, dan brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan.
+        4.1 Na een dakontmossing met antimosbehandeling kan MOS-X 2 jaar mosvrij-garantie geven. Deze garantie geldt enkel
+        als ze uitdrukkelijk in de offerte vermeld staat. Komt er binnen die 2 jaar na de werken toch opnieuw mos op het dak, dan
+        brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan. Bij daken onder of naast bomen, of in een
+        schaduwrijke of vochtige omgeving, kan MOS-X de mosvrij-garantie uitsluiten.
       </p>
       <p>
         4.2 Op een dakcoating geeft MOS-X 10 jaar garantie op de hechting: de coating blijft gehecht aan de pannen en bladert
