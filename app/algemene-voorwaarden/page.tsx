@@ -12,7 +12,7 @@ export default function AlgemeneVoorwaarden() {
     <JuridischePagina
       titel="Algemene voorwaarden"
       intro="Duidelijke afspraken vooraf. Deze voorwaarden gelden voor alle offertes en werken van MOS-X."
-      bijgewerkt="27 oktober 2026"
+      bijgewerkt="11 november 2026"
     >
       <h2>Artikel 1: Toepassingsgebied</h2>
       <p>
@@ -24,8 +24,8 @@ export default function AlgemeneVoorwaarden() {
       <h2>Artikel 2: Offertes</h2>
       <p>
         2.1 Onze offertes zijn louter indicatief en vrijblijvend en vervallen indien zij niet binnen 14 kalenderdagen werden
-        aanvaard door de klant. Offertes krijgen pas rechtsgeldigheid als overeenkomst door ondertekening van de offerte door de
-        klant én door ons. Wij behouden ons bovendien het recht voor om bepaalde opdrachten zonder opgave van reden te weigeren.
+        aanvaard door de klant. Offertes krijgen rechtsgeldigheid als overeenkomst door ondertekening van de offerte door de klant
+        of door schriftelijke aanvaarding van de offerte per e-mail door de klant, met vermelding van het offertenummer. Wij behouden ons bovendien het recht voor om bepaalde opdrachten zonder opgave van reden te weigeren.
       </p>
 
       <h2>Artikel 3: Uitvoering van de werkzaamheden</h2>
