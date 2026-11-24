@@ -12,6 +12,7 @@ import SiteReviews         from "@/components/site-reviews";
 import SiteWerkwijze       from "@/components/site-werkwijze";
 import SiteFaq             from "@/components/site-faq";
 import SiteDakkleurBanner  from "@/components/site-dakkleur-banner";
+import SiteActie           from "@/components/site-actie";
 import SiteContact         from "@/components/site-contact";
 import SiteFooter          from "@/components/site-footer";
 import type { Metadata }   from "next";
@@ -33,6 +34,9 @@ export default function HomePage() {
 
         {/* USP stats balk */}
         <SiteStatsBar />
+
+        {/* Actie: gratis extra's bij dakreiniging */}
+        <SiteActie />
 
         {/* Voor/Na realisaties preview */}
         <SiteRealisatiesPreview />
