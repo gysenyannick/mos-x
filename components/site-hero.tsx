@@ -81,14 +81,6 @@ export default function SiteHero() {
         .hv-sticker .v { font: 900 30px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; margin-top: 4px; }
         .hv-sticker .l { font: 900 11px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #1A1A1A; }
         .hv-sticker .w { font: italic 400 13px Georgia, serif; color: #FF6600; margin-top: 2px; }
-        .hv-reviews { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #FFFFFF; font-family: var(--font-inter), system-ui, sans-serif; }
-        .hv-reviews .g { width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; display: grid; place-items: center; flex-shrink: 0; }
-        .hv-reviews .s { color: #F5B300; font-size: 15px; letter-spacing: 1px; }
-        .hv-reviews b { font: 800 15px var(--font-montserrat), system-ui, sans-serif; }
-        .hv-reviews small { display: block; font-size: 13px; color: rgba(255,255,255,0.7); transition: color .2s ease; }
-        .hv-reviews:hover small { color: #9BCB6C; }
-        .hv-reviews:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 8px; }
-        .hv-rev-gsm { display: none; }
         .hv-revkaart { position: absolute; left: -34px; bottom: -30px; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 14px 20px 14px 14px; border-radius: 16px; background: #FFFFFF; text-decoration: none; color: #1A1A1A;
           box-shadow: 0 18px 40px -14px rgba(0,0,0,0.65); transition: transform .25s cubic-bezier(.22,1,.36,1); }
         .hv-revkaart:hover { transform: translateY(-3px); }
@@ -130,10 +122,7 @@ export default function SiteHero() {
           .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
           .hv-blob { inset: 18px -10px 24px 12px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
-          .hv-vtm-gsm { display: inline-flex; }
-          .hv-rev-gsm { display: inline-flex; }
-          .hv-reviews .g { width: 34px; height: 34px; }
-        }
+              }
         @media (prefers-reduced-motion: reduce) { .hv-blob { animation: none; } .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
       `}</style>
 
