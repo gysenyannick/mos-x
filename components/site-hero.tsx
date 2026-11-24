@@ -110,10 +110,9 @@ export default function SiteHero() {
               style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
               <span style={{ display: "block", color: "#FFFFFF", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "19px", marginBottom: "8px" }}>
-                <span style={{ whiteSpace: "nowrap" }}>Dak vervangen? <span style={{ color: "#9BCB6C" }}>Vernieuw het!</span></span>{" "}
-                <span style={{ whiteSpace: "nowrap" }}>Waarom te veel betalen?</span>
+                Dak vervangen? <span style={{ color: "#9BCB6C" }}>Vernieuw het!</span>
               </span>
-              Een dakcoating is vele malen goedkoper dan een nieuw dak, sneller klaar en jarenlang duurzaam. Je dak ziet er weer als nieuw uit, en blijft dat levenslang dankzij ons onderhoud.
+              Een dakcoating kost een fractie van een nieuw dak. Met ons onderhoud blijft je dak er levenslang als nieuw uitzien.
             </p>
 
             {/* CTAs */}
