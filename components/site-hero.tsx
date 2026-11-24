@@ -1,6 +1,6 @@
 "use client";
 
-import { Tv, ChevronRight, Play, X, Leaf, Droplets, Home, Sparkles } from "lucide-react";
+import { Tv, ChevronRight, Play, X } from "lucide-react";
 import Link from "next/link";
 import { BtnPress } from "@/components/btn-press";
 import { useEffect, useState } from "react";
@@ -29,15 +29,28 @@ export default function SiteHero() {
     >
       {/* Subtiele lijn-icoontjes in de achtergrond */}
       <div aria-hidden="true" className="hv-iconen">
-        <Leaf style={{ left: "47%", top: "20%", width: 46, height: 46, transform: "rotate(-14deg)" }} />
-        <Droplets style={{ left: "52%", top: "58%", width: 50, height: 50 }} />
-        <Home style={{ left: "6%", top: "82%", width: 44, height: 44 }} />
-        <Sparkles style={{ left: "40%", top: "84%", width: 40, height: 40 }} />
+        {/* dakprofiel met pannenrijen */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "45%", top: "17%", width: 64, height: 64 }}>
+          <path d="M6 34 L32 12 L58 34" /><path d="M14 33 V52 H50 V33" />
+          <path d="M14 40 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" /><path d="M14 46 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" />
+        </svg>
+        {/* dakpan */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "52%", top: "60%", width: 56, height: 56 }}>
+          <path d="M16 10 H48 V44 Q40 54 32 44 Q24 54 16 44 Z" /><path d="M27 12 V42 M37 12 V42" />
+        </svg>
+        {/* schild met vinkje */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "5%", top: "80%", width: 54, height: 54 }}>
+          <path d="M32 8 L52 16 V30 C52 44 43 52 32 56 C21 52 12 44 12 30 V16 Z" /><path d="M23 32 L30 39 L42 26" />
+        </svg>
+        {/* nok met schouw */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "39%", top: "82%", width: 58, height: 58 }}>
+          <path d="M4 44 L28 22 L60 44" /><path d="M40 30 V16 H48 V36" />
+        </svg>
       </div>
 
       <style>{`
         .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.06; stroke-width: 1.5; }
+        .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.07; }
         @media (max-width: 1023px) { .hv-iconen { display: none; } }
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
@@ -135,17 +148,12 @@ export default function SiteHero() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "#9BCB6C",
+                color: "#1A1A1A",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
               }}
             >
-              <svg width="18" height="13" viewBox="0 0 18 13" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, borderRadius: "2px", marginTop: "1px" }}>
-                <rect x="0"  width="6"  height="13" fill="#000000" />
-                <rect x="6"  width="6"  height="13" fill="#FFE000" />
-                <rect x="12" width="6"  height="13" fill="#EF3340" />
-              </svg>
               <span>Actief regio Antwerpen, Limburg,{" "}
                 <span style={{ whiteSpace: "nowrap" }}>Vlaams-Brabant</span>
               </span>
