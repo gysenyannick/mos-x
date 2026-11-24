@@ -29,13 +29,9 @@ export default function SiteActie() {
         .sa-tekst b { color: #1A1A1A; font-weight: 700; }
         .sa-prijs { background: #FFFFFF; border-radius: 22px; padding: 36px 32px 32px; text-align: center;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 24px 48px -28px rgba(30,51,36,0.35); }
-        .sa-prijs h3 { margin: 0; font: 800 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
-        .sa-gratis-k { margin: 14px 0 0; font: 600 14px var(--font-inter), system-ui, sans-serif; color: #8E8E89; }
-        .sa-gratis { margin: 2px 0 0; font: 800 46px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.04em; line-height: 1.05; color: #1A1A1A; }
-        .sa-pill { display: inline-block; margin-top: 12px; padding: 7px 14px; border-radius: 999px; background: #EEF6E6;
-          font: 700 13px var(--font-montserrat), system-ui, sans-serif; color: #4F7F2E; }
-        .sa-plus { margin: 14px 0 18px; font: 400 14.5px var(--font-inter), system-ui, sans-serif; color: #545454; }
-        .sa-plus b { color: #1A1A1A; }
+        .sa-prijs h3 { margin: 0; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E !important; font: 800 13px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+        .sa-gratis-k { margin: 6px 0 22px; font: 700 17px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+        .sa-gratis { margin: 10px 0 0; font: 800 64px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.04em; line-height: 1; color: #1A1A1A; }
         .sa-knop { display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 10px; background: #9BCB6C; color: #FFFFFF;
           text-decoration: none; font: 700 16px var(--font-montserrat), system-ui, sans-serif;
           box-shadow: 0 10px 22px -12px rgba(122,181,78,0.9); transition: background-color .2s ease, transform .15s ease; }
@@ -68,18 +64,13 @@ export default function SiteActie() {
             <p className="sa-en">en krijg</p>
             <h2 id="sa-titel" className="sa-titel"><span className="pct">50%</span><span className="kort">korting</span></h2>
             <p className="sa-sub">op je oprit of terras</p>
-            <p className="sa-tekst">
-              Bij elke <b>dakreiniging</b> maken wij je <b>dakgoten</b>, <b>glaspartijen</b> en <b>zonnepanelen</b> gratis mee proper.
-              Kies je er ook je oprit of terras bij, dan betaal je <b>maar de helft</b>.
-            </p>
+            <p className="sa-tekst"><b>Dakgoten, glaspartijen en zonnepanelen</b> nemen we gratis mee.</p>
           </div>
 
           <div className="sa-prijs">
-            <h3>Bij je dakreiniging</h3>
-            <p className="sa-gratis-k">Dakgoten, glaspartijen en zonnepanelen</p>
-            <p className="sa-gratis">Gratis</p>
-            <span className="sa-pill">Oprit of terras: −50%</span>
-            <p className="sa-plus">Enkel in combinatie met een <b>dakreiniging</b></p>
+            <h3>Voorjaarsbonus</h3>
+            <p className="sa-gratis">−50%</p>
+            <p className="sa-gratis-k">Oprit of terras</p>
             <Link href="/#calculator" className="sa-knop">Bereken mijn richtprijs</Link>
           </div>
         </div>
