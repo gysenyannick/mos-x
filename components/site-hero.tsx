@@ -5,6 +5,9 @@ import Link from "next/link";
 import { BtnPress } from "@/components/btn-press";
 import { useEffect, useState } from "react";
 import { preload } from "react-dom";
+import { Yellowtail } from "next/font/google";
+
+const scriptFont = Yellowtail({ weight: "400", subsets: ["latin"], display: "swap" });
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
@@ -61,10 +64,10 @@ export default function SiteHero() {
         .hv-onder small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
         .hv-onder b { display: block; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; margin-top: 2px; }
         .hv-duur { font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,0.16); backdrop-filter: blur(6px); }
-        .hv-sticker { position: absolute; top: -34px; right: -30px; z-index: 3; width: 138px; height: 138px; border-radius: 50%; background: #FFFFFF; transform: rotate(10deg);
+        .hv-sticker { position: absolute; top: -40px; right: -36px; z-index: 3; width: 150px; height: 150px; border-radius: 50%; background: #FFFFFF; transform: none;
           display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.05;
           box-shadow: 0 16px 34px -12px rgba(0,0,0,0.6); pointer-events: none; }
-        .hv-sticker::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: 1.5px dashed rgba(255,102,0,0.55); }
+
         .hv-sticker .k { font: 700 9.5px var(--font-inter), system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #545454; display: flex; align-items: center; gap: 4px; }
         .hv-sticker .v { font: 900 30px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; margin-top: 4px; }
         .hv-sticker .l { font: 900 11px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #1A1A1A; }
@@ -157,7 +160,7 @@ export default function SiteHero() {
             >
               Levenslang een
               <br />
-              <span style={{ color: "#9BCB6C" }}>verzorgd dak.</span>
+              <span style={{ color: "#9BCB6C" }}>mosvrij dak.</span>
             </h1>
 
             <p
@@ -227,11 +230,18 @@ export default function SiteHero() {
 
           {/* Rechts: video met sticker */}
           <div className="hv-rechts">
-            <span className="hv-sticker" aria-label="Bekend van VTM Lifestyle en Wonen">
-              <span className="k"><Tv size={10} /> Bekend van</span>
-              <span className="v">VTM</span>
-              <span className="l">Lifestyle</span>
-              <span className="w">&amp; Wonen</span>
+            <span className="hv-sticker" role="img" aria-label="Bekend van tv: VTM Lifestyle en Wonen">
+              <svg viewBox="0 0 200 200" width="100%" height="100%" aria-hidden="true">
+                <circle cx="100" cy="100" r="96" fill="#FFFFFF" stroke="#1A1A1A" strokeWidth="1.6" />
+                <g transform="rotate(-7 100 100)">
+                  <text x="100" y="54" textAnchor="middle" fontFamily="var(--font-montserrat), system-ui, sans-serif" fontWeight="700" fontSize="12" letterSpacing="4" fill="#545454">VTM</text>
+                  <rect x="30" y="64" width="140" height="36" fill="none" stroke="#1A1A1A" strokeWidth="4.5" />
+                  <text x="100" y="92" textAnchor="middle" fontFamily="var(--font-montserrat), system-ui, sans-serif" fontWeight="900" fontSize="23" letterSpacing="0.2" fill="#1A1A1A">LIFESTYLE</text>
+                  <text x="100" y="129" textAnchor="middle" className={scriptFont.className} fontSize="34" fill="#E8532A">&amp; Wonen</text>
+                  <rect x="38" y="138" width="124" height="27" rx="13.5" fill="#E2001A" />
+                  <text x="100" y="155.5" textAnchor="middle" fontFamily="var(--font-montserrat), system-ui, sans-serif" fontWeight="800" fontSize="11" letterSpacing="2.2" fill="#FFFFFF">BEKEND VAN TV</text>
+                </g>
+              </svg>
             </span>
             <a href="#reviews" className="hv-revkaart">
               <span className="g"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg></span>
