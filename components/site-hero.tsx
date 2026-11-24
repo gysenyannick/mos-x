@@ -32,7 +32,7 @@ export default function SiteHero() {
         alt=""
         aria-hidden="true"
         fetchPriority="high"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "60% 40%", zIndex: 0 }}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "55% 45%", zIndex: 0 }}
       />
 
       {/* Gradient overlay */}
