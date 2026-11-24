@@ -48,14 +48,14 @@ export default function SiteHero() {
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.9; border-radius: 52% 48% 46% 54% / 46% 52% 48% 54%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
           .hv-rechts .hv-kaart:hover { transform: none; }
           .hv-rechts .hv-revkaart { left: -10px; bottom: 96px; }
           .hv-rechts .hv-sticker { top: 70px; right: -6px; width: 128px; height: 128px; }
         }
-        .hv-blob { position: absolute; inset: 22px -26px 54px 36px; z-index: -1;
-          border-radius: 46% 54% 52% 48% / 42% 46% 54% 58%;
-          background: rgba(155,203,108,0.42); transform: rotate(4deg); }
+        .hv-blob { position: absolute; inset: 26px -14px 34px 16px; z-index: -1;
+          border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%;
+          background: rgba(155,203,108,0.35); }
         @keyframes hv-blob { 0% { border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; } 100% { border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%; } }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
@@ -242,23 +242,6 @@ export default function SiteHero() {
           {/* Rechts: video met sticker */}
           <div className="hv-rechts">
             <span className="hv-blob" aria-hidden="true" />
-            <span className="hv-sticker" role="img" aria-label="Bekend van tv: VTM Lifestyle en Wonen">
-              <svg viewBox="0 0 200 200" width="100%" height="100%" aria-hidden="true">
-                <circle cx="100" cy="100" r="96" fill="#FFFFFF" stroke="#1A1A1A" strokeWidth="1.6" />
-                <g transform="rotate(-7 100 100)">
-                  <text x="100" y="54" textAnchor="middle" fontFamily="var(--font-montserrat), system-ui, sans-serif" fontWeight="700" fontSize="12" letterSpacing="4" fill="#545454">VTM</text>
-                  <rect x="30" y="64" width="140" height="36" fill="none" stroke="#1A1A1A" strokeWidth="4.5" />
-                  <text x="100" y="92" textAnchor="middle" fontFamily="var(--font-montserrat), system-ui, sans-serif" fontWeight="900" fontSize="23" letterSpacing="0.2" fill="#1A1A1A">LIFESTYLE</text>
-                  <text x="100" y="129" textAnchor="middle" className={scriptFont.className} fontSize="34" fill="#E8532A">&amp; Wonen</text>
-                  <rect x="38" y="138" width="124" height="27" rx="13.5" fill="#E2001A" />
-                  <text x="100" y="155.5" textAnchor="middle" fontFamily="var(--font-montserrat), system-ui, sans-serif" fontWeight="800" fontSize="11" letterSpacing="2.2" fill="#FFFFFF">BEKEND VAN TV</text>
-                </g>
-              </svg>
-            </span>
-            <a href="#reviews" className="hv-revkaart">
-              <span className="g"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg></span>
-              <span><span className="r"><b>5.0</b><span className="s">★★★★★</span></span><small>16 Google-reviews</small></span>
-            </a>
             <button type="button" className="hv-kaart" onClick={() => setVideoOpen(true)} aria-label="Bekijk de video van Yannick aan het werk">
               <video src="/videos/yannick-hero.mp4" poster="/images/yannick-hero-poster.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
               <span className="hv-play"><Play size={30} fill="currentColor" style={{ marginLeft: "4px" }} /></span>
