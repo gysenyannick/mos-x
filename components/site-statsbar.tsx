@@ -1,14 +1,14 @@
 "use client";
 
-import { ShieldCheck, Leaf, BadgeEuro, Droplets } from "lucide-react";
+import { Star, ShieldCheck, Leaf, CircleCheck } from "lucide-react";
 
 type Stat = { title: string; label: React.ReactNode; kort: string; icon: React.ReactNode };
 
 const stats: Stat[] = [
-  { title: "Mosvrij-garantie",  label: "2 jaar mosvrij gegarandeerd", kort: "2 jaar mosvrij", icon: <Leaf        size={26} color="#9BCB6C" /> },
-  { title: "Coating-garantie",  label: "10 jaar op je dakcoating", kort: "10 jaar op coating", icon: <ShieldCheck size={26} color="#9BCB6C" /> },
-  { title: "Vaste prijs",       label: "Geen verrassingen achteraf", kort: "Geen verrassingen", icon: <BadgeEuro   size={26} color="#9BCB6C" /> },
-  { title: "Veilige reiniging", label: "Onder aangepaste druk", kort: "Aangepaste druk", icon: <Droplets    size={26} color="#9BCB6C" /> },
+  { title: "5/5 op Google",    label: "Meer dan 150 daken gereinigd", kort: "150+ daken gereinigd", icon: <Star        size={26} color="#9BCB6C" /> },
+  { title: "Vaste prijs",      label: "Geen verrassingen achteraf", kort: "Geen verrassingen", icon: <ShieldCheck size={26} color="#9BCB6C" /> },
+  { title: "Garantie", label: "10 jaar op dakcoating", kort: "10 jaar op dakcoating", icon: <Leaf        size={26} color="#9BCB6C" /> },
+  { title: "Schadevrij",       label: "Veilig voor je dakpannen", kort: "Veilig voor je pannen", icon: <CircleCheck size={26} color="#9BCB6C" /> },
 ];
 
 function UspStat({ title, label, kort, icon }: Stat) {
