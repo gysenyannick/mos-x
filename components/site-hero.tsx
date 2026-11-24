@@ -55,7 +55,7 @@ export default function SiteHero() {
         }
         .hv-blob { position: absolute; inset: 26px -14px 34px 16px; z-index: -1;
           border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%;
-          background: rgba(155,203,108,0.35); }
+          background: #9BCB6C; }
         @keyframes hv-blob { 0% { border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; } 100% { border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%; } }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
