@@ -38,12 +38,8 @@ export default function SiteHero() {
       <style>{`
         .hv-accent { position: relative; display: inline-block; }
         .hv-streep { position: absolute; left: 0; right: 4%; bottom: -0.12em; width: 96%; height: 0.24em; }
-        .hv-glans { position: absolute; right: -0.62em; top: -0.32em; width: 0.55em; height: 0.55em; }
         .hv-waas { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(247,248,246,0.97) 0%, rgba(247,248,246,0.92) 45%, rgba(247,248,246,0.72) 100%); }
         @media (max-width: 1023px) { .hv-waas { background: rgba(247,248,246,0.9); } }
-        .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.07; }
-        @media (max-width: 1023px) { .hv-iconen { display: none; } }
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
