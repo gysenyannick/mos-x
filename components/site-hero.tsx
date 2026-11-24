@@ -109,10 +109,7 @@ export default function SiteHero() {
               className="hero-desc leading-relaxed mb-8"
               style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
-              <span style={{ display: "block", color: "#FFFFFF", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "19px", marginBottom: "8px" }}>
-                Dak vervangen? <span style={{ color: "#9BCB6C" }}>Vernieuw het!</span>
-              </span>
-              Een dakcoating kost een fractie van een nieuw dak. Met ons onderhoud blijft je dak er levenslang als nieuw uitzien.
+              MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.
             </p>
 
             {/* CTAs */}
