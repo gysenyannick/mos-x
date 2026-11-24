@@ -25,7 +25,6 @@ const voordelen = [
   { Icoon: CloudRain, titel: "Minder vochtproblemen", tekst: "Mos werkt als een spons. Het houdt water vast en kruipt tussen je pannen, waardoor er water onder kan lopen. Zonder mos blijft je dak droog." },
   { Icoon: ShieldCheck, titel: "Je dak gaat langer mee", tekst: "Mos houdt je pannen voortdurend nat. Bij vorst zet dat water uit en barsten je pannen. Een mosvrij dak droogt sneller op en gaat jaren langer mee." },
   { Icoon: Sparkles, titel: "Een frisse uitstraling", tekst: "Een proper dak geeft je hele woning een verzorgde look. Dat valt meteen op in de straat en verhoogt de waarde van je woning als je ooit verkoopt." },
-  { Icoon: CheckCircle2, titel: "2 jaar mosvrij-garantie", tekst: "We staan achter ons werk. Blijft je dak geen 2 jaar mosvrij, dan komen we gratis terug voor een nieuwe antimosbehandeling." },
 ];
 
 const daktypes = [
@@ -44,7 +43,6 @@ const resultaten = [
 ];
 
 const faqs: { q: string; a: string; cta?: boolean }[] = [
-  { q: "Hoe werkt de mosvrij-garantie?", a: "Na een dakontmossing bij MOS-X blijft je dak 2 jaar mosvrij. Komt er binnen die 2 jaar toch opnieuw mos op je dak, dan komen we langs en brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan." },
   { q: "Wat kost een dakreiniging?", a: "Geen enkel dak is hetzelfde. De prijs hangt af van de oppervlakte, bereikbaarheid, vervuiling, het type dakbedekking en de gekozen afwerking.\n\nDaarom werken we niet met standaardprijzen per m², maar bekijken we jouw dak persoonlijk, zodat je een correcte richtprijs ontvangt.", cta: true },
   { q: "Hoe lang blijft je dak proper?", a: "Dat hangt af van de ligging van je woning, de hoeveelheid bomen rondom en de weersomstandigheden. Met de antimosbehandeling of het MOS-X Onderhoudsplan blijft je dak doorgaans langer proper." },
   { q: "Hoe vaak reinig je best je dak?", a: "Een dak met veel schaduw, bomen of vocht vervuilt sneller dan een dak dat veel zon krijgt.\n\nGemiddeld volstaat een professionele reiniging om de 7 à 10 jaar. Een controle om de 2 à 3 jaar helpt om beginnende mosvorming tijdig op te merken." },
@@ -95,15 +93,14 @@ export default function DakontmossingPage() {
             <BackLink href="/diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakontmossen</p>
             <p className="do-oog">Dakontmossen</p>
-            <h1 className="do-h1">Geef je dak opnieuw <span>jaren bescherming.</span></h1>
-            <p className="do-p">Mos en vuil houden vocht vast en laten je dak sneller verouderen. We verwijderen ze veilig, zonder hoge druk, en beschermen je dak met een antimosbehandeling.</p>
+            <h1 className="do-h1">Geef je dak opnieuw <span>een verzorgde uitstraling.</span></h1>
+            <p className="do-p">Mos en vuil houden vocht vast en laten je dak sneller verouderen. We verwijderen ze veilig, onder aangepaste druk, en beschermen je dak met een antimosbehandeling of een optionele dakcoating.</p>
             <div className="do-hero-knoppen">
               <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
               <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
             </div>
             <div className="do-hero-bewijs">
               <GoogleBalk />
-              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>2 jaar</b> mosvrij-garantie</span>
             </div>
           </div>
         </div>
@@ -135,21 +132,6 @@ export default function DakontmossingPage() {
                 );
               })}
             </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Garantie */}
-      <section className="do-sectie do-zacht">
-        <div className="do-wrap">
-          <div className="do-garantie">
-            <div className="do-zegel" aria-hidden="true"><div><b>2</b><small>jaar<span className="zg-x"> mosvrij</span></small></div></div>
-            <div>
-              <p className="do-oog">Onze garantie</p>
-              <h2>2 jaar mosvrij. <span>Gegarandeerd.</span></h2>
-              <p className="do-p" style={{ maxWidth: 560 }}>Komt er binnen 2 jaar toch mos terug? Dan brengen we gratis, op onze kosten, een nieuwe antimosbehandeling aan.</p>
-            </div>
-            <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
           </div>
         </div>
       </section>
@@ -264,14 +246,32 @@ export default function DakontmossingPage() {
         </div>
       </section>
 
+      <style>{`
+        .do-cta-rij { flex-wrap: nowrap; padding: 36px 44px; }
+        .do-cta-rij h2 { white-space: nowrap; font-size: clamp(1.4rem, 2.2vw, 1.85rem); }
+        .do-cta-sub { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+        .do-cta-rij .do-cta-sub .gs-score { margin-top: 0; }
+        .do-cta-rij .do-cta-knoppen { flex-wrap: nowrap; flex-shrink: 0; }
+        .do-cta-rij .do-knop { height: 46px; padding: 0 18px; font-size: 14px; }
+        @media (max-width: 1100px) {
+          .do-cta-rij { flex-wrap: wrap; }
+          .do-cta-rij h2 { white-space: normal; }
+        }
+        @media (max-width: 640px) {
+          .do-cta-rij { padding: 30px 22px; }
+          .do-cta-rij .do-cta-knoppen { flex-wrap: wrap; }
+        }
+      `}</style>
       {/* Afsluiter */}
       <section className="do-sectie do-wit" style={{ paddingTop: 0 }}>
         <div className="do-wrap">
-          <div className="do-cta">
+          <div className="do-cta do-cta-rij">
             <div>
               <h2>Benieuwd wat <span style={{ whiteSpace: "nowrap" }}>jouw dak</span> nodig heeft?</h2>
-              <p>We bekijken je dak en adviseren enkel wat écht nodig is.</p>
-              <GoogleScore donker />
+              <div className="do-cta-sub">
+                <p>We bekijken je dak en adviseren enkel wat écht nodig is.</p>
+                <GoogleScore donker />
+              </div>
             </div>
             <div className="do-cta-knoppen">
               <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
