@@ -14,13 +14,11 @@ export default function SiteActie() {
       <style>{`
         .sa-sectie { padding: 48px 0 96px; }
         .sa-wrap { max-width: 1320px; margin: 0 auto; padding: 0 20px; }
-        .sa-kaart { display: grid; grid-template-columns: 300px minmax(0, 1fr) 270px; align-items: center; gap: 40px;
+        .sa-kaart { display: grid; grid-template-columns: 240px minmax(0, 1fr) 270px; align-items: center; gap: 40px;
           padding: 64px 56px 64px 64px; border-radius: 28px; background: #F2F8EC;
           box-shadow: 0 2px 16px rgba(0,0,0,0.04), 0 30px 60px -40px rgba(30,51,36,0.3); }
-        .sa-foto { position: relative; width: calc(100% - 14px); aspect-ratio: 16 / 12; isolation: isolate; }
-        .sa-foto::before { content: ""; position: absolute; inset: 16px -14px -14px 16px; z-index: -1; background: #9BCB6C; border-radius: 20px; }
-        .sa-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 55%; display: block;
-          border-radius: 18px; box-shadow: 0 24px 48px -28px rgba(30,51,36,0.55); }
+        .sa-foto { position: relative; display: flex; justify-content: center; }
+        .sa-foto img { width: 100%; max-width: 230px; height: auto; display: block; filter: drop-shadow(0 18px 22px rgba(30,51,36,0.18)); }
         .sa-oog { margin: 0 0 10px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
         .sa-titel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: #1A1A1A; white-space: nowrap; }
         .sa-titel .pct { font-size: clamp(3.4rem, 5.4vw, 5rem); color: #9BCB6C; letter-spacing: -0.05em; }
@@ -38,7 +36,7 @@ export default function SiteActie() {
         .sa-knop:active { transform: translateY(1px); }
         .sa-knop:focus-visible { outline: 2px solid #1A1A1A; outline-offset: 3px; }
         @media (max-width: 1100px) {
-          .sa-kaart { grid-template-columns: 280px minmax(0, 1fr); padding: 44px 40px; gap: 40px; }
+          .sa-kaart { grid-template-columns: 200px minmax(0, 1fr); padding: 44px 40px; gap: 40px; }
           .sa-prijs { grid-column: 1 / -1; max-width: 420px; justify-self: center; width: 100%; }
         }
         @media (max-width: 680px) {
@@ -47,8 +45,7 @@ export default function SiteActie() {
           .sa-datum { display: block; margin-top: 4px; }
           .sa-sectie { padding: 8px 0 56px; }
           .sa-kaart { grid-template-columns: minmax(0, 1fr); padding: 36px 20px 26px; gap: 30px; text-align: center; }
-          .sa-foto { width: calc(100% - 12px); margin: 0 12px 0 0; }
-          .sa-foto::before { inset: 12px -12px -12px 12px; }
+          .sa-foto img { max-width: 170px; }
           .sa-titel .kort { margin-left: 8px; }
         }
         @media (max-width: 380px) { .sa-titel .pct { font-size: 3rem; } .sa-titel .kort { font-size: 1.6rem; } }
@@ -57,7 +54,7 @@ export default function SiteActie() {
         <div className="sa-kaart">
           <div className="sa-foto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/actie-dak-oprit.webp" width={900} height={710} alt="Ontmost dak met het MOS-X-bord en de bestelwagen op de oprit" loading="lazy" decoding="async" />
+            <img src="/images/mos-mascotte.webp" width={686} height={760} alt="Vrolijk mosmannetje dat naar het aanbod wijst" loading="lazy" decoding="async" />
           </div>
 
           <div>
