@@ -14,10 +14,9 @@ export default function SiteActie() {
           padding: 64px 56px 64px 64px; border-radius: 28px; background: #F2F8EC;
           box-shadow: 0 2px 16px rgba(0,0,0,0.04), 0 30px 60px -40px rgba(30,51,36,0.3); }
         .sa-foto { position: relative; width: 100%; aspect-ratio: 1 / 0.92; isolation: isolate; }
-        .sa-foto::before { content: ""; position: absolute; inset: -9px; z-index: -1; background: #CFE5B8;
-          border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
+        .sa-foto::before { content: ""; position: absolute; inset: -6px -12px -10px 4px; z-index: -1; background: #CFE5B8; clip-path: url(#sa-vorm); }
         .sa-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block;
-          border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
+          clip-path: url(#sa-vorm); }
         .sa-lead { margin: 0; white-space: nowrap; font: 800 clamp(1.4rem, 2.2vw, 1.85rem) var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; }
         .sa-en { margin: 6px 0 4px; font: 600 16px var(--font-inter), system-ui, sans-serif; color: #545454; }
         .sa-oog { margin: 0 0 6px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
@@ -55,6 +54,9 @@ export default function SiteActie() {
       <div className="sa-wrap">
         <div className="sa-kaart">
           <div className="sa-foto">
+            <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
+              <clipPath id="sa-vorm" clipPathUnits="objectBoundingBox"><path d="M0,0.62 C0,0.42 0.08,0.22 0.24,0.1 C0.4,-0.01 0.64,-0.02 0.82,0.06 C0.96,0.13 1,0.32 1,0.5 C1,0.7 0.94,0.86 0.78,0.95 C0.62,1.02 0.38,1.01 0.2,0.93 C0.06,0.86 0,0.76 0,0.62 Z" /></clipPath>
+            </svg>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/images/herentals-na.png" alt="Gereinigd dak met dakramen" loading="lazy" decoding="async" />
           </div>
