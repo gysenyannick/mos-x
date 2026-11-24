@@ -90,7 +90,7 @@ export default function SiteHero() {
         @media (max-width: 1023px) {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
-          .hv-rechts { order: -1; width: 92%; margin: 0 auto 34px; }
+          .hv-rechts { order: -1; width: 100%; margin: 0 auto 34px; }
           .hero-sectie .hero-region-label { justify-content: center; text-align: center; }
           .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
           .hv-streep { left: 2%; }
