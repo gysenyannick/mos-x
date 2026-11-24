@@ -21,21 +21,10 @@ export default function SiteHero() {
   return (
     <section
       className="relative overflow-hidden hero-sectie"
-      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "radial-gradient(760px 540px at 80% 50%, rgba(155,203,108,0.10), transparent 65%), linear-gradient(to bottom, #F1F3EF 0%, #F7F8F6 100%)", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
+      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#F7F6F2", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
-      {/* Subtiele dak-icoontjes in de achtergrond */}
-      <div aria-hidden="true" className="hv-iconen">
-        {/* eslint-disable @next/next/no-img-element */}
-        <img src="/images/hero-icoon-pan.png" alt="" style={{ left: "46%", top: "16%", width: 64, transform: "rotate(-10deg)" }} />
-        <img src="/images/hero-icoon-druppel.png" alt="" style={{ left: "53%", top: "58%", width: 46, transform: "rotate(8deg)" }} />
-        <img src="/images/hero-icoon-mos.png" alt="" style={{ left: "5%", top: "80%", width: 70 }} />
-        {/* eslint-enable @next/next/no-img-element */}
-      </div>
 
       <style>{`
-        .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        .hv-iconen img { position: absolute; height: auto; opacity: 0.08; }
-        @media (max-width: 1023px) { .hv-iconen { display: none; } }
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-trust { position: absolute; left: 0; right: 0; bottom: 92px; z-index: 2; text-align: center; padding: 0 20px; }
         .hv-trust-titel { margin: 0 0 12px; font: 500 13.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em; color: #7A7F78; }
@@ -57,6 +46,8 @@ export default function SiteHero() {
           .hv-trust-lijn { display: none; }
           .hv-trust-titel { font-size: 12.5px; }
         }
+        .hv-gloed { position: absolute; left: 50%; top: 50%; width: 125%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: -2; border-radius: 50%;
+          background: radial-gradient(circle, rgba(155,203,108,0.16) 0%, rgba(155,203,108,0.08) 40%, rgba(155,203,108,0) 70%); filter: blur(30px); pointer-events: none; }
         .hv-accent { position: relative; display: inline-block; }
         .hv-streep { position: absolute; left: 0; bottom: -0.12em; width: 96%; height: 0.24em; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
@@ -231,6 +222,7 @@ export default function SiteHero() {
 
           {/* Rechts: video met sticker */}
           <div className="hv-rechts">
+            <span className="hv-gloed" aria-hidden="true" />
             <span className="hv-blob" aria-hidden="true" />
             <button type="button" className="hv-kaart" onClick={() => setVideoOpen(true)} aria-label="Bekijk de video van Yannick aan het werk">
               <video src="/videos/yannick-hero.mp4" poster="/images/yannick-hero-poster.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
