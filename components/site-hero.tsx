@@ -121,7 +121,7 @@ export default function SiteHero() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "rgba(255,255,255,0.85)",
+                color: "#9BCB6C",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
