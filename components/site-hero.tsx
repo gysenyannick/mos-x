@@ -29,7 +29,6 @@ export default function SiteHero() {
         <img src="/images/hero-icoon-pan.png" alt="" style={{ left: "46%", top: "16%", width: 64, transform: "rotate(-10deg)" }} />
         <img src="/images/hero-icoon-druppel.png" alt="" style={{ left: "53%", top: "58%", width: 46, transform: "rotate(8deg)" }} />
         <img src="/images/hero-icoon-mos.png" alt="" style={{ left: "5%", top: "80%", width: 70 }} />
-        <img src="/images/hero-icoon-huis.png" alt="" style={{ left: "38%", top: "80%", width: 62, transform: "rotate(-4deg)" }} />
         {/* eslint-enable @next/next/no-img-element */}
       </div>
 
@@ -127,8 +126,8 @@ export default function SiteHero() {
             <p
               className="hero-region-label mb-5 text-[10px] md:text-[12px]"
               style={{
-                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                fontWeight: 800,
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
                 color: "#1A1A1A",
