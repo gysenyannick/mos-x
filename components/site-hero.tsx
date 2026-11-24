@@ -62,8 +62,8 @@ export default function SiteHero() {
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 16 / 10.5; border-radius: 22px; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
-          .hv-rechts .hv-kaart:hover { transform: none; }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 16 / 10.5; border-radius: 22px; box-shadow: 0 0 0 1.5px rgba(155,203,108,0.85), 0 0 18px 2px rgba(155,203,108,0.55), 0 0 48px 6px rgba(155,203,108,0.3), 0 40px 80px -36px rgba(0,0,0,0.8); animation: hv-neon 3.2s ease-in-out infinite; }
+          .hv-rechts .hv-kaart:hover { transform: none; animation: none; box-shadow: 0 0 0 2px rgba(155,203,108,0.95), 0 0 24px 4px rgba(155,203,108,0.7), 0 0 64px 10px rgba(155,203,108,0.38), 0 40px 80px -36px rgba(0,0,0,0.8); }
         }
         .hv-blob { position: absolute; inset: 62px -16px 22px 18px; z-index: -1;
           border-radius: 24px;
@@ -95,11 +95,12 @@ export default function SiteHero() {
           .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
           .hv-streep { left: 2%; }
           .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
-          .hv-rechts .hv-kaart { aspect-ratio: 16 / 10.5; border-radius: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
+          .hv-rechts .hv-kaart { aspect-ratio: 16 / 10.5; border-radius: 18px; box-shadow: 0 0 0 1.5px rgba(155,203,108,0.85), 0 0 18px 2px rgba(155,203,108,0.55), 0 0 48px 6px rgba(155,203,108,0.3), 0 30px 60px -30px rgba(0,0,0,0.8); animation: hv-neon 3.2s ease-in-out infinite; }
           .hv-blob { inset: 54px -10px 28px 14px; border-radius: 20px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
         }
-        @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
+        @keyframes hv-neon { 0%, 100% { box-shadow: 0 0 0 1.5px rgba(155,203,108,0.85), 0 0 18px 2px rgba(155,203,108,0.55), 0 0 48px 6px rgba(155,203,108,0.3), 0 40px 80px -36px rgba(0,0,0,0.8); } 50% { box-shadow: 0 0 0 2px rgba(155,203,108,0.95), 0 0 24px 4px rgba(155,203,108,0.7), 0 0 64px 10px rgba(155,203,108,0.38), 0 40px 80px -36px rgba(0,0,0,0.8); } }
+        @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } .hv-rechts .hv-kaart { animation: none !important; } }
       `}</style>
 
       {/* Content */}
