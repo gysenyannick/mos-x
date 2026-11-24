@@ -62,11 +62,11 @@ export default function SiteHero() {
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 4 / 3.4; border-radius: 22px; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
           .hv-rechts .hv-kaart:hover { transform: none; }
         }
-        .hv-blob { position: absolute; inset: 26px -14px 34px 16px; z-index: -1;
-          border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%;
+        .hv-blob { position: absolute; inset: 62px -16px 22px 18px; z-index: -1;
+          border-radius: 24px;
           background: #9BCB6C; }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
@@ -95,8 +95,8 @@ export default function SiteHero() {
           .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
           .hv-streep { left: 2%; }
           .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
-          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
-          .hv-blob { inset: 18px -10px 24px 12px; }
+          .hv-rechts .hv-kaart { aspect-ratio: 4 / 3.4; border-radius: 18px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
+          .hv-blob { inset: 54px -10px 28px 14px; border-radius: 20px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
         }
         @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
