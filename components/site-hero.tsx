@@ -114,7 +114,7 @@ export default function SiteHero() {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
           .hv-sticker, .hv-revkaart { display: none; }
-          .hv-rechts { width: 90%; margin: 32px auto 0; }
+          .hv-rechts { order: -1; width: 78%; margin: 0 auto 30px; }
           .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
           .hv-blob { inset: 18px -10px 24px 12px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
