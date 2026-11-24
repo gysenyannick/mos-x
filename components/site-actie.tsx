@@ -61,6 +61,10 @@ export default function SiteActie() {
           .sa-tekst { margin-left: auto; margin-right: auto; }
           .sa-prijs { padding: 22px 18px 20px; text-align: left; }
         }
+        @media (max-width: 380px) {
+          .sa-titel .groot { font-size: 2.15rem; }
+          .sa-titel .klein { font-size: 1.2rem; }
+        }
       `}</style>
       <div className="site-wrap">
         <div className="sa-kaart">
