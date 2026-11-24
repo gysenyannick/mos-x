@@ -20,7 +20,7 @@ export default function SiteActie() {
         .sa-foto { position: absolute; z-index: -1; top: 0; bottom: 0; left: 0; width: 40%;
           -webkit-mask-image: linear-gradient(to right, #000 0%, #000 50%, rgba(0,0,0,0.5) 75%, transparent 100%);
           mask-image: linear-gradient(to right, #000 0%, #000 50%, rgba(0,0,0,0.5) 75%, transparent 100%); }
-        .sa-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 22% 40%; display: block; }
+        .sa-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; display: block; }
         .sa-oog { margin: 0 0 6px; font: 700 11.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
         .sa-titel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: #1A1A1A; white-space: nowrap; }
         .sa-titel .pct { font-size: clamp(2.3rem, 3.6vw, 3.4rem); color: #9BCB6C; letter-spacing: -0.05em; }
@@ -44,7 +44,7 @@ export default function SiteActie() {
           .sa-foto { position: relative; z-index: 0; width: auto; height: 210px; margin: 0 -24px -6px;
             -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, rgba(0,0,0,0.55) 74%, transparent 100%);
             mask-image: linear-gradient(to bottom, #000 0%, #000 50%, rgba(0,0,0,0.55) 74%, transparent 100%); }
-          .sa-foto img { object-position: 40% 32%; }
+          .sa-foto img { object-position: 50% 55%; }
           .sa-prijs { max-width: 320px; justify-self: center; width: 100%; }
         }
         @media (max-width: 680px) {
@@ -62,7 +62,7 @@ export default function SiteActie() {
         <div className="sa-kaart">
           <div className="sa-foto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/actie-dak-oprit.webp" width={1000} height={789} alt="Ontmost dak met de MOS-X-bestelwagen op de oprit" loading="lazy" decoding="async" />
+            <img src="/images/actie-oprit.webp" width={924} height={570} alt="Propere oprit in natuursteen kasseien" loading="lazy" decoding="async" />
           </div>
 
           <div>
