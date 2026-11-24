@@ -1,7 +1,6 @@
 "use client";
 
-import { Phone, Tv, ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { Tv, ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 import { useRef, useEffect, useState } from "react";
 import { preload } from "react-dom";
