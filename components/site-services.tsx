@@ -42,7 +42,7 @@ const services = [
     imgSubtitle: "Jaarlijkse controle en onderhoud.",
     badge: "Onderhoudsplan",
     href: "/diensten/onderhoudsplan",
-    img: "/images/Foto_dakzorg.png",
+    img: "/images/onderhoudsplan-gezin.webp",
     video: null,
     Icon: CalendarCheck,
     desc: "Wij volgen je dak op en helpen het jarenlang verzorgd te houden.",

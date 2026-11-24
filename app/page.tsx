@@ -52,11 +52,11 @@ export default function HomePage() {
         {/* 8 · Zo werken we */}
         <SiteWerkwijze />
 
-        {/* 9 · FAQ: laatste bezwaren weg */}
-        <SiteFaq />
-
-        {/* 10 · Voor/na realisaties: laatste bewijs vlak voor contact */}
+        {/* 9 · Voor/na realisaties: bewijs */}
         <SiteRealisatiesPreview />
+
+        {/* 10 · FAQ: laatste bezwaren weg */}
+        <SiteFaq />
 
         {/* 11 · Contact */}
         <SiteContact />

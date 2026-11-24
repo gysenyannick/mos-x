@@ -146,12 +146,6 @@ Resultaten die je <span style={{ color: "#9BCB6C" }}>ziet.</span>
 
       </div>
 
-      {/* SVG golf — symmetrische transitie naar donkere reviews sectie */}
-      <div style={{ position: "absolute", bottom: "-1px", left: 0, width: "100%", overflow: "hidden", lineHeight: 0, zIndex: 3 }}>
-        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="realisaties-wave" style={{ display: "block", width: "100%", height: "80px" }}>
-          <path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#0B0F0C"/>
-        </svg>
-      </div>
 
     </section>
   );

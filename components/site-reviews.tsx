@@ -98,6 +98,13 @@ export default function SiteReviews() {
     <section className="site-pad site-reviews-section" id="reviews" style={{ background: "#0B0F0C", position: "relative", overflow: "hidden" }}>
       <style>{`@media (max-width: 1023px) { .site-reviews-section .reviews-mos { opacity: 0.18 !important; } }`}</style>
 
+      {/* SVG golf: zachte overgang van de lichte calculator/USP-zone naar de donkere reviews */}
+      <div aria-hidden="true" style={{ position: "absolute", top: "-1px", left: 0, width: "100%", overflow: "hidden", lineHeight: 0, zIndex: 3, pointerEvents: "none" }}>
+        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="realisaties-wave" style={{ display: "block", width: "100%", height: "80px" }}>
+          <path d="M0,0 C360,80 1080,80 1440,0 Z" fill="#F7F8F6"/>
+        </svg>
+      </div>
+
       {/* Moss texture - left side (zelfde stijl als diensten) */}
       <img decoding="async"
         src="/images/mos-texture.jpg"

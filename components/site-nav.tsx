@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, UserRound, MessageCircle } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 const diensten = [
@@ -17,7 +17,6 @@ const links = [
   { label: "Realisaties", href: "/realisaties" },
   { label: "Over ons",    href: "/over-ons" },
   { label: "Contact",     href: "/contact" },
-  { label: "Klantenzone", href: "/klant" },
 ];
 
 const mobieleDiensten = [
@@ -30,7 +29,6 @@ const mobieleLinks = [
   { label: "Realisaties", href: "/realisaties", Icoon: Images },
   { label: "Over ons",    href: "/over-ons",    Icoon: Users },
   { label: "Contact",     href: "/contact",     Icoon: Mail },
-  { label: "Klantenzone", href: "/klant",       Icoon: UserRound },
 ];
 
 const linkStijl: React.CSSProperties = {
