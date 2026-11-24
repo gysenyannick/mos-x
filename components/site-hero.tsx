@@ -12,6 +12,7 @@ import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
+  preload("/images/hero-achtergrond-coating.jpg", { as: "image", fetchPriority: "high" });
   const [videoOpen, setVideoOpen] = useState(false);
   useEffect(() => {
     if (!videoOpen) return;
@@ -27,31 +28,19 @@ export default function SiteHero() {
       className="relative overflow-hidden hero-sectie"
       style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "radial-gradient(800px 560px at 78% 48%, rgba(155,203,108,0.12), transparent 65%), linear-gradient(to bottom, #F3F5F1 0%, #F7F8F6 100%)", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
-      {/* Subtiele lijn-icoontjes in de achtergrond */}
-      <div aria-hidden="true" className="hv-iconen">
-        {/* dakprofiel met pannenrijen */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "45%", top: "17%", width: 64, height: 64 }}>
-          <path d="M6 34 L32 12 L58 34" /><path d="M14 33 V52 H50 V33" />
-          <path d="M14 40 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" /><path d="M14 46 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" />
-        </svg>
-        {/* dakpan */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "52%", top: "60%", width: 56, height: 56 }}>
-          <path d="M16 10 H48 V44 Q40 54 32 44 Q24 54 16 44 Z" /><path d="M27 12 V42 M37 12 V42" />
-        </svg>
-        {/* schild met vinkje */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "5%", top: "80%", width: 54, height: 54 }}>
-          <path d="M32 8 L52 16 V30 C52 44 43 52 32 56 C21 52 12 44 12 30 V16 Z" /><path d="M23 32 L30 39 L42 26" />
-        </svg>
-        {/* nok met schouw */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "39%", top: "82%", width: 58, height: 58 }}>
-          <path d="M4 44 L28 22 L60 44" /><path d="M40 30 V16 H48 V36" />
-        </svg>
-      </div>
+      {/* Achtergrond: dronefoto van een gecoat dak, met een lichte waas zodat de tekst leesbaar blijft */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/hero-achtergrond-coating.jpg" alt="" aria-hidden="true" fetchPriority="high"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 40%", zIndex: 0 }} />
+      <div aria-hidden="true" className="hv-waas" />
+
 
       <style>{`
         .hv-accent { position: relative; display: inline-block; }
         .hv-streep { position: absolute; left: 0; right: 4%; bottom: -0.12em; width: 96%; height: 0.24em; }
         .hv-glans { position: absolute; right: -0.62em; top: -0.32em; width: 0.55em; height: 0.55em; }
+        .hv-waas { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(247,248,246,0.97) 0%, rgba(247,248,246,0.92) 45%, rgba(247,248,246,0.72) 100%); }
+        @media (max-width: 1023px) { .hv-waas { background: rgba(247,248,246,0.9); } }
         .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
         .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.07; }
         @media (max-width: 1023px) { .hv-iconen { display: none; } }
@@ -173,9 +162,6 @@ export default function SiteHero() {
               }}
             >
               <span className="hv-accent">Levenslang een
-                <svg className="hv-glans" viewBox="0 0 40 40" aria-hidden="true">
-                  <path d="M8 26 L5 13 M19 20 L22 5 M29 27 L38 17" fill="none" stroke="#9BCB6C" strokeWidth="4" strokeLinecap="round" />
-                </svg>
               </span>
               <br />
               <span className="hv-accent">
