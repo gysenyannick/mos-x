@@ -97,6 +97,16 @@ export default function SiteNav() {
           html { scrollbar-color: #9BCB6C #F2F4F0; scrollbar-width: thin; }
         }
         .mx-glow:hover, .mx-glow:focus-visible { animation-play-state: paused; }
+        .mx-tel { margin-left: auto; margin-right: 6px; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px;
+          border-radius: 8px; border: 1px solid rgba(155,203,108,0.5); color: #1A1A1A; text-decoration: none; white-space: nowrap;
+          font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em;
+          transition: border-color 150ms ease, background-color 150ms ease, transform 120ms ease; }
+        .mx-tel svg { color: #9BCB6C; flex-shrink: 0; }
+        .mx-tel:hover { border-color: #9BCB6C; background: rgba(155,203,108,0.08); }
+        .mx-tel:active { transform: scale(0.97); }
+        .mx-tel:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+        @media (min-width: 1024px) { .mx-tel { display: none; } }
+        @media (max-width: 359px) { .mx-tel { padding: 0 9px; font-size: 12px; } .mx-tel svg { display: none; } }
         @media (prefers-reduced-motion: reduce) { .mx-glow::after { display: none; } :is(.do-knop, .btn-press, .mx-glow, .kzp-knop, .rz-knop):hover svg:last-child { transform: none; } .mx-glow { animation: none; box-shadow: 0 0 0 4px rgba(155,203,108,0.28), 0 12px 28px -10px rgba(122,181,78,0.95) !important; } }
         .nav-diensten { position: relative; }
         .nav-diensten-knop { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 0; cursor: pointer; }
@@ -281,6 +291,12 @@ export default function SiteNav() {
               </BtnPress>
             )}
           </div>
+
+          {/* Gsm: nummer altijd zichtbaar in de balk */}
+          <a href="tel:+32468352869" className="mx-tel lg:hidden" aria-label="Bel +32 468 35 28 69">
+            <Phone size={14} strokeWidth={2.4} aria-hidden="true" />
+            <span>+32 468 35 28 69</span>
+          </a>
 
           {/* Mobile hamburger */}
           <button

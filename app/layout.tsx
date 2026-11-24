@@ -1,7 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import MobileContactBar from "@/components/mobile-contact-bar";
 import CalculatorScroll from "@/components/calculator-scroll";
 import SiteChrome from "@/components/site-chrome";
 import JsonLd from "@/components/json-ld";
@@ -67,9 +66,8 @@ export default function RootLayout({
         {children}
         <CalculatorScroll />
         <SiteChrome>
-        <MobileContactBar />
         <ExitPopup />
-        <div className="hidden lg:block">
+        <div>
           <a
             href="https://wa.me/32468352869"
             target="_blank"
