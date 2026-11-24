@@ -1,13 +1,10 @@
 "use client";
 
 import { Tv, ChevronRight, Play, X } from "lucide-react";
-import Link from "next/link";
 import { BtnPress } from "@/components/btn-press";
 import { useEffect, useState } from "react";
 import { preload } from "react-dom";
-import { Yellowtail } from "next/font/google";
 
-const scriptFont = Yellowtail({ weight: "400", subsets: ["latin"], display: "swap" });
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
