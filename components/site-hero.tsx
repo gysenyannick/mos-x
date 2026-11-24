@@ -114,8 +114,10 @@ export default function SiteHero() {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
           .hv-sticker, .hv-revkaart { display: none; }
-          .hv-blob { width: 100%; }
-          .hv-kaart { aspect-ratio: 16 / 10; border-radius: 18px; }
+          .hv-rechts { width: 90%; margin: 32px auto 0; }
+          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
+          .hv-blob { inset: 18px -10px 24px 12px; }
+          .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
           .hv-vtm-gsm { display: inline-flex; }
           .hv-rev-gsm { display: inline-flex; }
           .hv-reviews .g { width: 34px; height: 34px; }
@@ -177,9 +179,7 @@ export default function SiteHero() {
               className="hero-desc leading-relaxed mb-8"
               style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
-              <em style={{ color: "#FFFFFF", fontStyle: "italic" }}>Een dak zonder mos is een dak zonder zorgen.</em>{" "}
-              MOS-X <strong style={{ color: "#FFFFFF", fontWeight: 700 }}>reinigt en coat</strong> je dak, en houdt het{" "}
-              <strong style={{ color: "#9BCB6C", fontWeight: 700 }}>levenslang mosvrij</strong> met ons unieke onderhoudsplan.
+              Een dak zonder mos is een dak zonder zorgen. MOS-X reinigt en coat je dak, en houdt het levenslang mosvrij met ons unieke onderhoudsplan.
             </p>
 
             {/* CTAs */}

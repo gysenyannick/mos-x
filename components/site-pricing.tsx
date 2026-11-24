@@ -719,21 +719,6 @@ export default function SitePricing() {
                 position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1,
                 background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 52%, rgba(255,255,255,0.7) 60%, rgba(255,255,255,0.2) 72%, rgba(255,255,255,0) 82%), linear-gradient(to top, rgba(122,181,78,0.28) 0%, rgba(122,181,78,0) 30%)",
               }} />
-              {/* Kaartje onderaan de foto */}
-              <div style={{
-                position: "absolute", left: 20, right: 20, bottom: 20, zIndex: 2,
-                display: "flex", alignItems: "center", gap: 12,
-                background: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-                borderRadius: 14, padding: "12px 14px", boxShadow: "0 10px 30px -12px rgba(0,0,0,0.35)",
-              }}>
-                <span style={{ width: 36, height: 36, borderRadius: 10, background: "#EEF6E6", display: "grid", placeItems: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7AB54E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 11 L12 4 L21 11" /><path d="M5 10 V20 H19 V10" /><path d="M9.5 14.5 L11.5 16.5 L15 13" /></svg>
-                </span>
-                <span style={{ fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: 13, lineHeight: 1.35, color: "#545454" }}>
-                  <b style={{ display: "block", color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: 14 }}>Zorgeloos genieten</b>
-                  van een mosvrij dak
-                </span>
-              </div>
               {/* Tekst — boven de gradient */}
               <div style={{ position: "relative", zIndex: 2 }}>
               <span style={{
