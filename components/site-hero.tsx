@@ -37,6 +37,26 @@ export default function SiteHero() {
         .hv-iconen img { position: absolute; height: auto; opacity: 0.08; }
         @media (max-width: 1023px) { .hv-iconen { display: none; } }
         .hero-sectie .hero-content-wrap { z-index: 2; }
+        .hv-trust { position: absolute; left: 0; right: 0; bottom: 92px; z-index: 2; text-align: center; padding: 0 20px; }
+        .hv-trust-titel { margin: 0 0 12px; font: 500 13.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em; color: #7A7F78; }
+        .hv-trust-rij { display: flex; align-items: center; justify-content: center; gap: 34px; flex-wrap: wrap; color: #8E938C; }
+        .hv-trust-item { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; white-space: nowrap; transition: color .2s ease; }
+        .hv-trust-item .vtm { font: 900 22px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.04em; text-transform: lowercase; }
+        .hv-trust-item .prog b { font: 800 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .08em; }
+        .hv-trust-item .prog i { font: italic 400 15px Georgia, serif; }
+        .hv-trust-google b { font: 800 16px var(--font-montserrat), system-ui, sans-serif; }
+        .hv-trust-google .st { letter-spacing: 1px; font-size: 14px; }
+        .hv-trust-google .n { font: 600 13.5px var(--font-inter), system-ui, sans-serif; }
+        .hv-trust-google:hover { color: #545454; }
+        .hv-trust-google:hover .st { color: #F5B300; }
+        .hv-trust-google:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 6px; }
+        .hv-trust-lijn { width: 1px; height: 26px; background: #D5D9D2; }
+        @media (max-width: 1023px) {
+          .hv-trust { position: relative; bottom: auto; margin: -110px 0 120px; }
+          .hv-trust-rij { gap: 14px 20px; }
+          .hv-trust-lijn { display: none; }
+          .hv-trust-titel { font-size: 12.5px; }
+        }
         .hv-accent { position: relative; display: inline-block; }
         .hv-streep { position: absolute; left: 0; bottom: -0.12em; width: 96%; height: 0.24em; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
@@ -226,6 +246,22 @@ export default function SiteHero() {
           <video src="/videos/yannick-hero.mp4" poster="/images/yannick-hero-poster.jpg" controls autoPlay playsInline onClick={e => e.stopPropagation()} />
         </div>
       )}
+
+      {/* Vertrouwensbalk onderaan de hero, zoals "We onderhouden alle grote merken" */}
+      <div className="hv-trust">
+        <p className="hv-trust-titel">Bekend van tv, geliefd bij onze klanten</p>
+        <div className="hv-trust-rij">
+          <span className="hv-trust-item" aria-label="Gezien op VTM in Lifestyle en Wonen">
+            <span className="vtm">vtm</span>
+            <span className="prog"><b>LIFESTYLE</b> <i>&amp; Wonen</i></span>
+          </span>
+          <span className="hv-trust-lijn" aria-hidden="true" />
+          <a href="#reviews" className="hv-trust-item hv-trust-google" aria-label="5,0 op 5 sterren, 16 Google-reviews">
+            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/></svg>
+            <b>5,0</b><span className="st" aria-hidden="true">★★★★★</span><span className="n">16 Google-reviews</span>
+          </a>
+        </div>
+      </div>
 
       <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Homepage" />
 
