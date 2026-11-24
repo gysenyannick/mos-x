@@ -9,7 +9,6 @@ import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
-  preload("/images/hero-achtergrond-coating.jpg", { as: "image", fetchPriority: "high" });
   const [videoOpen, setVideoOpen] = useState(false);
   useEffect(() => {
     if (!videoOpen) return;
@@ -23,31 +22,40 @@ export default function SiteHero() {
   return (
     <section
       className="relative overflow-hidden hero-sectie"
-      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#1A1A1A", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
+      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "radial-gradient(760px 540px at 80% 50%, rgba(155,203,108,0.10), transparent 65%), linear-gradient(to bottom, #F1F3EF 0%, #F7F8F6 100%)", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
-      {/* Statische achtergrond: afgewerkt, gecoat dak */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/hero-achtergrond-coating.jpg"
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "55% 45%", zIndex: 0 }}
-      />
-
-      {/* Gradient overlay */}
-      <div
-        className="absolute inset-0 hero-overlay"
-        style={{ zIndex: 1 }}
-      />
+      {/* Subtiele dak-icoontjes in de achtergrond */}
+      <div aria-hidden="true" className="hv-iconen">
+        {/* dakprofiel met pannenrijen */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "45%", top: "17%", width: 64, height: 64 }}>
+          <path d="M6 34 L32 12 L58 34" /><path d="M14 33 V52 H50 V33" />
+          <path d="M14 40 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" /><path d="M14 46 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" />
+        </svg>
+        {/* dakpan */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "52%", top: "60%", width: 56, height: 56 }}>
+          <path d="M16 10 H48 V44 Q40 54 32 44 Q24 54 16 44 Z" /><path d="M27 12 V42 M37 12 V42" />
+        </svg>
+        {/* schild met vinkje */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "5%", top: "80%", width: 54, height: 54 }}>
+          <path d="M32 8 L52 16 V30 C52 44 43 52 32 56 C21 52 12 44 12 30 V16 Z" /><path d="M23 32 L30 39 L42 26" />
+        </svg>
+        {/* nok met schouw */}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "39%", top: "82%", width: 58, height: 58 }}>
+          <path d="M4 44 L28 22 L60 44" /><path d="M40 30 V16 H48 V36" />
+        </svg>
+      </div>
 
       <style>{`
+        .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.07; }
+        @media (max-width: 1023px) { .hv-iconen { display: none; } }
+        .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-accent { position: relative; display: inline-block; }
         .hv-streep { position: absolute; left: 0; bottom: -0.12em; width: 96%; height: 0.24em; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 34px 70px -34px rgba(30,51,36,0.5); }
           .hv-rechts .hv-kaart:hover { transform: none; }
           .hv-rechts .hv-revkaart { left: -10px; bottom: 96px; }
           .hv-rechts .hv-sticker { top: 70px; right: -6px; width: 128px; height: 128px; }
@@ -94,7 +102,7 @@ export default function SiteHero() {
         .hv-shade { background: linear-gradient(to bottom, rgba(8,12,9,0.7) 0%, rgba(8,12,9,0.1) 40%, rgba(8,12,9,0) 60%) !important; }
         .hv-badgerij { display: flex; }
         .hv-badge { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; background: #FFFFFF; border-radius: 10px; text-decoration: none; white-space: nowrap;
-          box-shadow: 0 6px 16px -8px rgba(0,0,0,0.5); transition: transform .2s ease; }
+          border: 1px solid #E5E7EB; box-shadow: 0 4px 14px -8px rgba(0,0,0,0.25); transition: transform .2s ease; }
         .hv-badge:hover { transform: translateY(-1px); }
         .hv-badge:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 3px; }
         .hv-badge b { font: 800 14px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
@@ -107,7 +115,6 @@ export default function SiteHero() {
         .hv-sluit:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
         @keyframes hv-in { from { opacity: 0 } to { opacity: 1 } }
         @media (min-width: 1024px) {
-          .hero-sectie .hero-overlay { background: linear-gradient(to right, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.88) 50%, rgba(26,26,26,0.8) 100%) !important; }
         }
         @media (max-width: 1023px) {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
@@ -119,7 +126,7 @@ export default function SiteHero() {
           .hv-streep { left: 2%; }
           .hv-badgerij { justify-content: center; }
           .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
-          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
+          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 28px 56px -30px rgba(30,51,36,0.5); }
           .hv-blob { inset: 18px -10px 24px 12px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
               }
@@ -145,7 +152,7 @@ export default function SiteHero() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "rgba(255,255,255,0.85)",
+                color: "#1A1A1A",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
@@ -163,7 +170,7 @@ export default function SiteHero() {
                 fontWeight: 800,
                 fontSize: "clamp(2rem, 5.5vw, 4.5rem)",
                 letterSpacing: "-0.028em",
-                color: "#FFFFFF",
+                color: "#1A1A1A",
               }}
             >
               Levenslang een
@@ -178,7 +185,7 @@ export default function SiteHero() {
 
             <p
               className="hero-desc leading-relaxed mb-8"
-              style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
+              style={{ color: "#545454", fontSize: "18px", maxWidth: "600px" }}
             >
               Een dak zonder mos is een dak zonder zorgen. MOS-X reinigt en coat je dak, en houdt het levenslang mosvrij met ons unieke onderhoudsplan.
             </p>
@@ -205,12 +212,12 @@ export default function SiteHero() {
                 onClick={() => setBezoekOpen(true)}
                 onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#1A1A1A"; e.currentTarget.style.color = "#1A1A1A"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
-                  background: "transparent",
-                  color: "#FFFFFF",
-                  border: "1px solid rgba(155,203,108,0.5)",
+                  background: "#FFFFFF",
+                  color: "#1A1A1A",
+                  border: "1.5px solid #1A1A1A",
                   borderRadius: "8px", padding: "14px 28px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px",
