@@ -18,9 +18,8 @@ export default function SiteActie() {
           border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
         .sa-foto img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block;
           border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
-        .sa-lead { margin: 0; white-space: nowrap; font: 800 clamp(1.4rem, 2.2vw, 1.85rem) var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; }
-        .sa-en { margin: 6px 0 4px; font: 600 16px var(--font-inter), system-ui, sans-serif; color: #545454; }
-        .sa-oog { margin: 0 0 6px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
+        .sa-en { margin: 6px 0 0; font: 600 17px var(--font-inter), system-ui, sans-serif; color: #545454; }
+        .sa-oog { margin: 0 0 10px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
         .sa-titel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: #1A1A1A; white-space: nowrap; }
         .sa-titel .pct { font-size: clamp(3.4rem, 5.4vw, 5rem); color: #9BCB6C; letter-spacing: -0.05em; }
         .sa-titel .kort { font-size: clamp(1.8rem, 2.8vw, 2.7rem); margin-left: 12px; }
@@ -43,7 +42,9 @@ export default function SiteActie() {
           .sa-prijs { grid-column: 1 / -1; max-width: 420px; justify-self: center; width: 100%; }
         }
         @media (max-width: 680px) {
-          .sa-lead, .sa-sub { white-space: normal; }
+          .sa-sub { white-space: normal; }
+          .sa-punt { display: none; }
+          .sa-datum { display: block; margin-top: 4px; }
           .sa-sectie { padding: 8px 0 56px; }
           .sa-kaart { grid-template-columns: minmax(0, 1fr); padding: 36px 20px 26px; gap: 30px; text-align: center; }
           .sa-foto { width: 70%; margin: 0 auto; }
@@ -60,10 +61,10 @@ export default function SiteActie() {
           </div>
 
           <div>
-            <p className="sa-lead">Laat je dak reinigen</p>
-            <p className="sa-en">en krijg</p>
+            <p className="sa-oog">Voorjaarsbonus<span className="sa-punt"> · </span><span className="sa-datum">Boek vóór 31 maart</span></p>
             <h2 id="sa-titel" className="sa-titel"><span className="pct">50%</span><span className="kort">korting</span></h2>
             <p className="sa-sub">op je oprit of terras</p>
+            <p className="sa-en">bij elke dakreiniging</p>
             <p className="sa-tekst"><b>Dakgoten, glaspartijen en zonnepanelen</b> nemen we gratis mee.</p>
           </div>
 
