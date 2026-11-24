@@ -64,12 +64,9 @@ export default function SiteHero() {
         @media (min-width: 1024px) {
           .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 0; clip-path: url(#hv-vorm); box-shadow: none; }
           .hv-rechts .hv-kaart:hover { transform: none; }
-          .hv-rechts .hv-revkaart { left: -10px; bottom: 96px; }
-          .hv-rechts .hv-sticker { top: 70px; right: -6px; width: 128px; height: 128px; }
         }
         .hv-blob { position: absolute; inset: 30px -18px 24px 8px; z-index: -1; clip-path: url(#hv-vorm);
           background: #9BCB6C; }
-        @keyframes hv-blob { 0% { border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; } 100% { border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%; } }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
         .hv-kaart:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px rgba(155,203,108,0.45), 0 48px 90px -30px rgba(0,0,0,0.9); }
@@ -77,35 +74,12 @@ export default function SiteHero() {
         .hv-kaart:focus-visible { outline: 3px solid #9BCB6C; outline-offset: 4px; }
         .hv-kaart video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.22,1,.36,1); }
         .hv-kaart:hover video { transform: scale(1.04); }
-        .hv-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,12,9,0.78) 0%, rgba(8,12,9,0.1) 45%, rgba(8,12,9,0) 70%); }
         .hv-play { position: absolute; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; background: #9BCB6C; color: #fff; display: grid; place-items: center;
           box-shadow: 0 14px 30px -10px rgba(122,181,78,0.9); transition: transform .3s cubic-bezier(.34,1.56,.64,1), background-color .2s ease; }
         .hv-play::before { content: ""; position: absolute; inset: -10px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.7); animation: hv-puls 2.4s cubic-bezier(.22,1,.36,1) infinite; }
         .hv-kaart:hover .hv-play { transform: scale(1.08); background: #7AB54E; }
         @keyframes hv-puls { 0% { transform: scale(.9); opacity: .9 } 70%,100% { transform: scale(1.35); opacity: 0 } }
-        .hv-onder { position: absolute; left: 22px; right: 22px; bottom: 18px; display: flex; align-items: flex-end; justify-content: space-between; color: #fff; text-align: left; font-family: var(--font-montserrat), system-ui, sans-serif; }
-        .hv-onder small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
-        .hv-onder b { display: block; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; margin-top: 2px; }
-        .hv-duur { font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,0.16); backdrop-filter: blur(6px); }
-        .hv-sticker { position: absolute; top: -40px; right: -36px; z-index: 3; width: 150px; height: 150px; border-radius: 50%; background: #FFFFFF; transform: none;
-          display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.05;
-          box-shadow: 0 16px 34px -12px rgba(0,0,0,0.6); pointer-events: none; }
 
-        .hv-sticker .k { font: 700 9.5px var(--font-inter), system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #545454; display: flex; align-items: center; gap: 4px; }
-        .hv-sticker .v { font: 900 30px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; margin-top: 4px; }
-        .hv-sticker .l { font: 900 11px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #1A1A1A; }
-        .hv-sticker .w { font: italic 400 13px Georgia, serif; color: #FF6600; margin-top: 2px; }
-        .hv-revkaart { position: absolute; left: -34px; bottom: -30px; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 14px 20px 14px 14px; border-radius: 16px; background: #FFFFFF; text-decoration: none; color: #1A1A1A;
-          box-shadow: 0 18px 40px -14px rgba(0,0,0,0.65); transition: transform .25s cubic-bezier(.22,1,.36,1); }
-        .hv-revkaart:hover { transform: translateY(-3px); }
-        .hv-revkaart:focus-visible { outline: 3px solid #9BCB6C; outline-offset: 3px; }
-        .hv-revkaart .g { width: 44px; height: 44px; border-radius: 12px; background: #F7F8F6; display: grid; place-items: center; flex-shrink: 0; }
-        .hv-revkaart .r { display: flex; align-items: center; gap: 8px; }
-        .hv-revkaart b { font: 800 20px var(--font-montserrat), system-ui, sans-serif; }
-        .hv-revkaart .s { color: #F5B300; font-size: 15px; letter-spacing: 1px; }
-        .hv-revkaart small { display: block; font: 500 13px var(--font-inter), system-ui, sans-serif; color: #545454; margin-top: 1px; }
-        .hv-onder { top: 20px; bottom: auto !important; align-items: flex-start !important; }
-        .hv-shade { background: linear-gradient(to bottom, rgba(8,12,9,0.7) 0%, rgba(8,12,9,0.1) 40%, rgba(8,12,9,0) 60%) !important; }
         .hv-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(8,12,9,0.9); display: flex; align-items: center; justify-content: center; padding: 20px; animation: hv-in .25s ease; }
         .hv-modal video { width: auto; max-width: 100%; max-height: 86vh; border-radius: 16px; background: #000; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8); }
         .hv-sluit { position: absolute; top: 18px; right: 18px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #fff; display: grid; place-items: center; cursor: pointer; transition: background-color .2s ease; }
@@ -117,17 +91,7 @@ export default function SiteHero() {
         @media (max-width: 1023px) {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
-          .hv-sticker, .hv-revkaart { display: none; }
-          .hv-rechts { order: -1; width: 92%; margin: 0 auto 34px; }
-          .hero-sectie .hero-region-label { justify-content: center; text-align: center; }
-          .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
-          .hv-streep { left: 2%; }
-            .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
-          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 0; clip-path: url(#hv-vorm); box-shadow: none; }
-          .hv-blob { inset: -6px -12px -10px 4px; }
-          .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
-              }
-        @media (prefers-reduced-motion: reduce) { .hv-blob { animation: none; } .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
+          @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
       `}</style>
 
       {/* Content */}

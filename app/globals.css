@@ -1063,3 +1063,11 @@ p[style*="text-align:center"], p[style*="text-align: center"],
 /* Mooie regelverdeling: titels, vragen en korte teksten verdelen hun regels gelijk */
 main :is(h1, h2, h3, h4, button, li, dt, dd, label, small, b, blockquote) { text-wrap: balance; }
 main p { text-wrap: balance; }
+
+/* Op computer alles een tikkeltje kleiner (zoals 94% inzoomen in de browser) */
+@media (min-width: 1024px) {
+  html { zoom: 0.94; }
+  /* vw/vh worden mee verkleind door zoom: de hero vult toch het hele scherm */
+  .hero-sectie { max-width: none !important; height: calc((100vh + 30px) / 0.94) !important; min-height: calc((100vh + 30px) / 0.94) !important; }
+  .hero-sectie .hero-content-wrap { height: calc((100vh + 30px) / 0.94) !important; }
+}
