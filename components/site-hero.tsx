@@ -3,23 +3,13 @@
 import { Tv, ChevronRight, Play, X } from "lucide-react";
 import Link from "next/link";
 import { BtnPress } from "@/components/btn-press";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { preload } from "react-dom";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 export default function SiteHero() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
-  // Op gsm een staande video, anders wordt de liggende video te sterk ingezoomd
-  const videoRef = useRef<HTMLVideoElement>(null);
-  preload("/images/yannick-hero-poster.jpg", { as: "image", fetchPriority: "high" });
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    // Tot de video geladen is, toont de poster meteen een beeld.
-    v.src = "/videos/yannick-hero.mp4";
-    v.play().catch(() => {});
-  }, []);
-
+  preload("/images/hero-achtergrond-coating.jpg", { as: "image", fetchPriority: "high" });
   const [videoOpen, setVideoOpen] = useState(false);
   useEffect(() => {
     if (!videoOpen) return;
@@ -35,16 +25,14 @@ export default function SiteHero() {
       className="relative overflow-hidden hero-sectie"
       style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#1A1A1A", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
-      {/* Video background */}
-      <video
-        ref={videoRef}
-        poster="/images/yannick-hero-poster.jpg"
-        autoPlay muted loop playsInline
-        style={{
-          position: "absolute", top: 0, left: 0,
-          width: "100%", height: "100%",
-          objectFit: "cover", zIndex: 0,
-        }}
+      {/* Statische achtergrond: afgewerkt, gecoat dak */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/hero-achtergrond-coating.jpg"
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "60% 40%", zIndex: 0 }}
       />
 
       {/* Gradient overlay */}
@@ -112,7 +100,9 @@ export default function SiteHero() {
         }
         @media (max-width: 1023px) {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
-          .hv-rechts { display: none; }
+          .hv-rechts { margin-top: 32px; }
+          .hv-sticker, .hv-revkaart { display: none; }
+          .hv-kaart { aspect-ratio: 16 / 10; border-radius: 18px; }
           .hv-vtm-gsm { display: inline-flex; }
           .hv-rev-gsm { display: inline-flex; }
           .hv-reviews .g { width: 34px; height: 34px; }
@@ -252,12 +242,7 @@ export default function SiteHero() {
             </a>
             <button type="button" className="hv-kaart" onClick={() => setVideoOpen(true)} aria-label="Bekijk de video van Yannick aan het werk">
               <video src="/videos/yannick-hero.mp4" poster="/images/yannick-hero-poster.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
-              <span className="hv-shade" />
               <span className="hv-play"><Play size={30} fill="currentColor" style={{ marginLeft: "4px" }} /></span>
-              <span className="hv-onder">
-                <span><small>Bekijk de video</small><b>Yannick aan het werk</b></span>
-                <span className="hv-duur">0:30</span>
-              </span>
             </button>
           </div>
         </div>
