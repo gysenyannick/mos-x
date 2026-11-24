@@ -21,19 +21,19 @@ export default function SiteHero() {
   return (
     <section
       className="relative overflow-hidden hero-sectie"
-      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#F7F6F2", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
+      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#1A1A1A", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
 
       {/* Achtergrond: scherpe dronefoto van een gecoat dak, met een warme waas zodat de tekst leesbaar blijft */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/hero-bg-drone.jpg" alt="" aria-hidden="true" className="hv-bgfoto" />
+      <img src="/images/hero-achtergrond-coating.jpg" alt="" aria-hidden="true" className="hv-bgfoto" />
       <div aria-hidden="true" className="hv-waas" />
 
       <style>{`
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-trust { position: absolute; left: 0; right: 0; bottom: 92px; z-index: 2; text-align: center; padding: 0 20px; }
-        .hv-trust-titel { margin: 0 0 12px; font: 500 13.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em; color: #7A7F78; }
-        .hv-trust-rij { display: flex; align-items: center; justify-content: center; gap: 34px; flex-wrap: wrap; color: #8E938C; }
+        .hv-trust-titel { margin: 0 0 12px; font: 500 13.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em; color: rgba(255,255,255,0.6); }
+        .hv-trust-rij { display: flex; align-items: center; justify-content: center; gap: 34px; flex-wrap: wrap; color: rgba(255,255,255,0.72); }
         .hv-trust-item { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; white-space: nowrap; transition: color .2s ease; }
         .hv-trust-item .vtm { font: 900 22px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.04em; text-transform: lowercase; }
         .hv-trust-item .prog b { font: 800 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .08em; }
@@ -41,10 +41,10 @@ export default function SiteHero() {
         .hv-trust-google b { font: 800 16px var(--font-montserrat), system-ui, sans-serif; }
         .hv-trust-google .st { letter-spacing: 1px; font-size: 14px; }
         .hv-trust-google .n { font: 600 13.5px var(--font-inter), system-ui, sans-serif; }
-        .hv-trust-google:hover { color: #545454; }
+        .hv-trust-google:hover { color: #FFFFFF; }
         .hv-trust-google:hover .st { color: #F5B300; }
         .hv-trust-google:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 6px; }
-        .hv-trust-lijn { width: 1px; height: 26px; background: #D5D9D2; }
+        .hv-trust-lijn { width: 1px; height: 26px; background: rgba(255,255,255,0.22); }
         @media (max-width: 1023px) {
           .hv-trust { position: relative; bottom: auto; margin: -110px 0 120px; }
           .hv-trust-rij { gap: 14px 20px; }
@@ -52,8 +52,8 @@ export default function SiteHero() {
           .hv-trust-titel { font-size: 12.5px; }
         }
         .hv-bgfoto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; z-index: 0; }
-        .hv-waas { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(247,246,242,0.97) 0%, rgba(247,246,242,0.92) 40%, rgba(247,246,242,0.55) 62%, rgba(247,246,242,0.25) 100%), linear-gradient(to bottom, rgba(247,246,242,0.4) 0%, rgba(247,246,242,0) 30%, rgba(247,246,242,0) 70%, rgba(247,246,242,0.95) 100%); }
-        @media (max-width: 1023px) { .hv-waas { background: rgba(247,246,242,0.9); } }
+        .hv-waas { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(20,22,20,0.94) 0%, rgba(20,22,20,0.86) 45%, rgba(20,22,20,0.72) 100%), linear-gradient(to bottom, rgba(20,22,20,0.3) 0%, rgba(20,22,20,0) 30%, rgba(20,22,20,0) 70%, rgba(20,22,20,0.6) 100%); }
+        @media (max-width: 1023px) { .hv-waas { background: rgba(20,22,20,0.8); } }
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-gloed { position: absolute; left: 50%; top: 50%; width: 125%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: -2; border-radius: 50%;
           background: radial-gradient(circle, rgba(155,203,108,0.16) 0%, rgba(155,203,108,0.08) 40%, rgba(155,203,108,0) 70%); filter: blur(30px); pointer-events: none; }
@@ -62,7 +62,7 @@ export default function SiteHero() {
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 34px 70px -34px rgba(30,51,36,0.5); }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
           .hv-rechts .hv-kaart:hover { transform: none; }
           .hv-rechts .hv-revkaart { left: -10px; bottom: 96px; }
           .hv-rechts .hv-sticker { top: 70px; right: -6px; width: 128px; height: 128px; }
@@ -124,7 +124,7 @@ export default function SiteHero() {
           .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
           .hv-streep { left: 2%; }
             .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
-          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 28px 56px -30px rgba(30,51,36,0.5); }
+          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
           .hv-blob { inset: 18px -10px 24px 12px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
               }
@@ -150,7 +150,7 @@ export default function SiteHero() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "#1A1A1A",
+                color: "rgba(255,255,255,0.85)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
@@ -168,7 +168,7 @@ export default function SiteHero() {
                 fontWeight: 800,
                 fontSize: "clamp(2rem, 5.5vw, 4.5rem)",
                 letterSpacing: "-0.028em",
-                color: "#1A1A1A",
+                color: "#FFFFFF",
               }}
             >
               Levenslang een
@@ -183,9 +183,9 @@ export default function SiteHero() {
 
             <p
               className="hero-desc leading-relaxed mb-8"
-              style={{ color: "#545454", fontSize: "18px", maxWidth: "600px" }}
+              style={{ color: "rgba(255,255,255,0.68)", fontSize: "18px", maxWidth: "600px" }}
             >
-              Een dak zonder mos is een <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>dak zonder zorgen</strong>. <span style={{ whiteSpace: "nowrap" }}>MOS-X</span> <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>reinigt en coat</strong> je dak, en houdt het <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>levenslang mosvrij</strong> met ons unieke <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>onderhoudsplan</strong>.
+              Een dak zonder mos is een <strong style={{ color: "#FFFFFF", fontWeight: 700 }}>dak zonder zorgen</strong>. <span style={{ whiteSpace: "nowrap" }}>MOS-X</span> <strong style={{ color: "#FFFFFF", fontWeight: 700 }}>reinigt en coat</strong> je dak, en houdt het <strong style={{ color: "#FFFFFF", fontWeight: 700 }}>levenslang mosvrij</strong> met ons unieke <strong style={{ color: "#FFFFFF", fontWeight: 700 }}>onderhoudsplan</strong>.
             </p>
 
             {/* CTAs */}
@@ -210,12 +210,12 @@ export default function SiteHero() {
                 onClick={() => setBezoekOpen(true)}
                 onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#1A1A1A"; e.currentTarget.style.color = "#1A1A1A"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
-                  background: "#FFFFFF",
-                  color: "#1A1A1A",
-                  border: "1.5px solid #1A1A1A",
+                  background: "transparent",
+                  color: "#FFFFFF",
+                  border: "1px solid rgba(155,203,108,0.5)",
                   borderRadius: "8px", padding: "14px 28px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px",
