@@ -108,7 +108,7 @@ export default function SiteHero() {
         .hv-onder { top: 20px; bottom: auto !important; align-items: flex-start !important; }
         .hv-shade { background: linear-gradient(to bottom, rgba(8,12,9,0.7) 0%, rgba(8,12,9,0.1) 40%, rgba(8,12,9,0) 60%) !important; }
         .hv-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(8,12,9,0.9); display: flex; align-items: center; justify-content: center; padding: 20px; animation: hv-in .25s ease; }
-        .hv-modal video { width: min(1100px, 100%); max-height: 82vh; border-radius: 16px; background: #000; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8); }
+        .hv-modal video { width: auto; max-width: 100%; max-height: 86vh; border-radius: 16px; background: #000; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8); }
         .hv-sluit { position: absolute; top: 18px; right: 18px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #fff; display: grid; place-items: center; cursor: pointer; transition: background-color .2s ease; }
         .hv-sluit:hover { background: rgba(255,255,255,0.2); }
         .hv-sluit:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
