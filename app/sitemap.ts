@@ -27,7 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     pagina("/regio/vlaams-brabant", 0.7),
     pagina("/regio/limburg", 0.7),
     ...(KENNISBANK_ONLINE ? [pagina("/kennisbank", 0.7, "weekly"), ...ARTIKELS.map((a) => pagina(`/kennisbank/${a.slug}`, 0.6))] : []),
-    pagina("/klantenzone", 0.4),
     pagina("/privacyverklaring", 0.2, "yearly"),
     pagina("/algemene-voorwaarden", 0.2, "yearly"),
   ];

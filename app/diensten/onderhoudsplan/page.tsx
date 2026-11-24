@@ -22,7 +22,7 @@ const voordelen = [
 const stappen = [
   { nr: "01", titel: "Aanvragen", tekst: "Je vraagt een onderhoudsplan aan, wij plannen een datum." },
   { nr: "02", titel: "Antimosbehandeling", tekst: "We houden het mos preventief weg." },
-  { nr: "03", titel: "Dakinspectie", tekst: "Met een rapport in je klantenzone." },
+  { nr: "03", titel: "Dakinspectie", tekst: "Met een rapport per mail." },
 ];
 
 const inbegrepen = [
@@ -31,7 +31,7 @@ const inbegrepen = [
   { titel: "Dakgoten en afvoer", tekst: "We controleren je dakgoten en afvoeren, zodat het water goed wegloopt." },
   { titel: "Veluxen en zinkwerk", tekst: "We kijken de gevoelige zones na waar problemen meestal beginnen." },
   { titel: "Kleine herstellingen", tekst: "Losse of beschadigde pannen en kleine gebreken pakken we meteen aan waar mogelijk." },
-  { titel: "Rapport in je klantenzone", tekst: "Na de beurt krijg je een volledig rapport met foto's van hoe je dak erbij ligt." },
+  { titel: "Rapport per mail", tekst: "Na de beurt krijg je een volledig rapport met foto's van hoe je dak erbij ligt." },
 ];
 
 const vergelijk = [

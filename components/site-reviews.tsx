@@ -134,7 +134,7 @@ export default function SiteReviews() {
           >
             Onze klanten <span style={{ color: "#9BCB6C" }}>vertrouwen ons.</span>
           </h2>
-          <OutlineGoogleBtn text="Laat een review achter" url={GOOGLE_WRITE_REVIEW_URL} />
+          <GreenGoogleBtn text="Laat een review achter" url={GOOGLE_WRITE_REVIEW_URL} />
         </div>
 
         {/* Trustindex injects here — script tag is appended to this div via useEffect */}
@@ -144,7 +144,7 @@ export default function SiteReviews() {
         />
 
         <div style={{ textAlign: "center", marginTop: "32px", position: "relative", zIndex: 2 }}>
-          <GreenGoogleBtn text="Bekijk alle reviews op Google" url={GOOGLE_REVIEW_URL} />
+          <OutlineGoogleBtn text="Bekijk alle reviews op Google" url={GOOGLE_REVIEW_URL} />
         </div>
 
       </div>

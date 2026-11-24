@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { CalendarCheck, ChevronRight, Euro, House, Mail, MapPin, Palette, Phone, ShieldCheck } from "lucide-react";
+import { CalendarCheck, ChevronRight, Euro, Mail, MapPin, Palette, Phone, ShieldCheck } from "lucide-react";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import MosAchtergrond from "@/components/mos-achtergrond";
 import GoogleBalk from "@/components/google-balk";
@@ -148,11 +148,6 @@ export default function SiteContact() {
             <div className="ct-opties">
               <Optie start icoon={<CalendarCheck size={20} />} titel="Plan een gratis plaatsbezoek" sub="We bekijken je dak ter plaatse" onClick={() => setBezoekOpen(true)} />
               <Optie start extern icoon={<WhatsAppIcoon />} titel="Stuur ons een WhatsApp" sub="Snel antwoord, ook met foto's van je dak" href="https://wa.me/32468352869" />
-            </div>
-
-            <p className="ct-groep">Al klant?</p>
-            <div className="ct-opties">
-              <Optie icoon={<House size={20} />} titel="Mijn MOS-X" sub="Volg je werken in je klantenzone" href="/klant" />
             </div>
           </div>
         </div>

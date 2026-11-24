@@ -357,13 +357,6 @@ export default function SiteServices() {
       </div>
       <PlaatsbezoekModal open={bezoekOpen} onClose={() => setBezoekOpen(false)} bron="Homepage diensten" />
 
-      <style>{`@media (max-width: 1023px) { #diensten { padding-bottom: 110px !important; } }`}</style>
-      {/* SVG golf: zachte overgang van de donkere diensten naar de lichte sectie eronder */}
-      <div aria-hidden="true" style={{ position: "absolute", bottom: "-1px", left: 0, width: "100%", overflow: "hidden", lineHeight: 0, zIndex: 3, pointerEvents: "none" }}>
-        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="realisaties-wave" style={{ display: "block", width: "100%", height: "80px" }}>
-          <path d="M0,80 C360,0 1080,0 1440,80 Z" fill="#F7F8F6"/>
-        </svg>
-      </div>
     </section>
   );
 }
