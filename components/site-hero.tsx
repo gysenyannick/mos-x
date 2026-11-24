@@ -100,14 +100,6 @@ export default function SiteHero() {
         .hv-revkaart small { display: block; font: 500 13px var(--font-inter), system-ui, sans-serif; color: #545454; margin-top: 1px; }
         .hv-onder { top: 20px; bottom: auto !important; align-items: flex-start !important; }
         .hv-shade { background: linear-gradient(to bottom, rgba(8,12,9,0.7) 0%, rgba(8,12,9,0.1) 40%, rgba(8,12,9,0) 60%) !important; }
-        .hv-badgerij { display: flex; }
-        .hv-badge { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; background: #FFFFFF; border-radius: 10px; text-decoration: none; white-space: nowrap;
-          border: 1px solid #E5E7EB; box-shadow: 0 4px 14px -8px rgba(0,0,0,0.25); transition: transform .2s ease; }
-        .hv-badge:hover { transform: translateY(-1px); }
-        .hv-badge:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 3px; }
-        .hv-badge b { font: 800 14px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
-        .hv-badge .s { color: #F5B300; font-size: 13px; letter-spacing: -0.5px; }
-        .hv-badge .n { font: 600 12.5px var(--font-inter), system-ui, sans-serif; color: #545454; }
         .hv-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(8,12,9,0.9); display: flex; align-items: center; justify-content: center; padding: 20px; animation: hv-in .25s ease; }
         .hv-modal video { width: min(1100px, 100%); max-height: 82vh; border-radius: 16px; background: #000; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8); }
         .hv-sluit { position: absolute; top: 18px; right: 18px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #fff; display: grid; place-items: center; cursor: pointer; transition: background-color .2s ease; }
@@ -124,8 +116,7 @@ export default function SiteHero() {
           .hero-sectie .hero-region-label { justify-content: center; text-align: center; }
           .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
           .hv-streep { left: 2%; }
-          .hv-badgerij { justify-content: center; }
-          .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
+            .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
           .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 28px 56px -30px rgba(30,51,36,0.5); }
           .hv-blob { inset: 18px -10px 24px 12px; }
           .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
@@ -148,8 +139,8 @@ export default function SiteHero() {
             <p
               className="hero-region-label mb-5 text-[10px] md:text-[12px]"
               style={{
-                fontFamily: "var(--font-inter), system-ui, sans-serif",
-                fontWeight: 600,
+                fontFamily: "var(--font-montserrat), system-ui, sans-serif",
+                fontWeight: 800,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
                 color: "#1A1A1A",
@@ -187,7 +178,7 @@ export default function SiteHero() {
               className="hero-desc leading-relaxed mb-8"
               style={{ color: "#545454", fontSize: "18px", maxWidth: "600px" }}
             >
-              Een dak zonder mos is een dak zonder zorgen. MOS-X reinigt en coat je dak, en houdt het levenslang mosvrij met ons unieke onderhoudsplan.
+              Een dak zonder mos is een <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>dak zonder zorgen</strong>. <span style={{ whiteSpace: "nowrap" }}>MOS-X</span> <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>reinigt en coat</strong> je dak, en houdt het <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>levenslang mosvrij</strong> met ons unieke <strong style={{ color: "#1A1A1A", fontWeight: 700 }}>onderhoudsplan</strong>.
             </p>
 
             {/* CTAs */}
@@ -229,15 +220,6 @@ export default function SiteHero() {
               </button>
             </div>
 
-            {/* Google-reviews: dezelfde witte badge als op de live site */}
-            <div className="hv-badgerij">
-              <a href="#reviews" className="hv-badge">
-                <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
-                <b>5.0</b>
-                <span className="s" aria-hidden="true">★★★★★</span>
-                <span className="n">16 reviews</span>
-              </a>
-            </div>
           </div>
 
           {/* Rechts: video met sticker */}
