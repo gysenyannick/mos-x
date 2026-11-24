@@ -93,7 +93,7 @@ export default function DakontmossingPage() {
             <BackLink href="/diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakontmossen</p>
             <p className="do-oog">Dakontmossen</p>
-            <h1 className="do-h1">Geef je dak opnieuw <span>een verzorgde uitstraling.</span></h1>
+            <h1 className="do-h1 do-h1-2r">Geef je dak opnieuw <span>een verzorgde uitstraling.</span></h1>
             <p className="do-p">Mos en vuil houden vocht vast en laten je dak sneller verouderen. We verwijderen ze veilig, onder aangepaste druk, en beschermen je dak met een antimosbehandeling of een optionele dakcoating.</p>
             <div className="do-hero-knoppen">
               <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
@@ -247,31 +247,20 @@ export default function DakontmossingPage() {
       </section>
 
       <style>{`
-        .do-cta-rij { flex-wrap: nowrap; padding: 36px 44px; }
-        .do-cta-rij h2 { white-space: nowrap; font-size: clamp(1.4rem, 2.2vw, 1.85rem); }
-        .do-cta-sub { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-        .do-cta-rij .do-cta-sub .gs-score { margin-top: 0; }
-        .do-cta-rij .do-cta-knoppen { flex-wrap: nowrap; flex-shrink: 0; }
-        .do-cta-rij .do-knop { height: 46px; padding: 0 18px; font-size: 14px; }
-        @media (max-width: 1100px) {
-          .do-cta-rij { flex-wrap: wrap; }
-          .do-cta-rij h2 { white-space: normal; }
-        }
-        @media (max-width: 640px) {
-          .do-cta-rij { padding: 30px 22px; }
-          .do-cta-rij .do-cta-knoppen { flex-wrap: wrap; }
+        @media (min-width: 768px) {
+          .do-hero-tekst:has(.do-h1-2r) { max-width: 700px; }
+          .do-h1-2r { font-size: clamp(2.1rem, 3.4vw, 2.9rem); }
+          .do-h1-2r span { white-space: nowrap; }
         }
       `}</style>
       {/* Afsluiter */}
       <section className="do-sectie do-wit" style={{ paddingTop: 0 }}>
         <div className="do-wrap">
-          <div className="do-cta do-cta-rij">
+          <div className="do-cta">
             <div>
               <h2>Benieuwd wat <span style={{ whiteSpace: "nowrap" }}>jouw dak</span> nodig heeft?</h2>
-              <div className="do-cta-sub">
-                <p>We bekijken je dak en adviseren enkel wat écht nodig is.</p>
-                <GoogleScore donker />
-              </div>
+              <p>We bekijken je dak en adviseren enkel wat écht nodig is.</p>
+              <GoogleScore donker />
             </div>
             <div className="do-cta-knoppen">
               <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
