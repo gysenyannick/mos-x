@@ -46,11 +46,16 @@ export default function SiteHero() {
 
       <style>{`
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
-        .hv-rechts { position: relative; isolation: isolate; padding: 80px 0; }
-        @media (min-width: 1024px) { .hv-rechts .hv-kaart { width: 72%; margin: 0 auto; } .hv-rechts .hv-revkaart { left: 6%; bottom: 48px; } .hv-rechts .hv-sticker { top: 34px; right: 7%; width: 124px; height: 124px; } }
-        .hv-blob { position: absolute; left: 50%; top: 50%; width: 88%; aspect-ratio: 1 / 0.86; z-index: -1; transform: translate(-50%, -50%);
-          border-radius: 52% 48% 50% 50% / 50% 54% 46% 50%;
-          background: radial-gradient(circle at 40% 35%, rgba(155,203,108,0.55), rgba(155,203,108,0.28) 70%, rgba(155,203,108,0.18) 100%); }
+        .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
+        @media (min-width: 1024px) {
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.9; border-radius: 52% 48% 46% 54% / 46% 52% 48% 54%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
+          .hv-rechts .hv-kaart:hover { transform: none; }
+          .hv-rechts .hv-revkaart { left: -10px; bottom: 96px; }
+          .hv-rechts .hv-sticker { top: 70px; right: -6px; width: 128px; height: 128px; }
+        }
+        .hv-blob { position: absolute; inset: 22px -26px 54px 36px; z-index: -1;
+          border-radius: 46% 54% 52% 48% / 42% 46% 54% 58%;
+          background: rgba(155,203,108,0.42); transform: rotate(4deg); }
         @keyframes hv-blob { 0% { border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; } 100% { border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%; } }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
