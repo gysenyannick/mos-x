@@ -46,7 +46,13 @@ export default function SiteHero() {
 
       <style>{`
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
-        .hv-rechts { position: relative; }
+        .hv-rechts { position: relative; isolation: isolate; padding: 70px 0; }
+        @media (min-width: 1024px) { .hv-rechts .hv-kaart { width: 74%; margin: 0 auto; } .hv-rechts .hv-revkaart { left: 0; bottom: 40px; } .hv-rechts .hv-sticker { top: 20px; right: 0; } }
+        .hv-blob { position: absolute; left: 50%; top: 50%; width: 96%; aspect-ratio: 1 / 0.94; z-index: -1; transform: translate(-50%, -50%) rotate(-8deg);
+          border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%;
+          background: radial-gradient(circle at 35% 30%, rgba(176,219,135,0.95), rgba(155,203,108,0.85) 55%, rgba(122,181,78,0.8) 100%);
+          box-shadow: 0 40px 90px -30px rgba(122,181,78,0.55); animation: hv-blob 14s ease-in-out infinite alternate; }
+        @keyframes hv-blob { 0% { border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; } 100% { border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%; } }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
         .hv-kaart:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px rgba(155,203,108,0.45), 0 48px 90px -30px rgba(0,0,0,0.9); }
@@ -105,12 +111,13 @@ export default function SiteHero() {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
           .hv-sticker, .hv-revkaart { display: none; }
+          .hv-blob { width: 100%; }
           .hv-kaart { aspect-ratio: 16 / 10; border-radius: 18px; }
           .hv-vtm-gsm { display: inline-flex; }
           .hv-rev-gsm { display: inline-flex; }
           .hv-reviews .g { width: 34px; height: 34px; }
         }
-        @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
+        @media (prefers-reduced-motion: reduce) { .hv-blob { animation: none; } .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
       `}</style>
 
       {/* Content */}
@@ -230,6 +237,7 @@ export default function SiteHero() {
 
           {/* Rechts: video met sticker */}
           <div className="hv-rechts">
+            <span className="hv-blob" aria-hidden="true" />
             <span className="hv-sticker" role="img" aria-label="Bekend van tv: VTM Lifestyle en Wonen">
               <svg viewBox="0 0 200 200" width="100%" height="100%" aria-hidden="true">
                 <circle cx="100" cy="100" r="96" fill="#FFFFFF" stroke="#1A1A1A" strokeWidth="1.6" />
