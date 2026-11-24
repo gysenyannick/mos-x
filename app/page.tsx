@@ -2,7 +2,6 @@ import SiteNav             from "@/components/site-nav";
 import SiteHero            from "@/components/site-hero";
 import SiteTrustBar        from "@/components/site-trustbar";
 import SiteServices        from "@/components/site-services";
-import SiteKlantenzone     from "@/components/site-klantenzone";
 import SitePricing         from "@/components/site-pricing";
 import SiteStatsBar              from "@/components/site-statsbar";
 import SiteRealisatiesPreview   from "@/components/site-realisaties-preview";
@@ -26,23 +25,20 @@ export default function HomePage() {
       <SiteNav />
 
       <main>
-        {/* 1 · Hero */}
+        {/* 1 · Hero: belofte + video */}
         <SiteHero />
 
-        {/* 3 · Richtprijscalculator */}
+        {/* 2 · Richtprijscalculator: belangrijkste conversie */}
         <SitePricing />
 
-        {/* USP stats balk */}
+        {/* USP-balk: zekerheden net na de prijs */}
         <SiteStatsBar />
 
-        {/* Actie: gratis extra's bij dakreiniging */}
-        <SiteActie />
-
-        {/* Voor/Na realisaties preview */}
-        <SiteRealisatiesPreview />
-
-        {/* 4 · Klantbeoordelingen */}
+        {/* 3 · Klantbeoordelingen: bewijs op het twijfelmoment */}
         <SiteReviews />
+
+        {/* 4 · Actie: extra reden om nu te boeken */}
+        <SiteActie />
 
         {/* 5 · Wie is Yannick? */}
         <SiteAboutYannick />
@@ -50,19 +46,19 @@ export default function HomePage() {
         {/* 6 · Diensten */}
         <SiteServices />
 
-        {/* Klantenzone */}
-        <SiteKlantenzone />
-
-        {/* 7 · Zo werken we */}
-        <SiteWerkwijze />
-
-        {/* Dakkleur-tool */}
+        {/* 7 · Dakkleur-tool: speelse tweede instap, sluit aan op dakcoating */}
         <SiteDakkleurBanner />
 
-        {/* 8 · FAQ */}
+        {/* 8 · Zo werken we */}
+        <SiteWerkwijze />
+
+        {/* 9 · FAQ: laatste bezwaren weg */}
         <SiteFaq />
 
-        {/* 9 · CTA kaart */}
+        {/* 10 · Voor/na realisaties: laatste bewijs vlak voor contact */}
+        <SiteRealisatiesPreview />
+
+        {/* 11 · Contact */}
         <SiteContact />
       </main>
 
