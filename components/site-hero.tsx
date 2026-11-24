@@ -60,12 +60,13 @@ export default function SiteHero() {
         .hv-accent { position: relative; display: inline-block; }
         .hv-streep { position: absolute; left: 0; bottom: -0.12em; width: 96%; height: 0.24em; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
-        .hv-rechts { position: relative; isolation: isolate; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.35)); padding: 40px 0; }
+        .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 0; clip-path: url(#hv-vorm); box-shadow: none; }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
           .hv-rechts .hv-kaart:hover { transform: none; }
         }
-        .hv-blob { position: absolute; inset: 30px -18px 24px 8px; z-index: -1; clip-path: url(#hv-vorm);
+        .hv-blob { position: absolute; inset: 26px -14px 34px 16px; z-index: -1;
+          border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%;
           background: #9BCB6C; }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
@@ -86,12 +87,19 @@ export default function SiteHero() {
         .hv-sluit:hover { background: rgba(255,255,255,0.2); }
         .hv-sluit:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
         @keyframes hv-in { from { opacity: 0 } to { opacity: 1 } }
-        @media (min-width: 1024px) {
-        }
         @media (max-width: 1023px) {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
-          @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
+          .hv-rechts { order: -1; width: 92%; margin: 0 auto 34px; }
+          .hero-sectie .hero-region-label { justify-content: center; text-align: center; }
+          .hero-sectie .hero-title, .hero-sectie .hero-desc { text-align: center; margin-left: auto; margin-right: auto; }
+          .hv-streep { left: 2%; }
+          .hero-sectie .hero-title { font-size: clamp(2.4rem, 11vw, 3rem) !important; }
+          .hv-rechts .hv-kaart { aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.8); }
+          .hv-blob { inset: 18px -10px 24px 12px; }
+          .hv-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
       `}</style>
 
       {/* Content */}
@@ -194,9 +202,6 @@ export default function SiteHero() {
 
           {/* Rechts: video met sticker */}
           <div className="hv-rechts">
-            <svg width="0" height="0" aria-hidden="true" style={{ position: "absolute" }}>
-              <clipPath id="hv-vorm" clipPathUnits="objectBoundingBox"><path d="M0,0.62 C0,0.42 0.08,0.22 0.24,0.1 C0.4,-0.01 0.64,-0.02 0.82,0.06 C0.96,0.13 1,0.32 1,0.5 C1,0.7 0.94,0.86 0.78,0.95 C0.62,1.02 0.38,1.01 0.2,0.93 C0.06,0.86 0,0.76 0,0.62 Z" /></clipPath>
-            </svg>
             <span className="hv-gloed" aria-hidden="true" />
             <span className="hv-blob" aria-hidden="true" />
             <button type="button" className="hv-kaart" onClick={() => setVideoOpen(true)} aria-label="Bekijk de video van Yannick aan het werk">
