@@ -57,7 +57,7 @@ export default function SiteActie() {
         <div className="sa-kaart">
           <div className="sa-foto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/actie-dak-oprit.webp" alt="Ontmost dak met het MOS-X-bord en de bestelwagen op de oprit" loading="lazy" decoding="async" />
+            <img src="/images/actie-dak-oprit.webp" width={900} height={710} alt="Ontmost dak met het MOS-X-bord en de bestelwagen op de oprit" loading="lazy" decoding="async" />
           </div>
 
           <div>
