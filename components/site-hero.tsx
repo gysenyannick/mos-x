@@ -24,6 +24,11 @@ export default function SiteHero() {
       style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#F7F6F2", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
 
+      {/* Rustige achtergrondfoto: gecoat dak, met een warme waas zodat de tekst leesbaar blijft */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/hero-bg-villa.jpg" alt="" aria-hidden="true" className="hv-bgfoto" />
+      <div aria-hidden="true" className="hv-waas" />
+
       <style>{`
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-trust { position: absolute; left: 0; right: 0; bottom: 92px; z-index: 2; text-align: center; padding: 0 20px; }
@@ -46,6 +51,10 @@ export default function SiteHero() {
           .hv-trust-lijn { display: none; }
           .hv-trust-titel { font-size: 12.5px; }
         }
+        .hv-bgfoto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; z-index: 0; filter: blur(2px); transform: scale(1.03); }
+        .hv-waas { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(247,246,242,0.97) 0%, rgba(247,246,242,0.93) 42%, rgba(247,246,242,0.78) 70%, rgba(247,246,242,0.7) 100%), linear-gradient(to bottom, rgba(247,246,242,0.4) 0%, rgba(247,246,242,0) 30%, rgba(247,246,242,0) 70%, rgba(247,246,242,0.95) 100%); }
+        @media (max-width: 1023px) { .hv-waas { background: rgba(247,246,242,0.9); } }
+        .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-gloed { position: absolute; left: 50%; top: 50%; width: 125%; aspect-ratio: 1; transform: translate(-50%, -50%); z-index: -2; border-radius: 50%;
           background: radial-gradient(circle, rgba(155,203,108,0.16) 0%, rgba(155,203,108,0.08) 40%, rgba(155,203,108,0) 70%); filter: blur(30px); pointer-events: none; }
         .hv-accent { position: relative; display: inline-block; }
