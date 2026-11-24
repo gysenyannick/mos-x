@@ -135,7 +135,11 @@ export default function SiteHero() {
               className="hero-desc leading-relaxed mb-8"
               style={{ color: "#545454", fontSize: "18px", maxWidth: "560px" }}
             >
-              MOS-X reinigt, beschermt en onderhoudt je dak, zodat het er goed uitziet én jarenlang in topconditie blijft.
+              <span style={{ display: "block", color: "#1A1A1A", fontWeight: 700, fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "19px", marginBottom: "8px" }}>
+                <span style={{ whiteSpace: "nowrap" }}>Dak vervangen? <span style={{ color: "#7AB54E" }}>Vernieuw het!</span></span>{" "}
+                <span style={{ whiteSpace: "nowrap" }}>Waarom te veel betalen?</span>
+              </span>
+              Een dakcoating is vele malen goedkoper dan een nieuw dak, sneller klaar en jarenlang duurzaam. Je dak ziet er weer als nieuw uit, en blijft dat levenslang dankzij ons onderhoud.
             </p>
 
             {/* CTAs */}
