@@ -26,25 +26,31 @@ export default function SiteHero() {
   return (
     <section
       className="relative overflow-hidden hero-sectie"
-      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "radial-gradient(800px 560px at 78% 48%, rgba(155,203,108,0.12), transparent 65%), linear-gradient(to bottom, #F3F5F1 0%, #F7F8F6 100%)", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
+      style={{ height: "calc(100vh + 30px)", minHeight: "calc(100vh + 30px)", background: "#1A1A1A", width: "100%", maxWidth: "100vw", overflow: "hidden" }}
     >
-      {/* Achtergrond: dronefoto van een gecoat dak, met een lichte waas zodat de tekst leesbaar blijft */}
+      {/* Statische achtergrond: afgewerkt, gecoat dak */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/hero-achtergrond-coating.jpg" alt="" aria-hidden="true" fetchPriority="high"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 40%", zIndex: 0 }} />
-      <div aria-hidden="true" className="hv-waas" />
+      <img
+        src="/images/hero-achtergrond-coating.jpg"
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "55% 45%", zIndex: 0 }}
+      />
 
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0 hero-overlay"
+        style={{ zIndex: 1 }}
+      />
 
       <style>{`
         .hv-accent { position: relative; display: inline-block; }
-        .hv-streep { position: absolute; left: 0; right: 4%; bottom: -0.12em; width: 96%; height: 0.24em; }
-        .hv-waas { position: absolute; inset: 0; z-index: 0; background: linear-gradient(to right, rgba(247,248,246,0.97) 0%, rgba(247,248,246,0.92) 45%, rgba(247,248,246,0.72) 100%); }
-        @media (max-width: 1023px) { .hv-waas { background: rgba(247,248,246,0.9); } }
-        .hero-sectie .hero-content-wrap { z-index: 2; }
+        .hv-streep { position: absolute; left: 0; bottom: -0.12em; width: 96%; height: 0.24em; }
         .hv-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 64px; align-items: center; width: 100%; }
         .hv-rechts { position: relative; isolation: isolate; padding: 40px 0; }
         @media (min-width: 1024px) {
-          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 34px 70px -34px rgba(30,51,36,0.5); }
+          .hv-rechts .hv-kaart { width: 100%; aspect-ratio: 1 / 0.92; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; box-shadow: 0 40px 80px -36px rgba(0,0,0,0.8); }
           .hv-rechts .hv-kaart:hover { transform: none; }
           .hv-rechts .hv-revkaart { left: -10px; bottom: 96px; }
           .hv-rechts .hv-sticker { top: 70px; right: -6px; width: 128px; height: 128px; }
@@ -54,7 +60,7 @@ export default function SiteHero() {
           background: #9BCB6C; }
         @keyframes hv-blob { 0% { border-radius: 58% 42% 54% 46% / 52% 58% 42% 48%; } 100% { border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%; } }
         .hv-kaart { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; cursor: pointer; border-radius: 22px; overflow: hidden; background: #0B0F0C;
-          box-shadow: 0 30px 60px -30px rgba(30,51,36,0.45); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
+          box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 40px 80px -30px rgba(0,0,0,0.85); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
         .hv-kaart:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px rgba(155,203,108,0.45), 0 48px 90px -30px rgba(0,0,0,0.9); }
         .hv-kaart:active { transform: translateY(-1px) scale(0.995); }
         .hv-kaart:focus-visible { outline: 3px solid #9BCB6C; outline-offset: 4px; }
@@ -78,11 +84,11 @@ export default function SiteHero() {
         .hv-sticker .v { font: 900 30px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; margin-top: 4px; }
         .hv-sticker .l { font: 900 11px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #1A1A1A; }
         .hv-sticker .w { font: italic 400 13px Georgia, serif; color: #FF6600; margin-top: 2px; }
-        .hv-reviews { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; }
-        .hv-reviews .g { width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; border: 1px solid #E5E7EB; display: grid; place-items: center; flex-shrink: 0; }
+        .hv-reviews { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: #FFFFFF; font-family: var(--font-inter), system-ui, sans-serif; }
+        .hv-reviews .g { width: 40px; height: 40px; border-radius: 50%; background: #FFFFFF; display: grid; place-items: center; flex-shrink: 0; }
         .hv-reviews .s { color: #F5B300; font-size: 15px; letter-spacing: 1px; }
         .hv-reviews b { font: 800 15px var(--font-montserrat), system-ui, sans-serif; }
-        .hv-reviews small { display: block; font-size: 13px; color: #545454; transition: color .2s ease; }
+        .hv-reviews small { display: block; font-size: 13px; color: rgba(255,255,255,0.7); transition: color .2s ease; }
         .hv-reviews:hover small { color: #9BCB6C; }
         .hv-reviews:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 8px; }
         .hv-rev-gsm { display: none; }
@@ -104,6 +110,9 @@ export default function SiteHero() {
         .hv-sluit:hover { background: rgba(255,255,255,0.2); }
         .hv-sluit:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
         @keyframes hv-in { from { opacity: 0 } to { opacity: 1 } }
+        @media (min-width: 1024px) {
+          .hero-sectie .hero-overlay { background: linear-gradient(to right, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.88) 50%, rgba(26,26,26,0.8) 100%) !important; }
+        }
         @media (max-width: 1023px) {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { margin-top: 32px; }
@@ -136,7 +145,7 @@ export default function SiteHero() {
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: "0.12em",
-                color: "#1A1A1A",
+                color: "rgba(255,255,255,0.85)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
@@ -154,11 +163,10 @@ export default function SiteHero() {
                 fontWeight: 800,
                 fontSize: "clamp(2rem, 5.5vw, 4.5rem)",
                 letterSpacing: "-0.028em",
-                color: "#1A1A1A",
+                color: "#FFFFFF",
               }}
             >
-              <span className="hv-accent">Levenslang een
-              </span>
+              Levenslang een
               <br />
               <span className="hv-accent">
                 <span style={{ color: "#9BCB6C" }}>mosvrij dak.</span>
@@ -170,7 +178,7 @@ export default function SiteHero() {
 
             <p
               className="hero-desc leading-relaxed mb-8"
-              style={{ color: "#545454", fontSize: "18px", maxWidth: "600px" }}
+              style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
               Een dak zonder mos is een dak zonder zorgen. MOS-X reinigt en coat je dak, en houdt het levenslang mosvrij met ons unieke onderhoudsplan.
             </p>
@@ -197,12 +205,12 @@ export default function SiteHero() {
                 onClick={() => setBezoekOpen(true)}
                 onPointerDown={e => { const el = e.currentTarget; el.style.transform = "scale(0.98) translateY(1px)"; el.style.opacity = "0.88"; setTimeout(() => { el.style.transform = ""; el.style.opacity = ""; }, 150); }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#9BCB6C"; e.currentTarget.style.color = "#9BCB6C"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#1A1A1A"; e.currentTarget.style.color = "#1A1A1A"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(155,203,108,0.5)"; e.currentTarget.style.color = "#FFFFFF"; }}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
-                  background: "#FFFFFF",
-                  color: "#1A1A1A",
-                  border: "1.5px solid #1A1A1A",
+                  background: "transparent",
+                  color: "#FFFFFF",
+                  border: "1px solid rgba(155,203,108,0.5)",
                   borderRadius: "8px", padding: "14px 28px",
                   fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                   fontWeight: 700, fontSize: "15px",
@@ -221,13 +229,13 @@ export default function SiteHero() {
                 <span><b>5.0</b> <span className="s">★★★★★</span><small>16 Google-reviews</small></span>
               </a>
               <span className="hv-vtm-gsm" style={{
-                alignItems: "center", gap: "5px", border: "1.5px solid #D9DED3", background: "#FFFFFF",
+                alignItems: "center", gap: "5px", border: "1.5px solid rgba(255,255,255,0.6)",
                 borderRadius: "8px", padding: "6px 12px", whiteSpace: "nowrap",
               }}>
-                <span style={{ fontSize: "11px", fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#545454" }}>Bekend van</span>
-                <Tv style={{ width: "11px", height: "11px", flexShrink: 0, color: "#1A1A1A" }} />
-                <span style={{ fontSize: "12px", fontWeight: 900, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textTransform: "uppercase", letterSpacing: "0.05em", color: "#1A1A1A" }}>VTM Lifestyle</span>
-                <span style={{ fontSize: "13px", fontStyle: "italic", fontWeight: 700, fontFamily: "Georgia, serif", color: "#1A1A1A" }}>&amp;</span>
+                <span style={{ fontSize: "11px", fontFamily: "var(--font-inter), system-ui, sans-serif", color: "#FFFFFF" }}>Bekend van</span>
+                <Tv style={{ width: "11px", height: "11px", flexShrink: 0, color: "#FFFFFF" }} />
+                <span style={{ fontSize: "12px", fontWeight: 900, fontFamily: "var(--font-montserrat), system-ui, sans-serif", textTransform: "uppercase", letterSpacing: "0.05em", color: "#FFFFFF" }}>VTM Lifestyle</span>
+                <span style={{ fontSize: "13px", fontStyle: "italic", fontWeight: 700, fontFamily: "Georgia, serif", color: "#FFFFFF" }}>&amp;</span>
                 <span style={{ fontSize: "12px", fontStyle: "italic", fontFamily: "Georgia, serif", color: "#FF6600" }}>Wonen</span>
               </span>
             </div>
