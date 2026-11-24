@@ -699,25 +699,28 @@ export default function SitePricing() {
               position: "relative",
               overflow: "hidden",
             }}>
-              {/* Sfeerfoto — onderaan, loopt zacht over in het wit */}
+              {/* Dakfoto — absoluut onderaan, van rand tot rand */}
               <img loading="lazy" decoding="async"
-                src="/images/calc-gezin-tuin.webp"
+                src="/images/Grijze_foto_dak_calculator_.png"
                 alt=""
                 aria-hidden="true"
                 style={{
                   position: "absolute",
                   bottom: 0, left: 0, right: 0,
                   width: "100%",
-                  height: "50%",
+                  height: "52%",
                   objectFit: "cover",
-                  objectPosition: "40% 45%",
+                  objectPosition: "top center",
                   pointerEvents: "none",
                 }}
               />
-              {/* Zachte overgang: wit bovenaan, foto onderaan, met een lichte groene gloed */}
+              {/* Gradient: wit bovenaan → transparant naar foto */}
               <div style={{
-                position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1,
-                background: "linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 52%, rgba(255,255,255,0.7) 60%, rgba(255,255,255,0.2) 72%, rgba(255,255,255,0) 82%), linear-gradient(to top, rgba(122,181,78,0.28) 0%, rgba(122,181,78,0) 30%)",
+                position: "absolute",
+                top: 0, bottom: 0, left: 0, right: 0,
+                background: "linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 70%, rgba(255,255,255,0) 100%)",
+                pointerEvents: "none",
+                zIndex: 1,
               }} />
               {/* Tekst — boven de gradient */}
               <div style={{ position: "relative", zIndex: 2 }}>
@@ -735,12 +738,10 @@ export default function SitePricing() {
               }}>
                 Ontvang een <span style={{ color: GREEN }}>richtprijs</span><br />voor jouw dak
               </h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                 {["Binnen 1 minuut resultaat", "Persoonlijk dakadvies", "Vrijblijvend en zonder verplichtingen"].map((txt) => (
                   <div key={txt} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#EEF6E6", flexShrink: 0, display: "grid", placeItems: "center" }}>
-                      <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6l3 3 5-5" stroke="#7AB54E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
-                    </span>
+                    <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: GREEN, flexShrink: 0, display: "inline-block" }} />
                     <span style={{ fontSize: "14px", color: "#555", fontFamily: "var(--font-inter), system-ui, sans-serif" }}>{txt}</span>
                   </div>
                 ))}
