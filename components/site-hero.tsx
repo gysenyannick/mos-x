@@ -3,7 +3,6 @@
 import { ChevronRight, Play, X } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 import { useEffect, useState } from "react";
-import { preload } from "react-dom";
 
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
@@ -26,28 +25,17 @@ export default function SiteHero() {
     >
       {/* Subtiele dak-icoontjes in de achtergrond */}
       <div aria-hidden="true" className="hv-iconen">
-        {/* dakprofiel met pannenrijen */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "45%", top: "17%", width: 64, height: 64 }}>
-          <path d="M6 34 L32 12 L58 34" /><path d="M14 33 V52 H50 V33" />
-          <path d="M14 40 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" /><path d="M14 46 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0 q4.5 4 9 0" />
-        </svg>
-        {/* dakpan */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "52%", top: "60%", width: 56, height: 56 }}>
-          <path d="M16 10 H48 V44 Q40 54 32 44 Q24 54 16 44 Z" /><path d="M27 12 V42 M37 12 V42" />
-        </svg>
-        {/* schild met vinkje */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "5%", top: "80%", width: 54, height: 54 }}>
-          <path d="M32 8 L52 16 V30 C52 44 43 52 32 56 C21 52 12 44 12 30 V16 Z" /><path d="M23 32 L30 39 L42 26" />
-        </svg>
-        {/* nok met schouw */}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ left: "39%", top: "82%", width: 58, height: 58 }}>
-          <path d="M4 44 L28 22 L60 44" /><path d="M40 30 V16 H48 V36" />
-        </svg>
+        {/* eslint-disable @next/next/no-img-element */}
+        <img src="/images/hero-icoon-pan.png" alt="" style={{ left: "46%", top: "16%", width: 64, transform: "rotate(-10deg)" }} />
+        <img src="/images/hero-icoon-druppel.png" alt="" style={{ left: "53%", top: "58%", width: 46, transform: "rotate(8deg)" }} />
+        <img src="/images/hero-icoon-mos.png" alt="" style={{ left: "5%", top: "80%", width: 70 }} />
+        <img src="/images/hero-icoon-huis.png" alt="" style={{ left: "38%", top: "80%", width: 62, transform: "rotate(-4deg)" }} />
+        {/* eslint-enable @next/next/no-img-element */}
       </div>
 
       <style>{`
         .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.07; }
+        .hv-iconen img { position: absolute; height: auto; opacity: 0.08; }
         @media (max-width: 1023px) { .hv-iconen { display: none; } }
         .hero-sectie .hero-content-wrap { z-index: 2; }
         .hv-accent { position: relative; display: inline-block; }
