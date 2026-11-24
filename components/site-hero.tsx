@@ -177,7 +177,9 @@ export default function SiteHero() {
               className="hero-desc leading-relaxed mb-8"
               style={{ color: "rgba(255,255,255,0.62)", fontSize: "18px", maxWidth: "620px" }}
             >
-              Een dak zonder mos is een dak zonder zorgen. MOS-X reinigt en coat je dak, en houdt het levenslang mosvrij met ons unieke onderhoudsplan.
+              <em style={{ color: "#FFFFFF", fontStyle: "italic" }}>Een dak zonder mos is een dak zonder zorgen.</em>{" "}
+              MOS-X <strong style={{ color: "#FFFFFF", fontWeight: 700 }}>reinigt en coat</strong> je dak, en houdt het{" "}
+              <strong style={{ color: "#9BCB6C", fontWeight: 700 }}>levenslang mosvrij</strong> met ons unieke onderhoudsplan.
             </p>
 
             {/* CTAs */}
