@@ -49,6 +49,9 @@ export default function SiteHero() {
       </div>
 
       <style>{`
+        .hv-accent { position: relative; display: inline-block; }
+        .hv-streep { position: absolute; left: 0; right: 4%; bottom: -0.12em; width: 96%; height: 0.24em; }
+        .hv-glans { position: absolute; right: -0.62em; top: -0.32em; width: 0.55em; height: 0.55em; }
         .hv-iconen { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
         .hv-iconen svg { position: absolute; color: #1A1A1A; opacity: 0.07; }
         @media (max-width: 1023px) { .hv-iconen { display: none; } }
@@ -169,9 +172,18 @@ export default function SiteHero() {
                 color: "#1A1A1A",
               }}
             >
-              Levenslang een
+              <span className="hv-accent">Levenslang een
+                <svg className="hv-glans" viewBox="0 0 40 40" aria-hidden="true">
+                  <path d="M8 26 L5 13 M19 20 L22 5 M29 27 L38 17" fill="none" stroke="#9BCB6C" strokeWidth="4" strokeLinecap="round" />
+                </svg>
+              </span>
               <br />
-              <span style={{ color: "#9BCB6C" }}>mosvrij dak.</span>
+              <span className="hv-accent">
+                <span style={{ color: "#9BCB6C" }}>mosvrij dak.</span>
+                <svg className="hv-streep" viewBox="0 0 300 18" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M4 12 C 60 4, 140 3, 296 9" fill="none" stroke="#9BCB6C" strokeWidth="5" strokeLinecap="round" />
+                </svg>
+              </span>
             </h1>
 
             <p
