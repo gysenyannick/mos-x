@@ -88,6 +88,18 @@ export default function SiteHero() {
         .hv-reviews small { display: block; font-size: 13px; color: rgba(255,255,255,0.7); transition: color .2s ease; }
         .hv-reviews:hover small { color: #9BCB6C; }
         .hv-reviews:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 8px; }
+        .hv-rev-gsm { display: none; }
+        .hv-revkaart { position: absolute; left: -34px; bottom: -30px; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 14px 20px 14px 14px; border-radius: 16px; background: #FFFFFF; text-decoration: none; color: #1A1A1A;
+          box-shadow: 0 18px 40px -14px rgba(0,0,0,0.65); transition: transform .25s cubic-bezier(.22,1,.36,1); }
+        .hv-revkaart:hover { transform: translateY(-3px); }
+        .hv-revkaart:focus-visible { outline: 3px solid #9BCB6C; outline-offset: 3px; }
+        .hv-revkaart .g { width: 44px; height: 44px; border-radius: 12px; background: #F7F8F6; display: grid; place-items: center; flex-shrink: 0; }
+        .hv-revkaart .r { display: flex; align-items: center; gap: 8px; }
+        .hv-revkaart b { font: 800 20px var(--font-montserrat), system-ui, sans-serif; }
+        .hv-revkaart .s { color: #F5B300; font-size: 15px; letter-spacing: 1px; }
+        .hv-revkaart small { display: block; font: 500 13px var(--font-inter), system-ui, sans-serif; color: #545454; margin-top: 1px; }
+        .hv-onder { top: 20px; bottom: auto !important; align-items: flex-start !important; }
+        .hv-shade { background: linear-gradient(to bottom, rgba(8,12,9,0.7) 0%, rgba(8,12,9,0.1) 40%, rgba(8,12,9,0) 60%) !important; }
         .hv-vtm-gsm { display: none; }
         .hv-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(8,12,9,0.9); display: flex; align-items: center; justify-content: center; padding: 20px; animation: hv-in .25s ease; }
         .hv-modal video { width: min(1100px, 100%); max-height: 82vh; border-radius: 16px; background: #000; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8); }
@@ -102,6 +114,7 @@ export default function SiteHero() {
           .hv-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
           .hv-rechts { display: none; }
           .hv-vtm-gsm { display: inline-flex; }
+          .hv-rev-gsm { display: inline-flex; }
           .hv-reviews .g { width: 34px; height: 34px; }
         }
         @media (prefers-reduced-motion: reduce) { .hv-play::before { animation: none; } .hv-kaart, .hv-kaart video { transition: none; } }
@@ -208,7 +221,7 @@ export default function SiteHero() {
 
             {/* Reviews */}
             <div className="hero-badges" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "14px 20px" }}>
-              <a href="#reviews" className="hv-reviews">
+              <a href="#reviews" className="hv-reviews hv-rev-gsm">
                 <span className="g"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg></span>
                 <span><b>5.0</b> <span className="s">★★★★★</span><small>16 Google-reviews</small></span>
               </a>
@@ -233,6 +246,10 @@ export default function SiteHero() {
               <span className="l">Lifestyle</span>
               <span className="w">&amp; Wonen</span>
             </span>
+            <a href="#reviews" className="hv-revkaart">
+              <span className="g"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg></span>
+              <span><span className="r"><b>5.0</b><span className="s">★★★★★</span></span><small>16 Google-reviews</small></span>
+            </a>
             <button type="button" className="hv-kaart" onClick={() => setVideoOpen(true)} aria-label="Bekijk de video van Yannick aan het werk">
               <video src="/videos/yannick-hero.mp4" poster="/images/yannick-hero-poster.jpg" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" />
               <span className="hv-shade" />
