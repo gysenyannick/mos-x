@@ -14,11 +14,10 @@ const services = [
     badge: "2 jaar mosvrij",
     sticker: { groot: "2", klein: "mosvrij garantie" },
     href: "/diensten/dakontmossing",
-    img: "/images/IMG_4543.JPEG",
-    video: "/videos/dakreiniging-hero.mp4",
-    // Rond 24,5 s komt de persoon in beeld: daar stopt het filmpje en begint het opnieuw.
-    videoEinde: 24.3,
-    videoPosition: "center 35%",
+    img: "/images/dakreiniging-dienst-poster.jpg",
+    video: "/videos/dakreiniging-dienst.mp4",
+    videoEinde: 0, // geen knippunt: het volledige filmpje speelt in een lus
+    videoPosition: "60% center",
     Icon: Droplets,
     desc: "Verwijder mos en aanslag. Geef je dak zijn verzorgde uitstraling terug.",
     link: "Ontdek dakreiniging",
