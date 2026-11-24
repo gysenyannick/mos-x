@@ -1,16 +1,20 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
 /**
  * Homepage: actiebanner (voorjaarsbonus) bij een dakreiniging.
  * Opbouw zoals een promobanner: foto in organische vorm, grote korting, en rechts een witte kaart.
  */
 export default function SiteActie() {
+  const [open, setOpen] = useState(false);
   return (
     <section className="sa-sectie" aria-labelledby="sa-titel">
       <style>{`
         .sa-sectie { padding: 48px 0 96px; }
         .sa-wrap { max-width: 1320px; margin: 0 auto; padding: 0 20px; }
-        .sa-kaart { display: grid; grid-template-columns: 320px minmax(0, 1fr) 290px; align-items: center; gap: 48px;
+        .sa-kaart { display: grid; grid-template-columns: 300px minmax(0, 1fr) 270px; align-items: center; gap: 40px;
           padding: 64px 56px 64px 64px; border-radius: 28px; background: #F2F8EC;
           box-shadow: 0 2px 16px rgba(0,0,0,0.04), 0 30px 60px -40px rgba(30,51,36,0.3); }
         .sa-foto { position: relative; width: calc(100% - 14px); aspect-ratio: 16 / 12; isolation: isolate; }
@@ -21,13 +25,13 @@ export default function SiteActie() {
         .sa-titel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: #1A1A1A; white-space: nowrap; }
         .sa-titel .pct { font-size: clamp(3.4rem, 5.4vw, 5rem); color: #9BCB6C; letter-spacing: -0.05em; }
         .sa-titel .kort { font-size: clamp(1.8rem, 2.8vw, 2.7rem); margin-left: 12px; }
-        .sa-sub { margin: 12px 0 0; white-space: nowrap; font: 700 clamp(1.05rem, 1.5vw, 1.28rem) var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; color: #1A1A1A; }
+        .sa-sub { margin: 12px 0 0; white-space: nowrap; font: 700 clamp(1rem, 1.3vw, 1.1rem) var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; color: #1A1A1A; }
         .sa-prijs { background: #FFFFFF; border-radius: 22px; padding: 36px 32px 32px; text-align: center;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 24px 48px -28px rgba(30,51,36,0.35); }
         .sa-prijs h3 { margin: 0; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E !important; font: 800 13px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
         .sa-gratis-k { margin: 6px 0 22px; font: 700 17px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
         .sa-gratis { margin: 10px 0 0; font: 800 64px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.04em; line-height: 1; color: #1A1A1A; }
-        .sa-knop { display: flex; align-items: center; justify-content: center; height: 52px; border-radius: 10px; background: #9BCB6C; color: #FFFFFF;
+        .sa-knop { display: flex; align-items: center; justify-content: center; width: 100%; height: 52px; border: 0; cursor: pointer; border-radius: 10px; background: #9BCB6C; color: #FFFFFF;
           text-decoration: none; font: 700 16px var(--font-montserrat), system-ui, sans-serif;
           box-shadow: 0 10px 22px -12px rgba(122,181,78,0.9); transition: background-color .2s ease, transform .15s ease; }
         .sa-knop:hover { background: #7AB54E; }
@@ -59,17 +63,20 @@ export default function SiteActie() {
           <div>
             <p className="sa-oog">Voorjaarsbonus<span className="sa-punt"> · </span><span className="sa-datum">Boek vóór 31 maart</span></p>
             <h2 id="sa-titel" className="sa-titel"><span className="pct">50%</span><span className="kort">korting</span></h2>
-            <p className="sa-sub">op je oprit of terras bij elke dakreiniging</p>
+            <p className="sa-sub">op je oprit- of terrasreiniging, samen met je dak</p>
           </div>
 
           <div className="sa-prijs">
             <h3>Voorjaarsbonus</h3>
             <p className="sa-gratis">−50%</p>
             <p className="sa-gratis-k">Oprit of terras</p>
-            <Link href="/#calculator" className="sa-knop">Bereken mijn richtprijs</Link>
+            <button type="button" className="sa-knop" onClick={() => setOpen(true)}>Ik wil deze korting</button>
           </div>
         </div>
       </div>
+      <PlaatsbezoekModal open={open} onClose={() => setOpen(false)} defaultDienst="Dakreiniging" bron="Actiebanner voorjaarsbonus"
+        titel="Ik wil de voorjaarsbonus" subtitel="50% op je oprit of terras, samen met je dak."
+        voorbeeld="Bv. Ik wil mijn dak laten reinigen en mijn oprit erbij. Een plaatsbezoek in de week na 17.00 u past mij." />
     </section>
   );
 }
