@@ -14,11 +14,11 @@ export default function SiteActie() {
       <style>{`
         .sa-sectie { padding: 48px 0 96px; }
         .sa-wrap { max-width: 1320px; margin: 0 auto; padding: 0 20px; }
-        .sa-kaart { display: grid; grid-template-columns: 240px minmax(0, 1fr) 270px; align-items: center; gap: 40px;
+        .sa-kaart { display: grid; grid-template-columns: 250px minmax(0, 1fr) 270px; align-items: center; gap: 40px;
           padding: 64px 56px 64px 64px; border-radius: 28px; background: #F2F8EC;
           box-shadow: 0 2px 16px rgba(0,0,0,0.04), 0 30px 60px -40px rgba(30,51,36,0.3); }
         .sa-foto { position: relative; display: flex; justify-content: center; }
-        .sa-foto img { width: 100%; max-width: 230px; height: auto; display: block; filter: drop-shadow(0 18px 22px rgba(30,51,36,0.18)); }
+        .sa-foto img { width: 100%; max-width: 250px; height: auto; display: block; filter: drop-shadow(0 18px 22px rgba(30,51,36,0.18)); }
         .sa-oog { margin: 0 0 10px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
         .sa-titel { margin: 0; font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: #1A1A1A; white-space: nowrap; }
         .sa-titel .pct { font-size: clamp(3.4rem, 5.4vw, 5rem); color: #9BCB6C; letter-spacing: -0.05em; }
