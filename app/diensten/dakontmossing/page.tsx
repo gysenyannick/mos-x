@@ -37,9 +37,9 @@ const daktypes = [
 ];
 
 const resultaten = [
-  { plaats: "Dakreiniging", voor: "/images/koningshooikt-voor.jpg", na: "/images/koningshooikt-na.jpg", info: "Koningshooikt · betonpannen" },
+  { plaats: "Dakreiniging en antimos", voor: "/images/koningshooikt-voor.jpg", na: "/images/koningshooikt-na.jpg", info: "Koningshooikt · betonpannen" },
   { plaats: "Dakreiniging en antimos", voor: "/images/olen-voor.png", na: "/images/olen-na.png", info: "Olen · keramische pannen" },
-  { plaats: "Dakreiniging en antimos", voor: "/images/Voor dakreiniging slider.png", na: "/images/Na dakreiniging slider.png", info: "Mos en aanslag volledig verwijderd" },
+  { plaats: "Dakreiniging en antimos", voor: "/images/Voor dakreiniging slider.png", na: "/images/Na dakreiniging slider.png", info: "Herentals · keramische pannen" },
 ];
 
 const faqs: { q: string; a: string; cta?: boolean }[] = [
