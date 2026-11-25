@@ -137,7 +137,7 @@ export default function DakcoatingPage() {
             <h2 className="do-h2">Je dak opnieuw beschermd. <span style={{ display: "block" }}>En weer als nieuw.</span></h2>
             <div className="do-uitleg">
               <p className="do-p">Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag. Ze worden poreus, nemen meer vocht op, verkleuren en mos krijgt sneller vat.</p>
-              <p className="do-p">Een coating geeft je pannen opnieuw een beschermlaag, net zoals de originele laag uit de fabriek. Je dak ziet er weer als nieuw uit en gaat jaren langer mee, zonder dat je het moet vervangen.</p>
+              <p className="do-p">Een coating vult de poriën van je pannen op en brengt een nieuwe fabriekslaag aan. Je pannen worden weer mooi egaal van kleur, je dak ziet er als nieuw uit en gaat jaren langer mee, zonder dat je het moet vervangen.</p>
             </div>
           </div>
         </div>
