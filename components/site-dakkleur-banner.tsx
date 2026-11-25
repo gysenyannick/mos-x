@@ -67,6 +67,8 @@ export default function SiteDakkleurBanner() {
           .dkb-lijst { display: none; }
           .dkb-tekst { font-size: 16px; }
           .dkb-knop { height: 52px; padding: 0 22px; }
+          .dkb { padding-left: 16px; padding-right: 16px; }
+          .dkb-titel { white-space: nowrap; font-size: 4.95vw; letter-spacing: -0.035em; }
         }
       `}</style>
 
