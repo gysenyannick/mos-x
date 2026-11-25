@@ -43,6 +43,7 @@ export const DIENST_CSS = `
         .do-h1 span { display: block; color: #9BCB6C; }
         .do-hero .do-p { color: rgba(255,255,255,0.72); margin-bottom: 32px; }
         .do-hero-knoppen { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+        .do-hero .do-oog { font: 600 12px var(--font-inter), system-ui, sans-serif; letter-spacing: 0.12em; margin-bottom: 16px; }
         .do-hero-bewijs { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); }
         .do-garantie-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,0.8); font-family: var(--font-inter), system-ui, sans-serif; }
         .do-garantie-chip b { color: #FFFFFF; font-family: var(--font-montserrat), system-ui, sans-serif; }

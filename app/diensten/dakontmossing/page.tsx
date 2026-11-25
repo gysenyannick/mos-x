@@ -6,7 +6,7 @@ import { AlertTriangle, CalendarCheck, Download, CheckCircle2, ChevronDown, Chev
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
-import GoogleBalk from "@/components/google-balk";
+import HeroVertrouwen from "@/components/hero-vertrouwen";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
@@ -99,9 +99,7 @@ export default function DakontmossingPage() {
               <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
               <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
             </div>
-            <div className="do-hero-bewijs">
-              <GoogleBalk />
-            </div>
+            <HeroVertrouwen />
           </div>
         </div>
       </section>
