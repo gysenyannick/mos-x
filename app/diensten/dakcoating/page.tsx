@@ -139,11 +139,6 @@ export default function DakcoatingPage() {
               <p className="do-p">Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag. Ze worden poreus, nemen meer vocht op, verkleuren en mos krijgt sneller vat.</p>
               <p className="do-p">Een coating geeft je pannen opnieuw een beschermlaag, net zoals de originele laag uit de fabriek. Je dak ziet er weer als nieuw uit en gaat jaren langer mee, zonder dat je het moet vervangen.</p>
             </div>
-            <dl className="do-feiten">
-              <div><dt>Als nieuw</dt><dd>uit de fabriek</dd></div>
-              <div><dt>10 jaar</dt><dd>op hechting</dd></div>
-              <div><dt>1 dag</dt><dd>meestal klaar</dd></div>
-            </dl>
           </div>
         </div>
       </section>
