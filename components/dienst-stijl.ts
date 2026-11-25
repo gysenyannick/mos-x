@@ -208,6 +208,7 @@ export const DIENST_CSS = `
           .do-h2 { font-size: clamp(1.65rem, 7.6vw, 1.9rem); }
           .do-h1 { font-size: clamp(1.85rem, 9vw, 2.1rem); }
         }
+        @media (max-width: 767px) { .do-hero::after { display: none; } }
         @media (max-width: 380px) {
           .do-stap button { font-size: 14px; gap: 10px; padding-right: 12px; }
         }

@@ -90,8 +90,8 @@ export default function DakontmossingPage() {
         <video src="/videos/dakontmossen-hero.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
-            <BackLink href="/diensten" dark />
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakontmossen</p>
+            <BackLink href="/#diensten" dark />
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakontmossen</p>
             <p className="do-oog">Dakontmossen</p>
             <h1 className="do-h1 do-h1-2r">Geef je dak opnieuw <span>een verzorgde uitstraling.</span></h1>
             <p className="do-p">Mos en vuil houden vocht vast en laten je dak sneller verouderen. We verwijderen ze veilig, onder aangepaste druk, en beschermen je dak met een antimosbehandeling of een optionele dakcoating.</p>

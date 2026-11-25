@@ -109,8 +109,8 @@ export default function DakcoatingPage() {
         <video src="/videos/Dakcoating.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
-            <BackLink href="/diensten" dark />
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakcoaten</p>
+            <BackLink href="/#diensten" dark />
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakcoaten</p>
             <p className="do-oog">Dakcoaten</p>
             <h1 className="do-h1">Geef je dak opnieuw <span>kleur en bescherming.</span></h1>
             <p className="do-p">Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag en hun kleur. Na een grondige reiniging geven we je dak met een professionele coating een nieuwe afwerking, zonder het te moeten vervangen.</p>

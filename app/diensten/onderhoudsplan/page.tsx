@@ -122,8 +122,8 @@ export default function MosXDakzorgPage() {
         <img src="/images/16.JPEG" alt="" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
-            <BackLink href="/diensten" dark />
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Onderhoudsplan</p>
+            <BackLink href="/#diensten" dark />
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-X Onderhoudsplan</p>
             <p className="do-oog">MOS-X Onderhoudsplan</p>
             <h1 className="do-h1">Je dak blijft verzorgd. <span>Jaar na jaar.</span></h1>
             <p className="do-p">Wij houden het mos weg en je dak in het oog. Zo ligt het er jarenlang mooi bij.</p>

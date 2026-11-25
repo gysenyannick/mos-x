@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <JsonLd data={[
         dienstSchema({ pad: "/diensten/onderhoudsplan", naam: "MOS-X Onderhoudsplan", type: "Dakonderhoud", omschrijving: "Preventieve antimosbehandeling voor een dak dat al gereinigd is, met volledige dakcontrole, controle van dakgoten en afvoer en een rapport per mail.", prijsVanaf: 250 }),
-        kruimelSchema([["Diensten", "/diensten"], ["MOS-X Onderhoudsplan", "/diensten/onderhoudsplan"]]),
+        kruimelSchema([["Diensten", "/#diensten"], ["MOS-X Onderhoudsplan", "/diensten/onderhoudsplan"]]),
       ]} />
       {children}
     </>

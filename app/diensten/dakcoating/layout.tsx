@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <JsonLd data={[
         dienstSchema({ pad: "/diensten/dakcoating", naam: "Dakcoating", type: "Dakcoating", omschrijving: "Grondige dakreiniging gevolgd door twee lagen watergedragen dakcoating, voor betonpannen en kunstleien. 10 jaar garantie op de hechting." }),
-        kruimelSchema([["Diensten", "/diensten"], ["Dakcoating", "/diensten/dakcoating"]]),
+        kruimelSchema([["Diensten", "/#diensten"], ["Dakcoating", "/diensten/dakcoating"]]),
       ]} />
       {children}
     </>
