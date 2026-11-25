@@ -230,7 +230,7 @@ export default function DakontmossingPage() {
                   {open && (
                     <div className="do-antwoord">
                       <Antwoord tekst={f.a} />
-                      {f.cta && <a className="do-knop do-knop-g" style={{ height: 44, marginTop: 6, fontSize: 14 }} href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></a>}
+                      {f.cta && <Link className="do-knop do-knop-g" style={{ height: 44, marginTop: 6, fontSize: 14 }} href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>}
                     </div>
                   )}
                 </div>
