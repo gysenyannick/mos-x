@@ -87,7 +87,7 @@ export default function DakontmossingPage() {
 
       {/* Hero */}
       <section className="do-hero">
-        <video src="/videos/dakreiniging-hero.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+        <video src="/videos/dakontmossen-hero.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/diensten" dark />
