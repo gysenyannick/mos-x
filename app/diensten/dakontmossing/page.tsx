@@ -96,7 +96,7 @@ export default function DakontmossingPage() {
             <h1 className="do-h1 do-h1-2r">Geef je dak opnieuw <span>een verzorgde uitstraling.</span></h1>
             <p className="do-p">Mos en vuil houden vocht vast en laten je dak sneller verouderen. We verwijderen ze veilig, onder aangepaste druk, en beschermen je dak met een antimosbehandeling of een optionele dakcoating.</p>
             <div className="do-hero-knoppen">
-              <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
+              <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></Link>
               <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
             </div>
             <HeroVertrouwen />
