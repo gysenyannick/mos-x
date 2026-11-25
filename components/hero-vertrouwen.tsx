@@ -1,9 +1,9 @@
 import { GOOGLE_REVIEWS_URL } from "@/components/google-balk";
 
 /** Vertrouwensregel onder de knoppen van een donkere hero: VTM + Google, zoals op de homepage. */
-export default function HeroVertrouwen() {
+export default function HeroVertrouwen({ licht = false }: { licht?: boolean }) {
   return (
-    <div className="hvr">
+    <div className={licht ? "hvr hvr-licht" : "hvr"}>
       <style>{`
         .hvr { padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.12); }
         .hvr-titel { margin: 0 0 10px; font: 500 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em; color: rgba(255,255,255,0.6); }
@@ -19,6 +19,12 @@ export default function HeroVertrouwen() {
         .hvr-google:hover .st { color: #F5B300; }
         .hvr-google:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; border-radius: 6px; }
         .hvr-lijn { width: 1px; height: 24px; background: rgba(255,255,255,0.22); }
+        .hvr-licht { border-top-color: #E5E7EB; }
+        .hvr-licht .hvr-titel { color: #545454; }
+        .hvr-licht .hvr-rij { color: #1A1A1A; }
+        .hvr-licht .hvr-lijn { background: #E5E7EB; }
+        .hvr-licht .hvr-google .st { color: #F5B300; }
+        .hvr-licht .hvr-google:hover { color: #7AB54E; }
         @media (max-width: 480px) { .hvr-lijn { display: none; } .hvr-rij { gap: 10px 18px; } }
       `}</style>
       <p className="hvr-titel">Bekend van tv, geliefd bij onze klanten</p>

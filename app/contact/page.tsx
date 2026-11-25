@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CheckCircle2, ChevronRight, Clock, Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
-import GoogleBalk from "@/components/google-balk";
+import HeroVertrouwen from "@/components/hero-vertrouwen";
 import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 import { FotoKiezer } from "@/components/foto-kiezer";
@@ -139,10 +139,7 @@ export default function ContactPage() {
             <p className="do-oog">Contact</p>
             <h1 className="ct-h1">Vragen over je dak? <span>We helpen je graag.</span></h1>
             <p className="do-p">Stel je vraag of vraag vrijblijvend een offerte aan. Je krijgt binnen 1 werkdag een persoonlijk antwoord.</p>
-            <div className="do-hero-bewijs" style={{ borderTopColor: "#E5E7EB", marginTop: 26 }}>
-              <GoogleBalk />
-              <span className="do-garantie-chip" style={{ color: "#545454" }}><Clock size={18} color="#9BCB6C" aria-hidden="true" /><b style={{ color: "#1A1A1A" }}>Binnen 1 werkdag</b> antwoord</span>
-            </div>
+            <div style={{ marginTop: 28 }}><HeroVertrouwen licht /></div>
           </div>
           <div className="ct-foto">
             <img src="/images/IMG_5900.JPEG" alt="Vakman van MOS-X op een dak" style={{ objectPosition: "30% 25%" }} />

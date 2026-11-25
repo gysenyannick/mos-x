@@ -6,7 +6,7 @@ import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import Realisatieboek from "@/components/realisatieboek";
-import GoogleBalk from "@/components/google-balk";
+import HeroVertrouwen from "@/components/hero-vertrouwen";
 
 const projecten = [
   {
@@ -148,10 +148,7 @@ export default function RealisatiesPage() {
             <p className="rz-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" />Realisaties</p>
             <h1 className="rz-h1">Onze realisaties <span>spreken voor zich.</span></h1>
             <p className="rz-p">Het resultaat van onze werven. Blader door ons realisatieboek of bekijk hieronder een paar recente projecten.</p>
-            <div className="rz-bewijs">
-              <GoogleBalk />
-              <span><b>150+</b> afgewerkte daken</span>
-            </div>
+            <div style={{ marginTop: 28 }}><HeroVertrouwen licht /></div>
           </div>
           <div className="rz-hero-foto">
             <img src="/images/17.JPEG" alt="Afgewerkt dak na dakreiniging en coating" />

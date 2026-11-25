@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, ClipboardList, Droplets, Eye, Leaf, Phone, ShieldCheck, Sparkles, Wallet, X } from "lucide-react";
+import { CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, ClipboardList, Droplets, Eye, Leaf, Phone, Sparkles, Wallet, X } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
-import GoogleBalk from "@/components/google-balk";
+import HeroVertrouwen from "@/components/hero-vertrouwen";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import GoogleScore from "@/components/google-score";
 import { DIENST_CSS } from "@/components/dienst-stijl";
@@ -131,10 +131,7 @@ export default function MosXDakzorgPage() {
               <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Vraag een onderhoudsplan aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
-            <div className="do-hero-bewijs">
-              <GoogleBalk />
-              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" />Vanaf <b>€250</b> per onderhoudsbeurt</span>
-            </div>
+            <HeroVertrouwen />
           </div>
         </div>
       </section>

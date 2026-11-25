@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Building2, CalendarClock, CheckCircle2, ChevronRight, ClipboardList, FileText, Handshake, Home, Loader2, Phone, Send, ShieldCheck, Users } from "lucide-react";
 import PageLayout from "@/components/page-layout";
-import GoogleBalk from "@/components/google-balk";
+import HeroVertrouwen from "@/components/hero-vertrouwen";
 import GoogleScore from "@/components/google-score";
 import { FotoKiezer } from "@/components/foto-kiezer";
 import { DIENST_CSS } from "@/components/dienst-stijl";
@@ -129,10 +129,7 @@ export default function ZakelijkPage() {
               <button type="button" className="do-knop do-knop-g mx-glow" onClick={naarOfferte}>Vraag een offerte aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
-            <div className="do-hero-bewijs">
-              <GoogleBalk />
-              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>Factuur</b> op firma</span>
-            </div>
+            <HeroVertrouwen />
           </div>
         </div>
       </section>
