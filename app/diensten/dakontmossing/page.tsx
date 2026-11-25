@@ -255,7 +255,7 @@ export default function DakontmossingPage() {
         @media (max-width: 767px) {
           .do-h1-2r { font-size: 6.7vw; letter-spacing: -0.035em; }
           .do-h1-2r span { white-space: nowrap; }
-          .do-hero-tekst:has(.do-h1-2r) .do-p { font-size: 15.5px; line-height: 1.65; text-wrap: pretty; max-width: none; }
+          .do-hero-tekst:has(.do-h1-2r) .do-p { font-size: 14.5px; line-height: 1.7; text-wrap: balance; max-width: none; }
         }
       `}</style>
       {/* Afsluiter */}
