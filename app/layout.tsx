@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | MOS-X",
   },
   description:
-    "MOS-X ontmost, reinigt en coat daken in de provincies Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg. 2 jaar mosvrij-garantie, 5 jaar garantie op de hechting en een duidelijke prijs vooraf.",
+    "MOS-X ontmost, reinigt en coat daken in de provincies Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg. 2 jaar mosvrij-garantie, 10 jaar garantie op de hechting en een duidelijke prijs vooraf.",
   applicationName: "MOS-X",
   icons: {
     icon: "/images/Favicon Mos-x.png",

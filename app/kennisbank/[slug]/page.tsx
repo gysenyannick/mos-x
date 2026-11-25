@@ -33,7 +33,7 @@ const CTA: Record<Artikel["cta"], { titel: string; tekst: string; knoppen: [stri
   },
   coaten: {
     titel: "Je dak opnieuw als nieuw?",
-    tekst: "Een coating geeft je dak zijn kleur en beschermlaag terug, met 5 jaar garantie op de hechting.",
+    tekst: "Een coating geeft je dak zijn kleur en beschermlaag terug, met 10 jaar garantie op de hechting.",
     knoppen: [["Bereken je richtprijs", "/#calculator"], ["Zie je dak in een nieuwe kleur", "/#dakkleur"]],
   },
   dakzorg: {

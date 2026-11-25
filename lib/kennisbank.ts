@@ -236,7 +236,7 @@ export const ARTIKELS: Artikel[] = [
       {
         kop: "Coaten na de reiniging?",
         tekst: [
-          "Zijn je betonpannen poreus en verkleurd, dan is een coating vaak de beste keuze. Een coating sluit de pannen opnieuw af, geeft je dak zijn kleur terug en zorgt dat mos minder vat krijgt. Op een dakcoating krijg je bij MOS-X 5 jaar garantie op de hechting.",
+          "Zijn je betonpannen poreus en verkleurd, dan is een coating vaak de beste keuze. Een coating sluit de pannen opnieuw af, geeft je dak zijn kleur terug en zorgt dat mos minder vat krijgt. Op een dakcoating krijg je bij MOS-X 10 jaar garantie op de hechting.",
         ],
       },
     ],
@@ -335,7 +335,7 @@ export const ARTIKELS: Artikel[] = [
       {
         kop: "Een coating geeft ze een tweede leven",
         tekst: [
-          "Verkleurde, poreuze kunstleien knappen enorm op met een coating. De coating sluit het oppervlak af en geeft je dak opnieuw een egale kleur. Bij MOS-X krijg je 5 jaar garantie op de hechting.",
+          "Verkleurde, poreuze kunstleien knappen enorm op met een coating. De coating sluit het oppervlak af en geeft je dak opnieuw een egale kleur. Bij MOS-X krijg je 10 jaar garantie op de hechting.",
         ],
       },
     ],
@@ -629,7 +629,7 @@ export const ARTIKELS: Artikel[] = [
     categorie: "tips",
     titel: "Je dak laten coaten: wat moet je weten?",
     seoTitel: "Dak laten coaten: werkwijze, kleuren en garantie",
-    omschrijving: "Wat is een dakcoating, voor welke daken is het geschikt en hoe verloopt het? Alles over je dak laten coaten, met 5 jaar garantie op de hechting.",
+    omschrijving: "Wat is een dakcoating, voor welke daken is het geschikt en hoe verloopt het? Alles over je dak laten coaten, met 10 jaar garantie op de hechting.",
     intro: "Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag en hun kleur. Een coating geeft je dak opnieuw een beschermlaag, zonder dat je het moet vervangen.",
     beeld: "/images/Na bevel.jpg",
     beeldAlt: "Woning met een gecoat dak in antraciet",
@@ -660,7 +660,7 @@ export const ARTIKELS: Artikel[] = [
       {
         kop: "Kleuren en garantie",
         tekst: [
-          "Je kiest uit zeven kleuren: zwart, antraciet, bruin, aubergine, rood, terra en fondant. Met onze dakkleur-tool zie je op een foto van je eigen woning hoe je dak eruitziet. Op de coating krijg je 5 jaar garantie op de hechting.",
+          "Je kiest uit zeven kleuren: zwart, antraciet, bruin, aubergine, rood, terra en fondant. Met onze dakkleur-tool zie je op een foto van je eigen woning hoe je dak eruitziet. Op de coating krijg je 10 jaar garantie op de hechting.",
         ],
       },
     ],

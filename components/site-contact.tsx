@@ -128,7 +128,7 @@ export default function SiteContact() {
           <div className="ct-bewijs">
             <GoogleBalk compact />
             <i aria-hidden="true" />
-            <span><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>5 jaar</b> garantie</span>
+            <span><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>10 jaar</b> garantie</span>
           </div>
         </div>
 
