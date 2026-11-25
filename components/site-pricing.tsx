@@ -497,7 +497,7 @@ export default function SitePricing() {
     { label: "Ik weet het niet",  img: undefined },
   ];
   const extraOpties = [
-    { id: "coating", title: "Dakcoating", subtitle: "Een nieuwe beschermlaag voor je dak.", badge: "10 jaar garantie", info: "Meestal aangeraden als je dak ouder is dan 15 jaar.", bullets: [] as string[], img: "/images/calc-coating-spuiten.webp" },
+    { id: "coating", title: "Dakcoating", subtitle: "Een nieuwe beschermlaag voor je dak.", badge: "5 jaar garantie", info: "Meestal aangeraden als je dak ouder is dan 15 jaar.", bullets: [] as string[], img: "/images/calc-coating-spuiten.webp" },
     { id: "geen", title: "Antimosbehandeling", subtitle: "Bestrijdt verdere mosgroei.", badge: "2 jaar mosvrij-garantie", info: "", bullets: [] as string[], img: "/images/calc-antimos-schuim.webp" },
     { id: "advies", title: "Ik twijfel nog", subtitle: "Wij adviseren je.", badge: null, info: "", bullets: [] as string[], img: "" },
   ];
@@ -872,7 +872,7 @@ export default function SitePricing() {
                 <GoogleScore midden />
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", marginTop: "12px", fontSize: "13.5px", color: "#545454", fontFamily: "var(--font-inter), system-ui, sans-serif", whiteSpace: "nowrap" }}>
                   <ShieldCheck size={16} color={GREEN} aria-hidden="true" />
-                  <b style={{ color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{extra === "coating" ? "10 jaar" : "2 jaar"}</b>
+                  <b style={{ color: "#1A1A1A", fontFamily: "var(--font-montserrat), system-ui, sans-serif" }}>{extra === "coating" ? "5 jaar" : "2 jaar"}</b>
                   {extra === "coating" ? "garantie op de hechting" : "mosvrij-garantie"}
                 </span>
               </div>

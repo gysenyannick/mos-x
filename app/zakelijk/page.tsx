@@ -17,7 +17,7 @@ const doelgroepen = [
 
 const diensten = [
   { titel: "Dakontmossing", tekst: "Mos, algen en vuil weg, met een antimosbehandeling na.", garantie: "2 jaar mosvrij-garantie", href: "/diensten/dakontmossing" },
-  { titel: "Dakcoating", tekst: "Bescherming en een nieuwe uitstraling voor het dak.", garantie: "10 jaar garantie op de hechting", href: "/diensten/dakcoating" },
+  { titel: "Dakcoating", tekst: "Bescherming en een nieuwe uitstraling voor het dak.", garantie: "5 jaar garantie op de hechting", href: "/diensten/dakcoating" },
   { titel: "Onderhoudsplan", tekst: "Vaste opvolging, ook voor meerdere gebouwen samen.", garantie: "Rapport na elke beurt", href: "/diensten/onderhoudsplan" },
 ];
 

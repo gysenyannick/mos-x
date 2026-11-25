@@ -24,7 +24,7 @@ export const BEDRIJF = {
   ],
   logo: `${SITE}/images/Logo%20Mos-x%20png.png`,
   omschrijving:
-    "MOS-X is specialist in dakontmossing en dakcoating in Vlaanderen. We reinigen daken, behandelen ze tegen mos en geven ze met een coating een nieuwe beschermlaag, met 2 jaar mosvrij-garantie na een ontmossing en 10 jaar garantie op de hechting van de coating.",
+    "MOS-X is specialist in dakontmossing en dakcoating in Vlaanderen. We reinigen daken, behandelen ze tegen mos en geven ze met een coating een nieuwe beschermlaag, met 2 jaar mosvrij-garantie na een ontmossing en 5 jaar garantie op de hechting van de coating.",
 } as const;
 
 const adres = (v: (typeof BEDRIJF.vestigingen)[number]) => ({

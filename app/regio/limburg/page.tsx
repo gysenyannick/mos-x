@@ -58,7 +58,7 @@ const climateParas = [
 
 const services = [
   { title: "Dakreiniging",  desc: "professionele verwijdering van mos, algen en vervuiling", href: "/diensten/dakontmossing" },
-  { title: "Dakcoating",    desc: "beschermende coating met 10 jaar garantie op de hechting", href: "/diensten/dakcoating" },
+  { title: "Dakcoating",    desc: "beschermende coating met 5 jaar garantie op de hechting", href: "/diensten/dakcoating" },
   { title: "Onderhoudsplan", desc: "preventief onderhoud na een reiniging", href: "/diensten/onderhoudsplan" },
 ];
 

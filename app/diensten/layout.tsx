@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s | MOS-X",
   },
   description:
-    "Alles wat MOS-X voor je dak doet: dakontmossing, dakcoating met 10 jaar garantie op de hechting en het MOS-X Onderhoudsplan voor preventief onderhoud.",
+    "Alles wat MOS-X voor je dak doet: dakontmossing, dakcoating met 5 jaar garantie op de hechting en het MOS-X Onderhoudsplan voor preventief onderhoud.",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

@@ -34,7 +34,7 @@ export const faqGroups = [
   {
     category: "Garantie",
     items: [
-      { q: "Krijg ik garantie op de werken?", a: "Ja. Op onze dakcoatings bieden we tot 10 jaar garantie, afhankelijk van de gekozen behandeling. Vooraf leggen we steeds duidelijk uit welke garantie van toepassing is, zodat je precies weet waar je op kunt rekenen." },
+      { q: "Krijg ik garantie op de werken?", a: "Ja. Op een dakcoating krijg je 5 jaar garantie op de hechting. Vooraf leggen we steeds duidelijk uit welke garantie van toepassing is, zodat je precies weet waar je op kunt rekenen." },
     ],
   },
 ];

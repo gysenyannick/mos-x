@@ -46,7 +46,7 @@ const resultaten = [
 ];
 
 const faqs: { q: string; a: string; cta?: boolean }[] = [
-  { q: "Welke garantie krijg ik?", a: "Je krijgt 10 jaar garantie op de hechting van de coating. Dat wil zeggen dat de coating aan je pannen blijft hechten en niet afbladert. Een kleur die door zon en weer wat verbleekt, valt daar niet onder." },
+  { q: "Welke garantie krijg ik?", a: "Je krijgt 5 jaar garantie op de hechting van de coating. Dat wil zeggen dat de coating aan je pannen blijft hechten en niet afbladert. Een kleur die door zon en weer wat verbleekt, valt daar niet onder." },
   { q: "Wanneer is dakcoating nodig?", a: "Wanneer betonpannen of kunstleien poreus geworden zijn en hun beschermlaag verloren hebben. Tijdens het plaatsbezoek bekijken we de staat van je dak en geven we eerlijk advies." },
   { q: "Welke daken kan je coaten?", a: "Dakcoating gebruiken we vooral op betonpannen en kunstleien. Voor andere daktypes volstaat meestal een professionele reiniging met een antimosbehandeling." },
   { q: "Wordt het dak eerst gereinigd?", a: "Ja. Voor een goede hechting reinigen we het dak eerst grondig. Pas daarna brengen we de coating aan." },
@@ -120,7 +120,7 @@ export default function DakcoatingPage() {
             </div>
             <div className="do-hero-bewijs">
               <GoogleBalk />
-              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>10&nbsp;jaar</b> garantie</span>
+              <span className="do-garantie-chip"><ShieldCheck size={18} color="#9BCB6C" aria-hidden="true" /><b>5&nbsp;jaar</b> garantie</span>
             </div>
           </div>
         </div>
@@ -147,11 +147,11 @@ export default function DakcoatingPage() {
       <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="do-garantie">
-            <div className="do-zegel" aria-hidden="true"><div><b>10</b><small>jaar<span className="zg-x"> garantie</span></small></div></div>
+            <div className="do-zegel" aria-hidden="true"><div><b>5</b><small>jaar<span className="zg-x"> garantie</span></small></div></div>
             <div>
               <p className="do-oog">Onze garantie</p>
-              <h2>10&nbsp;jaar garantie <span>op de hechting.</span></h2>
-              <p className="do-p" style={{ maxWidth: 560 }}>De coating blijft 10&nbsp;jaar hechten aan je pannen en bladert niet af.</p>
+              <h2>5&nbsp;jaar garantie <span>op de hechting.</span></h2>
+              <p className="do-p" style={{ maxWidth: 560 }}>De coating blijft 5&nbsp;jaar hechten aan je pannen en bladert niet af.</p>
             </div>
             <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
           </div>

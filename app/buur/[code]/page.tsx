@@ -61,7 +61,7 @@ export default async function BuurPagina({ params }: { params: Promise<{ code: s
               {[
                 "Yannick komt zelf langs en doet zelf het werk",
                 "Vaste prijs vooraf, geen verrassingen achteraf",
-                "2 jaar mosvrij na reiniging, tot 10 jaar garantie op coating",
+                "2 jaar mosvrij na reiniging, 5 jaar garantie op coating",
                 "Werk ik al in je straat? Dan bespaar ik verplaatsing, en dat merk je",
               ].map((x) => (
                 <li key={x} style={{ display: "flex", gap: 10, fontSize: 16, color: "#1A1A1A" }}>
