@@ -26,7 +26,7 @@ export default function SiteDakkleurBanner() {
     <section id="dakkleur" className="dkb-buiten">
     <div className="dkb">
       <style>{`
-        .dkb-buiten { padding: 88px 24px 100px; background: linear-gradient(#F7F8F6, #FFFFFF 160px); }
+        .dkb-buiten { padding: 16px 24px 100px; background: #FFFFFF; }
         .dkb { position: relative; overflow: hidden; isolation: isolate; max-width: 1180px; margin: 0 auto; padding: 96px 24px; border-radius: 28px; border: 1px solid rgba(155,203,108,0.5); box-shadow: 0 28px 80px -30px rgba(11,15,12,0.55); background: #0B0F0C url("/images/Na bevel.jpg") center 40% / cover no-repeat; }
         .dkb::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(800px 420px at 50% 50%, rgba(11,15,12,0.55), transparent 75%), linear-gradient(180deg, rgba(11,15,12,0.9) 0%, rgba(14,24,17,0.8) 45%, rgba(11,15,12,0.95) 100%); }
         .dkb::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(700px 300px at 50% 100%, rgba(155,203,108,0.18), transparent 70%); pointer-events: none; }
@@ -61,7 +61,7 @@ export default function SiteDakkleurBanner() {
 
         @media (max-width: 1100px) { .dkb-palet { display: none; } }
         @media (max-width: 767px) {
-          .dkb-buiten { padding: 56px 16px 72px; }
+          .dkb-buiten { padding: 8px 16px 64px; }
           .dkb { padding: 72px 20px; border-radius: 22px; }
           .dkb-scherm { width: 92%; height: 300px; grid-template-columns: 1fr; }
           .dkb-lijst { display: none; }

@@ -44,8 +44,6 @@ export default function HomePage() {
         {/* Gratis dakcontrole: voor wie niet zeker is wat zijn dak nodig heeft */}
         <SiteDakcheck />
 
-        {/* 7 · Dakkleur-tool: speelse tweede instap, sluit aan op dakcoating */}
-        <SiteDakkleurBanner />
 
         {/* 8 · Zo werken we */}
         <SiteWerkwijze />
@@ -53,6 +51,9 @@ export default function HomePage() {
 
         {/* 9 · Voor/na realisaties: bewijs */}
         <SiteRealisatiesPreview />
+
+        {/* Dakkleur-tool: speelse afsluiter na de resultaten */}
+        <SiteDakkleurBanner />
 
         {/* 10 · FAQ: laatste bezwaren weg */}
         <SiteFaq />
