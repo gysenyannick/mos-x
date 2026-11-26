@@ -10,7 +10,7 @@ export default function SiteDakcheck() {
   return (
     <section className="dc-sectie" aria-labelledby="dc-titel">
       <style>{`
-        .dc-sectie { padding: 0 0 90px; background: #F7F8F6; }
+        .dc-sectie { padding: 88px 0 48px; background: #FFFFFF; border-top: 1px solid #EEF0EA; }
         .dc-wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
         .dc-kaart { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(11,15,12,0.55); }
@@ -47,7 +47,7 @@ export default function SiteDakcheck() {
           .dc-tekst { padding: 30px 22px 26px; }
         }
         @media (max-width: 480px) {
-          .dc-sectie { padding: 0 0 64px; }
+          .dc-sectie { padding: 56px 0 32px; }
           .dc-wrap { padding: 0 16px; }
           .dc-foto { height: 200px; }
           .dc-knop { width: 100%; justify-content: center; }
