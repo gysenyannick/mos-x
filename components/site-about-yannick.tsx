@@ -18,14 +18,6 @@ export default function SiteAboutYannick() {
       background: "radial-gradient(700px 420px at 12% 20%, rgba(155,203,108,0.10), transparent 65%), radial-gradient(640px 400px at 92% 85%, rgba(155,203,108,0.08), transparent 65%), #F7F8F6",
       borderTop: "1px solid #EEF0EA", borderBottom: "1px solid #EEF0EA",
     }}>
-      {/* Subtiel stippenpatroon als achtergrondaccent */}
-      <div aria-hidden="true" style={{
-        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0,
-        backgroundImage: "radial-gradient(rgba(122,181,78,0.22) 1.2px, transparent 1.6px)",
-        backgroundSize: "22px 22px",
-        WebkitMaskImage: "radial-gradient(60% 70% at 85% 30%, #000 0%, transparent 70%), radial-gradient(40% 55% at 5% 90%, #000 0%, transparent 70%)",
-        maskImage: "radial-gradient(60% 70% at 85% 30%, #000 0%, transparent 70%), radial-gradient(40% 55% at 5% 90%, #000 0%, transparent 70%)",
-      }} />
       <div className="about-yannick-wrap" style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 40px", position: "relative", zIndex: 1 }}>
 
         <div className="flex flex-col lg:flex-row" style={{ gap: "32px", alignItems: "stretch" }}>

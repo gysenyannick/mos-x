@@ -54,6 +54,7 @@ export default function SiteDakcheck() {
           .dc-titel { font-size: 1.5rem; }
           .dc-titel br { display: none; }
           .dc-p { font-size: 14.5px; }
+          .dc-lijst li { font-size: clamp(12px, 3.45vw, 14px); white-space: nowrap; gap: 9px; }
         }
       `}</style>
       <div className="dc-wrap">
