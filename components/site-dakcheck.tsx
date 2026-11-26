@@ -10,25 +10,25 @@ export default function SiteDakcheck() {
   return (
     <section className="dc-sectie" aria-labelledby="dc-titel">
       <style>{`
-        .dc-sectie { padding: 0 0 100px; background: #F7F8F6; }
-        .dc-wrap { max-width: 1222px; margin: 0 auto; padding: 0 20px; }
+        .dc-sectie { padding: 0 0 90px; background: #F7F8F6; }
+        .dc-wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
         .dc-kaart { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(11,15,12,0.55); }
-        .dc-tekst { position: relative; z-index: 1; padding: 72px 64px 64px; color: #FFFFFF; }
-        .dc-oog { margin: 0 0 20px; font: 500 12px var(--font-inter), system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
-        .dc-titel { margin: 0 0 30px; font: 800 clamp(1.9rem, 3vw, 2.5rem)/1.15 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #FFFFFF; }
+        .dc-tekst { position: relative; z-index: 1; padding: 48px 52px 44px; color: #FFFFFF; }
+        .dc-oog { margin: 0 0 14px; font: 500 11.5px var(--font-inter), system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+        .dc-titel { margin: 0 0 24px; font: 800 clamp(1.6rem, 2.4vw, 2rem)/1.15 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #FFFFFF; }
         .dc-titel span { position: relative; white-space: nowrap; color: #FFFFFF; }
         .dc-titel span::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 4px; border-radius: 2px; background: #9BCB6C; }
-        .dc-p { margin: 0 0 28px; max-width: 470px; font: 400 17px/1.85 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.72); }
-        .dc-lijst { list-style: none; margin: 0 0 40px; padding: 0; display: grid; gap: 12px; }
-        .dc-lijst li { display: flex; align-items: center; gap: 12px; font: 400 14.5px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.88); }
+        .dc-p { margin: 0 0 20px; max-width: 440px; font: 400 15.5px/1.7 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.72); }
+        .dc-lijst { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 9px; }
+        .dc-lijst li { display: flex; align-items: center; gap: 12px; font: 400 14px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.88); }
         .dc-lijst svg { color: #9BCB6C; flex-shrink: 0; }
-        .dc-prijs { max-width: 380px; display: flex; align-items: baseline; gap: 6px; padding-top: 26px; margin: 0 0 24px; border-top: 1px solid rgba(255,255,255,0.12);
+        .dc-prijs { max-width: 380px; display: flex; align-items: baseline; gap: 6px; padding-top: 18px; margin: 0 0 18px; border-top: 1px solid rgba(255,255,255,0.12);
           font: 500 14px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.55); }
         .dc-prijs s { color: rgba(255,255,255,0.55); margin-right: 10px; }
-        .dc-prijs b { font: 800 19px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; letter-spacing: -0.01em; }
-        .dc-knop { display: inline-flex; align-items: center; gap: 8px; height: 54px; padding: 0 34px; border: 0; border-radius: 6px; cursor: pointer;
-          background: #9BCB6C; color: #FFFFFF; font: 600 15.5px var(--font-inter), system-ui, sans-serif;
+        .dc-prijs b { font: 800 17px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; letter-spacing: -0.01em; }
+        .dc-knop { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 26px; border: 0; border-radius: 6px; cursor: pointer;
+          background: #9BCB6C; color: #FFFFFF; font: 600 14.5px var(--font-inter), system-ui, sans-serif;
           box-shadow: 0 12px 26px -12px rgba(122,181,78,0.9); transition: background-color .2s ease, transform .15s ease, box-shadow .2s ease; }
         .dc-knop:hover { background: #7AB54E; box-shadow: 0 14px 30px -12px rgba(122,181,78,1); }
         .dc-knop:active { transform: translateY(1px); }
@@ -39,21 +39,21 @@ export default function SiteDakcheck() {
         .dc-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 30%; display: block; }
         @media (max-width: 960px) {
           .dc-kaart { grid-template-columns: 1fr; }
-          .dc-foto { position: relative; width: auto; order: -1; height: 300px;
+          .dc-foto { position: relative; width: auto; order: -1; height: 230px;
             -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
             mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
           .dc-tekst { margin-top: -40px; }
           .dc-foto img { object-position: 60% 12%; }
-          .dc-tekst { padding: 36px 24px 32px; }
+          .dc-tekst { padding: 30px 22px 26px; }
         }
         @media (max-width: 480px) {
           .dc-sectie { padding: 0 0 64px; }
           .dc-wrap { padding: 0 16px; }
-          .dc-foto { height: 240px; }
+          .dc-foto { height: 200px; }
           .dc-knop { width: 100%; justify-content: center; }
-          .dc-titel { font-size: 1.75rem; }
+          .dc-titel { font-size: 1.5rem; }
           .dc-titel br { display: none; }
-          .dc-p { font-size: 15.5px; }
+          .dc-p { font-size: 14.5px; }
         }
       `}</style>
       <div className="dc-wrap">
