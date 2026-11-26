@@ -12,9 +12,9 @@ export default function SiteDakcheck() {
       <style>{`
         .dc-sectie { padding: 0 0 100px; background: #F7F8F6; }
         .dc-wrap { max-width: 1222px; margin: 0 auto; padding: 0 20px; }
-        .dc-kaart { display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; overflow: hidden; background: #0B0F0C;
+        .dc-kaart { position: relative; isolation: isolate; display: grid; grid-template-columns: 1fr 1fr; border-radius: 20px; overflow: hidden; background: #0B0F0C;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(11,15,12,0.55); }
-        .dc-tekst { padding: 72px 64px 64px; color: #FFFFFF; }
+        .dc-tekst { position: relative; z-index: 1; padding: 72px 64px 64px; color: #FFFFFF; }
         .dc-oog { margin: 0 0 20px; font: 500 12px var(--font-inter), system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
         .dc-titel { margin: 0 0 30px; font: 800 clamp(1.9rem, 3vw, 2.5rem)/1.15 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #FFFFFF; }
         .dc-titel span { position: relative; white-space: nowrap; color: #FFFFFF; }
@@ -23,7 +23,7 @@ export default function SiteDakcheck() {
         .dc-lijst { list-style: none; margin: 0 0 40px; padding: 0; display: grid; gap: 12px; }
         .dc-lijst li { display: flex; align-items: center; gap: 12px; font: 400 14.5px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.88); }
         .dc-lijst svg { color: #9BCB6C; flex-shrink: 0; }
-        .dc-prijs { display: flex; align-items: baseline; gap: 6px; padding-top: 26px; margin: 0 0 24px; border-top: 1px solid rgba(255,255,255,0.12);
+        .dc-prijs { max-width: 380px; display: flex; align-items: baseline; gap: 6px; padding-top: 26px; margin: 0 0 24px; border-top: 1px solid rgba(255,255,255,0.12);
           font: 500 14px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.55); }
         .dc-prijs s { color: rgba(255,255,255,0.55); margin-right: 10px; }
         .dc-prijs b { font: 800 19px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; letter-spacing: -0.01em; }
@@ -33,11 +33,16 @@ export default function SiteDakcheck() {
         .dc-knop:hover { background: #7AB54E; box-shadow: 0 14px 30px -12px rgba(122,181,78,1); }
         .dc-knop:active { transform: translateY(1px); }
         .dc-knop:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
-        .dc-foto { position: relative; min-height: 100%; }
+        .dc-foto { position: absolute; z-index: 0; top: 0; right: 0; bottom: 0; width: 60%;
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 14%, #000 40%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 14%, #000 40%); }
         .dc-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 30%; display: block; }
         @media (max-width: 960px) {
           .dc-kaart { grid-template-columns: 1fr; }
-          .dc-foto { order: -1; height: 300px; }
+          .dc-foto { position: relative; width: auto; order: -1; height: 300px;
+            -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 55%, transparent 100%); }
+          .dc-tekst { margin-top: -40px; }
           .dc-foto img { object-position: 60% 12%; }
           .dc-tekst { padding: 36px 24px 32px; }
         }
