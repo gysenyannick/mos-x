@@ -9,9 +9,9 @@ const delen = [
     label: "Deel 1",
     titel: "Je offerte",
     stappen: [
-      { titel: "Richtprijs berekenen", tekst: "Vul in een paar stappen je woning en je dak in, en je ziet meteen een richtprijs. Vrijblijvend: je zit nergens aan vast." },
-      { titel: "Plaatsbezoek", tekst: "Plan een gratis plaatsbezoek, of stuur foto's van je dak, dan bekijken we het op afstand." },
-      { titel: "Offerte op maat gemaakt", tekst: "Je krijgt een duidelijke offerte, afgestemd op jouw dak. Zo weet je vooraf wat we doen en wat het kost." },
+      { titel: "Richtprijs berekenen", tekst: "Vul in een paar stappen je woning en je dak in en je ziet meteen een richtprijs. Vrijblijvend: je zit nergens aan vast." },
+      { titel: "Gratis plaatsbezoek", tekst: "Past de richtprijs? Plan dan een gratis plaatsbezoek. Liever alles online? Dan meten we je dak op via satellietbeelden en krijg je zo een offerte. Een plaatsbezoek blijft wel de beste keuze." },
+      { titel: "Offerte op maat", tekst: "Meestal krijg je de prijs meteen ter plaatse. Bij grotere of complexere daken sturen we de offerte dezelfde werkdag nog per mail." },
     ],
   },
   {
