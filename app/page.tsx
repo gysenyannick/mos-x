@@ -7,6 +7,7 @@ import SiteRealisatiesPreview   from "@/components/site-realisaties-preview";
 import SiteAboutYannick         from "@/components/site-about-yannick";
 import SiteReviews         from "@/components/site-reviews";
 import SiteWerkwijze       from "@/components/site-werkwijze";
+import SiteDakcheck        from "@/components/site-dakcheck";
 import SiteFaq             from "@/components/site-faq";
 import SiteDakkleurBanner  from "@/components/site-dakkleur-banner";
 import SiteContact         from "@/components/site-contact";
@@ -45,6 +46,9 @@ export default function HomePage() {
 
         {/* 8 · Zo werken we */}
         <SiteWerkwijze />
+
+        {/* Gratis dakcheck */}
+        <SiteDakcheck />
 
         {/* 9 · Voor/na realisaties: bewijs */}
         <SiteRealisatiesPreview />
