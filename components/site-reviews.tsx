@@ -135,7 +135,7 @@ export default function SiteReviews() {
             Onze klanten <span style={{ color: "#9BCB6C" }}>vertrouwen ons.</span>
           </h2>
           <p style={{ margin: "-8px 0 24px", fontFamily: "var(--font-inter), system-ui, sans-serif", fontSize: "16px", color: "rgba(255,255,255,0.7)" }}>
-            Jouw vertrouwde dakreiniger in de Antwerpse Kempen.
+            Jouw vertrouwde dakreiniger in de Antwerpse Kempen en Limburg.
           </p>
           <GreenGoogleBtn text="Laat een review achter" url={GOOGLE_WRITE_REVIEW_URL} />
         </div>
