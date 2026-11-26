@@ -38,8 +38,8 @@ export default function SiteAboutYannick() {
               minHeight: "460px",
             }}>
               <img loading="lazy" decoding="async"
-                src="/images/yannick-op-dak-srgb.JPEG"
-                alt="Yannick - oprichter MOS-X"
+                src="/images/gemoedsrust-coating.webp"
+                alt="Dakcoating wordt aangebracht op een betonpannendak"
                 className="about-yannick-photo"
                 style={{
                   position: "absolute",
@@ -47,37 +47,11 @@ export default function SiteAboutYannick() {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  objectPosition: "center 70%",
+                  objectPosition: "center 40%",
                   borderRadius: "16px",
                 }}
               />
 
-              {/* Naamlabel linksonder op de foto */}
-              <div style={{
-                position: "absolute",
-                bottom: "20px",
-                left: "16px",
-                background: "rgba(11,15,12,0.75)",
-                backdropFilter: "blur(6px)",
-                borderRadius: "10px",
-                padding: "10px 16px",
-                zIndex: 10,
-              }}>
-                <p style={{
-                  color: "#FFFFFF",
-                  fontSize: "15px",
-                  fontWeight: 700,
-                  fontFamily: "var(--font-montserrat), system-ui, sans-serif",
-                  margin: 0,
-                }}>Yannick</p>
-                <p style={{
-                  color: "#9BCB6C",
-                  fontSize: "12px",
-                  fontWeight: 500,
-                  fontFamily: "var(--font-inter), system-ui, sans-serif",
-                  margin: "2px 0 0 0",
-                }}>Oprichter & Vakspecialist MOS-X</p>
-              </div>
             </div>
           </div>
 
