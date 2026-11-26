@@ -61,7 +61,7 @@ export default function SiteDakcheck() {
           <div className="dc-tekst">
             <p className="dc-oog">Gratis dakcontrole</p>
             <h2 id="dc-titel" className="dc-titel">Weet jij in welke <br />staat je dak <span>eigenlijk is?</span></h2>
-            <p className="dc-p">We inspecteren je dak ter plaatse. Je krijgt een schriftelijk verslag met foto&apos;s van alles wat we vinden en wat er moet gebeuren om de levensduur van je dak te verlengen. Vrijblijvend.</p>
+            <p className="dc-p">Een dakexpert komt langs en inspecteert je dak ter plaatse. Je krijgt een schriftelijk verslag met foto&apos;s van alles wat we vinden en wat er moet gebeuren om de levensduur van je dak te verlengen. Vrijblijvend.</p>
             <ul className="dc-lijst">
               <li><Check size={16} strokeWidth={2.6} aria-hidden="true" />In welke staat is je dak?</li>
               <li><Check size={16} strokeWidth={2.6} aria-hidden="true" />Welke maatregelen zijn nodig?</li>

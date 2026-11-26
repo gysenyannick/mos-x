@@ -41,14 +41,15 @@ export default function HomePage() {
         {/* 6 · Diensten */}
         <SiteServices />
 
+        {/* Gratis dakcontrole: voor wie niet zeker is wat zijn dak nodig heeft */}
+        <SiteDakcheck />
+
         {/* 7 · Dakkleur-tool: speelse tweede instap, sluit aan op dakcoating */}
         <SiteDakkleurBanner />
 
         {/* 8 · Zo werken we */}
         <SiteWerkwijze />
 
-        {/* Gratis dakcheck */}
-        <SiteDakcheck />
 
         {/* 9 · Voor/na realisaties: bewijs */}
         <SiteRealisatiesPreview />

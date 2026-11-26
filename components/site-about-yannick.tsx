@@ -32,14 +32,25 @@ export default function SiteAboutYannick() {
 
           {/* ── LINKS: foto ── */}
           <div className="about-yannick-photo-wrap" style={{ flex: "0 0 45%", position: "relative" }}>
+            {/* Groene blob achter de foto */}
+            <style>{`
+              .ay-blob { position: absolute; z-index: 0; inset: 28px -26px -26px 30px; background: #9BCB6C;
+                border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
+              .ay-blob::after { content: ""; position: absolute; inset: -18px 24px auto auto; width: 70px; height: 70px; border-radius: 50%; background: rgba(155,203,108,0.28); }
+              @media (max-width: 1023px) { .ay-blob { inset: 18px -12px -14px 16px; } .ay-blob::after { display: none; } .about-yannick-photo-wrap { margin-right: 12px; margin-bottom: 14px; } }
+            `}</style>
+            <span className="ay-blob" aria-hidden="true" />
             <div className="about-yannick-photo-inner" style={{
               position: "relative",
+              zIndex: 1,
               height: "100%",
               minHeight: "460px",
+              boxShadow: "0 30px 60px -30px rgba(30,51,36,0.45)",
+              borderRadius: "16px",
             }}>
               <img loading="lazy" decoding="async"
-                src="/images/gemoedsrust-coating.webp"
-                alt="Dakcoating wordt aangebracht op een betonpannendak"
+                src="/images/yannick-op-dak-srgb.JPEG"
+                alt="Yannick van MOS-X aan het werk op een dak"
                 className="about-yannick-photo"
                 style={{
                   position: "absolute",
@@ -47,7 +58,7 @@ export default function SiteAboutYannick() {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
-                  objectPosition: "center 40%",
+                  objectPosition: "center 70%",
                   borderRadius: "16px",
                 }}
               />
