@@ -34,9 +34,13 @@ export default function SiteAboutYannick() {
           <div className="about-yannick-photo-wrap" style={{ flex: "0 0 45%", position: "relative" }}>
             {/* Groene blob achter de foto */}
             <style>{`
-              .ay-blob { position: absolute; z-index: 0; inset: 26px -18px -10px 22px; background: #9BCB6C; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
+              .ay-blob { position: absolute; z-index: 0; inset: 22px -16px -8px 20px; background: #9BCB6C; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
               .about-yannick-photo-inner { border-radius: 60% 40% 42% 58% / 44% 56% 44% 56% !important; overflow: hidden; }
               .about-yannick-photo { border-radius: 0 !important; }
+              @media (min-width: 1024px) {
+                .about-yannick-photo-wrap { flex: 0 0 38% !important; margin-right: 56px; align-self: center; }
+                .about-yannick-photo-inner { min-height: 420px !important; }
+              }
               @media (max-width: 1023px) { .ay-blob { inset: 16px -10px -6px 14px; } .about-yannick-photo-wrap { margin: 0 10px 10px 0; } .about-yannick-photo-inner { min-height: 340px !important; } }
             `}</style>
             <span className="ay-blob" aria-hidden="true" />
