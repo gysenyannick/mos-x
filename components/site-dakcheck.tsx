@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
-/** Homepage: gratis dakcheck. Donker tekstvlak links, foto van Yannick aan het werk rechts. */
+/** Homepage: gratis dakcheck. Donker tekstvlak links, foto van een dakcontrole rechts. */
 export default function SiteDakcheck() {
   const [open, setOpen] = useState(false);
   return (
@@ -34,10 +34,11 @@ export default function SiteDakcheck() {
         .dc-knop:active { transform: translateY(1px); }
         .dc-knop:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
         .dc-foto { position: relative; min-height: 100%; }
-        .dc-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; display: block; }
+        .dc-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 30%; display: block; }
         @media (max-width: 960px) {
           .dc-kaart { grid-template-columns: 1fr; }
           .dc-foto { order: -1; height: 300px; }
+          .dc-foto img { object-position: 60% 12%; }
           .dc-tekst { padding: 36px 24px 32px; }
         }
         @media (max-width: 480px) {
@@ -55,7 +56,7 @@ export default function SiteDakcheck() {
           <div className="dc-tekst">
             <p className="dc-oog">Gratis dakcontrole</p>
             <h2 id="dc-titel" className="dc-titel">Weet jij in welke <br />staat je dak <span>eigenlijk is?</span></h2>
-            <p className="dc-p">Yannick inspecteert je dak ter plaatse. Je krijgt een schriftelijk verslag met foto&apos;s van alles wat we vinden en wat er moet gebeuren om de levensduur van je dak te verlengen. Vrijblijvend.</p>
+            <p className="dc-p">We inspecteren je dak ter plaatse. Je krijgt een schriftelijk verslag met foto&apos;s van alles wat we vinden en wat er moet gebeuren om de levensduur van je dak te verlengen. Vrijblijvend.</p>
             <ul className="dc-lijst">
               <li><Check size={16} strokeWidth={2.6} aria-hidden="true" />In welke staat is je dak?</li>
               <li><Check size={16} strokeWidth={2.6} aria-hidden="true" />Welke maatregelen zijn nodig?</li>
@@ -66,12 +67,12 @@ export default function SiteDakcheck() {
           </div>
           <div className="dc-foto">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/dakcheck-yannick.webp" alt="Yannick aan het werk op een dak" loading="lazy" decoding="async" />
+            <img src="/images/dakcontrole.webp" alt="Dakdekker controleert de dakpannen" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
       <PlaatsbezoekModal open={open} onClose={() => setOpen(false)} bron="Homepage gratis dakcontrole"
-        titel="Boek je gratis dakcontrole" subtitel="Yannick bekijkt je dak ter plaatse, vrijblijvend."
+        titel="Boek je gratis dakcontrole" subtitel="We bekijken je dak ter plaatse, vrijblijvend."
         voorbeeld="Bv. Ik wil graag weten in welke staat mijn dak is. Een bezoek op zaterdagvoormiddag past mij." />
     </section>
   );
