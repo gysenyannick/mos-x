@@ -28,7 +28,7 @@ const uitleg: { q: string; a: React.ReactNode }[] = [
   </>) },
   { q: "Welke nabehandeling past bij jouw dak?", a: (<>
     <p>Dat hangt af van het type dak en de staat ervan. Betonpannen krijgen <Link href="/diensten/hydrofuge">MOS-PLUS</Link> als het dak nog in goede staat is, of <Link href="/diensten/dakcoating">MOS-MAX</Link> als het al wat ouder is. Kunstleien krijgen meestal een MOS-MAX-coating.</p>
-    <p>Keramische pannen zijn van nature sterker. Daar volstaat MOS-PLUS of een antimosbehandeling. Bij het plaatsbezoek zeggen we eerlijk wat je dak nodig heeft, en niet wat het duurste is.</p>
+    <p>Gewone keramische pannen krijgen MOS-PLUS: ze nemen het middel goed op en houden hun originele kleur. Geglazuurde pannen nemen niets op, daar volstaat een antimosbehandeling. Bij het plaatsbezoek zeggen we eerlijk wat je dak nodig heeft, en niet wat het duurste is.</p>
   </>) },
   { q: "Werken jullie met hoge druk op je dak?", a: (<>
     <p>Nee, niet zomaar. Met te hoge druk spuit je de toplaag van je pannen weg en duw je water onder het dak. We stemmen de druk, de spuitkop en de techniek altijd af op het materiaal, de leeftijd en de staat van je dak.</p>
@@ -47,7 +47,7 @@ const stappen = [
 
 const daktypes = [
   { naam: "Betonpannen", img: "/images/Betonpannen.jpg", advies: "MOS-PLUS of MOS-MAX" },
-  { naam: "Keramische pannen", img: "/images/Keramische pannen.jpg", advies: "MOS-PLUS of antimos" },
+  { naam: "Keramische pannen", img: "/images/Keramische pannen.jpg", advies: "MOS-PLUS, geglazuurd: antimos" },
   { naam: "Kunstleien", img: "/images/Kunstleien.png", advies: "MOS-MAX" },
   { naam: "Natuurleien", img: "/images/Leien dak.jpeg", advies: "Reiniging met lage druk en antimos" },
   { naam: "Metalen daken", img: "/images/Metalen daken.jpg", advies: "Reiniging en coating" },
