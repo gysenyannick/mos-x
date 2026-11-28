@@ -44,7 +44,7 @@ export default function SiteAboutYannick() {
             {/* Naamlabel */}
             <div className="ay-naam">
               <p className="ay-naam-n">Yannick</p>
-              <p className="ay-naam-r">Zaakvoerder</p>
+              <p className="ay-naam-r">Oprichter &amp; zaakvoerder</p>
             </div>
             <div className="about-yannick-photo-inner" style={{
               position: "relative",
