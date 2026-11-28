@@ -1054,10 +1054,10 @@ p[style*="text-align:center"], p[style*="text-align: center"],
 main :is(h1, h2, h3, h4, button, li, dt, dd, label, small, b, blockquote) { text-wrap: balance; }
 main p { text-wrap: balance; }
 
-/* Op computer alles een tikkeltje kleiner (zoals 94% inzoomen in de browser) */
+/* Op computer alles een tikkeltje kleiner (zoals 97% inzoomen in de browser) */
 @media (min-width: 1024px) {
-  html { zoom: 0.94; }
+  html { zoom: 0.97; }
   /* vw/vh worden mee verkleind door zoom: de hero vult toch het hele scherm */
-  .hero-sectie { max-width: none !important; height: calc((100vh + 30px) / 0.94) !important; min-height: calc((100vh + 30px) / 0.94) !important; }
-  .hero-sectie .hero-content-wrap { height: calc((100vh + 30px) / 0.94) !important; }
+  .hero-sectie { max-width: none !important; height: calc((100vh + 30px) / 0.97) !important; min-height: calc((100vh + 30px) / 0.97) !important; }
+  .hero-sectie .hero-content-wrap { height: calc((100vh + 30px) / 0.97) !important; }
 }
