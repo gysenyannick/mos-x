@@ -68,23 +68,23 @@ const COATING_CSS = `
   .dc-hero::after { display: none; }
   .dc-dkb .dkb-buiten { padding-top: 88px !important; }
   @media (max-width: 767px) { .dc-dkb .dkb-buiten { padding-top: 56px !important; } }
-  .dc-mw { padding: 0 !important; }
-  .dc-mw-foto { position: absolute; top: 0; bottom: 0; left: 0; width: 44%; height: 100%; object-fit: cover; z-index: 0; }
-  .dc-mw-grid { display: grid; grid-template-columns: 44% minmax(0, 1fr); max-width: none; padding: 0; }
-  .dc-mw-kader { grid-column: 2; position: relative; z-index: 1; margin: 72px 6vw 72px 56px; max-width: 640px; padding: 40px 40px 36px; border-radius: 20px;
+  .dc-mw-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; align-items: center; }
+  .dc-mw-foto { display: block; width: 100%; max-width: 460px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 20px; justify-self: end;
+    border: 1px solid rgba(155,203,108,0.35); box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6); }
+  .dc-mw-kader { max-width: 620px; padding: 40px 40px 36px; border-radius: 20px;
     background: rgba(255,255,255,0.04); border: 1px solid rgba(155,203,108,0.35); box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6); }
   .dc-mw-titel { white-space: nowrap; font-size: clamp(1.35rem, 2.05vw, 2.05rem); }
   @media (max-width: 960px) {
-    .dc-mw-foto { position: relative; width: 100%; height: 260px; display: block; }
-    .dc-mw-grid { grid-template-columns: minmax(0, 1fr); }
-    .dc-mw-kader { grid-column: 1; margin: -40px 16px 56px; padding: 28px 20px 24px; background: #12180F; }
+    .dc-mw-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .dc-mw-foto { justify-self: center; max-width: 420px; aspect-ratio: 4 / 3; }
+    .dc-mw-kader { padding: 28px 20px 24px; }
     .dc-mw-titel { font-size: 4.55vw; letter-spacing: -0.03em; }
   }
   .dc-mx-intro { margin-top: 16px; max-width: 560px; color: rgba(255,255,255,0.75) !important; }
-    background: linear-gradient(90deg, rgba(11,15,12,0.82) 0%, rgba(11,15,12,0.7) 50%, rgba(11,15,12,0.45) 100%), url("/images/yannick-op-dak-srgb.JPEG") center 40% / cover no-repeat, #0B0F0C; }
-  .dc-nu-kop { text-align: center; max-width: 720px; margin: 0 auto 48px; }
-  .dc-nu-kop .do-p { margin: 14px auto 0; text-align: center; }
-  .dc-nu-kop { max-width: none; }
+  .dc-nu-kop { display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto 64px; }
+  .dc-nu-kop .do-h2, .dc-nu-kop .do-p { text-align: center; margin-left: auto; margin-right: auto; }
+  .dc-nu-kop .do-p { margin-top: 14px; }
+  @media (max-width: 760px) { .dc-nu-kop { margin-bottom: 40px; } }
   .dc-nu-titel { white-space: nowrap; font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
   @media (max-width: 760px) { .dc-nu-titel { white-space: normal; font-size: clamp(1.45rem, 6.4vw, 1.75rem); text-wrap: balance; } }
   .dc-nu { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
@@ -274,14 +274,14 @@ export default function DakcoatingPage() {
       </section>
 
       {/* Werkwijze: de MOS-MAX-methode */}
-      <section className="do-donker dc-mw">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="dc-mw-foto" src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" />
+      <section className="do-sectie do-donker dc-mw">
         <div className="do-wrap dc-mw-grid">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="dc-mw-foto" src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" loading="lazy" decoding="async" />
           <div className="dc-mw-kader">
-            <p className="do-oog">Onze werkwijze: de MOS-MAX-methode</p>
+            <p className="do-oog">Onze eigen behandelingsmethode</p>
             <h2 className="do-h2 dc-mw-titel">Zo werkt de <span>MOS&#8209;MAX&#8209;methode.</span></h2>
-            <p className="do-p dc-mx-intro">De meeste slechte dakbehandelingen gaan mis door de voorbereiding, de producten, het aanbrengen of het weer. Daarom volgt MOS&#8209;MAX op elk dak dezelfde werkwijze.</p>
+            <p className="do-p dc-mx-intro">MOS&#8209;MAX is onze eigen methode, gegroeid uit onze ervaring op het dak. We zagen waar dakbehandelingen mislopen: de voorbereiding, de producten, het aanbrengen of het weer. Daarom volgen we op elk dak dezelfde vaste stappen.</p>
             <div className="do-stappen">
               {methode.map((s, i) => {
                 const open = openStap === i;
