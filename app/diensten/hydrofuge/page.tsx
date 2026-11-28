@@ -59,7 +59,8 @@ const PLUS_CSS = `
   .mp-acc a { color: #1A1A1A; font-weight: 500; text-decoration: none; background: linear-gradient(#9BCB6C, #9BCB6C) 0 100% / 100% 2px no-repeat; transition: color .15s ease; }
   .mp-acc a:hover { color: #7AB54E; }
   .mp-acc a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 2px; }
-  .mp-hero video { object-position: center 62%; }
+  .mp-hero-foto { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; height: 100%; object-fit: cover; object-position: 40% center; z-index: -2; }
+  @media (max-width: 960px) { .mp-hero-foto { width: 100%; } }
   @media (max-width: 640px) { .mp-hero .dc-h1 { font-size: 8.4vw; } }
 `;
 
@@ -98,7 +99,8 @@ export default function HydrofugePage() {
 
       {/* Hero */}
       <section className="do-hero dc-hero mp-hero">
-        <video src="/videos/hydrofuge.mp4" poster="/images/hydrofuge-poster.jpg" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="mp-hero-foto" src="/images/mos-plus-hero.webp" alt="" fetchPriority="high" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
