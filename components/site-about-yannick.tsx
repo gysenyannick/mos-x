@@ -26,11 +26,11 @@ export default function SiteAboutYannick() {
           <div className="about-yannick-photo-wrap" style={{ flex: "0 0 45%", position: "relative" }}>
             {/* Groene blob achter de foto */}
             <style>{`
-              .ay-naam { position: absolute; z-index: 2; left: 4px; bottom: 34px; padding: 10px 16px; border-radius: 12px;
+              .ay-naam { position: absolute; z-index: 2; left: 14px; bottom: 40px; padding: 7px 12px; border-radius: 10px;
                 background: rgba(11,15,12,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
                 box-shadow: 0 12px 28px -12px rgba(0,0,0,0.5); }
-              .ay-naam-n { margin: 0; color: #FFFFFF; font: 700 15px var(--font-montserrat), system-ui, sans-serif; }
-              .ay-naam-r { margin: 2px 0 0; color: #9BCB6C; font: 500 12px var(--font-inter), system-ui, sans-serif; white-space: nowrap; }
+              .ay-naam-n { margin: 0; color: #FFFFFF; font: 700 13.5px/1.2 var(--font-montserrat), system-ui, sans-serif; }
+              .ay-naam-r { margin: 1px 0 0; color: #9BCB6C; font: 500 11px/1.2 var(--font-inter), system-ui, sans-serif; white-space: nowrap; }
               .ay-blob { position: absolute; z-index: 0; inset: 22px -16px -8px 20px; background: #9BCB6C; border-radius: 60% 40% 42% 58% / 44% 56% 44% 56%; }
               .about-yannick-photo-inner { border-radius: 60% 40% 42% 58% / 44% 56% 44% 56% !important; overflow: hidden; }
               .about-yannick-photo { border-radius: 0 !important; }
@@ -44,7 +44,7 @@ export default function SiteAboutYannick() {
             {/* Naamlabel */}
             <div className="ay-naam">
               <p className="ay-naam-n">Yannick</p>
-              <p className="ay-naam-r">Oprichter &amp; meewerkend zaakvoerder</p>
+              <p className="ay-naam-r">Zaakvoerder</p>
             </div>
             <div className="about-yannick-photo-inner" style={{
               position: "relative",
