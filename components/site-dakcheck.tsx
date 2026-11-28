@@ -19,6 +19,7 @@ export default function SiteDakcheck() {
         .dc-oog { margin: 0 0 14px; font: 700 12.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
         .dc-titel { margin: 0 0 18px; letter-spacing: -0.028em; font: 800 clamp(1.6rem, 2.4vw, 2rem)/1.15 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #FFFFFF; }
         .dc-titel span { white-space: nowrap; color: #9BCB6C; }
+                .dc-p b { font-weight: 600; color: #FFFFFF; white-space: nowrap; }
                 .dc-p { margin: 0 0 20px; max-width: 440px; font: 400 15.5px/1.7 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.72); }
         .dc-lijst { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 9px; }
         .dc-lijst li { display: flex; align-items: center; gap: 12px; font: 400 14px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.88); }
@@ -64,7 +65,7 @@ export default function SiteDakcheck() {
           <div className="dc-tekst">
             <p className="dc-oog">Gratis dakcontrole</p>
             <h2 id="dc-titel" className="dc-titel">Weet jij in welke <br />staat je dak <span>eigenlijk is?</span></h2>
-            <p className="dc-p">Een dakexpert komt langs en inspecteert je dak ter plaatse. Je krijgt een schriftelijk verslag met foto&apos;s van alles wat we vinden en wat er moet gebeuren om de levensduur van je dak te verlengen. Vrijblijvend.</p>
+            <p className="dc-p">Een dakexpert komt langs en <b>inspecteert je dak ter plaatse</b>. Je krijgt een <b>schriftelijk verslag met foto&apos;s</b> van alles wat we vinden en wat er moet gebeuren om de levensduur van je dak te verlengen. Vrijblijvend.</p>
             <ul className="dc-lijst">
               <li><i aria-hidden="true"><Check size={12} strokeWidth={3.2} /></i>In welke staat is je dak?</li>
               <li><i aria-hidden="true"><Check size={12} strokeWidth={3.2} /></i>Welke maatregelen zijn nodig?</li>
