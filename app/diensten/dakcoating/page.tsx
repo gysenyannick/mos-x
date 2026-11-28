@@ -22,9 +22,9 @@ const stappen = [
 ];
 
 const redenen = [
-  { titel: "Mos en zon tasten je pannen jaar na jaar aan", tekst: "Mos wortelt in de pan zelf en uv‑straling breekt de toplaag af. Hoe langer je wacht, hoe meer vocht je pannen opnemen, en hoe duurder het werk wordt.", img: "/images/waarom-1-mos.webp" },
-  { titel: "Onbeschermde pannen barsten bij vorst", tekst: "Is de toplaag versleten, dan trekt er water in de pan. Bij vorst zet dat water uit, net als in asfalt. Zo ontstaan barsten en kans op lekken.", img: "/images/waarom-2-barst.webp" },
-  { titel: "Een behandeling stelt een nieuw dak jaren uit", tekst: "Op tijd reinigen en coaten geeft je dak zijn bescherming en uitstraling terug. Dat is een stuk goedkoper dan pannen vervangen of een nieuw dak leggen.", img: "/images/waarom-3-behandeling.webp" },
+  { titel: "Mos en uv slijten de pan jaar na jaar", tekst: "Het mos wortelt in de pan zelf en uv-straling breekt het oppervlak af. Hoe langer je wacht, hoe meer vocht de pan opneemt, en hoe duurder het werk wordt.", img: "/images/waarom-1-mos.webp", pos: "50% 50%" },
+  { titel: "Onbeschermde pannen barsten bij vorst", tekst: "Als het oppervlak versleten is, neemt de pan water op. De vorst laat het vocht in de pan uitzetten, net zoals in asfalt, met barsten en kans op lekken tot gevolg.", img: "/images/waarom-2-barst.webp", pos: "50% 50%" },
+  { titel: "Een behandeling stelt dakrenovatie jaren uit", tekst: "Op het juiste moment reinigen en coaten herstelt zowel de bescherming als de uitstraling van je dak. Het is een stuk goedkoper dan de pannen vervangen of een nieuw dak leggen.", img: "/images/dakcontrole.webp", pos: "55% 25%" },
 ];
 
 const info: { q: string; a: string; cta?: boolean }[] = [
@@ -87,10 +87,16 @@ const COATING_CSS = `
   .dc-nu-kaart { overflow: hidden; border-radius: 16px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); transition: transform .25s ease, box-shadow .25s ease; }
   .dc-nu-kaart:hover { transform: translateY(-4px); box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 26px 50px -28px rgba(30,51,36,0.45); }
   .dc-nu-kaart img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
-  .dc-nu-tekst { display: flex; gap: 16px; padding: 24px 26px 28px; }
+  .dc-nu { align-items: start; }
+  .dc-nu-knop { width: 100%; display: flex; align-items: flex-start; gap: 14px; padding: 22px 22px 22px 24px; background: none; border: 0; cursor: pointer; text-align: left; }
+  .dc-nu-knop:focus-visible { outline: 2px solid #9BCB6C; outline-offset: -4px; border-radius: 12px; }
+  .dc-nu-knop:hover h3 { color: #7AB54E; }
+  .dc-nu-knop .do-pijl { flex-shrink: 0; margin-left: auto; margin-top: 2px; color: #9BCB6C; transition: transform .25s ease; }
+  .dc-nu-kaart.open .do-pijl { transform: rotate(180deg); }
+  .dc-nu-kaart.open .dc-acc-tekst { grid-template-rows: 1fr; }
+  .dc-nu-p { margin: 0 !important; padding: 0 26px 24px 58px; font: 400 15px/1.65 var(--font-inter), system-ui, sans-serif !important; color: #545454; text-wrap: pretty; }
   .dc-nu-nr { flex-shrink: 0; padding-top: 3px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; }
-  .dc-nu-tekst h3 { margin: 0 0 10px; font: 800 18px/1.3 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.015em; color: #1A1A1A; text-wrap: balance; }
-  .dc-nu-tekst p { margin: 0; font: 400 15px/1.65 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
+  .dc-nu-knop h3 { margin: 0; transition: color .2s ease; font: 800 18px/1.3 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.015em; color: #1A1A1A; text-wrap: balance; }
   @media (max-width: 960px) { .dc-nu { grid-template-columns: minmax(0, 1fr); max-width: 520px; margin: 0 auto; } }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
   .dc-hero .do-hero-tekst { max-width: 720px; }
@@ -165,6 +171,7 @@ export default function DakcoatingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [bezoekOpen, setBezoekOpen] = useState(false);
   const [openInfo, setOpenInfo] = useState<number | null>(null);
+  const [openNu, setOpenNu] = useState<number | null>(null);
   const [belStatus, setBelStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   async function belMij(e: React.FormEvent<HTMLFormElement>) {
@@ -266,18 +273,20 @@ export default function DakcoatingPage() {
       <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="dc-nu-kop">
-            <h2 className="do-h2">Waarom je dak <span>nu</span> laten behandelen?</h2>
-            <p className="do-p">Drie redenen waarom wachten je meer kost dan nu iets doen.</p>
+            <h2 className="do-h2">Waarom loont het om je dak <span>nu</span> te behandelen?</h2>
+            <p className="do-p">Drie redenen waarom wachten meer kost dan iets doen.</p>
           </div>
           <div className="dc-nu">
             {redenen.map((r, i) => (
-              <article key={r.titel} className="dc-nu-kaart">
+              <article key={r.titel} className={openNu === i ? "dc-nu-kaart open" : "dc-nu-kaart"}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={r.img} alt="" loading="lazy" decoding="async" width={800} height={540} />
-                <div className="dc-nu-tekst">
+                <img src={r.img} alt="" loading="lazy" decoding="async" width={800} height={540} style={{ objectPosition: r.pos }} />
+                <button type="button" className="dc-nu-knop" aria-expanded={openNu === i} onClick={() => setOpenNu(openNu === i ? null : i)}>
                   <span className="dc-nu-nr">{String(i + 1).padStart(2, "0")}</span>
-                  <div><h3>{r.titel}</h3><p>{r.tekst}</p></div>
-                </div>
+                  <h3>{r.titel}</h3>
+                  <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
+                </button>
+                <div className="dc-acc-tekst"><div><p className="dc-nu-p">{r.tekst}</p></div></div>
               </article>
             ))}
           </div>
