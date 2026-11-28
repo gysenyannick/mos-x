@@ -13,12 +13,13 @@ import WerkgebiedCheck from "@/components/werkgebied-check";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 import { DAKKLEUREN } from "@/lib/dakkleuren";
 
-const stappen = [
-  { titel: "Grondige dakreiniging", tekst: "Een coating hecht enkel op een proper dak. Daarom reinigen we je dak eerst grondig en verwijderen we mos, algen en vuil, onder aangepaste druk." },
-  { titel: "Afplakken en voorbereiding", tekst: "Ramen, zonnepanelen, veranda's, schouwen en andere onderdelen schermen we zorgvuldig af, zodat de werken veilig en netjes verlopen." },
-  { titel: "Eerste coatinglaag", tekst: "We brengen een eerste laag watergedragen dakcoating aan met een professionele airless spuitmachine, met een antimosprimer voor een optimale hechting." },
-  { titel: "Tweede coatinglaag", tekst: "Zodra de eerste laag volledig is uitgehard, brengen we een tweede laag aan in de gekozen kleur. Zo ontstaat een duurzame, egale beschermlaag." },
-  { titel: "Controle en afwerking", tekst: "We verwijderen alle beschermingsmaterialen en controleren het volledige dak, zodat alles netjes wordt achtergelaten." },
+const methode = [
+  { titel: "Grondige reiniging en voorbereiding", tekst: "Mos, algen en losse deeltjes worden volledig verwijderd. Hier gaan de meeste slechte behandelingen mis." },
+  { titel: "Controle van de dakpannen", tekst: "We controleren de pannen en het onderdak. Beschadigde pannen vervangen we vóór de behandeling." },
+  { titel: "Juiste primer en voorbehandeling", tekst: "Zorgvuldig gekozen producten, afgestemd op de pan en de staat ervan." },
+  { titel: "Aangebracht met professioneel materiaal", tekst: "Gelijkmatig aangebracht, in de juiste dikte, over het hele dak." },
+  { titel: "Controle van weer, temperatuur en vochtigheid", tekst: "Zijn de omstandigheden niet goed, dan wachten we." },
+  { titel: "Voldoende droogtijd tussen elke stap", tekst: "Elke laag droogt volledig voor de volgende wordt aangebracht." },
 ];
 
 const redenen = [
@@ -81,6 +82,20 @@ const COATING_CSS = `
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero::after { display: none; }
+  .dc-mx { position: relative; isolation: isolate; overflow: hidden; padding: 96px 24px;
+    background: linear-gradient(90deg, rgba(11,15,12,0.92) 0%, rgba(11,15,12,0.8) 45%, rgba(11,15,12,0.55) 100%), url("/images/yannick-op-dak-srgb.JPEG") center 40% / cover no-repeat, #0B0F0C; }
+  .dc-mx-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
+  .dc-mx-links .do-h2 { color: #FFFFFF; }
+  .dc-mx-links .do-p { margin-top: 18px; color: rgba(255,255,255,0.78); max-width: 470px; }
+  .dc-mx-kaart { padding: 30px 34px 24px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(0,0,0,0.7); }
+  .dc-mx-kaart ul { list-style: none; margin: 0; padding: 0; }
+  .dc-mx-kaart li { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid #E5E7EB; }
+  .dc-mx-kaart li:first-child { padding-top: 4px; }
+  .dc-mx-kaart i { flex-shrink: 0; margin-top: 1px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; }
+  .dc-mx-kaart b { display: block; margin-bottom: 4px; font: 700 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; letter-spacing: -0.01em; }
+  .dc-mx-kaart span { display: block; font: 400 14.5px/1.55 var(--font-inter), system-ui, sans-serif; color: #545454; }
+  .dc-mx-noot { margin: 16px 0 0; font: 400 13px/1.5 var(--font-inter), system-ui, sans-serif; color: #545454; }
+  @media (max-width: 960px) { .dc-mx { padding: 72px 16px; } .dc-mx-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; } .dc-mx-kaart { padding: 24px 20px 20px; } }
   .dc-nu-kop { text-align: center; max-width: 720px; margin: 0 auto 48px; }
   .dc-nu-kop .do-p { margin-top: 14px; }
   .dc-nu-kop { max-width: none; }
@@ -170,7 +185,6 @@ function WhatsAppIcoon() {
 }
 
 export default function DakcoatingPage() {
-  const [openStap, setOpenStap] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [bezoekOpen, setBezoekOpen] = useState(false);
   const [openInfo, setOpenInfo] = useState<number | null>(null);
@@ -296,31 +310,21 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* Werkwijze */}
-      <section className="do-donker">
-        <div className="do-wrap do-werk">
-          <div className="do-werk-foto">
-            <img src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" />
+      {/* Werkwijze: de MOS-MAX-methode */}
+      <section className="dc-mx">
+        <div className="do-wrap dc-mx-grid">
+          <div className="dc-mx-links">
+            <p className="do-oog">Geen gewone dakverf</p>
+            <h2 className="do-h2">Alles in de juiste volgorde, <span>elke keer.</span></h2>
+            <p className="do-p">De meeste slechte dakbehandelingen die we zien, gaan mis door de voorbereiding, de producten, het aanbrengen of het weer. Daarom volgt MOS&#8209;MAX op elk dak dezelfde werkwijze.</p>
           </div>
-          <div>
-            <p className="do-oog">Onze werkwijze: de MOS-MAX-methode</p>
-            <h2 className="do-h2">Zo coaten we <span>jouw dak.</span></h2>
-            <div className="do-stappen">
-              {stappen.map((s, i) => {
-                const open = openStap === i;
-                return (
-                  <div key={s.titel} className={open ? "do-stap open" : "do-stap"}>
-                    <button type="button" aria-expanded={open} onClick={() => setOpenStap(open ? null : i)}>
-                      <span className="do-stap-nr">{String(i + 1).padStart(2, "0")}</span>
-                      {s.titel}
-                      <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
-                    </button>
-                    <div className="do-stap-tekst"><div><p>{s.tekst}</p></div></div>
-                  </div>
-                );
-              })}
-            </div>
-            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
+          <div className="dc-mx-kaart">
+            <ul>
+              {methode.map((m) => (
+                <li key={m.titel}><i><Check size={14} strokeWidth={3.2} /></i><div><b>{m.titel}</b><span>{m.tekst}</span></div></li>
+              ))}
+            </ul>
+            <p className="dc-mx-noot">MOS-MAX is onze eigen behandelmethode, gegroeid uit onze ervaring op het dak.</p>
           </div>
         </div>
       </section>
