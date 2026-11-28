@@ -52,7 +52,7 @@ const misverstanden: { q: string; a: string }[] = [
   { q: "Is het mos wegschrapen niet genoeg?", a: "Schrapen haalt het zichtbare mos weg, maar de sporen blijven zitten. Zonder behandeling erna komt het mos snel terug en ben je binnen korte tijd terug bij af." },
   { q: "Mijn dak lekt niet, dus er is niks aan de hand.", a: "Schade aan een dak bouwt zich traag op. Vocht trekt in de pannen, bij vorst barsten ze, en tegen dat het binnen lekt, is de schade veel groter. Wie op tijd iets doet, betaalt minder." },
   { q: "Als mijn dak lekt, moet het hele dak vervangen worden.", a: "Niet altijd. Vaak gaat het om een paar kapotte pannen, een losse nok of een slechte aansluiting. Dat herstellen we, en daarna bekijken we samen of een coating je dak nog jaren kan laten meegaan." },
-  { q: "Alle dakfirma's doen hetzelfde.", a: "Het verschil zit in wat je niet ziet: de voorbereiding, de producten, de droogtijd en wie het werk doet. Bij MOS-X doen we het werk zelf, zonder onderaannemers, en krijg je vooraf een vaste prijs." },
+  { q: "Alle dakfirma's doen hetzelfde.", a: "Het verschil zit in wat je niet ziet: de voorbereiding, de producten, de droogtijd en wie het werk doet. Bij MOS-X krijg je één vast aanspreekpunt en vooraf een vaste prijs." },
 ];
 
 const faqs: { q: string; a: string; cta?: boolean }[] = [

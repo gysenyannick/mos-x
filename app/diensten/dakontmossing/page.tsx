@@ -30,7 +30,7 @@ const uitleg: { q: string; a: React.ReactNode }[] = [
     <p>Dat hangt af van het type dak en de staat ervan. Betonpannen krijgen <Link href="/diensten/hydrofuge">MOS-PLUS</Link> als het dak nog in goede staat is, of <Link href="/diensten/dakcoating">MOS-MAX</Link> als het al wat ouder is. Kunstleien krijgen meestal een MOS-MAX-coating.</p>
     <p>Gewone keramische pannen krijgen MOS-PLUS: ze nemen het middel goed op en houden hun originele kleur. Geglazuurde pannen nemen niets op, daar volstaat een antimosbehandeling. Bij het plaatsbezoek zeggen we eerlijk wat je dak nodig heeft, en niet wat het duurste is.</p>
   </>) },
-  { q: "Werken jullie met hoge druk op je dak?", a: (<>
+  { q: "Werken jullie met hoge druk, en is dat niet slecht voor je dak?", a: (<>
     <p>Nee, niet zomaar. Met te hoge druk spuit je de toplaag van je pannen weg en duw je water onder het dak. We stemmen de druk, de spuitkop en de techniek altijd af op het materiaal, de leeftijd en de staat van je dak.</p>
     <p>Moeilijke hoekjes reinigen we met een vuilfrees, en een dikke laag mos halen we eerst mechanisch los. Agressieve producten zoals bleekwater of chloor gebruiken we nooit.</p>
   </>) },
@@ -257,7 +257,6 @@ export default function DakontmossingPage() {
           <div className="dc-mw-kader">
             <p className="do-oog">Onze werkwijze</p>
             <h2 className="do-h2 dc-mw-titel">Zo reinigen we <span>jouw dak.</span></h2>
-            <p className="do-p dc-mx-intro">Van de controle vooraf tot het opruimen achteraf. We doen het werk zelf, zonder onderaannemers, en laten alles netjes achter.</p>
             <div className="do-stappen">
               {stappen.map((s, i) => {
                 const open = openStap === i;

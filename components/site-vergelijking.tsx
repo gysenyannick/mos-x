@@ -8,7 +8,7 @@ const rijen = [
   { ja: "Dakwerkers, geen schoonmakers", jaSub: "We kennen het vak en kunnen ook herstellen.", nee: "Schoonmakers zonder dakkennis." },
   { ja: "Kleine herstellingen inbegrepen", jaSub: "Een losse pan of kleine reparatie doen we meteen mee.|Losse pan of kleine reparatie: inbegrepen.", nee: "Voor herstellingen bel je een tweede firma.|Herstellingen? Bel een tweede firma." },
   { ja: "VCA-gecertificeerd", jaSub: "Veilig werken op hoogte, met de juiste uitrusting.|Veilig werken op hoogte.", nee: "Geen veiligheidsattest voor werken op hoogte.|Geen veiligheidsattest." },
-  { ja: "Eén vast aanspreekpunt", jaSub: "Geen tussenpersonen. Direct contact via WhatsApp.|Direct contact via WhatsApp.", nee: "Onderaannemers en tussenpersonen." },
+  { ja: "Eén vast aanspreekpunt", jaSub: "Geen tussenpersonen. Direct contact via WhatsApp.|Direct contact via WhatsApp.", nee: "Telkens een andere contactpersoon." },
 ];
 
 function T({ t }: { t: string }) {
