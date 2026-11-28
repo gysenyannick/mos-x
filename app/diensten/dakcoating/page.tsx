@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Loader2, MapPin, Palette, Phone } from "lucide-react";
+import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Loader2, Palette, Phone } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import HeroVertrouwen from "@/components/hero-vertrouwen";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import GoogleScore from "@/components/google-score";
+import WerkgebiedCheck from "@/components/werkgebied-check";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 import { DAKKLEUREN } from "@/lib/dakkleuren";
 
@@ -36,11 +37,6 @@ const methode = [
   { titel: "Garantie", tekst: "Schriftelijk, tot 10 jaar op de hechting." },
   { titel: "Uitvoering", tekst: "Eigen mensen, geen onderaannemers." },
 ];
-
-/** Postcodes van de provincies waar we werken. */
-function inWerkgebied(pc: number) {
-  return (pc >= 1500 && pc <= 3999) || (pc >= 9000 && pc <= 9999);
-}
 
 const geschikt = [
   { label: "Betonpannen", img: "/images/Betonpannen.jpg" },
@@ -178,8 +174,6 @@ export default function DakcoatingPage() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
   const [openInfo, setOpenInfo] = useState<number | null>(0);
   const [belStatus, setBelStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
-  const [postcode, setPostcode] = useState("");
-  const [pcAntwoord, setPcAntwoord] = useState<null | boolean>(null);
 
   async function belMij(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -195,11 +189,6 @@ export default function DakcoatingPage() {
     }
   }
 
-  function checkPostcode(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const pc = parseInt(postcode.replace(/\D/g, ""), 10);
-    setPcAntwoord(Number.isFinite(pc) && postcode.replace(/\D/g, "").length === 4 ? inWerkgebied(pc) : false);
-  }
 
   return (
     <PageLayout>
@@ -375,33 +364,7 @@ export default function DakcoatingPage() {
       </section>
 
       {/* Werkgebied */}
-      <section className="do-sectie do-wit">
-        <div className="do-wrap dc-regio">
-          <div>
-            <p className="do-oog">Werkgebied</p>
-            <h2 className="do-h2">Komen we <span>tot bij jou?</span></h2>
-            <p className="do-p" style={{ marginTop: 16 }}>Vul je postcode in en je weet het meteen.</p>
-            <form className="dc-pc" onSubmit={checkPostcode}>
-              <label htmlFor="dc-postcode">Je postcode</label>
-              <div className="dc-pc-rij">
-                <input id="dc-postcode" inputMode="numeric" maxLength={4} placeholder="Bv. 2200" value={postcode} onChange={(e) => { setPostcode(e.target.value); setPcAntwoord(null); }} />
-                <button type="submit" className="do-knop do-knop-g">Check</button>
-              </div>
-              {pcAntwoord === true && <p className="dc-pc-antwoord" role="status">Goed nieuws: we komen tot bij jou. <Link href="/#calculator">Bereken je richtprijs</Link></p>}
-              {pcAntwoord === false && <p className="dc-pc-antwoord" role="status">Daar werken we normaal niet, maar <a href="tel:+32468352869">bel ons gerust even</a>.</p>}
-            </form>
-          </div>
-          <div className="dc-prov">
-            <b>We werken in 4 provincies</b>
-            <ul>
-              {["Antwerpen", "Limburg", "Vlaams-Brabant", "Oost-Vlaanderen"].map((p) => (
-                <li key={p}><MapPin size={17} color="#9BCB6C" aria-hidden="true" />{p}</li>
-              ))}
-            </ul>
-            <p className="dc-prov-noot">Net buiten de regio? Bel even, we bekijken het graag.</p>
-          </div>
-        </div>
-      </section>
+      <WerkgebiedCheck />
 
       {/* FAQ */}
       <section className="do-sectie do-zacht">
