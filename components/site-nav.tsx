@@ -13,6 +13,11 @@ const diensten = [
   { label: "Onderhoudsplan", href: "/diensten/onderhoudsplan" },
 ];
 
+const b2b = [
+  { label: "Dakreiniging", sub: "Bedrijven, KMO's, syndici, VME's, vastgoed en verhuur", href: "/zakelijk" },
+  { label: "Coolproofing & dakonderhoud", sub: "Koel, beschermd en onderhouden dak", href: "/zakelijk" },
+];
+
 const links = [
   { label: "Realisaties", href: "/realisaties" },
   { label: "Over ons",    href: "/over-ons" },
@@ -29,7 +34,6 @@ const mobieleLinks = [
   { label: "Realisaties", href: "/realisaties", Icoon: Images },
   { label: "Over ons",    href: "/over-ons",    Icoon: Users },
   { label: "Contact",     href: "/contact",     Icoon: Mail },
-  { label: "Zakelijk (B2B)", href: "/zakelijk",  Icoon: Building2 },
 ];
 
 const linkStijl: React.CSSProperties = {
@@ -45,6 +49,7 @@ const linkStijl: React.CSSProperties = {
 export default function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dienstenOpen, setDienstenOpen] = useState(false);
+  const [b2bOpen, setB2bOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -96,13 +101,6 @@ export default function SiteNav() {
           html { scrollbar-color: #9BCB6C #F2F4F0; scrollbar-width: thin; }
         }
         .mx-glow:hover, .mx-glow:focus-visible { animation-play-state: paused; }
-        .mx-b2b { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 8px; border: 1px solid rgba(155,203,108,0.5);
-          color: #1A1A1A; text-decoration: none; white-space: nowrap; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em;
-          transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease; }
-        .mx-b2b svg { color: #9BCB6C; }
-        .mx-b2b:hover { border-color: #9BCB6C; background: rgba(155,203,108,0.08); color: #7AB54E; }
-        .mx-b2b:active { transform: translateY(1px); }
-        .mx-b2b:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
         .mx-tel { margin-left: auto; margin-right: 6px; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px;
           border-radius: 8px; border: 1px solid rgba(155,203,108,0.5); color: #1A1A1A; text-decoration: none; white-space: nowrap;
           font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em;
@@ -124,6 +122,8 @@ export default function SiteNav() {
         .nav-dienst:first-child { margin-top: 8px; }
         .nav-dienst:last-child { margin-bottom: 8px; }
         .nav-dienst:hover { background: #F2F8EC; color: #9BCB6C; }
+        .nav-b2b-menu { width: 300px; }
+        .nav-dienst small { display: block; margin-top: 2px; font: 500 12.5px/1.4 var(--font-inter), system-ui, sans-serif; color: #545454; }
         .nav-dienst:active { background: #EEF6E6; }
         .nav-dienst:focus-visible { outline: 2px solid #1A1A1A; outline-offset: -2px; }
         .nav-kop { top: 16px; }
@@ -188,6 +188,29 @@ export default function SiteNav() {
                 </div>
               )}
             </div>
+            <div className="nav-diensten" onMouseEnter={() => setB2bOpen(true)} onMouseLeave={() => setB2bOpen(false)}>
+              <button
+                type="button"
+                className="nav-diensten-knop"
+                aria-expanded={b2bOpen}
+                aria-haspopup="true"
+                onClick={() => setB2bOpen(o => !o)}
+                style={{ ...linkStijl, color: b2bOpen ? "#9BCB6C" : "#1A1A1A" }}
+              >
+                B2B
+                <ChevronDown size={15} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: b2bOpen ? "rotate(180deg)" : "none" }} />
+              </button>
+              {b2bOpen && (
+                <div className="nav-diensten-menu nav-b2b-menu">
+                  {b2b.map(d => (
+                    <Link key={d.label} href={d.href} className="nav-dienst" onClick={() => setB2bOpen(false)}>
+                      {d.label}
+                      <small>{d.sub}</small>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
             {links.map(l => (
               <Link
                 key={l.href}
@@ -220,9 +243,6 @@ export default function SiteNav() {
 
           {/* Desktop right */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link href="/zakelijk" className="mx-b2b" aria-label="Zakelijk: dakreiniging voor bedrijven (B2B)">
-              <Building2 size={14} strokeWidth={2.2} aria-hidden="true" />B2B
-            </Link>
             <BtnPress
               href="tel:+32468352869"
               aria-label="Bel +32 468 35 28 69"
@@ -387,6 +407,17 @@ export default function SiteNav() {
                 <Link key={d.href} href={d.href} onClick={() => setMobileOpen(false)} className={`mm-dienst mm-in${pathname === d.href ? " actief" : ""}`} style={{ animationDelay: `${70 + i * 45}ms` }}>
                   <i><d.Icoon size={20} /></i>
                   <span><b>{d.label}</b>{d.sub && <small>{d.sub}</small>}</span>
+                  <ChevronRight size={18} />
+                </Link>
+              ))}
+            </div>
+
+            <p className="mm-oog mm-in" style={{ animationDelay: "190ms" }}>B2B</p>
+            <div className="mm-diensten">
+              {b2b.map((d, i) => (
+                <Link key={d.label} href={d.href} onClick={() => setMobileOpen(false)} className="mm-dienst mm-in" style={{ animationDelay: `${210 + i * 45}ms` }}>
+                  <i><Building2 size={20} /></i>
+                  <span><b>{d.label}</b><small>{d.sub}</small></span>
                   <ChevronRight size={18} />
                 </Link>
               ))}
