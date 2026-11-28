@@ -10,6 +10,7 @@ const services = [
   {
     id: "dak-reinigen",
     title: "Dakreiniging",
+    pakket: "MOS-Zero",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "Dakreiniging",
     href: "/diensten/dakontmossing",
@@ -24,6 +25,7 @@ const services = [
   {
     id: "dak-coaten",
     title: "Dakcoating",
+    pakket: "MOS-Max",
     imgSubtitle: "Bescherming en vernieuwing.",
     badge: "10 jaar garantie",
     sticker: { groot: "10", klein: "garantie" },
@@ -37,6 +39,7 @@ const services = [
   {
     id: "dakabonnement",
     title: "Onderhoudsplan",
+    pakket: "MOS-Care",
     imgSubtitle: "Jaarlijkse controle en onderhoud.",
     badge: "Onderhoudsplan",
     href: "/diensten/onderhoudsplan",
@@ -122,6 +125,13 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           zIndex: 1,
         }} />
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
+          {s.pakket && (
+            <span style={{
+              display: "inline-block", marginBottom: "10px", padding: "4px 10px", borderRadius: "999px",
+              background: "rgba(155,203,108,0.18)", border: "1px solid rgba(155,203,108,0.5)", color: "#B9DE95",
+              fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "11.5px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
+            }}>{s.pakket}</span>
+          )}
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
               flexShrink: 0, width: "36px", height: "36px", background: "#9BCB6C", borderRadius: "50%",
