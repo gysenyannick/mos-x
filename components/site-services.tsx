@@ -10,7 +10,7 @@ const services = [
   {
     id: "dak-reinigen",
     title: "Dakreiniging",
-    pakket: "MOS-Zero",
+    pakket: "MOS-Pro",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "Dakreiniging",
     href: "/diensten/dakontmossing",
@@ -125,13 +125,11 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
           zIndex: 1,
         }} />
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
-          {s.pakket && (
-            <span style={{
-              display: "inline-block", marginBottom: "10px", padding: "4px 10px", borderRadius: "999px",
-              background: "rgba(155,203,108,0.18)", border: "1px solid rgba(155,203,108,0.5)", color: "#B9DE95",
-              fontFamily: "var(--font-montserrat), system-ui, sans-serif", fontSize: "11.5px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
-            }}>{s.pakket}</span>
-          )}
+          <style>{`
+            .sv-titel-p { font-size: 18.5px !important; }
+            @media (max-width: 1180px) and (min-width: 1024px) { .sv-titel-p { font-size: 15.5px !important; } }
+            @media (max-width: 1080px) { .sv-titel { flex-direction: column; } }
+          `}</style>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
               flexShrink: 0, width: "36px", height: "36px", background: "#9BCB6C", borderRadius: "50%",
@@ -139,9 +137,12 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
             }}>
               <Icon size={18} color="#FFFFFF" strokeWidth={2} />
             </div>
-            <p className="font-bold text-xl leading-tight"
+            <p className="font-bold text-xl leading-tight sv-titel-p"
               style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: hovered ? "#9BCB6C" : "#FFFFFF", transition: "color 200ms ease", letterSpacing: "-0.02em" }}>
-              {s.title}
+              <span className="sv-titel" style={{ display: "flex", flexWrap: "wrap", columnGap: "8px", rowGap: "2px" }}>
+                <span style={{ whiteSpace: "nowrap" }}>{s.title}</span>
+                {s.pakket && <span style={{ whiteSpace: "nowrap", color: "#9BCB6C", fontWeight: 800 }}>{s.pakket}</span>}
+              </span>
             </p>
           </div>
           <p style={{
@@ -155,7 +156,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
             display: "inline-flex", alignItems: "center", gap: "6px",
           }}>
-            {s.link}
+            {s.pakket ? `Ontdek ${s.pakket}` : s.link}
             <ChevronRight size={15} strokeWidth={2.5} style={{ transform: hovered ? "translateX(3px)" : "none", transition: "transform 200ms ease" }} />
           </span>
         </div>
