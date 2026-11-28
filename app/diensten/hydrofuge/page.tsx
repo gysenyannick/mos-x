@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CalendarCheck, Check, ChevronDown, ChevronRight, Loader2, Phone } from "lucide-react";
+import { CalendarCheck, Check, ChevronRight, Loader2, Phone } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -13,17 +13,11 @@ import SiteReviews from "@/components/site-reviews";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 import { COATING_CSS } from "@/components/coating-stijl";
 
-const info: { q: string; a: string; cta?: boolean }[] = [
-  { q: "Hoe werkt hydrofuge?", a: "Betonpannen zijn poreus. Na verloop van tijd slijt de toplaag en begint de pan water op te nemen in plaats van het te laten aflopen. Een vochtige pan is een voedingsbodem voor mos, algen en korstmos, en in de winter bevriest dat water en zet het uit in de poriën. Net die vorst breekt de pan uiteindelijk af. Hydrofuge legt een waterafstotende laag in de bovenste millimeters van de pan: het water parelt af en de poriën blijven de hele winter droog.\n\nHet werk start altijd met een grondige dakreiniging. Mos, vuil en losse deeltjes verwijderen we met aangepaste druk. Daarna brengen we de hydrofuge aan op een volledig droog dak, bij voorkeur in twee lagen op de meest blootgestelde delen. Je dak houdt zijn originele kleur." },
-  { q: "Wanneer kies je beter iets anders?", a: "We zeggen vaker nee dan je zou denken. Hydrofuge gaat ervan uit dat de pan nog een stevig oppervlak heeft. Brokkelt het oppervlak af tussen je vingers, dan heeft de behandeling weinig zin. Hetzelfde geldt voor daken met veel gebarsten pannen, een slecht onderdak of zichtbare lekken. Dan zeggen we het je liever meteen.\n\nIs je dak ouder maar nog stevig, dan is MOS-MAX meestal de betere keuze. Die bouwt een volledig nieuwe beschermlaag op en gaat een stuk langer mee. Heb je enkel mos op een verder nieuw dak, dan is MOS-PLUS ideaal: het mos moet sowieso weg, en daarna sluiten we de poriën." },
-  { q: "Wat kost MOS-PLUS?", a: "De prijs hangt af van de staat van je dak, de helling, de bereikbaarheid en hoeveel mos er eerst weg moet. De dakreiniging zit altijd inbegrepen. Na het plaatsbezoek krijg je een vaste prijs: offerte = factuur, geen verrassingen achteraf.", cta: true },
-  { q: "Hydrofuge of een coating?", a: "Hydrofuge is een dun, kleurloos middel dat in de pan trekt. Het vormt geen nieuwe laag zoals een coating, dus je pannen houden hun originele uitzicht. De bescherming gaat 5 à 7 jaar mee.\n\nEen coating (MOS-MAX) geeft je dak een volledig nieuwe beschermlaag en een egale kleur, en gaat een stuk langer mee. Bij het plaatsbezoek zeggen we je eerlijk wat je dak nodig heeft." },
-];
 
 const misverstanden: { q: string; a: string }[] = [
   { q: "Hydrofuge en een coating zijn hetzelfde.", a: "Nee. Hydrofuge is een dun, kleurloos middel dat in de pan trekt en ze waterafstotend maakt. Het vormt geen nieuwe laag zoals een coating, en je pannen houden hun originele uitzicht en ruwe oppervlak. De bescherming gaat normaal 5 à 7 jaar mee. MOS-PLUS is daarom een eenvoudigere en goedkopere oplossing voor nieuwere daken in goede staat, maar gaat minder lang mee dan een coating.\n\nOmdat de behandeling kleurloos is, kies je MOS-PLUS ook als je het uitzicht van je dak wil behouden. Heb je meerkleurige pannen of een tint die je mooi vindt, dan blijft die zoals ze is. Een coating geeft je dak één egale kleur." },
   { q: "Het kost bijna evenveel als een nieuw dak.", a: "Nee. Een nieuw dak betekent nieuwe pannen, latten, folie, stellingen en weken werk. MOS-PLUS kost maar een klein deel daarvan, en de dakreiniging zit er al in." },
-  { q: "Het houdt maar een paar jaar, dan is het mos terug.", a: "Op een dak in goede staat gaat MOS-PLUS 5 à 7 jaar mee. Omdat de pan droog blijft, krijgt mos veel minder kans om zich vast te zetten. En je krijgt 5 jaar garantie op de werking." },
+  { q: "Het houdt maar een paar jaar, dan is het mos terug.", a: "Op een dak in goede staat gaat MOS-PLUS 5 à 7 jaar mee. Omdat de pan droog blijft, krijgt mos veel minder kans om zich vast te zetten. En je krijgt 5 jaar garantie op de werking, tot 10 jaar met een onderhoudsplan." },
   { q: "Nieuwere dakpannen hebben niets nodig.", a: "Ook nieuwe pannen verliezen na enkele jaren hun beschermlaag van de fabriek. Net dan is hydrofuge het meest zinvol: de pan is nog gezond, en zo blijft ze langer droog en mosvrij." },
   { q: "Ik koop het middel en doe het zelf.", a: "Dat kan, maar het resultaat hangt af van de voorbereiding. Het dak moet eerst grondig gereinigd en volledig droog zijn, en het middel moet gelijkmatig aangebracht worden. Bovendien sta je op hoogte zonder beveiliging. Wij doen het met de juiste uitrusting, en je krijgt garantie." },
   { q: "Is het mos wegschrapen niet beter?", a: "Schrapen haalt het zichtbare mos weg, maar de sporen blijven zitten en de pan blijft water opnemen. Zonder behandeling erna komt het mos snel terug." },
@@ -37,7 +31,7 @@ const resultaten = [
 ];
 
 const faqs: { q: string; a: string; cta?: boolean }[] = [
-  { q: "Welke garantie krijg ik?", a: "Je krijgt 5 jaar garantie op de werking van MOS-PLUS: je pannen blijven waterafstotend." },
+  { q: "Welke garantie krijg ik?", a: "Je krijgt 5 jaar garantie op de werking van MOS-PLUS: je pannen blijven waterafstotend. Met een MOS-CARE onderhoudsplan wordt dat 10 jaar." },
   { q: "Voor welke daken is MOS-PLUS geschikt?", a: "Voor nieuwere daken, meestal vijf tot tien jaar oud, waarvan de pannen nog een stevig oppervlak hebben. Bij het plaatsbezoek kijken we of je dak geschikt is." },
   { q: "Verandert mijn dak van kleur?", a: "Nee. Het middel is kleurloos. Je dak houdt zijn originele kleur en uitzicht, ook als je meerkleurige pannen hebt." },
   { q: "Wordt het dak eerst gereinigd?", a: "Ja, de dakreiniging zit altijd inbegrepen. We brengen de hydrofuge pas aan als het dak volledig droog is." },
@@ -47,6 +41,13 @@ const faqs: { q: string; a: string; cta?: boolean }[] = [
 
 const PLUS_CSS = `
   .mp-hero::after { display: none; }
+  .mp-artikel { margin-top: 18px; max-width: 640px; }
+  .mp-artikel p { margin: 0 0 16px; font: 400 16px/1.75 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
+  .mp-artikel h3 { margin: 30px 0 10px; font: 800 19px/1.3 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; color: #1A1A1A; }
+  .mp-artikel a { color: #1A1A1A; font-weight: 500; text-decoration: none; background: linear-gradient(#9BCB6C, #9BCB6C) 0 100% / 100% 2px no-repeat; transition: color .15s ease, background-size .2s ease; }
+  .mp-artikel a:hover { color: #7AB54E; }
+  .mp-artikel a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 2px; }
+  .mp-info { align-items: start !important; }
   .mp-hero::before { background: radial-gradient(700px 420px at 80% 40%, rgba(155,203,108,0.14), transparent 70%), linear-gradient(160deg, #13201A 0%, #0B0F0C 70%) !important; }
   .mp-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 64px; align-items: center; }
   .mp-hero .do-hero-tekst { max-width: 640px; }
@@ -72,7 +73,6 @@ function WhatsAppIcoon() {
 }
 
 export default function HydrofugePage() {
-  const [openInfo, setOpenInfo] = useState<number | null>(null);
   const [openMv, setOpenMv] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [bezoekOpen, setBezoekOpen] = useState(false);
@@ -128,27 +128,23 @@ export default function HydrofugePage() {
 
       {/* Uitleg + terugbelkaart */}
       <section className="do-sectie do-wit">
-        <div className="do-wrap dc-info">
+        <div className="do-wrap dc-info mp-info">
           <div>
             <p className="do-oog">Over de behandeling</p>
             <h2 className="do-h2">Wanneer loont hydrofuge, <span>en wanneer niet?</span></h2>
-            <p className="do-p" style={{ marginTop: 16 }}>MOS-PLUS is de keuze als je dak vijf tot tien jaar oud is en de beschermlaag van de fabriek nog intact is. De behandeling maakt geen nieuw oppervlak, ze maakt het bestaande waterafstotend. Na vijf à zeven jaar is het middel uit de pan verdwenen. Je krijgt 5 jaar garantie op de werking.</p>
-            <div className="dc-acc">
-              {info.map((f, i) => {
-                const open = openInfo === i;
-                return (
-                  <div key={f.q} className={open ? "dc-acc-item open" : "dc-acc-item"}>
-                    <button type="button" aria-expanded={open} onClick={() => setOpenInfo(open ? null : i)}>
-                      {f.q}
-                      <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
-                    </button>
-                    <div className="dc-acc-tekst"><div>
-                      {f.a.split("\n\n").map((t) => <p key={t.slice(0, 24)}>{t}</p>)}
-                      {f.cta && <Link className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>}
-                    </div></div>
-                  </div>
-                );
-              })}
+            <div className="mp-artikel">
+              <p>MOS-PLUS is de keuze als je dak vijf tot tien jaar oud is en de beschermlaag van de fabriek op de pan nog intact is. De behandeling maakt geen nieuw oppervlak, ze maakt het oppervlak dat er al is waterafstotend. Ze is ook tijdelijk: binnen vijf à zeven jaar verdwijnt de impregnatie uit de pan. Hieronder lees je wat de behandeling doet, voor wie ze geschikt is en wat ze kost. Je krijgt 5 jaar garantie op de werking, verlengd tot 10 jaar met een <Link href="/diensten/onderhoudsplan">MOS-CARE onderhoudsplan</Link>.</p>
+
+              <h3>Zo werkt hydrofuge op je dakpannen</h3>
+              <p>Betonpannen zijn poreus. Na verloop van tijd slijt de toplaag en begint de pan water op te nemen in plaats van het te laten aflopen. Een vochtige pan is een voedingsbodem voor mos, algen en korstmos, en in de winter bevriest het water en zet het uit in de poriën. Net die vorst breekt de pan uiteindelijk af. Hydrofuge legt een waterafstotende laag in de bovenste millimeters van de pan, zodat het water afparelt en de poriën de hele winter droog blijven.</p>
+              <p>Het werk start altijd met een grondige <Link href="/diensten/dakontmossing">dakreiniging</Link>, waarbij we mos, vuil en losse deeltjes met lage druk verwijderen. Daarna brengen we de hydrofuge aan op een volledig droge pan, bij voorkeur in twee lagen op de meest blootgestelde delen. Je dak houdt zijn originele kleur, en je krijgt geen nieuw oppervlak om je zorgen over te maken. Twijfel je wat je dak echt nodig heeft? Begin dan met een <Link href="/#dakcontrole">gratis dakcontrole</Link>.</p>
+
+              <h3>Wanneer je beter iets anders kiest dan MOS-PLUS</h3>
+              <p>We zeggen vaker nee dan mensen denken. Hydrofuge gaat ervan uit dat de pan nog een stevig oppervlak heeft. Brokkelt het oppervlak af tussen je vingers, dan heeft de behandeling weinig zin, want dan is er geen stevig oppervlak meer om in te trekken. Hetzelfde geldt voor daken met veel gebarsten pannen, een slecht onderdak of zichtbare lekken. Daar helpt geen enkele behandeling, en dan weet je dat beter meteen.</p>
+              <p>Is je dak ouder maar nog stevig, dan is <Link href="/diensten/dakcoating">een MOS-MAX-dakcoating</Link> meestal de betere keuze. Die bouwt een volledig nieuw oppervlak op en gaat een stuk langer mee. Heb je enkel mos op een verder nieuw dak, dan is MOS-PLUS ideaal. Het mos moet sowieso eerst weg, en daarna moet de pan geïmpregneerd worden, anders blijven de poriën open. Hoe vocht en vorst dakpannen afbreken, zien we elke dag op het dak, en die ervaring is de basis voor hoe we elk dak beoordelen.</p>
+
+              <h3>Prijs, levensduur en wat het echt waard is</h3>
+              <p>De prijs van MOS-PLUS hangt af van de staat van je dak, de helling, de bereikbaarheid en hoeveel mos er eerst weg moet. De dakreiniging zit altijd inbegrepen. MOS-PLUS kost minder dan een MOS-MAX-coating op hetzelfde dak, en een nieuw dak kost al snel een veelvoud daarvan. Zolang de structuur gezond is, is er weinig reden om een dak te vervangen dat er gewoon wat moe uitziet. Je <Link href="/#calculator">richtprijs bereken je in 60 seconden</Link>, en na het plaatsbezoek krijg je een vaste prijs.</p>
             </div>
           </div>
 
@@ -263,7 +259,7 @@ export default function HydrofugePage() {
               <p className="dc-eind-p">Bereken online meteen je richtprijs. Gratis en vrijblijvend.</p>
               <ul className="dc-eind-lijst">
                 <li><Check size={15} strokeWidth={3} aria-hidden="true" />Vaste prijs, geen verrassingen</li>
-                <li><Check size={15} strokeWidth={3} aria-hidden="true" />5 jaar garantie op de werking</li>
+                <li><Check size={15} strokeWidth={3} aria-hidden="true" />5 jaar garantie, 10 jaar met MOS-CARE</li>
                 <li><Check size={15} strokeWidth={3} aria-hidden="true" />Dakreiniging inbegrepen</li>
               </ul>
               <div className="dc-eind-knoppen">

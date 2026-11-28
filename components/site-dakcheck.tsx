@@ -8,7 +8,7 @@ import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 export default function SiteDakcheck() {
   const [open, setOpen] = useState(false);
   return (
-    <section className="dc-sectie" aria-labelledby="dc-titel">
+    <section id="dakcontrole" className="dc-sectie" aria-labelledby="dc-titel" style={{ scrollMarginTop: 110 }}>
       <style>{`
         .dc-sectie { padding: 88px 0 48px; background: #FFFFFF; border-top: 1px solid #EEF0EA; }
         .dc-wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
