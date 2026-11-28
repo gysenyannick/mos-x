@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle, Building2, Umbrella } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
-type MegaItem = { naam: string; dienst?: string; tekst: string; href: string; img: string; gsm?: [string, string] };
+type MegaItem = { naam: string; dienst?: string; tekst: string; href: string; img: string };
 
 const diensten: MegaItem[] = [
   { naam: "Dakreiniging", tekst: "Mos, algen en vuil weg. Je dak ziet er weer verzorgd uit.", href: "/diensten/dakontmossing", img: "/images/menu-dakreiniging.webp" },
@@ -143,8 +143,6 @@ export default function SiteNav() {
         .nav-mega-in { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; padding: 22px; border-radius: 18px; background: #FFFFFF; border: 1px solid #E5E7EB;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 30px 60px -30px rgba(30,51,36,0.35); }
         .nav-mega-kaarten { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-        .nav-mega-kaarten.twee { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .nav-mega-kaarten.twee .nav-mk-foto { aspect-ratio: 16 / 9; }
         .nav-mk { display: block; padding: 8px; margin: -8px; border-radius: 14px; text-decoration: none; color: #1A1A1A; transition: background-color .2s ease; }
         .nav-mk:hover { background: #F7F8F6; }
         .nav-mk:active { background: #F2F8EC; }
@@ -471,11 +469,11 @@ export default function SiteNav() {
 type Uitgelicht = { titel: string; tekst: string; knop: string; href: string; img: string };
 
 /** Uitklapmenu met fotokaarten, rustig en in de MOS-X-stijl. */
-function MegaMenu({ items, uit, sluit, twee }: { items: MegaItem[]; uit: Uitgelicht; sluit: () => void; twee?: boolean }) {
+function MegaMenu({ items, uit, sluit }: { items: MegaItem[]; uit: Uitgelicht; sluit: () => void }) {
   return (
     <div className="nav-mega">
       <div className="nav-mega-in">
-        <div className={twee ? "nav-mega-kaarten twee" : "nav-mega-kaarten"}>
+        <div className="nav-mega-kaarten">
           {items.map((d) => (
             <Link key={d.naam + d.href} href={d.href} className="nav-mk" onClick={sluit}>
               <span className="nav-mk-foto">
