@@ -75,15 +75,14 @@ const COATING_CSS = `
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
-  .dc-h1 { max-width: 620px; margin-bottom: 26px; font-size: clamp(2rem, 3.3vw, 2.85rem); line-height: 1.12; text-wrap: balance; }
-  .dc-h1 span { text-wrap: balance; }
+  .dc-hero .do-hero-tekst { max-width: 720px; }
+  .dc-h1 { margin-bottom: 26px; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.1; }
+  .dc-h1 b { display: block; font-weight: inherit; white-space: nowrap; }
+  .dc-h1 em { font-style: normal; color: #9BCB6C; }
+  @media (max-width: 640px) { .dc-h1 b { display: inline; white-space: normal; } .dc-h1 { font-size: clamp(1.75rem, 8vw, 2.1rem); } }
   .dc-hero .do-p { margin-bottom: 30px; }
   .dc-hero .do-hero-knoppen { margin-bottom: 40px; }
   .dc-naam { margin-top: 16px; max-width: 540px; }
-  .dc-pijlers { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; }
-  .dc-pijlers li { display: flex; align-items: center; gap: 10px; font: 500 14.5px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.85); }
-  .dc-pijlers i { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
-  @media (max-width: 560px) { .dc-pijlers { grid-template-columns: minmax(0, 1fr); } }
   .dc-hero-vink { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
   .dc-hero-vink li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; color: rgba(255,255,255,0.85); font-family: var(--font-inter), system-ui, sans-serif; }
   .dc-hero-vink i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
@@ -103,8 +102,10 @@ const COATING_CSS = `
   .dc-acc-tekst p { margin: 0 0 14px; font: 400 15.5px/1.7 var(--font-inter), system-ui, sans-serif; color: #545454; }
   .dc-acc-tekst .do-knop { margin: 0 0 20px; height: 44px; font-size: 14px; }
 
-  .dc-bel { position: sticky; top: 110px; padding: 32px 28px; border-radius: 20px; background: #0B0F0C; color: #FFFFFF; text-align: center; border-top: 4px solid #9BCB6C;
+  .dc-bel { position: sticky; top: 110px; overflow: hidden; isolation: isolate; padding: 190px 28px 28px; border-radius: 20px; background: #0B0F0C; color: #FFFFFF; text-align: center; border-top: 4px solid #9BCB6C;
     box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 30px 60px -30px rgba(11,15,12,0.6); }
+  .dc-bel::before { content: ""; position: absolute; z-index: -1; top: 0; left: 0; right: 0; height: 250px;
+    background: linear-gradient(to bottom, rgba(11,15,12,0.05) 0%, rgba(11,15,12,0.55) 55%, #0B0F0C 100%), url("/images/dakcontrole.webp") center 22% / cover no-repeat; }
   .dc-bel-oog { margin: 0 0 10px; font: 700 12px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
   .dc-bel h3 { margin: 0 0 10px; font: 800 24px/1.2 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; }
   .dc-bel-sub { margin: 0 0 22px; font: 400 14px/1.6 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.7); }
@@ -203,7 +204,7 @@ export default function DakcoatingPage() {
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-MAX</p>
             <p className="do-oog">Vergeet je zorgen over je dak</p>
-            <h1 className="do-h1 dc-h1">MOS-MAX is de dakcoating die je dak <span>tot 15 jaar langer laat meegaan.</span></h1>
+            <h1 className="do-h1 dc-h1"><b>MOS-MAX is de dakcoating</b> <b>die je dak <em>tot 15 jaar</em></b> <b><em>langer laat meegaan.</em></b></h1>
             <p className="do-p">MOS-MAX is onze dakcoating: een professionele coating die over je dakpannen wordt aangebracht en je dak nieuw leven en betere bescherming geeft, voor een fractie van de prijs van een nieuw dak.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Je stelt een nieuw dak uit, of vermijdt het helemaal</li>
@@ -280,12 +281,7 @@ export default function DakcoatingPage() {
           <div>
             <p className="do-oog">Onze werkwijze</p>
             <h2 className="do-h2">Zo coaten we <span>jouw dak.</span></h2>
-            <p className="do-p dc-naam">Daarom heet onze methode MOS-MAX: altijd dezelfde vaste stappen, in dezelfde volgorde, voor elk dak. Geen werk dat afhangt van hoe de dag loopt.</p>
-            <ul className="dc-pijlers">
-              {["Materialen gekozen voor jouw dakpan", "Foto's van voor en na", "Schriftelijke garantie", "Eigen mensen, geen onderaannemers"].map((t) => (
-                <li key={t}><i><Check size={12} strokeWidth={3.2} /></i>{t}</li>
-              ))}
-            </ul>
+            <p className="do-p dc-naam">Dit is de MOS-MAX-methode: altijd dezelfde vaste stappen, voor elk dak.</p>
             <div className="do-stappen">
               {stappen.map((s, i) => {
                 const open = openStap === i;
