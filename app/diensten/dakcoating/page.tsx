@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Loader2, MapPin, Palette, Phone, X } from "lucide-react";
+import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Loader2, MapPin, Palette, Phone } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -41,20 +41,6 @@ const methode = [
 function inWerkgebied(pc: number) {
   return (pc >= 1500 && pc <= 3999) || (pc >= 9000 && pc <= 9999);
 }
-
-const vervangen = [
-  "Hoge investering",
-  "Volledig dak uitbreken",
-  "Weken wachten op materiaal",
-  "Lawaai, stof en containers",
-];
-
-const coaten = [
-  "Een fractie van de prijs",
-  "Je bestaande dak blijft",
-  "Meestal in 1 dag klaar",
-  "Geen afbraak of overlast",
-];
 
 const geschikt = [
   { label: "Betonpannen", img: "/images/Betonpannen.jpg" },
@@ -292,31 +278,8 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* Vervangen of coaten */}
-      <section className="do-sectie do-zacht">
-        <div className="do-wrap">
-          <div className="do-kop">
-            <div>
-              <p className="do-oog">Vervangen of coaten?</p>
-              <h2 className="do-h2">Een vernieuwd dak, <span>zonder renovatie.</span></h2>
-            </div>
-            <p className="do-p">Is je dak nog gezond? Dan geeft een coating het een tweede leven.</p>
-          </div>
-          <div className="dc-vs">
-            <div className="dc-kaart">
-              <h3>Dak vervangen</h3>
-              <ul>{vervangen.map((t) => <li key={t}><X size={18} color="#8E8E89" aria-hidden="true" />{t}</li>)}</ul>
-            </div>
-            <div className="dc-kaart goed">
-              <h3>Dak coaten <span className="dc-label">Slimmer</span></h3>
-              <ul>{coaten.map((t) => <li key={t}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{t}</li>)}</ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Waarom MOS-MAX */}
-      <section className="do-sectie do-wit">
+      <section className="do-sectie do-zacht">
         <div className="do-wrap dc-methode">
           <div>
             <p className="do-oog">Over de naam</p>
