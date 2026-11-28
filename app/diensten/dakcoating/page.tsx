@@ -82,19 +82,21 @@ const COATING_CSS = `
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero::after { display: none; }
-  .dc-mx { position: relative; isolation: isolate; overflow: hidden; padding: 96px 24px;
-    background: linear-gradient(90deg, rgba(11,15,12,0.92) 0%, rgba(11,15,12,0.8) 45%, rgba(11,15,12,0.55) 100%), url("/images/yannick-op-dak-srgb.JPEG") center 40% / cover no-repeat, #0B0F0C; }
-  .dc-mx-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
+  .dc-mx { position: relative; isolation: isolate; overflow: hidden; padding: 72px 24px;
+    background: linear-gradient(90deg, rgba(11,15,12,0.82) 0%, rgba(11,15,12,0.7) 50%, rgba(11,15,12,0.45) 100%), url("/images/yannick-op-dak-srgb.JPEG") center 40% / cover no-repeat, #0B0F0C; }
+  .dc-mx-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: 96px; align-items: center; }
+  .dc-mx-links .do-oog { color: rgba(255,255,255,0.75); font-weight: 500; letter-spacing: .16em; margin-bottom: 18px; }
   .dc-mx-links .do-h2 { color: #FFFFFF; }
-  .dc-mx-links .do-p { margin-top: 18px; color: rgba(255,255,255,0.78); max-width: 470px; }
-  .dc-mx-kaart { padding: 30px 34px 24px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(0,0,0,0.7); }
+  .dc-mx-links .do-p { margin-top: 22px; color: rgba(255,255,255,0.85); max-width: 470px; font-size: 17px; line-height: 2; }
+  .dc-mx-kaart { padding: 40px 38px 28px; border-radius: 4px; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -40px rgba(0,0,0,0.7); }
   .dc-mx-kaart ul { list-style: none; margin: 0; padding: 0; }
-  .dc-mx-kaart li { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid #E5E7EB; }
+  .dc-mx-kaart li { display: flex; gap: 18px; padding: 18px 0; border-bottom: 1px solid #E5E7EB; }
   .dc-mx-kaart li:first-child { padding-top: 4px; }
-  .dc-mx-kaart i { flex-shrink: 0; margin-top: 1px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; }
-  .dc-mx-kaart b { display: block; margin-bottom: 4px; font: 700 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; letter-spacing: -0.01em; }
-  .dc-mx-kaart span { display: block; font: 400 14.5px/1.55 var(--font-inter), system-ui, sans-serif; color: #545454; }
-  .dc-mx-noot { margin: 16px 0 0; font: 400 13px/1.5 var(--font-inter), system-ui, sans-serif; color: #545454; }
+  .dc-mx-kaart li:last-child { border-bottom: 0; }
+  .dc-mx-kaart i { flex-shrink: 0; margin-top: 1px; width: 30px; height: 30px; border-radius: 4px; display: grid; place-items: center; background: #9BCB6C; color: #1A1A1A; }
+  .dc-mx-kaart b { display: block; margin-bottom: 6px; font: 700 16.5px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; letter-spacing: -0.01em; }
+  .dc-mx-kaart span { display: block; font: 400 14.5px/1.65 var(--font-inter), system-ui, sans-serif; color: #545454; }
+  .dc-mx-noot { margin: 14px 0 0; font: 400 13px/2 var(--font-inter), system-ui, sans-serif; color: #545454; }
   @media (max-width: 960px) { .dc-mx { padding: 72px 16px; } .dc-mx-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; } .dc-mx-kaart { padding: 24px 20px 20px; } }
   .dc-nu-kop { text-align: center; max-width: 720px; margin: 0 auto 48px; }
   .dc-nu-kop .do-p { margin-top: 14px; }
