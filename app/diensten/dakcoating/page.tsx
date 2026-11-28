@@ -24,7 +24,7 @@ const stappen = [
 const redenen = [
   { titel: "Mos en uv slijten de pan jaar na jaar", tekst: "Het mos wortelt in de pan zelf en uv-straling breekt het oppervlak af. Hoe langer je wacht, hoe meer vocht de pan opneemt, en hoe duurder het werk wordt.", img: "/images/waarom-1-mos.webp", pos: "50% 50%" },
   { titel: "Onbeschermde pannen barsten bij vorst", tekst: "Als het oppervlak versleten is, neemt de pan water op. De vorst laat het vocht in de pan uitzetten, net zoals in asfalt, met barsten en kans op lekken tot gevolg.", img: "/images/waarom-2-barst.webp", pos: "50% 50%" },
-  { titel: "Een behandeling stelt dakrenovatie jaren uit", tekst: "Op het juiste moment reinigen en coaten herstelt zowel de bescherming als de uitstraling van je dak. Het is een stuk goedkoper dan de pannen vervangen of een nieuw dak leggen.", img: "/images/dakcontrole.webp", pos: "55% 25%" },
+  { titel: "Een behandeling stelt dakrenovatie jaren uit", tekst: "Op het juiste moment reinigen en coaten herstelt zowel de bescherming als de uitstraling van je dak. Het is een stuk goedkoper dan de pannen vervangen of een nieuw dak leggen.", img: "/images/gemoedsrust-coating.webp", pos: "50% 35%" },
 ];
 
 const info: { q: string; a: string; cta?: boolean }[] = [
@@ -83,6 +83,9 @@ const COATING_CSS = `
   .dc-hero::after { display: none; }
   .dc-nu-kop { text-align: center; max-width: 720px; margin: 0 auto 48px; }
   .dc-nu-kop .do-p { margin-top: 14px; }
+  .dc-nu-kop { max-width: none; }
+  .dc-nu-titel { white-space: nowrap; font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+  @media (max-width: 760px) { .dc-nu-titel { white-space: normal; font-size: clamp(1.45rem, 6.4vw, 1.75rem); text-wrap: balance; } }
   .dc-nu { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
   .dc-nu-kaart { overflow: hidden; border-radius: 16px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); transition: transform .25s ease, box-shadow .25s ease; }
   .dc-nu-kaart:hover { transform: translateY(-4px); box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 26px 50px -28px rgba(30,51,36,0.45); }
@@ -273,7 +276,7 @@ export default function DakcoatingPage() {
       <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="dc-nu-kop">
-            <h2 className="do-h2">Waarom loont het om je dak <span>nu</span> te behandelen?</h2>
+            <h2 className="do-h2 dc-nu-titel">Waarom loont het om je dak <span>nu te behandelen?</span></h2>
             <p className="do-p">Drie redenen waarom wachten meer kost dan iets doen.</p>
           </div>
           <div className="dc-nu">
