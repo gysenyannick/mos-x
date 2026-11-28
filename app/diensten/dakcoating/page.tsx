@@ -8,7 +8,6 @@ import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
 import HeroVertrouwen from "@/components/hero-vertrouwen";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
-import GoogleScore from "@/components/google-score";
 import WerkgebiedCheck from "@/components/werkgebied-check";
 import SiteDakkleurBanner from "@/components/site-dakkleur-banner";
 import SiteReviews from "@/components/site-reviews";
@@ -65,6 +64,18 @@ const faqs: { q: string; a: string; cta?: boolean }[] = [
 ];
 
 const COATING_CSS = `
+  .dc-res { border-radius: 16px; overflow: hidden; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .dc-knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .dc-knoppen-midden { justify-content: center; margin-top: 44px; }
+  .do-knop-licht:hover { border-color: #9BCB6C; box-shadow: 0 8px 20px -12px rgba(122,181,78,0.6); }
+  .do-knop-licht:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+  .do-knop:active { transform: translateY(1px); }
+  @media (max-width: 640px) {
+    .dc-knoppen { flex-direction: column; }
+    .dc-knoppen .do-knop { width: 100%; }
+    .dc-knoppen-midden { margin-top: 32px; }
+  }
+  .dc-hero .do-p, .dc-mx-intro, .dc-nu-p, .dc-eind-p, .dc-bel p, .dc-acc-tekst p, .do-stap-tekst p { text-wrap: pretty; }
   .dc-mv-item .dc-acc-tekst .dc-faq-p { white-space: pre-line; padding-left: 24px; }
   @media (max-width: 640px) { .dc-mv-item .dc-acc-tekst .dc-faq-p { padding-left: 18px; } }
   .dc-faq-cta { padding: 0 24px 22px; }
@@ -168,10 +179,10 @@ const COATING_CSS = `
   @media (max-width: 1180px) { .dc-nu { grid-template-columns: minmax(0, 1fr); max-width: 520px; margin: 0 auto; } }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
   .dc-hero .do-hero-tekst { max-width: 720px; }
-  .dc-h1 { margin-bottom: 26px; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.1; }
+  .dc-h1 { margin-bottom: 26px; font-size: clamp(2.2rem, 4.2vw, 3.6rem); line-height: 1.06; }
   .dc-h1 b { display: block; font-weight: inherit; white-space: nowrap; }
   .dc-h1 em { font-style: normal; color: #9BCB6C; }
-  @media (max-width: 640px) { .dc-h1 b { display: inline; white-space: normal; } .dc-h1 { font-size: clamp(1.75rem, 8vw, 2.1rem); } }
+  @media (max-width: 640px) { .dc-h1 { font-size: clamp(1.9rem, 9.6vw, 2.5rem); } }
   .dc-hero .do-p { margin-bottom: 30px; }
   .dc-hero .do-hero-knoppen { margin-bottom: 40px; }
   .dc-hero-vink { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
@@ -199,7 +210,8 @@ const COATING_CSS = `
   .dc-bel::before { content: ""; position: absolute; z-index: -1; top: 0; left: 0; right: 0; height: 250px;
     background: linear-gradient(to bottom, rgba(11,15,12,0.05) 0%, rgba(11,15,12,0.55) 55%, #0B0F0C 100%), url("/images/dakcontrole.webp") center 22% / cover no-repeat; }
   .dc-bel-oog { margin: 0 0 10px; font: 700 12px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
-  .dc-bel h3 { margin: 0 0 10px; font: 800 24px/1.2 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; }
+  .dc-bel h3 { margin: 0 0 10px; white-space: nowrap; font: 800 clamp(17px, 1.55vw, 21px)/1.2 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.025em; }
+  @media (max-width: 960px) { .dc-bel h3 { font-size: clamp(16px, 5.2vw, 21px); } }
   .dc-bel-sub { margin: 0 0 22px; font: 400 14px/1.6 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.7); }
   .dc-bel input { width: 100%; box-sizing: border-box; height: 48px; margin-bottom: 10px; padding: 0 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.06);
     color: #FFFFFF; font: 400 15px var(--font-inter), system-ui, sans-serif; transition: border-color .2s ease; }
@@ -271,7 +283,7 @@ export default function DakcoatingPage() {
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-MAX</p>
             <p className="do-oog">Vergeet je zorgen over je dak</p>
-            <h1 className="do-h1 dc-h1"><b>MOS-MAX is de dakcoating</b> <b>die je dak <em>tot 15 jaar</em></b> <b><em>langer laat meegaan.</em></b></h1>
+            <h1 className="do-h1 dc-h1"><b>Je dak gaat tot</b> <b><em>15 jaar langer mee.</em></b></h1>
             <p className="do-p">MOS-MAX is onze dakcoating: een professionele coating die over je dakpannen wordt aangebracht en je dak nieuw leven en betere bescherming geeft, voor een fractie van de prijs van een nieuw dak.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Je stelt een nieuw dak uit, of vermijdt het helemaal</li>
@@ -363,7 +375,10 @@ export default function DakcoatingPage() {
                 );
               })}
             </div>
-            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
+            <div className="dc-knoppen">
+              <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken mijn richtprijs<ChevronRight size={17} /></Link>
+              <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}><CalendarCheck size={17} />Gratis plaatsbezoek</button>
+            </div>
           </div>
         </div>
       </section>
@@ -388,6 +403,10 @@ export default function DakcoatingPage() {
                 <div className="dc-acc-tekst"><div><p className="dc-nu-p">{r.tekst}</p></div></div>
               </article>
             ))}
+          </div>
+          <div className="dc-knoppen dc-knoppen-midden">
+            <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken mijn richtprijs<ChevronRight size={17} /></Link>
+            <button type="button" className="do-knop do-knop-licht" onClick={() => setBezoekOpen(true)}><CalendarCheck size={17} />Plan een gratis plaatsbezoek</button>
           </div>
         </div>
       </section>
@@ -434,10 +453,9 @@ export default function DakcoatingPage() {
           </div>
           <div className="do-resultaten">
             {resultaten.map((r) => (
-              <article key={r.voor} className="do-resultaat">
+              <div key={r.voor} className="dc-res">
                 <BeforeAfterSlider beforeSrc={r.voor} afterSrc={r.na} borderRadius="0" aspectRatio="4/3" />
-                <div><b>{r.titel}</b><small>{r.info}</small></div>
-              </article>
+              </div>
             ))}
           </div>
         </div>
@@ -481,17 +499,16 @@ export default function DakcoatingPage() {
             <div className="dc-eind-tekst">
               <p className="do-oog">Klaar in 60 seconden</p>
               <h2>Wat kost een dakcoating <span>voor jouw dak?</span></h2>
-              <p className="dc-eind-p">Bereken online meteen je richtprijs. Gratis, vrijblijvend en zonder dat je je moet registreren.</p>
+              <p className="dc-eind-p">Bereken online meteen je richtprijs. Gratis en vrijblijvend.</p>
               <ul className="dc-eind-lijst">
                 <li><Check size={15} strokeWidth={3} aria-hidden="true" />Vaste prijs, geen verrassingen</li>
                 <li><Check size={15} strokeWidth={3} aria-hidden="true" />10 jaar garantie op de coating</li>
-                <li><Check size={15} strokeWidth={3} aria-hidden="true" />Geen onderaannemers</li>
+                <li><Check size={15} strokeWidth={3} aria-hidden="true" />Gratis plaatsbezoek en advies</li>
               </ul>
               <div className="dc-eind-knoppen">
                 <Link className="do-knop do-knop-g mx-glow dc-eind-hoofd" href="/#calculator">Bereken mijn richtprijs<ChevronRight size={18} /></Link>
                 <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}><CalendarCheck size={17} />Gratis plaatsbezoek</button>
               </div>
-              <div className="dc-eind-score"><GoogleScore donker /></div>
             </div>
             <div className="dc-eind-media">
               {/* eslint-disable-next-line @next/next/no-img-element */}
