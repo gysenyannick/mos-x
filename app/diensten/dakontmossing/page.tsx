@@ -40,17 +40,16 @@ const stappen = [
   { titel: "Dakcontrole en voorbereiding", tekst: "We starten met een grondige controle van je dak en vervangen meteen eventuele gebroken pannen of leien." },
   { titel: "Professionele dakreiniging", tekst: "Mos, algen en vervuiling verwijderen we met een (stoom)hogedrukunit, aangevuld met een vuilfrees die ook de moeilijkste hoekjes bereikt. Zo blijft de druk laag en je dakbedekking veilig." },
   { titel: "Controle na de reiniging", tekst: "Na het reinigen controleren we het volledige dak opnieuw, zodat verborgen aandachtspunten zichtbaar worden." },
-  { titel: "Antimosbehandeling", tekst: "We behandelen je dak met een preventief, biologisch afbreekbaar antimosmiddel, zodat mos minder snel terugkomt." },
-  { titel: "Bescherming met MOS-PLUS of MOS-MAX", tekst: "Afhankelijk van je dak brengen we daarna MOS-PLUS aan, een kleurloze waterafstotende laag, of MOS-MAX, een volledig nieuwe beschermlaag." },
+  { titel: "Nabehandeling op maat", tekst: "We beschermen je dak met de nabehandeling die erbij past, zodat het mos niet snel terugkomt. Welke dat is, spreken we vooraf met je af bij het plaatsbezoek." },
   { titel: "Alles netjes achtergelaten", tekst: "We maken muren, terras en dakgoten netjes op, zodat je meteen kan genieten van een volledig verzorgd resultaat." },
 ];
 
 const daktypes = [
-  { naam: "Betonpannen", img: "/images/Betonpannen.jpg", advies: "MOS-PLUS of MOS-MAX" },
-  { naam: "Keramische pannen", img: "/images/Keramische pannen.jpg", advies: "MOS-PLUS, geglazuurd: antimos" },
-  { naam: "Kunstleien", img: "/images/Kunstleien.png", advies: "MOS-MAX" },
-  { naam: "Natuurleien", img: "/images/Leien dak.jpeg", advies: "Reiniging met lage druk en antimos" },
-  { naam: "Metalen daken", img: "/images/Metalen daken.jpg", advies: "Reiniging en coating" },
+  { naam: "Betonpannen", img: "/images/Betonpannen.jpg" },
+  { naam: "Keramische pannen", img: "/images/Keramische pannen.jpg" },
+  { naam: "Kunstleien", img: "/images/Kunstleien.png" },
+  { naam: "Natuurleien", img: "/images/Leien dak.jpeg" },
+  { naam: "Metalen daken", img: "/images/Metalen daken.jpg" },
 ];
 
 const misverstanden: { q: string; a: string }[] = [
@@ -91,8 +90,6 @@ const REINIG_CSS = `
   .dr-type img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
   .dr-type div { padding: 14px 16px 16px; }
   .dr-type b { display: block; font: 800 15px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; color: #1A1A1A; }
-  .dr-type small { display: flex; align-items: flex-start; gap: 6px; margin-top: 6px; font: 500 13px/1.45 var(--font-inter), system-ui, sans-serif; color: #545454; }
-  .dr-type small svg { flex: none; margin-top: 1px; color: #9BCB6C; }
   .dr-noot { margin: 22px 0 0; text-align: center; font: 400 15px/1.6 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: balance; }
   .dr-noot a { color: #1A1A1A; font-weight: 500; text-decoration: none; background: linear-gradient(#9BCB6C, #9BCB6C) 0 100% / 100% 2px no-repeat; }
   .dr-noot a:hover { color: #7AB54E; }
@@ -158,7 +155,7 @@ export default function DakontmossingPage() {
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakreiniging</p>
             <p className="do-oog">Dakreiniging</p>
             <h1 className="do-h1 dc-h1 dr-h1"><b>Geef je dak opnieuw</b> <b><em>een verzorgde uitstraling.</em></b></h1>
-            <p className="do-p">Een dakreiniging haalt mos, algen en korstmos weg, en je dak ziet er meteen weer verzorgd uit. Na de reiniging beschermen we je dak altijd met een nabehandeling die past bij je dak: MOS&#8209;PLUS, een MOS&#8209;MAX&#8209;dakcoating of een antimosbehandeling.</p>
+            <p className="do-p">Een dakreiniging haalt mos, algen en korstmos weg, en je dak ziet er meteen weer verzorgd uit. Na de reiniging beschermen we je dak altijd met een nabehandeling die erbij past, zodat het mos niet snel terugkomt.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Werkwijze aangepast aan het materiaal en de staat van je dak</li>
               <li><i><Check size={14} strokeWidth={3.2} /></i>Vaste prijs na een gratis plaatsbezoek</li>
@@ -292,18 +289,18 @@ export default function DakontmossingPage() {
               <p className="do-oog">Welke daken reinigen we?</p>
               <h2 className="do-h2">Elk dak vraagt <span>zijn eigen aanpak.</span></h2>
             </div>
-            <p className="do-p">We bekijken het materiaal, de leeftijd en de staat van je dak, en raden de nabehandeling aan die er het best bij past. Niet per se de duurste.</p>
+            <p className="do-p">We stemmen de reiniging af op het materiaal, de leeftijd en de staat van je dak. Zo blijven je pannen of leien heel.</p>
           </div>
           <div className="dr-types">
             {daktypes.map((t) => (
               <div key={t.naam} className="dr-type">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={t.img} alt={t.naam} loading="lazy" decoding="async" />
-                <div><b>{t.naam}</b><small><Check size={14} strokeWidth={3} />{t.advies}</small></div>
+                <div><b>{t.naam}</b></div>
               </div>
             ))}
           </div>
-          <p className="dr-noot">Twijfel je wat je dak nodig heeft? Begin met een <Link href="/#dakcontrole">gratis dakcontrole</Link> of <Link href="/#calculator">bereken je richtprijs</Link>.</p>
+          <p className="dr-noot">Welke nabehandeling jouw dak nodig heeft, zeggen we je bij het <Link href="/#dakcontrole">gratis plaatsbezoek</Link>.</p>
         </div>
       </section>
 
