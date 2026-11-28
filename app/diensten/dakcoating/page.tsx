@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Palette, Phone, X } from "lucide-react";
+import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Loader2, MapPin, Palette, Phone, X } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -13,12 +13,34 @@ import { DIENST_CSS } from "@/components/dienst-stijl";
 import { DAKKLEUREN } from "@/lib/dakkleuren";
 
 const stappen = [
-  { titel: "Grondige dakreiniging", tekst: "Een coating hecht enkel op een proper dak. Daarom reinigen we je dak eerst grondig en verwijderen we mos, algen en vuil, zonder hoge druk." },
+  { titel: "Grondige dakreiniging", tekst: "Een coating hecht enkel op een proper dak. Daarom reinigen we je dak eerst grondig en verwijderen we mos, algen en vuil, onder aangepaste druk." },
   { titel: "Afplakken en voorbereiding", tekst: "Ramen, zonnepanelen, veranda's, schouwen en andere onderdelen schermen we zorgvuldig af, zodat de werken veilig en netjes verlopen." },
   { titel: "Eerste coatinglaag", tekst: "We brengen een eerste laag watergedragen dakcoating aan met een professionele airless spuitmachine, met een antimosprimer voor een optimale hechting." },
   { titel: "Tweede coatinglaag", tekst: "Zodra de eerste laag volledig is uitgehard, brengen we een tweede laag aan in de gekozen kleur. Zo ontstaat een duurzame, egale beschermlaag." },
   { titel: "Controle en afwerking", tekst: "We verwijderen alle beschermingsmaterialen en controleren het volledige dak, zodat alles netjes wordt achtergelaten." },
 ];
+
+const info: { q: string; a: string; cta?: boolean }[] = [
+  { q: "Wat is een dakcoating?", a: "Bij een dakcoating krijgen je dakpannen een nieuwe, dichte beschermlaag. Een onbehandeld dak neemt water op. In de winter bevriest dat water, zet het uit en beschadigt het de pannen van binnenuit. Zo worden pannen poreus, krijgt mos vat en kan je dak op termijn gaan lekken.\n\nMet een coating loopt het water af in plaats van in de pan te trekken. Je dak blijft langer proper, kan beter tegen vorst en ziet er jaren als nieuw uit." },
+  { q: "Waarom is dat nodig in België?", a: "In België regent het vaak en schommelt de temperatuur in de winter rond het vriespunt. Je pannen worden telkens nat, bevriezen en ontdooien weer. Net dat maakt ze na verloop van tijd poreus.\n\nEen coating beschermt je dak precies daartegen: het water krijgt geen kans meer om in de pan te trekken." },
+  { q: "Hoe pakken we het aan?", a: "We starten altijd met een grondige controle van je dak: de pannen, de nokken en de goten. Is je dak geschikt, dan reinigen we het eerst onder aangepaste druk, herstellen we kleine schade en brengen we daarna twee lagen coating aan.\n\nDe juiste druk, het juiste materiaal en een goede voorbereiding maken het verschil tussen een coating die jaren meegaat en een die na een paar seizoenen afbladert. Heeft je dak enkel een opfrisbeurt nodig? Dan volstaat soms een dakreiniging (MOS-PRO). We raden altijd aan wat echt nodig is, niet het duurste." },
+  { q: "Wat kost een dakcoating?", a: "De prijs hangt af van de oppervlakte van je dak, de helling, de bereikbaarheid en hoeveel mos er eerst weg moet. Na het plaatsbezoek krijg je een vaste prijs: offerte = factuur, geen uurloon en geen meerwerk achteraf.\n\nWil je nu al weten in welke orde van grootte je moet denken? Bereken je richtprijs in 60 seconden.", cta: true },
+  { q: "Dakcoating of een nieuw dak?", a: "Een nieuw dak kost al snel een veelvoud van een coating, met afbraak, containers en weken werk. Zijn je pannen nog stevig en is het onderdak in orde, dan geeft een coating je dak een tweede leven voor een fractie van de prijs.\n\nBovendien spaar je het milieu: geen nieuwe materialen, geen transport en geen berg bouwafval." },
+];
+
+const methode = [
+  { titel: "Werkwijze", tekst: "Vaste stappen in een vaste volgorde, niet wat die dag uitkomt." },
+  { titel: "Kwaliteit", tekst: "Dezelfde eisen voor elk dak, groot of klein." },
+  { titel: "Materialen", tekst: "Producten gekozen voor jouw type dakpan." },
+  { titel: "Documentatie", tekst: "Foto's van voor en na, en wat we gedaan hebben." },
+  { titel: "Garantie", tekst: "Schriftelijk, tot 10 jaar op de hechting." },
+  { titel: "Uitvoering", tekst: "Eigen mensen, geen onderaannemers." },
+];
+
+/** Postcodes van de provincies waar we werken. */
+function inWerkgebied(pc: number) {
+  return (pc >= 1500 && pc <= 3999) || (pc >= 9000 && pc <= 9999);
+}
 
 const vervangen = [
   "Hoge investering",
@@ -77,6 +99,75 @@ const COATING_CSS = `
   .dc-knop-l { background: #FFFFFF; color: #1A1A1A; border: 1px solid #CFE5B8; }
   .dc-knop-l:hover { background: #F2F8EC; border-color: #9BCB6C; }
 
+  .zk-spin { animation: dc-spin 1s linear infinite; }
+  @keyframes dc-spin { to { transform: rotate(360deg); } }
+  .dc-hero-vink { list-style: none; margin: -12px 0 30px; padding: 0; display: grid; gap: 10px; }
+  .dc-hero-vink li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; color: rgba(255,255,255,0.85); font-family: var(--font-inter), system-ui, sans-serif; }
+  .dc-hero-vink i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
+
+  .dc-info { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 64px; align-items: start; }
+  .dc-acc { margin-top: 26px; border-top: 1px solid #E5E7EB; }
+  .dc-acc-item { border-bottom: 1px solid #E5E7EB; }
+  .dc-acc-item button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 2px; background: none; border: 0; cursor: pointer; text-align: left;
+    font: 700 17px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; letter-spacing: -0.01em; transition: color .2s ease; }
+  .dc-acc-item button:hover { color: #7AB54E; }
+  .dc-acc-item button:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 6px; }
+  .dc-acc-item .do-pijl { flex-shrink: 0; color: #9BCB6C; transition: transform .25s ease; }
+  .dc-acc-item.open .do-pijl { transform: rotate(180deg); }
+  .dc-acc-tekst { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .dc-acc-item.open .dc-acc-tekst { grid-template-rows: 1fr; }
+  .dc-acc-tekst > div { overflow: hidden; }
+  .dc-acc-tekst p { margin: 0 0 14px; font: 400 15.5px/1.7 var(--font-inter), system-ui, sans-serif; color: #545454; }
+  .dc-acc-tekst .do-knop { margin: 0 0 20px; height: 44px; font-size: 14px; }
+
+  .dc-bel { position: sticky; top: 110px; padding: 32px 28px; border-radius: 20px; background: #0B0F0C; color: #FFFFFF; text-align: center; border-top: 4px solid #9BCB6C;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 30px 60px -30px rgba(11,15,12,0.6); }
+  .dc-bel-oog { margin: 0 0 10px; font: 700 12px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
+  .dc-bel h3 { margin: 0 0 10px; font: 800 24px/1.2 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; }
+  .dc-bel-sub { margin: 0 0 22px; font: 400 14px/1.6 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.7); }
+  .dc-bel input { width: 100%; box-sizing: border-box; height: 48px; margin-bottom: 10px; padding: 0 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.06);
+    color: #FFFFFF; font: 400 15px var(--font-inter), system-ui, sans-serif; transition: border-color .2s ease; }
+  .dc-bel input::placeholder { color: rgba(255,255,255,0.45); }
+  .dc-bel input:focus { outline: none; border-color: #9BCB6C; }
+  .dc-bel .do-knop { width: 100%; }
+  .dc-bel-of { margin: 14px 0; font: 400 13px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.5); }
+  .dc-bel-tel { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; color: #FFFFFF; text-decoration: none; font: 700 15px var(--font-montserrat), system-ui, sans-serif; }
+  .dc-bel-tel:hover { color: #9BCB6C; }
+  .dc-bel-ok { padding: 18px 0; font: 600 15px/1.6 var(--font-inter), system-ui, sans-serif; color: #FFFFFF; }
+
+  .dc-methode { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: center; }
+  .dc-tegels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #E5E7EB; border-radius: 18px; overflow: hidden; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .dc-tegel { padding: 22px 20px; border-right: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB; }
+  .dc-tegel:nth-child(3n) { border-right: 0; }
+  .dc-tegel:nth-child(n+4) { border-bottom: 0; }
+  .dc-tegel small { display: block; margin-bottom: 10px; font: 700 12px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; }
+  .dc-tegel b { display: block; margin-bottom: 6px; font: 800 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+  .dc-tegel p { margin: 0; font: 400 13.5px/1.55 var(--font-inter), system-ui, sans-serif; color: #545454; }
+
+  .dc-regio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .dc-pc { margin-top: 24px; padding: 22px; border-radius: 16px; background: #0B0F0C; }
+  .dc-pc label { display: block; margin-bottom: 12px; font: 700 15px var(--font-montserrat), system-ui, sans-serif; color: #FFFFFF; }
+  .dc-pc-rij { display: flex; gap: 10px; }
+  .dc-pc input { flex: 1; min-width: 0; height: 50px; padding: 0 14px; border-radius: 10px; border: 1px solid transparent; background: #FFFFFF; color: #1A1A1A; font: 400 16px var(--font-inter), system-ui, sans-serif; }
+  .dc-pc input:focus { outline: none; border-color: #9BCB6C; box-shadow: 0 0 0 3px rgba(155,203,108,0.3); }
+  .dc-pc .do-knop { height: 50px; }
+  .dc-pc-antwoord { margin: 14px 0 0; font: 500 14.5px/1.5 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.85); }
+  .dc-pc-antwoord a { color: #9BCB6C; font-weight: 700; }
+  .dc-prov { padding: 26px; border-radius: 18px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
+  .dc-prov b { display: block; margin-bottom: 14px; font: 800 17px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+  .dc-prov ul { margin: 0; padding: 0; list-style: none; }
+  .dc-prov li { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid #E5E7EB; font: 500 15px var(--font-inter), system-ui, sans-serif; color: #1A1A1A; }
+  .dc-prov-noot { margin: 14px 0 0; font: 400 13px var(--font-inter), system-ui, sans-serif; color: #545454; }
+
+  @media (max-width: 960px) {
+    .dc-info, .dc-methode, .dc-regio { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .dc-bel { position: static; }
+    .dc-tegels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dc-tegel:nth-child(3n) { border-right: 1px solid #E5E7EB; }
+    .dc-tegel:nth-child(2n) { border-right: 0; }
+    .dc-tegel:nth-child(n+4) { border-bottom: 1px solid #E5E7EB; }
+    .dc-tegel:nth-child(n+5) { border-bottom: 0; }
+  }
   @media (max-width: 960px) {
     .dc-vs, .dc-kleur { grid-template-columns: minmax(0, 1fr); gap: 32px; }
     .dc-kaart { padding: 24px; }
@@ -99,6 +190,30 @@ export default function DakcoatingPage() {
   const [openStap, setOpenStap] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [bezoekOpen, setBezoekOpen] = useState(false);
+  const [openInfo, setOpenInfo] = useState<number | null>(0);
+  const [belStatus, setBelStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [postcode, setPostcode] = useState("");
+  const [pcAntwoord, setPcAntwoord] = useState<null | boolean>(null);
+
+  async function belMij(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setBelStatus("sending");
+    const fd = new FormData(e.currentTarget);
+    fd.set("dienst", "dakcoating");
+    fd.set("bericht", "Bel mij terug over MOS-MAX (dakcoating)");
+    try {
+      const res = await fetch("/api/contact", { method: "POST", body: fd });
+      setBelStatus(res.ok ? "ok" : "error");
+    } catch {
+      setBelStatus("error");
+    }
+  }
+
+  function checkPostcode(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const pc = parseInt(postcode.replace(/\D/g, ""), 10);
+    setPcAntwoord(Number.isFinite(pc) && postcode.replace(/\D/g, "").length === 4 ? inWerkgebied(pc) : false);
+  }
 
   return (
     <PageLayout>
@@ -110,53 +225,75 @@ export default function DakcoatingPage() {
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakcoaten</p>
-            <p className="do-oog">Dakcoaten</p>
-            <h1 className="do-h1">Geef je dak opnieuw <span>kleur en bescherming.</span></h1>
-            <p className="do-p">Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag en hun kleur. Na een grondige reiniging geven we je dak met een professionele coating een nieuwe afwerking, zonder het te moeten vervangen.</p>
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-MAX</p>
+            <p className="do-oog">MOS-MAX · Dakcoating</p>
+            <h1 className="do-h1">Je dak weer als nieuw, <span>en jaren langer mee.</span></h1>
+            <p className="do-p">MOS-MAX is onze dakcoating: een professionele beschermlaag op je bestaande pannen. Je dak krijgt een nieuw leven en betere bescherming, voor een fractie van de prijs van een nieuw dak.</p>
+            <ul className="dc-hero-vink">
+              <li><i><CheckCircle2 size={14} strokeWidth={3} /></i>Geen dakvervanging nodig</li>
+              <li><i><CheckCircle2 size={14} strokeWidth={3} /></i>Je dak ziet er weer als nieuw uit</li>
+              <li><i><CheckCircle2 size={14} strokeWidth={3} /></i>Tot 10 jaar garantie op de hechting</li>
+            </ul>
             <div className="do-hero-knoppen">
-              <a className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
-              <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek</button>
+              <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je prijs in 60 seconden<ChevronRight size={17} /></Link>
+              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
             <HeroVertrouwen />
           </div>
         </div>
       </section>
 
-      {/* Waarom */}
+      {/* Uitleg + terugbelkaart */}
       <section className="do-sectie do-wit">
-        <div className="do-wrap do-waarom">
-          <div className="do-slider">
-            <img src="/images/IMG_4584 Vooraanzicht dakcoating.JPEG" alt="Dak met een nieuwe coating in antraciet, van bovenaf gezien" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
-          </div>
+        <div className="do-wrap dc-info">
           <div>
-            <p className="do-oog">Waarom coaten?</p>
-            <h2 className="do-h2">Je dak opnieuw beschermd. <span style={{ display: "block" }}>En weer als nieuw.</span></h2>
-            <div className="do-uitleg">
-              <p className="do-p">Na jaren regen, zon en vorst verliezen dakpannen hun beschermlaag. Ze worden poreus, nemen meer vocht op, verkleuren en mos krijgt sneller vat.</p>
-              <p className="do-p">Een dakcoating sluit de poriën van je dakpannen af en voorziet ze van een nieuwe fabriekslaag. Je dakpannen krijgen opnieuw een mooie, egale kleur en je dak ziet er weer als nieuw uit. Zo gaat je dak jaren langer mee, zonder dat je het hoeft te vervangen.</p>
+            <p className="do-oog">Gemaakt voor het Belgische weer</p>
+            <h2 className="do-h2">Een dakcoating die <span>tegen ons klimaat kan.</span></h2>
+            <p className="do-p" style={{ marginTop: 16 }}>Een professionele coating geeft je dak een nieuwe beschermlaag tegen regen, vorst en mos. Je dakpannen krijgen opnieuw een egale kleur en je dak gaat jaren langer mee.</p>
+            <div className="dc-acc">
+              {info.map((f, i) => {
+                const open = openInfo === i;
+                return (
+                  <div key={f.q} className={open ? "dc-acc-item open" : "dc-acc-item"}>
+                    <button type="button" aria-expanded={open} onClick={() => setOpenInfo(open ? null : i)}>
+                      {f.q}
+                      <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
+                    </button>
+                    <div className="dc-acc-tekst"><div>
+                      {f.a.split("\n\n").map((t) => <p key={t.slice(0, 24)}>{t}</p>)}
+                      {f.cta && <Link className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>}
+                    </div></div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Garantie */}
-      <section className="do-sectie do-zacht">
-        <div className="do-wrap">
-          <div className="do-garantie">
-            <div className="do-zegel" aria-hidden="true"><div><b>10</b><small>jaar<span className="zg-x"> garantie</span></small></div></div>
-            <div>
-              <p className="do-oog">Onze garantie</p>
-              <h2>10&nbsp;jaar garantie <span>op de hechting.</span></h2>
-              <p className="do-p" style={{ maxWidth: 560 }}>De coating blijft 10&nbsp;jaar hechten aan je pannen en bladert niet af.</p>
-            </div>
-            <a className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></a>
-          </div>
+          <aside className="dc-bel" aria-label="Laat je terugbellen">
+            <p className="dc-bel-oog">Wat kost MOS-MAX?</p>
+            <h3>Een vaste prijs, na een gratis plaatsbezoek.</h3>
+            <p className="dc-bel-sub">Tot 10 jaar garantie op de hechting. Offerte = factuur, geen meerwerk achteraf.</p>
+            {belStatus === "ok" ? (
+              <p className="dc-bel-ok" role="status">Bedankt! We bellen je zo snel mogelijk terug.</p>
+            ) : (
+              <form onSubmit={belMij}>
+                <input name="voornaam" placeholder="Je naam" required autoComplete="name" aria-label="Je naam" />
+                <input name="telefoon" type="tel" placeholder="Je telefoonnummer" required autoComplete="tel" aria-label="Je telefoonnummer" />
+                <button type="submit" className="do-knop do-knop-g" disabled={belStatus === "sending"}>
+                  {belStatus === "sending" ? <Loader2 size={17} className="zk-spin" /> : <Phone size={16} />}Bel mij terug
+                </button>
+                {belStatus === "error" && <p className="dc-bel-of" role="alert">Er ging iets mis. Bel ons gerust even.</p>}
+              </form>
+            )}
+            <p className="dc-bel-of">of</p>
+            <Link className="do-knop do-knop-d" href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>
+            <a className="dc-bel-tel" href="tel:+32468352869"><Phone size={15} />+32 468 35 28 69</a>
+          </aside>
         </div>
       </section>
 
       {/* Vervangen of coaten */}
-      <section className="do-sectie do-wit">
+      <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="do-kop">
             <div>
@@ -174,6 +311,23 @@ export default function DakcoatingPage() {
               <h3>Dak coaten <span className="dc-label">Slimmer</span></h3>
               <ul>{coaten.map((t) => <li key={t}><CheckCircle2 size={18} color="#9BCB6C" aria-hidden="true" />{t}</li>)}</ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Waarom MOS-MAX */}
+      <section className="do-sectie do-wit">
+        <div className="do-wrap dc-methode">
+          <div>
+            <p className="do-oog">Over de naam</p>
+            <h2 className="do-h2">Daarom heet onze methode <span>MOS-MAX.</span></h2>
+            <p className="do-p" style={{ margin: "16px 0 26px" }}>Dakrenovatie, dakbehandeling, coating: in de markt betekent dat vaak heel iets anders. Onze naam zegt wat je echt koopt.</p>
+            <Link className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></Link>
+          </div>
+          <div className="dc-tegels">
+            {methode.map((m, i) => (
+              <div key={m.titel} className="dc-tegel"><small>{String(i + 1).padStart(2, "0")}</small><b>{m.titel}</b><p>{m.tekst}</p></div>
+            ))}
           </div>
         </div>
       </section>
@@ -257,8 +411,37 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* Werkgebied */}
       <section className="do-sectie do-wit">
+        <div className="do-wrap dc-regio">
+          <div>
+            <p className="do-oog">Werkgebied</p>
+            <h2 className="do-h2">Komen we <span>tot bij jou?</span></h2>
+            <p className="do-p" style={{ marginTop: 16 }}>Vul je postcode in en je weet het meteen.</p>
+            <form className="dc-pc" onSubmit={checkPostcode}>
+              <label htmlFor="dc-postcode">Je postcode</label>
+              <div className="dc-pc-rij">
+                <input id="dc-postcode" inputMode="numeric" maxLength={4} placeholder="Bv. 2200" value={postcode} onChange={(e) => { setPostcode(e.target.value); setPcAntwoord(null); }} />
+                <button type="submit" className="do-knop do-knop-g">Check</button>
+              </div>
+              {pcAntwoord === true && <p className="dc-pc-antwoord" role="status">Goed nieuws: we komen tot bij jou. <Link href="/#calculator">Bereken je richtprijs</Link></p>}
+              {pcAntwoord === false && <p className="dc-pc-antwoord" role="status">Daar werken we normaal niet, maar <a href="tel:+32468352869">bel ons gerust even</a>.</p>}
+            </form>
+          </div>
+          <div className="dc-prov">
+            <b>We werken in 4 provincies</b>
+            <ul>
+              {["Antwerpen", "Limburg", "Vlaams-Brabant", "Oost-Vlaanderen"].map((p) => (
+                <li key={p}><MapPin size={17} color="#9BCB6C" aria-hidden="true" />{p}</li>
+              ))}
+            </ul>
+            <p className="dc-prov-noot">Net buiten de regio? Bel even, we bekijken het graag.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="do-kop">
             <div>
@@ -278,7 +461,7 @@ export default function DakcoatingPage() {
                   {open && (
                     <div className="do-antwoord">
                       <p>{f.a}</p>
-                      {f.cta && <a className="do-knop do-knop-g" style={{ height: 44, marginTop: 6, fontSize: 14 }} href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></a>}
+                      {f.cta && <Link className="do-knop do-knop-g" style={{ height: 44, marginTop: 6, fontSize: 14 }} href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>}
                     </div>
                   )}
                 </div>
