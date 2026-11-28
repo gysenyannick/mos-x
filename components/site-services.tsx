@@ -42,7 +42,7 @@ const services = [
     imgSubtitle: "Opfrisbeurt voor daken van 5 à 7 jaar.",
     badge: "5 jaar garantie",
     sticker: { groot: "5", klein: "garantie" },
-    href: "/contact",
+    href: "/diensten/hydrofuge",
     img: "/images/hydrofuge-poster.jpg",
     video: "/videos/hydrofuge.mp4",
     videoEinde: 0,
