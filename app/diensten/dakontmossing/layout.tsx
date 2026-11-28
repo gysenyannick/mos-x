@@ -3,11 +3,11 @@ import JsonLd from "@/components/json-ld";
 import { dienstSchema, kruimelSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "MOS-CLEAN dakreiniging en dakontmossing",
+  title: "Dakreiniging en dakontmossing met antimosbehandeling",
   description:
     "Professionele dakreiniging en dakontmossing door MOS-X: aangepaste druk, altijd een antimosbehandeling en een vaste prijs na een gratis plaatsbezoek. Actief in Antwerpen, Limburg en Vlaams-Brabant.",
   alternates: { canonical: "/diensten/dakontmossing" },
-  openGraph: { title: "MOS-CLEAN dakreiniging en dakontmossing | MOS-X", description: "Professionele dakreiniging en dakontmossing door MOS-X: aangepaste druk, altijd een antimosbehandeling en een vaste prijs na een gratis plaatsbezoek. Actief in Antwerpen, Limburg en Vlaams-Brabant.", url: "/diensten/dakontmossing", images: [{ url: "/images/Na%20bevel.jpg" }] },
+  openGraph: { title: "Dakreiniging en dakontmossing met antimosbehandeling | MOS-X", description: "Professionele dakreiniging en dakontmossing door MOS-X: aangepaste druk, altijd een antimosbehandeling en een vaste prijs na een gratis plaatsbezoek. Actief in Antwerpen, Limburg en Vlaams-Brabant.", url: "/diensten/dakontmossing", images: [{ url: "/images/Na%20bevel.jpg" }] },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
