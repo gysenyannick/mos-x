@@ -12,7 +12,7 @@ type MegaItem = { naam: string; dienst?: string; tekst: string; href: string; im
 const diensten: MegaItem[] = [
   { naam: "Dakreiniging", tekst: "Mos, algen en vuil weg. Je dak ziet er weer verzorgd uit.", href: "/diensten/dakontmossing", img: "/images/menu-dakreiniging.webp" },
   { naam: "MOS-MAX", dienst: "Dakcoating", tekst: "Een nieuwe beschermlaag. Je dak gaat tot 15 jaar langer mee.", href: "/diensten/dakcoating", img: "/images/menu-mosmax.webp" },
-  { naam: "MOS-PRO", dienst: "Hydrofuge", tekst: "Een waterafstotende laag. Regen parelt af, mos krijgt minder kans.", href: "/contact", img: "/images/menu-mospro.webp" },
+  { naam: "MOS-PLUS", dienst: "Hydrofuge", tekst: "Een waterafstotende laag. Regen parelt af, mos krijgt minder kans.", href: "/contact", img: "/images/menu-mospro.webp" },
   { naam: "MOS-CARE", dienst: "Onderhoudsplan", tekst: "We volgen je dak op en houden het jaar na jaar verzorgd.", href: "/diensten/onderhoudsplan", img: "/images/menu-moscare.webp" },
 ];
 
@@ -26,7 +26,7 @@ const links = [
 const mobieleDiensten = [
   { label: "Dakreiniging", sub: "Mos, algen en vuil weg", href: "/diensten/dakontmossing", Icoon: Droplets },
   { label: "MOS-MAX", sub: "Dakcoating", href: "/diensten/dakcoating", Icoon: Paintbrush },
-  { label: "MOS-PRO", sub: "Hydrofuge", href: "/contact", Icoon: Umbrella },
+  { label: "MOS-PLUS", sub: "Hydrofuge", href: "/contact", Icoon: Umbrella },
   { label: "MOS-CARE", sub: "Onderhoudsplan", href: "/diensten/onderhoudsplan", Icoon: CalendarCheck },
 ];
 

@@ -38,7 +38,7 @@ const services = [
   {
     id: "hydrofuge",
     title: "Hydrofuge",
-    pakket: "MOS-PRO",
+    pakket: "MOS-PLUS",
     imgSubtitle: "Opfrisbeurt voor daken van 5 à 7 jaar.",
     badge: "5 jaar garantie",
     sticker: { groot: "5", klein: "garantie" },
@@ -49,7 +49,7 @@ const services = [
     videoPosition: "center 100%",
     Icon: Umbrella,
     desc: "Een onzichtbare, waterafstotende laag. Regen parelt af en mos krijgt minder kans.",
-    link: "Ontdek MOS-PRO",
+    link: "Ontdek MOS-PLUS",
   },
 ];
 
