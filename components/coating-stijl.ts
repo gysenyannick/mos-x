@@ -166,12 +166,7 @@ export const COATING_CSS = `
     .dc-info { grid-template-columns: minmax(0, 1fr); gap: 36px; }
     .dc-bel { position: static; }
   }
-  @media (max-width: 960px) {
-    .dc-vs, .dc-kleur { grid-template-columns: minmax(0, 1fr); gap: 32px; }
-    .dc-kaart { padding: 24px; }
-  }
   @media (max-width: 560px) {
-    .dc-stalen { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 14px; }
     .dc-knoppen .do-knop { width: 100%; }
   }
 `;
