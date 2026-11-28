@@ -119,38 +119,11 @@ const COATING_CSS = `
   .dc-bel-tel:hover { color: #9BCB6C; }
   .dc-bel-ok { padding: 18px 0; font: 600 15px/1.6 var(--font-inter), system-ui, sans-serif; color: #FFFFFF; }
 
-  .dc-methode { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: center; }
-  .dc-tegels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid #E5E7EB; border-radius: 18px; overflow: hidden; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
-  .dc-tegel { padding: 22px 20px; border-right: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB; }
-  .dc-tegel:nth-child(3n) { border-right: 0; }
-  .dc-tegel:nth-child(n+4) { border-bottom: 0; }
-  .dc-tegel small { display: block; margin-bottom: 10px; font: 700 12px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; }
-  .dc-tegel b { display: block; margin-bottom: 6px; font: 800 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
-  .dc-tegel p { margin: 0; font: 400 13.5px/1.55 var(--font-inter), system-ui, sans-serif; color: #545454; }
 
-  .dc-regio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
-  .dc-pc { margin-top: 24px; padding: 22px; border-radius: 16px; background: #0B0F0C; }
-  .dc-pc label { display: block; margin-bottom: 12px; font: 700 15px var(--font-montserrat), system-ui, sans-serif; color: #FFFFFF; }
-  .dc-pc-rij { display: flex; gap: 10px; }
-  .dc-pc input { flex: 1; min-width: 0; height: 50px; padding: 0 14px; border-radius: 10px; border: 1px solid transparent; background: #FFFFFF; color: #1A1A1A; font: 400 16px var(--font-inter), system-ui, sans-serif; }
-  .dc-pc input:focus { outline: none; border-color: #9BCB6C; box-shadow: 0 0 0 3px rgba(155,203,108,0.3); }
-  .dc-pc .do-knop { height: 50px; }
-  .dc-pc-antwoord { margin: 14px 0 0; font: 500 14.5px/1.5 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.85); }
-  .dc-pc-antwoord a { color: #9BCB6C; font-weight: 700; }
-  .dc-prov { padding: 26px; border-radius: 18px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
-  .dc-prov b { display: block; margin-bottom: 14px; font: 800 17px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
-  .dc-prov ul { margin: 0; padding: 0; list-style: none; }
-  .dc-prov li { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid #E5E7EB; font: 500 15px var(--font-inter), system-ui, sans-serif; color: #1A1A1A; }
-  .dc-prov-noot { margin: 14px 0 0; font: 400 13px var(--font-inter), system-ui, sans-serif; color: #545454; }
 
   @media (max-width: 960px) {
-    .dc-info, .dc-methode, .dc-regio { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .dc-info { grid-template-columns: minmax(0, 1fr); gap: 36px; }
     .dc-bel { position: static; }
-    .dc-tegels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .dc-tegel:nth-child(3n) { border-right: 1px solid #E5E7EB; }
-    .dc-tegel:nth-child(2n) { border-right: 0; }
-    .dc-tegel:nth-child(n+4) { border-bottom: 1px solid #E5E7EB; }
-    .dc-tegel:nth-child(n+5) { border-bottom: 0; }
   }
   @media (max-width: 960px) {
     .dc-vs, .dc-kleur { grid-template-columns: minmax(0, 1fr); gap: 32px; }
