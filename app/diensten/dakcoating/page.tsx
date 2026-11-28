@@ -88,15 +88,6 @@ const COATING_CSS = `
     .dc-mv-item button { padding: 18px 18px; font-size: 14.5px; }
     .dc-mv-item .dc-acc-tekst p { padding: 0 18px 20px 18px; font-size: 14.5px; }
   }
-  .dc-vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-  .dc-kaart { padding: 32px; border-radius: 20px; border: 1px solid #E5E7EB; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
-  .dc-kaart.goed { border-color: #CFE5B8; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 0 0 3px rgba(155,203,108,0.15); }
-  .dc-kaart h3 { margin: 0 0 18px; display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; color: #1A1A1A; font-family: var(--font-montserrat), system-ui, sans-serif; }
-  .dc-label { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: #9BCB6C; color: #FFFFFF; }
-  .dc-kaart ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
-  .dc-kaart li { display: flex; align-items: flex-start; gap: 12px; font-size: 15.5px; line-height: 1.5; color: #1A1A1A; font-family: var(--font-inter), system-ui, sans-serif; text-wrap: pretty; }
-  .dc-kaart li svg { flex: none; margin-top: 2px; }
-  .dc-kaart:not(.goed) li { color: #545454; }
 
 
   .zk-spin { animation: dc-spin 1s linear infinite; }
