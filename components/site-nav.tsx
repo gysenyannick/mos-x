@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle, Building2 } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 const diensten = [
@@ -29,6 +29,7 @@ const mobieleLinks = [
   { label: "Realisaties", href: "/realisaties", Icoon: Images },
   { label: "Over ons",    href: "/over-ons",    Icoon: Users },
   { label: "Contact",     href: "/contact",     Icoon: Mail },
+  { label: "Zakelijk (B2B)", href: "/zakelijk",  Icoon: Building2 },
 ];
 
 const linkStijl: React.CSSProperties = {
@@ -95,6 +96,13 @@ export default function SiteNav() {
           html { scrollbar-color: #9BCB6C #F2F4F0; scrollbar-width: thin; }
         }
         .mx-glow:hover, .mx-glow:focus-visible { animation-play-state: paused; }
+        .mx-b2b { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 8px; border: 1px solid rgba(155,203,108,0.5);
+          color: #1A1A1A; text-decoration: none; white-space: nowrap; font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .02em;
+          transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease; }
+        .mx-b2b svg { color: #9BCB6C; }
+        .mx-b2b:hover { border-color: #9BCB6C; background: rgba(155,203,108,0.08); color: #7AB54E; }
+        .mx-b2b:active { transform: translateY(1px); }
+        .mx-b2b:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
         .mx-tel { margin-left: auto; margin-right: 6px; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px;
           border-radius: 8px; border: 1px solid rgba(155,203,108,0.5); color: #1A1A1A; text-decoration: none; white-space: nowrap;
           font: 700 13px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em;
@@ -212,6 +220,9 @@ export default function SiteNav() {
 
           {/* Desktop right */}
           <div className="hidden lg:flex items-center gap-4">
+            <Link href="/zakelijk" className="mx-b2b" aria-label="Zakelijk: dakreiniging voor bedrijven (B2B)">
+              <Building2 size={14} strokeWidth={2.2} aria-hidden="true" />B2B
+            </Link>
             <BtnPress
               href="tel:+32468352869"
               aria-label="Bel +32 468 35 28 69"
