@@ -18,7 +18,7 @@ const services = [
     videoEinde: 0, // geen knippunt: het volledige filmpje speelt in een lus
     videoPosition: "60% center",
     Icon: Droplets,
-    desc: "Verwijder mos en aanslag. Geef je dak zijn verzorgde uitstraling terug.",
+    desc: "Verwijder mos, algen en aanslag. Je dak krijgt zijn verzorgde uitstraling weer terug.",
     link: "Ontdek dakreiniging",
   },
   {
@@ -32,7 +32,7 @@ const services = [
     img: "/images/IMG_4468 (2).JPEG",
     video: "/videos/dakcoating-kaart.mp4",
     Icon: Shield,
-    desc: "Geef je dak een nieuwe uitstraling met een beschermende coating.",
+    desc: "Een nieuwe, beschermende laag over je pannen. Je dak ziet er weer als nieuw uit.",
     link: "Ontdek dakcoating",
   },
   {
