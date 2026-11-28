@@ -17,7 +17,7 @@ export default function SiteVergelijking() {
     <section className="vg-sectie" aria-labelledby="vg-titel">
       <style>{`
         .vg-sectie { position: relative; overflow: hidden; padding: 100px 20px;
-          background: radial-gradient(700px 420px at 85% 10%, rgba(155,203,108,0.14), transparent 65%), radial-gradient(600px 380px at 5% 95%, rgba(155,203,108,0.10), transparent 65%), #F7F8F6; }
+          background: radial-gradient(700px 420px at 85% 15%, rgba(155,203,108,0.08), transparent 65%), #FFFFFF; }
         .vg-wrap { position: relative; max-width: 1180px; margin: 0 auto; }
         .vg-kop { text-align: center; margin-bottom: 52px; }
         .vg-oog { margin: 0 0 12px; font: 700 12.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
@@ -27,14 +27,14 @@ export default function SiteVergelijking() {
 
         .vg-duo { position: relative; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: stretch; }
         .vg-paneel { display: flex; flex-direction: column; }
-        .vg-links { margin: 26px 0; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 20px 0 0 20px; border-right: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+        .vg-links { margin: 26px 0; background: #F7F8F6; border: 1px solid #E5E7EB; border-radius: 20px 0 0 20px; border-right: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
         .vg-rechts { position: relative; isolation: isolate; overflow: hidden; border-radius: 22px; background: #0B0F0C; border-top: 4px solid #9BCB6C;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -36px rgba(11,15,12,0.65); }
         .vg-rechts::before { content: ""; position: absolute; z-index: -1; inset: 0;
           background: radial-gradient(520px 340px at 100% 0%, rgba(155,203,108,0.16), transparent 70%), radial-gradient(420px 300px at 0% 100%, rgba(155,203,108,0.08), transparent 70%); }
         .vg-dak { position: absolute; z-index: -1; right: -40px; bottom: -30px; width: 380px; height: auto; opacity: 0.06; color: #9BCB6C; }
 
-        .vg-rij { display: flex; align-items: center; gap: 14px; min-height: 76px; padding: 0 28px; border-bottom: 1px solid #EEF0EA; }
+        .vg-rij { display: flex; align-items: center; gap: 14px; min-height: 76px; padding: 0 28px; border-bottom: 1px solid #E5E7EB; }
         .vg-rij:last-child { border-bottom: 0; }
         .vg-rechts .vg-rij { border-bottom-color: rgba(255,255,255,0.08); padding: 0 32px; }
         .vg-hoofd { min-height: 86px !important; }
@@ -45,14 +45,14 @@ export default function SiteVergelijking() {
 
         .vg-ja, .vg-nee { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; }
         .vg-ja { background: #9BCB6C; color: #FFFFFF; }
-        .vg-nee { background: #F2F3F0; color: #A3A79E; }
+        .vg-nee { background: #FFFFFF; color: #A3A79E; border: 1px solid #E5E7EB; }
         .vg-tekst { min-width: 0; }
         .vg-tekst b { display: block; font: 700 15.5px/1.3 var(--font-montserrat), system-ui, sans-serif; color: #FFFFFF; white-space: nowrap; }
         .vg-tekst small { display: block; margin-top: 3px; font: 400 13.5px/1.4 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.66); white-space: nowrap; }
         .vg-nee-tekst { font: 400 14.5px/1.4 var(--font-inter), system-ui, sans-serif; color: #545454; white-space: nowrap; }
 
         .vg-vs { position: absolute; z-index: 3; top: 50%; left: calc(45% - 30px); transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%;
-          display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; border: 4px solid #F7F8F6;
+          display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; border: 4px solid #FFFFFF;
           font: 800 17px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; box-shadow: 0 10px 24px -8px rgba(122,181,78,0.8); }
 
         @media (max-width: 1080px) {
