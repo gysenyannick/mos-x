@@ -1,57 +1,81 @@
 import { Check, X } from "lucide-react";
 
 const rijen = [
-  { titel: "Offerte dezelfde dag", sub: "Geen weken wachten op een prijs" },
-  { titel: "Snel ingepland", sub: "Ook in het hoogseizoen" },
-  { titel: "Prijsvaste offerte", sub: "Offerte = factuur, geen meerwerk achteraf" },
-  { titel: "10 jaar garantie op de coating", sub: "Bladert niet af" },
-  { titel: "Dakwerkers, geen schoonmakers", sub: "Vakmannen die je dak echt kennen" },
-  { titel: "Kleine herstellingen inbegrepen", sub: "Meteen gedaan, geen tweede firma nodig" },
-  { titel: "VCA-gecertificeerd", sub: "Veilig werken op je dak" },
-  { titel: "Eén vast aanspreekpunt", sub: "Van offerte tot oplevering" },
+  { ja: "Offerte dezelfde dag", jaSub: "Geen weken wachten op een prijs.", nee: "Offerte laat vaak weken op zich wachten." },
+  { ja: "Snel ingepland", jaSub: "Ook in het hoogseizoen.", nee: "Lange wachtlijsten in het seizoen." },
+  { ja: "Prijsvaste offerte", jaSub: "Offerte = factuur, geen meerwerk achteraf.", nee: "Prijs wijzigt achteraf door meerwerk." },
+  { ja: "10 jaar garantie op de coating", jaSub: "Bladert niet af.", nee: "Weinig of geen garantie." },
+  { ja: "Dakwerkers, geen schoonmakers", jaSub: "Vakmannen die je dak echt kennen.", nee: "Schoonmakers zonder dakkennis." },
+  { ja: "Kleine herstellingen inbegrepen", jaSub: "Meteen gedaan, geen tweede firma nodig.", nee: "Voor herstellingen bel je een tweede firma." },
+  { ja: "VCA-gecertificeerd", jaSub: "Veilig werken op je dak.", nee: "Werkt zonder veiligheidsattest." },
+  { ja: "Eén vast aanspreekpunt", jaSub: "Van offerte tot oplevering.", nee: "Telkens iemand anders aan de lijn." },
 ];
 
-/** Homepage: vergelijking MOS-X tegenover een gewone dakreiniger. */
+/** Homepage: vergelijking MOS-X tegenover een gewone dakreiniger (twee panelen met VS). */
 export default function SiteVergelijking() {
   return (
     <section className="vg-sectie" aria-labelledby="vg-titel">
       <style>{`
-        .vg-sectie { padding: 96px 20px; background: radial-gradient(640px 380px at 50% 0%, rgba(155,203,108,0.08), transparent 70%), #FFFFFF; }
-        .vg-wrap { max-width: 920px; margin: 0 auto; }
-        .vg-kop { text-align: center; margin-bottom: 44px; }
-        .vg-oog { margin: 0 0 12px; font: 700 12.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
+        .vg-sectie { position: relative; overflow: hidden; padding: 100px 20px;
+          background: radial-gradient(700px 420px at 85% 10%, rgba(155,203,108,0.14), transparent 65%), radial-gradient(600px 380px at 5% 95%, rgba(155,203,108,0.10), transparent 65%), #F7F8F6; }
+        .vg-wrap { position: relative; max-width: 1180px; margin: 0 auto; }
+        .vg-kop { text-align: center; margin-bottom: 52px; }
+        .vg-oog { margin: 0 0 12px; font: 700 12.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #7AB54E; }
         .vg-titel { margin: 0; font: 800 clamp(1.75rem, 3.4vw, 2.5rem)/1.15 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #1A1A1A; text-wrap: balance; }
         .vg-titel span { color: #9BCB6C; }
         .vg-sub { margin: 14px 0 0; font: 400 16px/1.6 var(--font-inter), system-ui, sans-serif; color: #545454; }
 
-        .vg-tabel { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 190px 170px; }
-        .vg-mosx-bg { position: relative; z-index: 0; align-self: stretch; justify-self: stretch; border-radius: 18px; background: #F2F8EC; border: 2px solid #9BCB6C;
-          box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 24px 48px -30px rgba(122,181,78,0.6); }
-        .vg-cel { position: relative; z-index: 1; display: flex; align-items: center; min-height: 74px; border-bottom: 1px solid #E5E7EB; }
-        .vg-cel.mid { justify-content: center; }
-        .vg-rij-laatst { border-bottom: 0; }
-        .vg-kopcel { min-height: 68px; border-bottom: 1px solid #E5E7EB; }
-        .vg-merk { font: 800 17px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; color: #1A1A1A; }
-        .vg-merk b { color: #7AB54E; }
-        .vg-ander { font: 500 15px var(--font-inter), system-ui, sans-serif; color: #545454; }
-        .vg-tekst { padding: 14px 16px 14px 4px; }
-        .vg-tekst b { display: block; font: 700 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; letter-spacing: -0.01em; }
-        .vg-tekst small { display: block; margin-top: 3px; font: 400 13.5px/1.45 var(--font-inter), system-ui, sans-serif; color: #545454; }
-        .vg-ja { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; }
-        .vg-nee { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #F7F8F6; color: #B0B4AB; border: 1px solid #E5E7EB; }
+        .vg-duo { position: relative; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: stretch; }
+        .vg-paneel { display: flex; flex-direction: column; }
+        .vg-links { margin: 26px 0; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 20px 0 0 20px; border-right: 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+        .vg-rechts { position: relative; isolation: isolate; overflow: hidden; border-radius: 22px; background: #0B0F0C; border-top: 4px solid #9BCB6C;
+          box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -36px rgba(11,15,12,0.65); }
+        .vg-rechts::before { content: ""; position: absolute; z-index: -1; inset: 0;
+          background: radial-gradient(520px 340px at 100% 0%, rgba(155,203,108,0.16), transparent 70%), radial-gradient(420px 300px at 0% 100%, rgba(155,203,108,0.08), transparent 70%); }
+        .vg-dak { position: absolute; z-index: -1; right: -40px; bottom: -30px; width: 380px; height: auto; opacity: 0.06; color: #9BCB6C; }
 
-        @media (max-width: 640px) {
-          .vg-sectie { padding: 64px 14px; }
-          .vg-kop { margin-bottom: 30px; }
-          .vg-tabel { grid-template-columns: minmax(0, 1fr) 76px 66px; }
-          .vg-tekst { padding: 12px 8px 12px 2px; }
-          .vg-tekst b { font-size: 14px; }
-          .vg-tekst small { font-size: 12px; }
-          .vg-cel { min-height: 66px; }
-          .vg-merk { font-size: 13px; }
-          .vg-ander { font-size: 11.5px; text-align: center; line-height: 1.25; }
-          .vg-ja, .vg-nee { width: 26px; height: 26px; }
-          .vg-mosx-bg { border-radius: 14px; }
+        .vg-rij { display: flex; align-items: center; gap: 14px; min-height: 76px; padding: 0 28px; border-bottom: 1px solid #EEF0EA; }
+        .vg-rij:last-child { border-bottom: 0; }
+        .vg-rechts .vg-rij { border-bottom-color: rgba(255,255,255,0.08); padding: 0 32px; }
+        .vg-hoofd { min-height: 86px !important; }
+        .vg-hoofd b { font: 800 21px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; }
+        .vg-links .vg-hoofd b { color: #545454; }
+        .vg-rechts .vg-hoofd b { color: #FFFFFF; }
+        .vg-rechts .vg-hoofd b em { font-style: normal; color: #9BCB6C; }
+
+        .vg-ja, .vg-nee { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; }
+        .vg-ja { background: #9BCB6C; color: #FFFFFF; }
+        .vg-nee { background: #F2F3F0; color: #A3A79E; }
+        .vg-tekst { min-width: 0; }
+        .vg-tekst b { display: block; font: 700 15.5px/1.3 var(--font-montserrat), system-ui, sans-serif; color: #FFFFFF; white-space: nowrap; }
+        .vg-tekst small { display: block; margin-top: 3px; font: 400 13.5px/1.4 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.66); white-space: nowrap; }
+        .vg-nee-tekst { font: 400 14.5px/1.4 var(--font-inter), system-ui, sans-serif; color: #545454; white-space: nowrap; }
+
+        .vg-vs { position: absolute; z-index: 3; top: 50%; left: calc(45% - 30px); transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%;
+          display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; border: 4px solid #F7F8F6;
+          font: 800 17px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; box-shadow: 0 10px 24px -8px rgba(122,181,78,0.8); }
+
+        @media (max-width: 1080px) {
+          .vg-tekst b, .vg-tekst small, .vg-nee-tekst { white-space: normal; }
+        }
+        @media (max-width: 860px) {
+          .vg-sectie { padding: 72px 14px; }
+          .vg-kop { margin-bottom: 34px; }
+          .vg-duo { grid-template-columns: minmax(0, 1fr); }
+          .vg-rechts { order: -1; }
+          .vg-links { margin: 0 12px; border-radius: 0 0 18px 18px; border: 1px solid #E5E7EB; border-top: 0; }
+          .vg-vs { position: relative; top: auto; left: auto; transform: none; order: 0; margin: -30px auto -30px; }
+          .vg-links { order: 1; }
+          .vg-rechts { padding-bottom: 28px; }
+          .vg-nee-tekst, .vg-tekst small { text-wrap: pretty; }
+          .vg-rij { min-height: 64px; padding: 12px 20px !important; }
+          .vg-hoofd { min-height: 70px !important; }
+          .vg-links .vg-hoofd { padding-top: 34px !important; }
+          .vg-hoofd b { font-size: 18px; }
+          .vg-tekst b { font-size: 14.5px; }
+          .vg-tekst small { font-size: 13px; }
+          .vg-nee-tekst { font-size: 13.5px; }
+          .vg-dak { width: 260px; }
         }
       `}</style>
       <div className="vg-wrap">
@@ -61,34 +85,28 @@ export default function SiteVergelijking() {
           <p className="vg-sub">Zie het verschil met een gewone dakreiniger.</p>
         </div>
 
-        <div className="vg-tabel" role="table" aria-label="Vergelijking MOS-X met een andere firma">
-          <div className="vg-mosx-bg" style={{ gridColumn: 2, gridRow: `1 / span ${rijen.length + 1}` }} aria-hidden="true" />
-
-          <div className="vg-cel vg-kopcel" role="columnheader" style={{ gridColumn: 1, gridRow: 1 }}><span className="sr-only">Wat je krijgt</span></div>
-          <div className="vg-cel vg-kopcel mid" role="columnheader" style={{ gridColumn: 2, gridRow: 1, borderBottomColor: "rgba(155,203,108,0.45)" }}>
-            <span className="vg-merk">MOS-<b>X</b></span>
-          </div>
-          <div className="vg-cel vg-kopcel mid" role="columnheader" style={{ gridColumn: 3, gridRow: 1 }}>
-            <span className="vg-ander">Andere firma</span>
+        <div className="vg-duo">
+          <div className="vg-paneel vg-links" aria-label="Andere firma">
+            <div className="vg-rij vg-hoofd"><span className="vg-nee" aria-hidden="true"><X size={14} strokeWidth={2.8} /></span><b>Andere firma</b></div>
+            {rijen.map((r) => (
+              <div key={r.nee} className="vg-rij"><span className="vg-nee" aria-hidden="true"><X size={14} strokeWidth={2.8} /></span><span className="vg-nee-tekst">{r.nee}</span></div>
+            ))}
           </div>
 
-          {rijen.map((r, i) => {
-            const laatst = i === rijen.length - 1;
-            const rij = i + 2;
-            return (
-              <div key={r.titel} role="row" style={{ display: "contents" }}>
-                <div role="cell" className={`vg-cel${laatst ? " vg-rij-laatst" : ""}`} style={{ gridColumn: 1, gridRow: rij }}>
-                  <div className="vg-tekst"><b>{r.titel}</b><small>{r.sub}</small></div>
-                </div>
-                <div role="cell" className={`vg-cel mid${laatst ? " vg-rij-laatst" : ""}`} style={{ gridColumn: 2, gridRow: rij, borderBottomColor: "rgba(155,203,108,0.35)" }}>
-                  <span className="vg-ja" aria-label="Ja"><Check size={17} strokeWidth={3} /></span>
-                </div>
-                <div role="cell" className={`vg-cel mid${laatst ? " vg-rij-laatst" : ""}`} style={{ gridColumn: 3, gridRow: rij }}>
-                  <span className="vg-nee" aria-label="Nee"><X size={15} strokeWidth={2.6} /></span>
-                </div>
+          <div className="vg-vs vg-vs-plek" aria-hidden="true">VS</div>
+
+          <div className="vg-paneel vg-rechts" aria-label="MOS-X">
+            <svg className="vg-dak" viewBox="0 0 200 140" fill="none" stroke="currentColor" strokeWidth="10" strokeLinejoin="round" aria-hidden="true">
+              <path d="M10 130 L10 70 L100 10 L190 70 L190 130" /><path d="M60 130 L60 90 L100 64 L140 90 L140 130" />
+            </svg>
+            <div className="vg-rij vg-hoofd"><span className="vg-ja" aria-hidden="true"><Check size={15} strokeWidth={3} /></span><b>MOS-<em>X</em></b></div>
+            {rijen.map((r) => (
+              <div key={r.ja} className="vg-rij">
+                <span className="vg-ja" aria-hidden="true"><Check size={15} strokeWidth={3} /></span>
+                <div className="vg-tekst"><b>{r.ja}</b><small>{r.jaSub}</small></div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>
