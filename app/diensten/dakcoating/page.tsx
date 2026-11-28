@@ -42,6 +42,18 @@ const resultaten = [
   { titel: "Dakreiniging en dakcoating", voor: "/images/FullSizeRender.JPEG", na: "/images/IMG_4574.JPEG", info: "Schilde · betonpannen in antraciet" },
 ];
 
+const misverstanden: { q: string; a: string }[] = [
+  { q: "Als mijn dak groen ziet, moet het vervangen worden.", a: "Mos groeit op het oppervlak, niet door de pan heen. Vaak is enkel de beschermlaag van je pannen versleten en gaan de pannen zelf nog jaren mee. Bij de gratis dakinspectie bekijken we hoe je dak er echt aan toe is en zeggen we eerlijk of coaten nog zin heeft." },
+  { q: "Een coating kost bijna evenveel als een nieuw dak.", a: "Nee. Voor een nieuw dak betaal je nieuwe pannen, latten, folie, stellingen en vaak weken werk. Bij een coating houden we je bestaande dak en geven we het een nieuwe beschermlaag. Dat kost maar een deel van een nieuw dak. Bereken je richtprijs en zie het zelf." },
+  { q: "Ik koop gewoon nieuwe pannen en vervang ze zelf.", a: "Een paar kapotte pannen vervangen kan, en dat doen we bij kleine herstellingen gewoon mee. Maar nieuwe pannen tussen oude zie je meteen, en de rest van je dak blijft verweren. Een coating pakt het hele dak in één keer aan." },
+  { q: "Dat is gewoon verf die er na drie jaar afbladdert.", a: "Een dakcoating is geen gewone verf. Afbladderen komt bijna altijd door slechte voorbereiding of werken bij slecht weer. Daarom reinigen we eerst grondig, brengen we een primer aan en coaten we enkel als het droog is. Op de coating krijg je 10 jaar garantie." },
+  { q: "Ik kan mijn dak zelf afspuiten.", a: "Met een gewone hogedrukreiniger spuit je de toplaag van je pannen mee weg en duw je water onder de pannen. En je staat op hoogte zonder beveiliging. Wij reinigen met aangepaste druk en de juiste uitrusting." },
+  { q: "Is het mos wegschrapen niet genoeg?", a: "Schrapen haalt het zichtbare mos weg, maar de sporen blijven zitten. Zonder behandeling erna komt het mos snel terug en ben je binnen korte tijd terug bij af." },
+  { q: "Mijn dak lekt niet, dus er is niks aan de hand.", a: "Schade aan een dak bouwt zich traag op. Vocht trekt in de pannen, bij vorst barsten ze, en tegen dat het binnen lekt, is de schade veel groter. Wie op tijd iets doet, betaalt minder." },
+  { q: "Als mijn dak lekt, moet het hele dak vervangen worden.", a: "Niet altijd. Vaak gaat het om een paar kapotte pannen, een losse nok of een slechte aansluiting. Dat herstellen we, en daarna bekijken we samen of een coating je dak nog jaren kan laten meegaan." },
+  { q: "Alle dakfirma's doen hetzelfde.", a: "Het verschil zit in wat je niet ziet: de voorbereiding, de producten, de droogtijd en wie het werk doet. Bij MOS-X doen we het werk zelf, zonder onderaannemers, en krijg je vooraf een vaste prijs." },
+];
+
 const faqs: { q: string; a: string; cta?: boolean }[] = [
   { q: "Welke garantie krijg ik?", a: "Je krijgt 10 jaar garantie op de hechting van de coating. Dat wil zeggen dat de coating aan je pannen blijft hechten en niet afbladert. Een kleur die door zon en weer wat verbleekt, valt daar niet onder." },
   { q: "Wanneer is dakcoating nodig?", a: "Wanneer betonpannen of kunstleien poreus geworden zijn en hun beschermlaag verloren hebben. Tijdens het plaatsbezoek bekijken we de staat van je dak en geven we eerlijk advies." },
@@ -52,6 +64,30 @@ const faqs: { q: string; a: string; cta?: boolean }[] = [
 ];
 
 const COATING_CSS = `
+  .dc-mv-kop { text-align: center; margin: 0 auto 44px; }
+  .dc-mv-kop .do-h2 { text-align: center; }
+  .dc-mv { max-width: 820px; margin: 0 auto; display: grid; gap: 10px; }
+  .dc-mv-item { border-radius: 12px; background: #FFFFFF; border: 1px solid #E5E7EB; transition: border-color .2s ease, box-shadow .2s ease; }
+  .dc-mv-item:hover { border-color: #CFE5B8; }
+  .dc-mv-item.open { border-color: #9BCB6C; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 18px 40px -24px rgba(30,51,36,0.35); }
+  .dc-mv-item button { width: 100%; display: flex; align-items: center; gap: 14px; padding: 20px 24px; background: none; border: 0; border-radius: 12px; cursor: pointer; text-align: left;
+    font: 700 15.5px/1.4 var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+  .dc-mv-item button:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+  .dc-mv-item button:active { transform: translateY(1px); }
+  .dc-mv-q { flex: 1; min-width: 0; }
+  .dc-mv-q i { font-style: normal; font-weight: 800; color: #9BCB6C; }
+  .dc-mv-q i:first-child { margin-right: 8px; }
+  .dc-mv-q i:last-child { margin-left: 6px; }
+  .dc-mv-plus { flex: none; position: relative; width: 16px; height: 16px; color: #1A1A1A; }
+  .dc-mv-plus::before, .dc-mv-plus::after { content: ""; position: absolute; left: 0; top: 7px; width: 16px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .25s ease; }
+  .dc-mv-plus::after { transform: rotate(90deg); }
+  .dc-mv-item.open .dc-mv-plus { color: #9BCB6C; }
+  .dc-mv-item.open .dc-mv-plus::after { transform: rotate(0deg); }
+  .dc-mv-item .dc-acc-tekst p { margin: 0; padding: 0 28px 22px 50px; font: 400 15px/1.7 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
+  @media (max-width: 640px) {
+    .dc-mv-item button { padding: 18px 18px; font-size: 14.5px; }
+    .dc-mv-item .dc-acc-tekst p { padding: 0 18px 20px 18px; font-size: 14.5px; }
+  }
   .dc-vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   .dc-kaart { padding: 32px; border-radius: 20px; border: 1px solid #E5E7EB; background: #FFFFFF; box-shadow: 0 2px 16px rgba(0,0,0,0.07); }
   .dc-kaart.goed { border-color: #CFE5B8; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 0 0 3px rgba(155,203,108,0.15); }
@@ -124,6 +160,7 @@ const COATING_CSS = `
   .dc-acc-item.open .do-pijl { transform: rotate(180deg); }
   .dc-acc-tekst { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
   .dc-acc-item.open .dc-acc-tekst { grid-template-rows: 1fr; }
+  .dc-mv-item.open .dc-acc-tekst { grid-template-rows: 1fr; }
   .dc-acc-tekst > div { overflow: hidden; }
   .dc-acc-tekst p { margin: 0 0 14px; font: 400 15.5px/1.7 var(--font-inter), system-ui, sans-serif; color: #545454; }
   .dc-acc-tekst .do-knop { margin: 0 0 20px; height: 44px; font-size: 14px; }
@@ -170,6 +207,7 @@ function WhatsAppIcoon() {
 }
 
 export default function DakcoatingPage() {
+  const [openMv, setOpenMv] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [bezoekOpen, setBezoekOpen] = useState(false);
   const [openInfo, setOpenInfo] = useState<number | null>(null);
@@ -350,8 +388,32 @@ export default function DakcoatingPage() {
       </section>
 
 
-      {/* FAQ */}
+      {/* Misverstanden */}
       <section className="do-sectie do-wit">
+        <div className="do-wrap">
+          <div className="dc-mv-kop">
+            <p className="do-oog">Veelgehoorde misverstanden</p>
+            <h2 className="do-h2">Wat we het <span>vaakst horen.</span></h2>
+          </div>
+          <div className="dc-mv">
+            {misverstanden.map((m, i) => {
+              const open = openMv === i;
+              return (
+                <div key={m.q} className={open ? "dc-mv-item open" : "dc-mv-item"}>
+                  <button type="button" aria-expanded={open} onClick={() => setOpenMv(open ? null : i)}>
+                    <span className="dc-mv-q"><i aria-hidden="true">«</i>{m.q}<i aria-hidden="true">»</i></span>
+                    <span className="dc-mv-plus" aria-hidden="true" />
+                  </button>
+                  <div className="dc-acc-tekst"><div><p>{m.a}</p></div></div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="do-kop">
             <div>
@@ -386,7 +448,7 @@ export default function DakcoatingPage() {
       </section>
 
       {/* Afsluiter */}
-      <section className="do-sectie do-wit" style={{ paddingTop: 0 }}>
+      <section className="do-sectie do-zacht" style={{ paddingTop: 0 }}>
         <div className="do-wrap">
           <div className="do-cta">
             <div>
