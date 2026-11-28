@@ -37,9 +37,9 @@ export default function WerkgebiedCheck() {
         .wg-sectie { padding: 88px 20px; background: #F7F8F6; }
         .wg-wrap { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
         .wg-titel { margin: 0; white-space: nowrap; font: 800 clamp(1.9rem, 3vw, 2.5rem)/1.1 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #1A1A1A; }
-        .wg-titel span { position: relative; z-index: 0; }
-        .wg-titel span::after { content: ""; position: absolute; z-index: -1; left: -4px; right: -4px; bottom: 0.06em; height: 0.42em; border-radius: 3px; background: #9BCB6C; opacity: 0.6; }
-        .wg-tekst { margin: 14px 0 26px; max-width: 460px; font: 400 16.5px/1.65 var(--font-inter), system-ui, sans-serif; color: #545454; }
+        .wg-titel span { color: #9BCB6C; }
+        .wg-oog { margin: 0 0 12px; font: 700 12.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #9BCB6C; }
+        .wg-tekst { margin: 14px 0 26px; max-width: 500px; text-wrap: pretty; font: 400 16.5px/1.65 var(--font-inter), system-ui, sans-serif; color: #545454; }
         .wg-pc { padding: 24px; border-radius: 14px; background: #0B0F0C; }
         .wg-pc label { display: block; margin-bottom: 14px; font: 700 17px var(--font-montserrat), system-ui, sans-serif; color: #FFFFFF; }
         .wg-pc-rij { display: flex; gap: 10px; }
@@ -75,8 +75,9 @@ export default function WerkgebiedCheck() {
       `}</style>
       <div className="wg-wrap">
         <div>
+          <p className="wg-oog">Werkgebied</p>
           <h2 id="wg-titel" className="wg-titel">Komen we <span>tot bij jou?</span></h2>
-          <p className="wg-tekst">We werken in Antwerpen, Limburg, Vlaams-Brabant en Oost-Vlaanderen. Vul je postcode in en je krijgt meteen antwoord.</p>
+          <p className="wg-tekst">We werken in Antwerpen, Limburg, Vlaams‑Brabant en Oost‑Vlaanderen. Vul je postcode in en je krijgt meteen antwoord.</p>
           <form className="wg-pc" onSubmit={check}>
             <label htmlFor="wg-postcode">Vul je postcode in</label>
             <div className="wg-pc-rij">

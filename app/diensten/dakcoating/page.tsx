@@ -29,15 +29,6 @@ const info: { q: string; a: string; cta?: boolean }[] = [
   { q: "Dakcoating of een nieuw dak?", a: "Een nieuw dak kost al snel een veelvoud van een coating, met afbraak, containers en weken werk. Zijn je pannen nog stevig en is het onderdak in orde, dan geeft een coating je dak een tweede leven voor een fractie van de prijs.\n\nBovendien spaar je het milieu: geen nieuwe materialen, geen transport en geen berg bouwafval." },
 ];
 
-const methode = [
-  { titel: "Werkwijze", tekst: "Vaste stappen in een vaste volgorde, niet wat die dag uitkomt." },
-  { titel: "Kwaliteit", tekst: "Dezelfde eisen voor elk dak, groot of klein." },
-  { titel: "Materialen", tekst: "Producten gekozen voor jouw type dakpan." },
-  { titel: "Documentatie", tekst: "Foto's van voor en na, en wat we gedaan hebben." },
-  { titel: "Garantie", tekst: "Schriftelijk, tot 10 jaar op de hechting." },
-  { titel: "Uitvoering", tekst: "Eigen mensen, geen onderaannemers." },
-];
-
 const geschikt = [
   { label: "Betonpannen", img: "/images/Betonpannen.jpg" },
   { label: "Kunstleien", img: "/images/Kunstleien.jfif" },
@@ -84,11 +75,15 @@ const COATING_CSS = `
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
-  .dc-h1 { max-width: 640px; margin-bottom: 26px; font-size: clamp(2rem, 3.3vw, 2.85rem); line-height: 1.12; }
-  .dc-h1 mark { position: relative; z-index: 0; background: none; color: #FFFFFF; white-space: nowrap; }
-  .dc-h1 mark::after { content: ""; position: absolute; z-index: -1; left: -4px; right: -4px; bottom: 0.06em; height: 0.42em; border-radius: 3px; background: #9BCB6C; opacity: 0.75; }
+  .dc-h1 { max-width: 620px; margin-bottom: 26px; font-size: clamp(2rem, 3.3vw, 2.85rem); line-height: 1.12; text-wrap: balance; }
+  .dc-h1 span { text-wrap: balance; }
   .dc-hero .do-p { margin-bottom: 30px; }
   .dc-hero .do-hero-knoppen { margin-bottom: 40px; }
+  .dc-naam { margin-top: 16px; max-width: 540px; }
+  .dc-pijlers { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 18px; }
+  .dc-pijlers li { display: flex; align-items: center; gap: 10px; font: 500 14.5px var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.85); }
+  .dc-pijlers i { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
+  @media (max-width: 560px) { .dc-pijlers { grid-template-columns: minmax(0, 1fr); } }
   .dc-hero-vink { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
   .dc-hero-vink li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; color: rgba(255,255,255,0.85); font-family: var(--font-inter), system-ui, sans-serif; }
   .dc-hero-vink i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
@@ -186,7 +181,7 @@ export default function DakcoatingPage() {
     setBelStatus("sending");
     const fd = new FormData(e.currentTarget);
     fd.set("dienst", "dakcoating");
-    fd.set("bericht", "Bel mij terug over MOS-MAX (dakcoating)");
+    fd.set("bericht", "Aanvraag gratis dakinspectie (MOS-MAX dakcoating)");
     try {
       const res = await fetch("/api/contact", { method: "POST", body: fd });
       setBelStatus(res.ok ? "ok" : "error");
@@ -208,12 +203,12 @@ export default function DakcoatingPage() {
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-MAX</p>
             <p className="do-oog">Vergeet je zorgen over je dak</p>
-            <h1 className="do-h1 dc-h1">MOS-MAX is de dakcoating die je dak <mark>tot 15 jaar langer</mark> laat meegaan.</h1>
+            <h1 className="do-h1 dc-h1">MOS-MAX is de dakcoating die je dak <span>tot 15 jaar langer laat meegaan.</span></h1>
             <p className="do-p">MOS-MAX is onze dakcoating: een professionele coating die over je dakpannen wordt aangebracht en je dak nieuw leven en betere bescherming geeft, voor een fractie van de prijs van een nieuw dak.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Je stelt een nieuw dak uit, of vermijdt het helemaal</li>
-              <li><i><Check size={14} strokeWidth={3.2} /></i>Je dak ziet er weer als nieuw uit, en gaat jaren mee</li>
               <li><i><Check size={14} strokeWidth={3.2} /></i>Je bespaart duizenden euro&apos;s</li>
+              <li><i><Check size={14} strokeWidth={3.2} /></i>Je dak ziet er weer als nieuw uit, en gaat jaren mee</li>
             </ul>
             <div className="do-hero-knoppen">
               <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je prijs in 60 seconden<ChevronRight size={17} /></Link>
@@ -253,18 +248,18 @@ export default function DakcoatingPage() {
             </div>
           </div>
 
-          <aside className="dc-bel" aria-label="Laat je terugbellen">
-            <p className="dc-bel-oog">Wat kost MOS-MAX?</p>
-            <h3>Een vaste prijs, na een gratis plaatsbezoek.</h3>
-            <p className="dc-bel-sub">Tot 10 jaar garantie op de hechting. Offerte = factuur, geen meerwerk achteraf.</p>
+          <aside className="dc-bel" aria-label="Vraag een gratis dakinspectie aan">
+            <p className="dc-bel-oog">Gratis dakinspectie</p>
+            <h3>Laat je dak gratis inspecteren.</h3>
+            <p className="dc-bel-sub">We bekijken je dak ter plaatse en je krijgt een vaste prijs. Laat je naam en nummer achter, dan bellen we je om een afspraak te maken.</p>
             {belStatus === "ok" ? (
-              <p className="dc-bel-ok" role="status">Bedankt! We bellen je zo snel mogelijk terug.</p>
+              <p className="dc-bel-ok" role="status">Bedankt! We bellen je snel om je gratis dakinspectie in te plannen.</p>
             ) : (
               <form onSubmit={belMij}>
                 <input name="voornaam" placeholder="Je naam" required autoComplete="name" aria-label="Je naam" />
                 <input name="telefoon" type="tel" placeholder="Je telefoonnummer" required autoComplete="tel" aria-label="Je telefoonnummer" />
                 <button type="submit" className="do-knop do-knop-g" disabled={belStatus === "sending"}>
-                  {belStatus === "sending" ? <Loader2 size={17} className="zk-spin" /> : <Phone size={16} />}Bel mij terug
+                  {belStatus === "sending" ? <Loader2 size={17} className="zk-spin" /> : <CalendarCheck size={17} />}Vraag gratis inspectie aan
                 </button>
                 {belStatus === "error" && <p className="dc-bel-of" role="alert">Er ging iets mis. Bel ons gerust even.</p>}
               </form>
@@ -273,23 +268,6 @@ export default function DakcoatingPage() {
             <Link className="do-knop do-knop-d" href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>
             <a className="dc-bel-tel" href="tel:+32468352869"><Phone size={15} />+32 468 35 28 69</a>
           </aside>
-        </div>
-      </section>
-
-      {/* Waarom MOS-MAX */}
-      <section className="do-sectie do-zacht">
-        <div className="do-wrap dc-methode">
-          <div>
-            <p className="do-oog">Over de naam</p>
-            <h2 className="do-h2">Daarom heet onze methode <span>MOS-MAX.</span></h2>
-            <p className="do-p" style={{ margin: "16px 0 26px" }}>Dakrenovatie, dakbehandeling, coating: in de markt betekent dat vaak heel iets anders. Onze naam zegt wat je echt koopt.</p>
-            <Link className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={17} /></Link>
-          </div>
-          <div className="dc-tegels">
-            {methode.map((m, i) => (
-              <div key={m.titel} className="dc-tegel"><small>{String(i + 1).padStart(2, "0")}</small><b>{m.titel}</b><p>{m.tekst}</p></div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -302,6 +280,12 @@ export default function DakcoatingPage() {
           <div>
             <p className="do-oog">Onze werkwijze</p>
             <h2 className="do-h2">Zo coaten we <span>jouw dak.</span></h2>
+            <p className="do-p dc-naam">Daarom heet onze methode MOS-MAX: altijd dezelfde vaste stappen, in dezelfde volgorde, voor elk dak. Geen werk dat afhangt van hoe de dag loopt.</p>
+            <ul className="dc-pijlers">
+              {["Materialen gekozen voor jouw dakpan", "Foto's van voor en na", "Schriftelijke garantie", "Eigen mensen, geen onderaannemers"].map((t) => (
+                <li key={t}><i><Check size={12} strokeWidth={3.2} /></i>{t}</li>
+              ))}
+            </ul>
             <div className="do-stappen">
               {stappen.map((s, i) => {
                 const open = openStap === i;
