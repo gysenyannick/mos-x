@@ -8,6 +8,7 @@ import SiteAboutYannick         from "@/components/site-about-yannick";
 import SiteReviews         from "@/components/site-reviews";
 import SiteWerkwijze       from "@/components/site-werkwijze";
 import SiteDakcheck        from "@/components/site-dakcheck";
+import SiteVergelijking    from "@/components/site-vergelijking";
 import SiteFaq             from "@/components/site-faq";
 import SiteDakkleurBanner  from "@/components/site-dakkleur-banner";
 import SiteContact         from "@/components/site-contact";
@@ -37,6 +38,9 @@ export default function HomePage() {
 
         {/* 5 · Wie is Yannick? */}
         <SiteAboutYannick />
+
+        {/* Vergelijking: MOS-X tegenover een gewone dakreiniger */}
+        <SiteVergelijking />
 
         {/* 6 · Diensten */}
         <SiteServices />
