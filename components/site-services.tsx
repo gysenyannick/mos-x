@@ -126,9 +126,13 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
         }} />
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
           <style>{`
-            .sv-titel-p { font-size: 18.5px !important; }
-            @media (max-width: 1180px) and (min-width: 1024px) { .sv-titel-p { font-size: 15.5px !important; } }
-            @media (max-width: 1080px) { .sv-titel { flex-direction: column; } }
+            .sv-titel-p { font-size: 19px !important; }
+            .sv-titel { display: flex; align-items: center; gap: 12px; }
+            .sv-titel > span:first-child { white-space: nowrap; }
+            .sv-pakket { white-space: nowrap; padding-left: 12px; border-left: 2px solid rgba(155,203,108,0.55); line-height: 1;
+              font: 800 11.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: #9BCB6C; }
+            @media (max-width: 1180px) { .sv-titel { flex-direction: column; align-items: flex-start; gap: 6px; }
+              .sv-pakket { padding-left: 0; border-left: 0; order: -1; } }
           `}</style>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
@@ -139,9 +143,9 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
             </div>
             <p className="font-bold text-xl leading-tight sv-titel-p"
               style={{ fontFamily: "var(--font-montserrat), system-ui, sans-serif", color: hovered ? "#9BCB6C" : "#FFFFFF", transition: "color 200ms ease", letterSpacing: "-0.02em" }}>
-              <span className="sv-titel" style={{ display: "flex", flexWrap: "wrap", columnGap: "8px", rowGap: "2px" }}>
+              <span className="sv-titel">
                 <span style={{ whiteSpace: "nowrap" }}>{s.title}</span>
-                {s.pakket && <span style={{ whiteSpace: "nowrap", color: "#9BCB6C", fontWeight: 800 }}>{s.pakket}</span>}
+                {s.pakket && <span className="sv-pakket">{s.pakket}</span>}
               </span>
             </p>
           </div>
@@ -156,7 +160,7 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
             fontFamily: "var(--font-montserrat), system-ui, sans-serif",
             display: "inline-flex", alignItems: "center", gap: "6px",
           }}>
-            {s.pakket ? `Ontdek ${s.pakket}` : s.link}
+            {s.pakket ? <>Ontdek <span style={{ textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.pakket}</span></> : s.link}
             <ChevronRight size={15} strokeWidth={2.5} style={{ transform: hovered ? "translateX(3px)" : "none", transition: "transform 200ms ease" }} />
           </span>
         </div>
