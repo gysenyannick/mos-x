@@ -75,9 +75,6 @@ const COATING_CSS = `
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero::after { display: none; }
-  .dc-werk-sectie { position: relative; isolation: isolate; overflow: hidden; background: #0B0F0C !important; }
-  .dc-werk-video { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: 1; }
-  .dc-werk-sectie::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgba(11,15,12,0.35) 0%, rgba(11,15,12,0.55) 45%, rgba(11,15,12,0.82) 100%); }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
   .dc-hero .do-hero-tekst { max-width: 720px; }
   .dc-h1 { margin-bottom: 26px; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.1; }
@@ -174,7 +171,7 @@ export default function DakcoatingPage() {
 
       {/* Hero */}
       <section className="do-hero dc-hero">
-        <video src="/videos/Dakcoating.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+        <video src="/videos/dakcoating-kaart.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
@@ -249,8 +246,7 @@ export default function DakcoatingPage() {
       </section>
 
       {/* Werkwijze */}
-      <section className="do-donker dc-werk-sectie">
-        <video className="dc-werk-video" src="/videos/dakcoating-kaart.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+      <section className="do-donker">
         <div className="do-wrap do-werk">
           <div className="do-werk-foto">
             <img src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" />
