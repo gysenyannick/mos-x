@@ -18,7 +18,7 @@ const sectoren = [
 
 const diensten = [
   { Icoon: Droplets, titel: "Dakreiniging & coating", tekst: "Grondige reiniging en een duurzame coating die je dak beschermt, langer laat meegaan en er weer verzorgd laat uitzien.", img: "/images/Foto%20realisatie.jpg", pos: "50% 45%" },
-  { Icoon: Sun, titel: "Coolproofing", tekst: "Een reflecterende dakcoating die de hitte buiten houdt, het binnenklimaat verbetert en je energieverbruik verlaagt.", img: "/images/16.JPEG", pos: "50% 50%" },
+  { Icoon: Sun, titel: "Coolroofing", tekst: "Een reflecterende dakcoating die de hitte buiten houdt, het binnenklimaat verbetert en je energieverbruik verlaagt.", img: "/images/16.JPEG", pos: "50% 50%" },
   { Icoon: CalendarCheck, titel: "Dakbeheer & onderhoud", tekst: "Vaste controles en planmatig onderhoud, zodat je geen verrassingen krijgt en je dak in topconditie blijft.", img: "/images/dakcontrole.webp", pos: "55% 25%" },
 ];
 
@@ -152,7 +152,7 @@ export default function ZakelijkPage() {
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" />B2B</p>
             <p className="do-oog">MOS-X B2B</p>
             <h1 className="do-h1">Professioneel dakbeheer. <span>Zonder zorgen.</span></h1>
-            <p className="do-p">Van dakreiniging en coating tot coolproofing en planmatig onderhoud. Eén partner voor bedrijfsgebouwen, appartementsgebouwen en vastgoed.</p>
+            <p className="do-p">Van dakreiniging en coating tot coolroofing en planmatig onderhoud. Eén partner voor bedrijfsgebouwen, appartementsgebouwen en vastgoed.</p>
             <div className="do-hero-knoppen">
               <button type="button" className="do-knop do-knop-g mx-glow" onClick={naarOfferte}>Vraag een dakinspectie aan<ChevronRight size={17} /></button>
               <a className="do-knop do-knop-d" href="#b2b-diensten">Ontdek onze diensten</a>

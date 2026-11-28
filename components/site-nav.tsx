@@ -18,7 +18,7 @@ const diensten: MegaItem[] = [
 
 const b2b: MegaItem[] = [
   { naam: "Dakreiniging", tekst: "Voor KMO's, syndici, VME's, vastgoed en verhuur.", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp", gsm: ["Dakreiniging", "KMO's, syndici en vastgoed"] },
-  { naam: "Coolproofing", dienst: "& dakonderhoud", tekst: "Coolproofing en dakonderhoud voor bedrijfsdaken.", href: "/zakelijk#b2b-diensten", img: "/images/menu-b2b-cool.webp", gsm: ["Coolproofing", "Koel en beschermd bedrijfsdak"] },
+  { naam: "Coolroofing", dienst: "& dakonderhoud", tekst: "Coolroofing en dakonderhoud voor bedrijfsdaken.", href: "/zakelijk#b2b-diensten", img: "/images/menu-b2b-cool.webp", gsm: ["Coolroofing", "Koel en beschermd bedrijfsdak"] },
 ];
 
 const links = [
@@ -223,7 +223,7 @@ export default function SiteNav() {
                 <ChevronDown size={15} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: dienstenOpen ? "rotate(180deg)" : "none" }} />
               </button>
               {dienstenOpen && (
-                <MegaMenu items={diensten} sluit={() => setDienstenOpen(false)} uit={{ titel: "Voor bedrijven", tekst: "Dakreiniging en coolproofing voor bedrijfsdaken.", knop: "Ontdek B2B", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp" }} />
+                <MegaMenu items={diensten} sluit={() => setDienstenOpen(false)} uit={{ titel: "Voor bedrijven", tekst: "Dakreiniging en coolroofing voor bedrijfsdaken.", knop: "Ontdek B2B", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp" }} />
               )}
             </div>
             <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => openMenu("b2b")} onMouseLeave={sluitMenu}>
