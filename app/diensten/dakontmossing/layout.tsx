@@ -3,18 +3,18 @@ import JsonLd from "@/components/json-ld";
 import { dienstSchema, kruimelSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Dakontmossing met 2 jaar mosvrij-garantie",
+  title: "Dakreiniging en dakontmossing met antimosbehandeling",
   description:
-    "Professionele dakontmossing en dakreiniging door MOS-X, met antimosbehandeling en 2 jaar mosvrij-garantie. Actief in Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg.",
+    "Professionele dakreiniging en dakontmossing door MOS-X: aangepaste druk, altijd een antimosbehandeling en een vaste prijs na een gratis plaatsbezoek. Actief in Antwerpen, Limburg en Vlaams-Brabant.",
   alternates: { canonical: "/diensten/dakontmossing" },
-  openGraph: { title: "Dakontmossing met 2 jaar mosvrij-garantie | MOS-X", description: "Professionele dakontmossing en dakreiniging door MOS-X, met antimosbehandeling en 2 jaar mosvrij-garantie. Actief in Antwerpen, Oost-Vlaanderen, Vlaams-Brabant en Limburg.", url: "/diensten/dakontmossing", images: [{ url: "/images/Na%20bevel.jpg" }] },
+  openGraph: { title: "Dakreiniging en dakontmossing met antimosbehandeling | MOS-X", description: "Professionele dakreiniging en dakontmossing door MOS-X: aangepaste druk, altijd een antimosbehandeling en een vaste prijs na een gratis plaatsbezoek. Actief in Antwerpen, Limburg en Vlaams-Brabant.", url: "/diensten/dakontmossing", images: [{ url: "/images/Na%20bevel.jpg" }] },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <JsonLd data={[
-        dienstSchema({ pad: "/diensten/dakontmossing", naam: "Dakontmossing", type: "Dakontmossing en dakreiniging", omschrijving: "Mos, algen en vervuiling verwijderen van je dak, gevolgd door een antimosbehandeling. Komt er binnen 2 jaar toch mos terug, dan brengen we gratis een nieuwe antimosbehandeling aan." }),
+        dienstSchema({ pad: "/diensten/dakontmossing", naam: "Dakontmossing", type: "Dakontmossing en dakreiniging", omschrijving: "Mos, algen en vervuiling verwijderen van je dak, gevolgd door een antimosbehandeling. Werkwijze aangepast aan het type dak, met een vaste prijs na een gratis plaatsbezoek." }),
         kruimelSchema([["Diensten", "/#diensten"], ["Dakontmossing", "/diensten/dakontmossing"]]),
       ]} />
       {children}
