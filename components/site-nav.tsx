@@ -4,21 +4,21 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle, Building2, Umbrella, Calculator } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle, Building2, Umbrella } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 type MegaItem = { naam: string; dienst?: string; tekst: string; href: string; img: string; gsm?: [string, string] };
 
 const diensten: MegaItem[] = [
-  { naam: "Dakreiniging", dienst: "Dakontmossen", tekst: "Mos, algen en vuil weg. Je dak ziet er weer verzorgd uit.", href: "/diensten/dakontmossing", img: "/images/menu-dakreiniging.webp" },
+  { naam: "Dakreiniging", tekst: "Mos, algen en vuil weg. Je dak ziet er weer verzorgd uit.", href: "/diensten/dakontmossing", img: "/images/menu-dakreiniging.webp" },
   { naam: "MOS-MAX", dienst: "Dakcoating", tekst: "Een nieuwe beschermlaag. Je dak gaat tot 15 jaar langer mee.", href: "/diensten/dakcoating", img: "/images/menu-mosmax.webp" },
   { naam: "MOS-PRO", dienst: "Hydrofuge", tekst: "Een waterafstotende laag. Regen parelt af, mos krijgt minder kans.", href: "/contact", img: "/images/menu-mospro.webp" },
   { naam: "MOS-CARE", dienst: "Onderhoudsplan", tekst: "We volgen je dak op en houden het jaar na jaar verzorgd.", href: "/diensten/onderhoudsplan", img: "/images/menu-moscare.webp" },
 ];
 
 const b2b: MegaItem[] = [
-  { naam: "Dakreiniging", dienst: "Voor bedrijven", tekst: "Voor KMO's, syndici, VME's, vastgoed en verhuur.", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp", gsm: ["Dakreiniging", "KMO's, syndici en vastgoed"] },
-  { naam: "Coolproofing", dienst: "Koel en beschermd dak", tekst: "Coolproofing en dakonderhoud voor bedrijfsdaken.", href: "/zakelijk#b2b-diensten", img: "/images/menu-b2b-cool.webp", gsm: ["Coolproofing", "Koel en beschermd bedrijfsdak"] },
+  { naam: "Dakreiniging", tekst: "Voor KMO's, syndici, VME's, vastgoed en verhuur.", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp", gsm: ["Dakreiniging", "KMO's, syndici en vastgoed"] },
+  { naam: "Coolproofing", dienst: "& dakonderhoud", tekst: "Coolproofing en dakonderhoud voor bedrijfsdaken.", href: "/zakelijk#b2b-diensten", img: "/images/menu-b2b-cool.webp", gsm: ["Coolproofing", "Koel en beschermd bedrijfsdak"] },
 ];
 
 const links = [
@@ -54,6 +54,17 @@ export default function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dienstenOpen, setDienstenOpen] = useState(false);
   const [b2bOpen, setB2bOpen] = useState(false);
+  // Klein uitstel bij het sluiten, zodat het menu niet wegspringt als je met de muis naar beneden gaat.
+  const sluitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openMenu = (welk: "diensten" | "b2b") => {
+    if (sluitTimer.current) clearTimeout(sluitTimer.current);
+    setDienstenOpen(welk === "diensten");
+    setB2bOpen(welk === "b2b");
+  };
+  const sluitMenu = () => {
+    if (sluitTimer.current) clearTimeout(sluitTimer.current);
+    sluitTimer.current = setTimeout(() => { setDienstenOpen(false); setB2bOpen(false); }, 220);
+  };
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -132,36 +143,34 @@ export default function SiteNav() {
         .nav-kop { top: 16px; }
         /* Megamenu (diensten en B2B) */
         .nav-mega-wrap { position: static; }
-        .nav-mega { position: absolute; top: 100%; left: 0; right: 0; padding-top: 10px; animation: nav-mega-in .2s ease; }
+        .nav-mega { position: absolute; top: 100%; left: 0; right: 0; padding-top: 10px; animation: nav-mega-in .22s ease; }
+        .nav-mega::before { content: ""; position: absolute; left: 0; right: 0; top: -22px; height: 32px; }
         @keyframes nav-mega-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-        .nav-mega-in { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; padding: 26px 28px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E5E7EB;
+        .nav-mega-in { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; padding: 22px; border-radius: 18px; background: #FFFFFF; border: 1px solid #E5E7EB;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 30px 60px -30px rgba(30,51,36,0.35); }
-        .nav-mega-kaarten { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+        .nav-mega-kaarten { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
         .nav-mega-kaarten.twee { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .nav-mega-kaarten.twee .nav-mk-foto { aspect-ratio: 2 / 1; }
-        .nav-mk { display: block; text-decoration: none; color: #1A1A1A; border-radius: 12px; }
-        .nav-mk:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 4px; }
-        .nav-mk-foto { display: block; overflow: hidden; border-radius: 12px; aspect-ratio: 3 / 2; background: #F7F8F6; }
-        .nav-mk-foto img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
-        .nav-mk:hover .nav-mk-foto img { transform: scale(1.05); }
-        .nav-mk-dienst { display: block; margin-top: 14px; font: 700 10.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #9BCB6C; }
-        .nav-mk-naam { display: flex; align-items: center; gap: 6px; margin-top: 3px; font: 800 16.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; transition: color .15s ease; }
-        .nav-mk:not(:has(.nav-mk-dienst)) .nav-mk-naam { margin-top: 14px; }
-        .nav-mk-naam svg { color: #9BCB6C; transition: transform .2s ease; }
+        .nav-mega-kaarten.twee .nav-mk-foto { aspect-ratio: 16 / 9; }
+        .nav-mk { display: block; padding: 8px; margin: -8px; border-radius: 14px; text-decoration: none; color: #1A1A1A; transition: background-color .2s ease; }
+        .nav-mk:hover { background: #F7F8F6; }
+        .nav-mk:active { background: #F2F8EC; }
+        .nav-mk:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 0; }
+        .nav-mk-foto { display: block; overflow: hidden; border-radius: 10px; aspect-ratio: 4 / 3; background: #F7F8F6; }
+        .nav-mk-foto img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+        .nav-mk:hover .nav-mk-foto img { transform: scale(1.04); }
+        .nav-mk-naam { display: flex; align-items: baseline; gap: 8px; margin: 12px 2px 2px; white-space: nowrap; font: 700 15px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; transition: color .15s ease; }
+        .nav-mk-naam small { font: 400 13px var(--font-inter), system-ui, sans-serif; letter-spacing: 0; color: #8E8E89; }
         .nav-mk:hover .nav-mk-naam { color: #7AB54E; }
-        .nav-mk:hover .nav-mk-naam svg { transform: translateX(3px); }
-        .nav-mk p { margin: 6px 0 0; font: 400 13.5px/1.55 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
-        .nav-mega-zij { display: flex; flex-direction: column; border-left: 1px solid #E5E7EB; padding-left: 26px; }
-        .nav-mz { display: flex; gap: 14px; padding: 14px 10px; margin: 0 -10px; border-radius: 12px; text-decoration: none; color: #1A1A1A; transition: background-color .15s ease; }
-        .nav-mz + .nav-mz { border-top: 1px solid #E5E7EB; border-radius: 0 0 12px 12px; }
-        .nav-mz:hover { background: #F2F8EC; }
-        .nav-mz:active { background: #EEF6E6; }
-        .nav-mz:focus-visible { outline: 2px solid #9BCB6C; outline-offset: -2px; }
-        .nav-mz i { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: #F2F8EC; color: #7AB54E; }
-        .nav-mz b { display: block; font: 800 15px var(--font-montserrat), system-ui, sans-serif; }
-        .nav-mz small { display: block; margin-top: 3px; font: 400 13px/1.5 var(--font-inter), system-ui, sans-serif; color: #545454; }
-        .nav-mz:hover b { color: #7AB54E; }
-        @media (max-width: 1180px) { .nav-mega-in { grid-template-columns: minmax(0, 1fr); } .nav-mega-zij { border-left: 0; padding-left: 0; flex-direction: row; gap: 16px; border-top: 1px solid #E5E7EB; padding-top: 10px; } .nav-mz + .nav-mz { border-top: 0; } }
+        .nav-uit { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 100%; padding: 22px; border-radius: 14px; text-decoration: none; color: #FFFFFF; background: #0B0F0C; }
+        .nav-uit img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: transform .5s ease, opacity .3s ease; }
+        .nav-uit::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(11,15,12,0.1) 0%, rgba(11,15,12,0.85) 70%); }
+        .nav-uit:hover img { transform: scale(1.04); opacity: .65; }
+        .nav-uit:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; }
+        .nav-uit b { font: 800 19px/1.2 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; }
+        .nav-uit span { margin-top: 6px; font: 400 13.5px/1.5 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.75); }
+        .nav-uit em { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin-top: 14px; height: 38px; padding: 0 16px; border-radius: 9px; font: 700 13.5px var(--font-montserrat), system-ui, sans-serif; font-style: normal; background: #9BCB6C; color: #FFFFFF; transition: background-color .2s ease, box-shadow .2s ease; }
+        .nav-uit:hover em { background: #7AB54E; box-shadow: 0 8px 18px -8px rgba(122,181,78,0.8); }
+        @media (max-width: 1180px) { .nav-mega-in { grid-template-columns: minmax(0, 1fr) 220px; } .nav-mk-naam small { display: none; } }
       `}</style>
       {/* ── Floating glassmorphism navbar ── */}
       <header
@@ -201,7 +210,7 @@ export default function SiteNav() {
 
           {/* Desktop center links */}
           <div className="hidden lg:flex items-center gap-7" style={{ paddingLeft: "48px" }}>
-            <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => setDienstenOpen(true)} onMouseLeave={() => setDienstenOpen(false)}>
+            <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => openMenu("diensten")} onMouseLeave={sluitMenu}>
               <button
                 type="button"
                 className="nav-diensten-knop"
@@ -214,13 +223,10 @@ export default function SiteNav() {
                 <ChevronDown size={15} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: dienstenOpen ? "rotate(180deg)" : "none" }} />
               </button>
               {dienstenOpen && (
-                <MegaMenu items={diensten} sluit={() => setDienstenOpen(false)} zij={[
-                  { titel: "Voor bedrijven", tekst: "Dakreiniging en dakonderhoud voor KMO's, syndici en vastgoed.", href: "/zakelijk", Icoon: Building2 },
-                  { titel: "Bereken je richtprijs", tekst: "Weet binnen 60 seconden wat je dak ongeveer kost.", href: "/#calculator", Icoon: Calculator },
-                ]} />
+                <MegaMenu items={diensten} sluit={() => setDienstenOpen(false)} uit={{ titel: "Voor bedrijven", tekst: "Dakreiniging en coolproofing voor bedrijfsdaken.", knop: "Ontdek B2B", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp" }} />
               )}
             </div>
-            <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => setB2bOpen(true)} onMouseLeave={() => setB2bOpen(false)}>
+            <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => openMenu("b2b")} onMouseLeave={sluitMenu}>
               <button
                 type="button"
                 className="nav-diensten-knop"
@@ -233,10 +239,7 @@ export default function SiteNav() {
                 <ChevronDown size={15} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: b2bOpen ? "rotate(180deg)" : "none" }} />
               </button>
               {b2bOpen && (
-                <MegaMenu items={b2b} twee sluit={() => setB2bOpen(false)} zij={[
-                  { titel: "Gratis dakinspectie", tekst: "We komen langs en bekijken je bedrijfsdak ter plaatse.", href: "/zakelijk", Icoon: Building2 },
-                  { titel: "Bel ons direct", tekst: "+32 468 35 28 69", href: "tel:+32468352869", Icoon: Phone },
-                ]} />
+                <MegaMenu items={b2b} twee sluit={() => setB2bOpen(false)} uit={{ titel: "Gratis dakinspectie", tekst: "We bekijken je bedrijfsdak ter plaatse.", knop: "Bel ons", href: "tel:+32468352869", img: "/images/dakcontrole.webp" }} />
               )}
             </div>
             {links.map(l => (
@@ -490,10 +493,10 @@ export default function SiteNav() {
 }
 
 
-type ZijItem = { titel: string; tekst: string; href: string; Icoon: React.ComponentType<{ size?: number }> };
+type Uitgelicht = { titel: string; tekst: string; knop: string; href: string; img: string };
 
-/** Uitklapmenu met fotokaarten (zoals bij grote bouwbedrijven), in de MOS-X-stijl. */
-function MegaMenu({ items, zij, sluit, twee }: { items: MegaItem[]; zij: ZijItem[]; sluit: () => void; twee?: boolean }) {
+/** Uitklapmenu met fotokaarten, rustig en in de MOS-X-stijl. */
+function MegaMenu({ items, uit, sluit, twee }: { items: MegaItem[]; uit: Uitgelicht; sluit: () => void; twee?: boolean }) {
   return (
     <div className="nav-mega">
       <div className="nav-mega-in">
@@ -504,20 +507,17 @@ function MegaMenu({ items, zij, sluit, twee }: { items: MegaItem[]; zij: ZijItem
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={d.img} alt="" loading="lazy" decoding="async" width={560} height={370} />
               </span>
-              {d.dienst && <span className="nav-mk-dienst">{d.dienst}</span>}
-              <span className="nav-mk-naam">{d.naam}<ChevronRight size={16} strokeWidth={2.5} /></span>
-              <p>{d.tekst}</p>
+              <span className="nav-mk-naam">{d.naam}{d.dienst && <small>{d.dienst}</small>}</span>
             </Link>
           ))}
         </div>
-        <div className="nav-mega-zij">
-          {zij.map(({ titel, tekst, href, Icoon }) => (
-            <Link key={titel} href={href} className="nav-mz" onClick={sluit}>
-              <i><Icoon size={20} /></i>
-              <span><b>{titel}</b><small>{tekst}</small></span>
-            </Link>
-          ))}
-        </div>
+        <Link href={uit.href} className="nav-uit" onClick={sluit}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={uit.img} alt="" loading="lazy" decoding="async" />
+          <b>{uit.titel}</b>
+          <span>{uit.tekst}</span>
+          <em>{uit.knop}<ChevronRight size={15} strokeWidth={2.5} /></em>
+        </Link>
       </div>
     </div>
   );
