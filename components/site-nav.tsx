@@ -16,10 +16,6 @@ const diensten: MegaItem[] = [
   { naam: "MOS-CARE", dienst: "Onderhoudsplan", tekst: "We volgen je dak op en houden het jaar na jaar verzorgd.", href: "/diensten/onderhoudsplan", img: "/images/menu-moscare.webp" },
 ];
 
-const b2b: MegaItem[] = [
-  { naam: "Dakreiniging", tekst: "Voor KMO's, syndici, VME's, vastgoed en verhuur.", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp", gsm: ["Dakreiniging", "KMO's, syndici en vastgoed"] },
-  { naam: "Coolroofing", dienst: "& dakonderhoud", tekst: "Coolroofing en dakonderhoud voor bedrijfsdaken.", href: "/zakelijk#b2b-diensten", img: "/images/menu-b2b-cool.webp", gsm: ["Coolroofing", "Koel en beschermd bedrijfsdak"] },
-];
 
 const links = [
   { label: "Realisaties", href: "/realisaties" },
@@ -53,17 +49,15 @@ const linkStijl: React.CSSProperties = {
 export default function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dienstenOpen, setDienstenOpen] = useState(false);
-  const [b2bOpen, setB2bOpen] = useState(false);
   // Klein uitstel bij het sluiten, zodat het menu niet wegspringt als je met de muis naar beneden gaat.
   const sluitTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const openMenu = (welk: "diensten" | "b2b") => {
+  const openMenu = () => {
     if (sluitTimer.current) clearTimeout(sluitTimer.current);
-    setDienstenOpen(welk === "diensten");
-    setB2bOpen(welk === "b2b");
+    setDienstenOpen(true);
   };
   const sluitMenu = () => {
     if (sluitTimer.current) clearTimeout(sluitTimer.current);
-    sluitTimer.current = setTimeout(() => { setDienstenOpen(false); setB2bOpen(false); }, 220);
+    sluitTimer.current = setTimeout(() => setDienstenOpen(false), 220);
   };
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -141,7 +135,7 @@ export default function SiteNav() {
         .nav-dienst:active { background: #EEF6E6; }
         .nav-dienst:focus-visible { outline: 2px solid #1A1A1A; outline-offset: -2px; }
         .nav-kop { top: 16px; }
-        /* Megamenu (diensten en B2B) */
+        /* Megamenu (diensten) */
         .nav-mega-wrap { position: static; }
         .nav-mega { position: absolute; top: 100%; left: 0; right: 0; padding-top: 10px; animation: nav-mega-in .22s ease; }
         .nav-mega::before { content: ""; position: absolute; left: 0; right: 0; top: -22px; height: 32px; }
@@ -210,7 +204,7 @@ export default function SiteNav() {
 
           {/* Desktop center links */}
           <div className="hidden lg:flex items-center gap-7" style={{ paddingLeft: "48px" }}>
-            <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => openMenu("diensten")} onMouseLeave={sluitMenu}>
+            <div className="nav-diensten nav-mega-wrap" onMouseEnter={openMenu} onMouseLeave={sluitMenu}>
               <button
                 type="button"
                 className="nav-diensten-knop"
@@ -223,23 +217,7 @@ export default function SiteNav() {
                 <ChevronDown size={15} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: dienstenOpen ? "rotate(180deg)" : "none" }} />
               </button>
               {dienstenOpen && (
-                <MegaMenu items={diensten} sluit={() => setDienstenOpen(false)} uit={{ titel: "Voor bedrijven", tekst: "Dakreiniging en coolroofing voor bedrijfsdaken.", knop: "Ontdek B2B", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp" }} />
-              )}
-            </div>
-            <div className="nav-diensten nav-mega-wrap" onMouseEnter={() => openMenu("b2b")} onMouseLeave={sluitMenu}>
-              <button
-                type="button"
-                className="nav-diensten-knop"
-                aria-expanded={b2bOpen}
-                aria-haspopup="true"
-                onClick={() => setB2bOpen(o => !o)}
-                style={{ ...linkStijl, color: b2bOpen ? "#9BCB6C" : "#1A1A1A" }}
-              >
-                B2B
-                <ChevronDown size={15} strokeWidth={2.5} style={{ transition: "transform 200ms ease", transform: b2bOpen ? "rotate(180deg)" : "none" }} />
-              </button>
-              {b2bOpen && (
-                <MegaMenu items={b2b} twee sluit={() => setB2bOpen(false)} uit={{ titel: "Gratis dakinspectie", tekst: "We bekijken je bedrijfsdak ter plaatse.", knop: "Bel ons", href: "tel:+32468352869", img: "/images/dakcontrole.webp" }} />
+                <MegaMenu items={diensten} sluit={() => setDienstenOpen(false)} uit={{ titel: "Voor bedrijven", tekst: "Dakreiniging en coolroofing voor bedrijfsdaken.", knop: "Ontdek meer", href: "/zakelijk", img: "/images/menu-b2b-reiniging.webp" }} />
               )}
             </div>
             {links.map(l => (
@@ -443,15 +421,12 @@ export default function SiteNav() {
               ))}
             </div>
 
-            <p className="mm-oog mm-in" style={{ animationDelay: "210ms" }}>B2B</p>
-            <div className="mm-diensten">
-              {b2b.map((d, i) => (
-                <Link key={d.naam + d.href} href={d.href} onClick={() => setMobileOpen(false)} className="mm-dienst mm-in" style={{ animationDelay: `${230 + i * 45}ms` }}>
-                  <i><Building2 size={20} /></i>
-                  <span><b>{d.gsm?.[0] ?? d.naam}</b><small>{d.gsm?.[1] ?? d.tekst}</small></span>
-                  <ChevronRight size={18} />
-                </Link>
-              ))}
+            <div className="mm-diensten" style={{ marginTop: 8 }}>
+              <Link href="/zakelijk" onClick={() => setMobileOpen(false)} className="mm-dienst mm-in" style={{ animationDelay: "250ms" }}>
+                <i><Building2 size={20} /></i>
+                <span><b>Voor bedrijven</b><small>Dakreiniging en coolroofing</small></span>
+                <ChevronRight size={18} />
+              </Link>
             </div>
 
             <nav className="mm-links" aria-label="Menu">
