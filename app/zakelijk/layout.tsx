@@ -3,9 +3,9 @@ import JsonLd from "@/components/json-ld";
 import { kruimelSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Zakelijk: dakontmossing en dakcoating voor bedrijven en syndici",
+  title: "B2B: dakreiniging, coolproofing en dakbeheer voor bedrijven en syndici",
   description:
-    "MOS-X voor bedrijven, syndici en vastgoedbeheerders: dakontmossing, dakcoating en onderhoud van bedrijfspanden en appartementsgebouwen. Offerte op maat per gebouw, factuur op firma.",
+    "MOS-X voor bedrijven, KMO's, syndici en vastgoedbeheerders: dakreiniging, coating, coolproofing en planmatig dakonderhoud van bedrijfspanden en appartementsgebouwen. Offerte op maat per gebouw, factuur op firma.",
   alternates: { canonical: "/zakelijk" },
   openGraph: { title: "Zakelijk | MOS-X", description: "Dakontmossing, dakcoating en onderhoud voor bedrijven, syndici en vastgoedbeheerders. Offerte op maat per gebouw, factuur op firma.", url: "/zakelijk" },
 };

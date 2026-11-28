@@ -15,7 +15,7 @@ const diensten = [
 
 const b2b = [
   { label: "Dakreiniging", sub: "Bedrijven, KMO's, syndici, VME's, vastgoed en verhuur", href: "/zakelijk" },
-  { label: "Coolproofing & dakonderhoud", sub: "Koel, beschermd en onderhouden dak", href: "/zakelijk" },
+  { label: "Coolproofing & dakonderhoud", sub: "Koel, beschermd en onderhouden dak", href: "/zakelijk#b2b-diensten" },
 ];
 
 const links = [

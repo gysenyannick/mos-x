@@ -2,23 +2,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Building2, CalendarClock, CheckCircle2, ChevronRight, ClipboardList, FileText, Handshake, Home, Loader2, Phone, Send, ShieldCheck, Users } from "lucide-react";
+import { ArrowRight, Building2, CalendarCheck, CalendarClock, CheckCircle2, ChevronRight, ClipboardList, Droplets, Factory, FileText, Handshake, KeyRound, Loader2, Phone, Send, ShieldCheck, Sun } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 import HeroVertrouwen from "@/components/hero-vertrouwen";
 import GoogleScore from "@/components/google-score";
 import { FotoKiezer } from "@/components/foto-kiezer";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 
-const doelgroepen = [
-  { Icoon: Building2, titel: "Bedrijven en KMO's", tekst: "Kantoren, winkels en bedrijfspanden die er verzorgd moeten bijliggen." },
-  { Icoon: Users, titel: "Syndici en VME's", tekst: "Appartementsgebouwen, met duidelijke offertes die je kan voorleggen aan de vergadering." },
-  { Icoon: Home, titel: "Vastgoed en verhuur", tekst: "Meerdere panden, één aanspreekpunt en een vaste aanpak voor elk gebouw." },
+const sectoren = [
+  { Icoon: Factory, titel: "Bedrijven & KMO's" },
+  { Icoon: Building2, titel: "Syndici & VME's" },
+  { Icoon: ClipboardList, titel: "Vastgoedbeheerders" },
+  { Icoon: KeyRound, titel: "Verhuur" },
 ];
 
 const diensten = [
-  { titel: "Dakontmossing", tekst: "Mos, algen en vuil weg, met een antimosbehandeling na.", garantie: "2 jaar mosvrij-garantie", href: "/diensten/dakontmossing" },
-  { titel: "Dakcoating", tekst: "Bescherming en een nieuwe uitstraling voor het dak.", garantie: "10 jaar garantie op de hechting", href: "/diensten/dakcoating" },
-  { titel: "Onderhoudsplan", tekst: "Vaste opvolging, ook voor meerdere gebouwen samen.", garantie: "Rapport na elke beurt", href: "/diensten/onderhoudsplan" },
+  { Icoon: Droplets, titel: "Dakreiniging & coating", tekst: "Grondige reiniging en een duurzame coating die je dak beschermt, langer laat meegaan en er weer verzorgd laat uitzien.", img: "/images/Foto%20realisatie.jpg", pos: "50% 45%" },
+  { Icoon: Sun, titel: "Coolproofing", tekst: "Een reflecterende dakcoating die de hitte buiten houdt, het binnenklimaat verbetert en je energieverbruik verlaagt.", img: "/images/16.JPEG", pos: "50% 50%" },
+  { Icoon: CalendarCheck, titel: "Dakbeheer & onderhoud", tekst: "Vaste controles en planmatig onderhoud, zodat je geen verrassingen krijgt en je dak in topconditie blijft.", img: "/images/dakcontrole.webp", pos: "55% 25%" },
 ];
 
 const voordelen = [
@@ -32,12 +33,33 @@ const voordelen = [
 
 const stappen = [
   { nr: "01", titel: "Aanvraag", tekst: "Je vertelt ons over het gebouw of de gebouwen." },
-  { nr: "02", titel: "Plaatsbezoek", tekst: "We bekijken elk dak ter plaatse, gratis." },
+  { nr: "02", titel: "Dakinspectie", tekst: "We inspecteren elk dak ter plaatse, gratis en met foto's." },
   { nr: "03", titel: "Offerte op maat", tekst: "Per gebouw, met een duidelijke prijs vooraf." },
   { nr: "04", titel: "Uitvoering", tekst: "Op het afgesproken moment, met foto's en rapport." },
 ];
 
 const ZAKELIJK_CSS = `
+  .zk-sectoren { position: relative; z-index: 3; margin: 0 auto; max-width: 1110px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 24px 48px -30px rgba(30,51,36,0.35); }
+  .zk-sector { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 22px 16px; font: 700 15px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+  .zk-sector + .zk-sector { border-left: 1px solid #E5E7EB; }
+  .zk-sector i { display: grid; place-items: center; color: #9BCB6C; }
+  .zk-tegels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .zk-tegel { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: 380px; padding: 24px;
+    border-radius: 16px; text-decoration: none; color: #FFFFFF; background: #0B0F0C; box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    transition: transform .25s ease, box-shadow .25s ease; }
+  .zk-tegel img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.22,1,.36,1); }
+  .zk-tegel::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(8,12,9,0.95) 0%, rgba(8,12,9,0.72) 42%, rgba(8,12,9,0.05) 78%); }
+  .zk-tegel:hover { transform: translateY(-4px); box-shadow: 0 0 0 2px #9BCB6C, 0 30px 60px -30px rgba(11,15,12,0.6); }
+  .zk-tegel:hover img { transform: scale(1.05); }
+  .zk-tegel:active { transform: translateY(-1px); }
+  .zk-tegel:focus-visible { outline: 3px solid #9BCB6C; outline-offset: 3px; }
+  .zk-tegel-kop { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .zk-tegel-kop i { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
+  .zk-tegel-kop b { font: 800 20px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.015em; }
+  .zk-tegel p { margin: 0; padding-right: 36px; font: 400 14.5px/1.6 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.78); }
+  .zk-tegel-pijl { position: absolute; right: 22px; bottom: 26px; color: #9BCB6C; transition: transform .2s ease; }
+  .zk-tegel:hover .zk-tegel-pijl { transform: translateX(4px); }
   .do-hero > img { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; height: 100%; object-fit: cover; z-index: -2; }
   .do-hero .do-p, .zk-kaart p, .zk-stap p { text-wrap: balance; }
   .zk-kaarten { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -80,12 +102,18 @@ const ZAKELIJK_CSS = `
   @keyframes zk-spin { to { transform: rotate(360deg); } }
 
   @media (max-width: 960px) {
+    .zk-sectoren { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .zk-sector:nth-child(3) { border-left: 0; }
+    .zk-sector:nth-child(n+3) { border-top: 1px solid #E5E7EB; }
+    .zk-tegels { grid-template-columns: minmax(0, 1fr); }
+    .zk-tegel { min-height: 300px; }
     .do-hero > img { width: 100%; }
     .zk-kaarten, .zk-offerte { grid-template-columns: minmax(0, 1fr); }
     .zk-offerte { gap: 36px; }
     .zk-stappen { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 640px) {
+    .zk-sector { justify-content: flex-start; padding: 16px 14px; font-size: 13.5px; gap: 9px; }
     .zk-stappen, .zk-velden { grid-template-columns: minmax(0, 1fr); }
     .zk-form { padding: 26px 20px; }
   }
@@ -121,61 +149,54 @@ export default function ZakelijkPage() {
         <img src="/images/14.JPEG" alt="" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" />Zakelijk</p>
-            <p className="do-oog">MOS-X Zakelijk</p>
-            <h1 className="do-h1">Daken van bedrijven, <span>netjes verzorgd.</span></h1>
-            <p className="do-p">Voor bedrijfspanden, appartementsgebouwen en vastgoed. Eén aanspreekpunt, een offerte per gebouw en een planning in overleg.</p>
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" />B2B</p>
+            <p className="do-oog">MOS-X B2B</p>
+            <h1 className="do-h1">Professioneel dakbeheer. <span>Zonder zorgen.</span></h1>
+            <p className="do-p">Van dakreiniging en coating tot coolproofing en planmatig onderhoud. Eén partner voor bedrijfsgebouwen, appartementsgebouwen en vastgoed.</p>
             <div className="do-hero-knoppen">
-              <button type="button" className="do-knop do-knop-g mx-glow" onClick={naarOfferte}>Vraag een offerte aan<ChevronRight size={17} /></button>
-              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+              <button type="button" className="do-knop do-knop-g mx-glow" onClick={naarOfferte}>Vraag een dakinspectie aan<ChevronRight size={17} /></button>
+              <a className="do-knop do-knop-d" href="#b2b-diensten">Ontdek onze diensten</a>
             </div>
             <HeroVertrouwen />
           </div>
         </div>
       </section>
 
-      {/* Voor wie */}
-      <section className="do-sectie do-wit">
-        <div className="do-wrap">
-          <div className="do-kop">
-            <div>
-              <p className="do-oog">Voor wie</p>
-              <h2 className="do-h2">Eén partner <span>voor al je daken.</span></h2>
-            </div>
-            <p className="do-p">Of het nu om één pand gaat of om een hele portefeuille.</p>
-          </div>
-          <div className="zk-kaarten">
-            {doelgroepen.map(({ Icoon, titel, tekst }) => (
-              <div key={titel} className="zk-kaart"><i><Icoon size={21} /></i><b>{titel}</b><p>{tekst}</p></div>
-            ))}
-          </div>
+      {/* Sectoren */}
+      <div style={{ background: "#FFFFFF", padding: "56px 20px 0" }}>
+        <div className="zk-sectoren">
+          {sectoren.map(({ Icoon, titel }) => (
+            <div key={titel} className="zk-sector"><i><Icoon size={24} strokeWidth={1.8} aria-hidden="true" /></i>{titel}</div>
+          ))}
         </div>
-      </section>
+      </div>
 
       {/* Diensten */}
-      <section className="do-sectie do-zacht">
+      <section id="b2b-diensten" className="do-sectie do-wit" style={{ scrollMarginTop: 90 }}>
         <div className="do-wrap">
           <div className="do-kop">
             <div>
-              <p className="do-oog">Wat we doen</p>
-              <h2 className="do-h2">Dezelfde aanpak, <span>op grotere schaal.</span></h2>
+              <p className="do-oog">Onze diensten</p>
+              <h2 className="do-h2">Eén partner <span>voor al je daken.</span></h2>
             </div>
+            <p className="do-p">Voor één pand of een hele portefeuille.</p>
           </div>
-          <div className="zk-kaarten">
-            {diensten.map((d) => (
-              <Link key={d.titel} href={d.href} className="zk-kaart zk-dienst">
-                <b>{d.titel}</b>
-                <p>{d.tekst}</p>
-                <small><CheckCircle2 size={16} aria-hidden="true" />{d.garantie}</small>
-                <span>Meer info<ChevronRight size={16} /></span>
-              </Link>
+          <div className="zk-tegels">
+            {diensten.map(({ Icoon, titel, tekst, img, pos }) => (
+              <a key={titel} href="#offerte" className="zk-tegel">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={img} alt="" aria-hidden="true" loading="lazy" decoding="async" style={{ objectPosition: pos }} />
+                <div className="zk-tegel-kop"><i><Icoon size={19} strokeWidth={2.2} /></i><b>{titel}</b></div>
+                <p>{tekst}</p>
+                <ArrowRight className="zk-tegel-pijl" size={22} aria-hidden="true" />
+              </a>
             ))}
           </div>
         </div>
       </section>
 
       {/* Waarom */}
-      <section className="do-sectie do-wit">
+      <section className="do-sectie do-zacht">
         <div className="do-wrap do-waarom">
           <div className="do-slider">
             <img src="/images/Foto realisatie.jpg" alt="Gereinigd dak van een groot gebouw" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} />
@@ -193,14 +214,14 @@ export default function ZakelijkPage() {
       </section>
 
       {/* Zo werkt het */}
-      <section className="do-sectie do-zacht">
+      <section className="do-sectie do-wit">
         <div className="do-wrap">
           <div className="do-kop">
             <div>
               <p className="do-oog">Zo werkt het</p>
               <h2 className="do-h2">Van aanvraag <span>tot verzorgd dak.</span></h2>
             </div>
-            <button type="button" className="do-knop do-knop-g" onClick={naarOfferte}>Vraag een offerte aan<ChevronRight size={17} /></button>
+            <button type="button" className="do-knop do-knop-g" onClick={naarOfferte}>Vraag een dakinspectie aan<ChevronRight size={17} /></button>
           </div>
           <div className="zk-stappen">
             {stappen.map((s) => (
@@ -211,15 +232,16 @@ export default function ZakelijkPage() {
       </section>
 
       {/* Offerte */}
-      <section id="offerte" className="do-sectie do-wit" style={{ scrollMarginTop: 90 }}>
+      <section id="offerte" className="do-sectie do-zacht" style={{ scrollMarginTop: 90 }}>
         <div className="do-wrap zk-offerte">
           <div>
-            <p className="do-oog">Offerte aanvragen</p>
+            <p className="do-oog">Gratis dakinspectie</p>
             <h2 className="do-h2">Vertel ons over <span style={{ display: "block" }}>je gebouw.</span></h2>
-            <p className="do-p" style={{ marginTop: 18 }}>We nemen snel contact op om een plaatsbezoek in te plannen.</p>
+            <p className="do-p" style={{ marginTop: 18 }}>We nemen snel contact op om een dakinspectie in te plannen. Je krijgt daarna een offerte per gebouw.</p>
             <ul className="do-voordelen" style={{ gridTemplateColumns: "minmax(0, 1fr)" }}>
-              <li><i><CheckCircle2 size={20} color="#9BCB6C" /></i>Gratis plaatsbezoek</li>
+              <li><i><CheckCircle2 size={20} color="#9BCB6C" /></i>Gratis dakinspectie met foto&apos;s</li>
               <li><i><CheckCircle2 size={20} color="#9BCB6C" /></i>Prijs vooraf, per gebouw</li>
+              <li><i><CheckCircle2 size={20} color="#9BCB6C" /></i>Factuur op firma</li>
             </ul>
           </div>
           <div className="zk-form">
@@ -245,6 +267,7 @@ export default function ZakelijkPage() {
                       <option>Bedrijfspand</option>
                       <option>Appartementsgebouw</option>
                       <option>Meerdere woningen</option>
+                      <option>Loods of hal (plat dak)</option>
                       <option>Andere</option>
                     </select>
                   </div>
@@ -263,7 +286,7 @@ export default function ZakelijkPage() {
                 </div>
                 <button type="submit" className="do-knop do-knop-g" disabled={status === "sending"}>
                   {status === "sending" ? <Loader2 size={18} className="zk-spin" /> : <Send size={17} />}
-                  Offerte aanvragen
+                  Dakinspectie aanvragen
                 </button>
                 {status === "error" && <p className="zk-fout" role="alert">Er ging iets mis. Probeer opnieuw of bel ons even.</p>}
                 <p className="zk-noot">Vrijblijvend. We delen je gegevens met niemand.</p>
@@ -274,7 +297,7 @@ export default function ZakelijkPage() {
       </section>
 
       {/* Afsluiter */}
-      <section className="do-sectie do-zacht">
+      <section className="do-sectie do-wit">
         <div className="do-wrap">
           <div className="do-cta">
             <div>
@@ -284,7 +307,7 @@ export default function ZakelijkPage() {
             </div>
             <div className="do-cta-knoppen">
               <a className="do-knop do-knop-g mx-glow" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
-              <button type="button" className="do-knop do-knop-d" onClick={naarOfferte}>Vraag een offerte aan<ChevronRight size={17} /></button>
+              <button type="button" className="do-knop do-knop-d" onClick={naarOfferte}>Vraag een dakinspectie aan<ChevronRight size={17} /></button>
             </div>
           </div>
         </div>
