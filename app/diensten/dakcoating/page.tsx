@@ -74,6 +74,10 @@ const COATING_CSS = `
 
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
+  .dc-hero::after { display: none; }
+  .dc-werk-sectie { position: relative; isolation: isolate; overflow: hidden; }
+  .dc-werk-video { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: 0.22; }
+  .dc-werk-sectie::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgba(11,15,12,0.55), rgba(11,15,12,0.85)); }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
   .dc-hero .do-hero-tekst { max-width: 720px; }
   .dc-h1 { margin-bottom: 26px; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.1; }
@@ -82,12 +86,11 @@ const COATING_CSS = `
   @media (max-width: 640px) { .dc-h1 b { display: inline; white-space: normal; } .dc-h1 { font-size: clamp(1.75rem, 8vw, 2.1rem); } }
   .dc-hero .do-p { margin-bottom: 30px; }
   .dc-hero .do-hero-knoppen { margin-bottom: 40px; }
-  .dc-naam { margin-top: 16px; max-width: 540px; }
   .dc-hero-vink { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
   .dc-hero-vink li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; color: rgba(255,255,255,0.85); font-family: var(--font-inter), system-ui, sans-serif; }
   .dc-hero-vink i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
 
-  .dc-info { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 64px; align-items: start; }
+  .dc-info { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 64px; align-items: center; }
   .dc-acc { margin-top: 26px; border-top: 1px solid #E5E7EB; }
   .dc-acc-item { border-bottom: 1px solid #E5E7EB; }
   .dc-acc-item button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 2px; background: none; border: 0; cursor: pointer; text-align: left;
@@ -246,15 +249,15 @@ export default function DakcoatingPage() {
       </section>
 
       {/* Werkwijze */}
-      <section className="do-donker">
+      <section className="do-donker dc-werk-sectie">
+        <video className="dc-werk-video" src="/videos/dakcoating-kaart.mp4" autoPlay muted loop playsInline preload="none" aria-hidden="true" />
         <div className="do-wrap do-werk">
           <div className="do-werk-foto">
             <img src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" />
           </div>
           <div>
-            <p className="do-oog">Onze werkwijze</p>
+            <p className="do-oog">Onze werkwijze: de MOS-MAX-methode</p>
             <h2 className="do-h2">Zo coaten we <span>jouw dak.</span></h2>
-            <p className="do-p dc-naam">Dit is de MOS-MAX-methode: altijd dezelfde vaste stappen, voor elk dak.</p>
             <div className="do-stappen">
               {stappen.map((s, i) => {
                 const open = openStap === i;
