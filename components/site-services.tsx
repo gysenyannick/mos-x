@@ -10,6 +10,7 @@ const services = [
   {
     id: "dak-reinigen",
     title: "Dakreiniging",
+    pakket: "MOS-CLEAN",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "Dakreiniging",
     href: "/diensten/dakontmossing",
@@ -19,7 +20,7 @@ const services = [
     videoPosition: "60% center",
     Icon: Droplets,
     desc: "Verwijder mos en aanslag. Geef je dak zijn verzorgde uitstraling terug.",
-    link: "Ontdek dakreiniging",
+    link: "Ontdek MOS-CLEAN",
   },
   {
     id: "dak-coaten",
@@ -33,7 +34,7 @@ const services = [
     video: "/videos/dakcoating-kaart.mp4",
     Icon: Shield,
     desc: "Geef je dak een nieuwe uitstraling met een beschermende coating.",
-    link: "Ontdek dakcoating",
+    link: "Ontdek MOS-MAX",
   },
   {
     id: "hydrofuge",

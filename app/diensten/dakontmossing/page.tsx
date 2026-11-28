@@ -152,8 +152,8 @@ export default function DakontmossingPage() {
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
-            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakreiniging</p>
-            <p className="do-oog">Dakreiniging</p>
+            <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-CLEAN</p>
+            <p className="do-oog">MOS-CLEAN · Dakreiniging</p>
             <h1 className="do-h1 dc-h1 dr-h1"><b>Geef je dak opnieuw</b> <b><em>een verzorgde uitstraling.</em></b></h1>
             <p className="do-p">Een dakreiniging haalt mos, algen en korstmos weg, en je dak ziet er meteen weer verzorgd uit. Na de reiniging beschermen we je dak altijd met een nabehandeling die erbij past, zodat het mos niet snel terugkomt.</p>
             <ul className="dc-hero-vink">
@@ -357,7 +357,7 @@ export default function DakontmossingPage() {
         <div className="do-wrap">
           <div className="dc-mv-kop">
             <p className="do-oog">Veelgestelde vragen</p>
-            <h2 className="do-h2">Alles over <span>dakreiniging.</span></h2>
+            <h2 className="do-h2">Alles over <span>MOS&#8209;CLEAN.</span></h2>
           </div>
           <div className="dc-mv">
             {faqs.map((f, i) => {
