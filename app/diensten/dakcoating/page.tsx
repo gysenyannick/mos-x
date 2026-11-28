@@ -65,6 +65,43 @@ const faqs: { q: string; a: string; cta?: boolean }[] = [
 ];
 
 const COATING_CSS = `
+  .dc-mv-item .dc-acc-tekst .dc-faq-p { white-space: pre-line; padding-left: 24px; }
+  @media (max-width: 640px) { .dc-mv-item .dc-acc-tekst .dc-faq-p { padding-left: 18px; } }
+  .dc-faq-cta { padding: 0 24px 22px; }
+  .dc-faq-cta .do-knop { height: 44px; font-size: 14px; }
+  .dc-faq-meer { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 10px; padding: 16px 16px 16px 24px; border-radius: 12px; background: #F7F8F6; border: 1px solid #E5E7EB; }
+  .dc-faq-meer b { font: 700 15px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+  .dc-faq-meer .do-knop { height: 44px; padding: 0 18px; font-size: 14px; }
+
+  .dc-eind { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: stretch; border-radius: 24px;
+    background: radial-gradient(520px 320px at 0% 100%, rgba(155,203,108,0.16), transparent 70%), linear-gradient(160deg, #1E3324 0%, #0B0F0C 75%);
+    border: 1px solid rgba(155,203,108,0.3); box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -36px rgba(11,15,12,0.65); }
+  .dc-eind-tekst { position: relative; z-index: 1; padding: 56px 24px 52px 56px; }
+  .dc-eind h2 { margin: 0; font: 800 clamp(1.7rem, 2.9vw, 2.4rem)/1.12 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.028em; color: #FFFFFF; text-wrap: balance; }
+  .dc-eind h2 span { color: #9BCB6C; white-space: nowrap; }
+  .dc-eind-p { margin: 16px 0 0; max-width: 460px; font: 400 16.5px/1.65 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.75); text-wrap: pretty; }
+  .dc-eind-lijst { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .dc-eind-lijst li { display: flex; align-items: center; gap: 10px; font: 500 15px var(--font-inter), system-ui, sans-serif; color: #FFFFFF; }
+  .dc-eind-lijst svg { flex: none; width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: #9BCB6C; color: #FFFFFF; }
+  .dc-eind-knoppen { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .dc-eind-hoofd { height: 58px !important; padding: 0 30px !important; font-size: 17px !important; }
+  .dc-eind-knoppen .do-knop-d { height: 58px; }
+  .dc-eind-score { margin-top: 22px; }
+  .dc-eind-media { position: relative; min-height: 100%; margin-left: -18%; }
+  .dc-eind-foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dc-eind-media { -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.35) 22%, #000 55%); mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.35) 22%, #000 55%); }
+  @media (max-width: 900px) {
+    .dc-eind { grid-template-columns: minmax(0, 1fr); }
+    .dc-eind-media { order: -1; height: 230px; min-height: 0; margin-left: 0; }
+    .dc-eind-media { -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent 100%); mask-image: linear-gradient(180deg, #000 50%, transparent 100%); }
+    .dc-eind-tekst { padding: 8px 22px 34px; }
+    .dc-eind-knoppen { flex-direction: column; }
+    .dc-eind-knoppen .do-knop { width: 100%; justify-content: center; }
+  }
+  @media (max-width: 640px) {
+    .dc-faq-meer { flex-direction: column; align-items: stretch; text-align: center; padding: 18px; }
+    .dc-faq-cta { padding: 0 18px 20px; }
+  }
   .dc-mv-kop { text-align: center; margin: 0 auto 44px; }
   .dc-mv-kop .do-h2 { text-align: center; }
   .dc-mv { max-width: 820px; margin: 0 auto; display: grid; gap: 10px; }
@@ -200,7 +237,7 @@ function WhatsAppIcoon() {
 
 export default function DakcoatingPage() {
   const [openMv, setOpenMv] = useState<number | null>(null);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [bezoekOpen, setBezoekOpen] = useState(false);
   const [openInfo, setOpenInfo] = useState<number | null>(null);
   const [openNu, setOpenNu] = useState<number | null>(null);
@@ -409,31 +446,27 @@ export default function DakcoatingPage() {
       {/* FAQ */}
       <section className="do-sectie do-wit">
         <div className="do-wrap">
-          <div className="do-kop">
-            <div>
-              <p className="do-oog">Veelgestelde vragen</p>
-              <h2 className="do-h2">Alles over <span>dakcoating.</span></h2>
-            </div>
+          <div className="dc-mv-kop">
+            <p className="do-oog">Veelgestelde vragen</p>
+            <h2 className="do-h2">Alles over <span>dakcoating.</span></h2>
           </div>
-          <div className="do-faq">
+          <div className="dc-mv">
             {faqs.map((f, i) => {
               const open = openFaq === i;
               return (
-                <div key={f.q} className={open ? "do-vraag open" : "do-vraag"}>
+                <div key={f.q} className={open ? "dc-mv-item open" : "dc-mv-item"}>
                   <button type="button" aria-expanded={open} onClick={() => setOpenFaq(open ? null : i)}>
-                    {f.q}
-                    <ChevronDown size={19} aria-hidden="true" />
+                    <span className="dc-mv-q">{f.q}</span>
+                    <span className="dc-mv-plus" aria-hidden="true" />
                   </button>
-                  {open && (
-                    <div className="do-antwoord">
-                      <p>{f.a}</p>
-                      {f.cta && <Link className="do-knop do-knop-g" style={{ height: 44, marginTop: 6, fontSize: 14 }} href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>}
-                    </div>
-                  )}
+                  <div className="dc-acc-tekst"><div>
+                    <p className="dc-faq-p">{f.a}</p>
+                    {f.cta && <div className="dc-faq-cta"><Link className="do-knop do-knop-g" href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link></div>}
+                  </div></div>
                 </div>
               );
             })}
-            <div className="do-faq-meer">
+            <div className="dc-faq-meer">
               <b>Staat je vraag er niet bij?</b>
               <a className="do-knop do-knop-g" href="https://wa.me/32468352869?text=Hallo%2C%20ik%20heb%20een%20vraag%20over%20dakcoating." target="_blank" rel="noopener noreferrer"><WhatsAppIcoon />Stel je vraag</a>
             </div>
@@ -441,18 +474,28 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* Afsluiter */}
-      <section className="do-sectie do-wit" style={{ paddingTop: 0 }}>
+      {/* Afsluiter: richtprijs */}
+      <section className="do-sectie do-zacht dc-eind-sectie">
         <div className="do-wrap">
-          <div className="do-cta">
-            <div>
-              <h2>Benieuwd wat <span style={{ whiteSpace: "nowrap" }}>jouw dak</span> nodig heeft?</h2>
-              <p>We bekijken je dak en adviseren enkel wat écht nodig is.</p>
-              <GoogleScore donker />
+          <div className="dc-eind">
+            <div className="dc-eind-tekst">
+              <p className="do-oog">Klaar in 60 seconden</p>
+              <h2>Wat kost een dakcoating <span>voor jouw dak?</span></h2>
+              <p className="dc-eind-p">Bereken online meteen je richtprijs. Gratis, vrijblijvend en zonder dat je je moet registreren.</p>
+              <ul className="dc-eind-lijst">
+                <li><Check size={15} strokeWidth={3} aria-hidden="true" />Vaste prijs, geen verrassingen</li>
+                <li><Check size={15} strokeWidth={3} aria-hidden="true" />10 jaar garantie op de coating</li>
+                <li><Check size={15} strokeWidth={3} aria-hidden="true" />Geen onderaannemers</li>
+              </ul>
+              <div className="dc-eind-knoppen">
+                <Link className="do-knop do-knop-g mx-glow dc-eind-hoofd" href="/#calculator">Bereken mijn richtprijs<ChevronRight size={18} /></Link>
+                <button type="button" className="do-knop do-knop-d" onClick={() => setBezoekOpen(true)}><CalendarCheck size={17} />Gratis plaatsbezoek</button>
+              </div>
+              <div className="dc-eind-score"><GoogleScore donker /></div>
             </div>
-            <div className="do-cta-knoppen">
-              <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}>Plan een gratis plaatsbezoek<ChevronRight size={17} /></button>
-              <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
+            <div className="dc-eind-media">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="dc-eind-foto" src="/images/IMG_4584 Vooraanzicht dakcoating.JPEG" alt="Woning met een vers gecoat dak" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
