@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Droplets, Shield, CalendarCheck, ChevronRight, Umbrella } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, ChevronRight, CloudRain } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
@@ -47,7 +47,7 @@ const services = [
     video: "/videos/hydrofuge.mp4",
     videoEinde: 0,
     videoPosition: "center 100%",
-    Icon: Umbrella,
+    Icon: CloudRain,
     desc: "Een onzichtbare, waterafstotende laag. Regen parelt af en mos krijgt minder kans.",
     link: "Ontdek MOS-PLUS",
   },

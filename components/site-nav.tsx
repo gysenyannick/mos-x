@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle, Building2, Umbrella } from "lucide-react";
+import { Menu, X, Phone, ChevronRight, ChevronDown, Droplets, Paintbrush, CalendarCheck, Images, Users, Mail, MessageCircle, Building2, CloudRain } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 
 type MegaItem = { naam: string; dienst?: string; tekst: string; href: string; img: string };
@@ -26,7 +26,7 @@ const links = [
 const mobieleDiensten = [
   { label: "Dakreiniging", sub: "Mos, algen en vuil weg", href: "/diensten/dakontmossing", Icoon: Droplets },
   { label: "MOS-MAX", sub: "Dakcoating", href: "/diensten/dakcoating", Icoon: Paintbrush },
-  { label: "MOS-PLUS", sub: "Hydrofuge", href: "/diensten/hydrofuge", Icoon: Umbrella },
+  { label: "MOS-PLUS", sub: "Hydrofuge", href: "/diensten/hydrofuge", Icoon: CloudRain },
   { label: "MOS-CARE", sub: "Onderhoudsplan", href: "/diensten/onderhoudsplan", Icoon: CalendarCheck },
 ];
 
