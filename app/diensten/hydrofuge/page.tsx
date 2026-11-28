@@ -59,22 +59,8 @@ const PLUS_CSS = `
   .mp-acc a { color: #1A1A1A; font-weight: 500; text-decoration: none; background: linear-gradient(#9BCB6C, #9BCB6C) 0 100% / 100% 2px no-repeat; transition: color .15s ease; }
   .mp-acc a:hover { color: #7AB54E; }
   .mp-acc a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 2px; }
-  .mp-eind-foto { object-position: center 62%; }
-
-  .mp-hero::before { background: radial-gradient(700px 420px at 80% 40%, rgba(155,203,108,0.14), transparent 70%), linear-gradient(160deg, #13201A 0%, #0B0F0C 70%) !important; }
-  .mp-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 64px; align-items: center; }
-  .mp-hero .do-hero-tekst { max-width: 640px; }
-  .mp-video { position: relative; justify-self: end; width: 100%; max-width: 380px; aspect-ratio: 9 / 13; overflow: hidden; border-radius: 20px; background: #0B0F0C;
-    border: 1px solid rgba(155,203,108,0.4); box-shadow: 0 30px 70px -30px rgba(0,0,0,0.8), 0 0 0 6px rgba(155,203,108,0.08); }
-  .mp-hero .mp-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; z-index: 0; }
-  .mp-video-label { position: absolute; top: 0; left: 0; right: 0; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 12px 16px;
-    background: linear-gradient(180deg, rgba(11,15,12,0.85), rgba(11,15,12,0)); font: 700 11px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #FFFFFF; }
-  .mp-video-label i { width: 8px; height: 8px; border-radius: 50%; background: #9BCB6C; box-shadow: 0 0 0 4px rgba(155,203,108,0.25); }
+  .mp-hero video { object-position: center 62%; }
   @media (max-width: 640px) { .mp-hero .dc-h1 { font-size: 8.4vw; } }
-  @media (max-width: 960px) {
-    .mp-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-    .mp-video { justify-self: center; max-width: 340px; }
-  }
 `;
 
 function WhatsAppIcoon() {
@@ -97,7 +83,7 @@ export default function HydrofugePage() {
     setBelStatus("sending");
     const fd = new FormData(e.currentTarget);
     fd.set("dienst", "hydrofuge");
-    fd.set("bericht", "Terugbelverzoek MOS-PLUS (hydrofuge)");
+    fd.set("bericht", "Aanvraag gratis dakinspectie (MOS-PLUS hydrofuge)");
     try {
       const res = await fetch("/api/contact", { method: "POST", body: fd });
       setBelStatus(res.ok ? "ok" : "error");
@@ -112,12 +98,13 @@ export default function HydrofugePage() {
 
       {/* Hero */}
       <section className="do-hero dc-hero mp-hero">
-        <div className="do-wrap mp-grid">
+        <video src="/videos/hydrofuge.mp4" poster="/images/hydrofuge-poster.jpg" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+        <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-PLUS</p>
             <p className="do-oog">MOS-PLUS · Hydrofuge</p>
-            <h1 className="do-h1 dc-h1"><b>Bescherm je dak</b> <b><em>nu het nog kan.</em></b></h1>
+            <h1 className="do-h1 dc-h1"><b>Regen parelt af,</b> <b><em>je dak blijft mooi.</em></b></h1>
             <p className="do-p">MOS-PLUS is onze oplossing voor daken die nog in goede staat zijn en niet te oud. We verwijderen mos en algen en brengen een kleurloos middel aan dat diep in de pan trekt en ze waterafstotend maakt. Je dak verandert niet van uitzicht. Daarom is de behandeling ook geschikt voor meerkleurige pannen, waarbij je de originele look&nbsp;wil&nbsp;behouden.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Gaat 5 à 7 jaar mee op daken in goede staat</li>
@@ -129,10 +116,6 @@ export default function HydrofugePage() {
               <a className="do-knop do-knop-d" href="tel:+32468352869"><Phone size={16} />+32 468 35 28 69</a>
             </div>
             <HeroVertrouwen />
-          </div>
-          <div className="mp-video">
-            <video src="/videos/hydrofuge.mp4" poster="/images/hydrofuge-poster.jpg" autoPlay muted loop playsInline preload="metadata" aria-label="Video: water parelt af van een behandelde dakpan" />
-            <span className="mp-video-label"><i aria-hidden="true" />MOS-PLUS in 15 seconden</span>
           </div>
         </div>
       </section>
@@ -163,18 +146,18 @@ export default function HydrofugePage() {
             </div>
           </div>
 
-          <aside className="dc-bel" aria-label="Laat je terugbellen over MOS-PLUS">
-            <p className="dc-bel-oog">MOS-PLUS</p>
-            <h3>Wat kost MOS&#8209;PLUS?</h3>
-            <p className="dc-bel-sub">Een opfrisbeurt voor nieuwere daken. We meten gratis op en je krijgt een vaste prijs. Laat je naam en nummer achter, dan bellen we je.</p>
+          <aside className="dc-bel" aria-label="Vraag een gratis dakinspectie aan">
+            <p className="dc-bel-oog">Gratis dakinspectie</p>
+            <h3>Laat je dak gratis inspecteren.</h3>
+            <p className="dc-bel-sub">We bekijken je dak ter plaatse en je krijgt een vaste prijs. Laat je naam en nummer achter, dan bellen we je om een afspraak te maken.</p>
             {belStatus === "ok" ? (
-              <p className="dc-bel-ok" role="status">Bedankt! We bellen je snel terug.</p>
+              <p className="dc-bel-ok" role="status">Bedankt! We bellen je snel om je gratis dakinspectie in te plannen.</p>
             ) : (
               <form onSubmit={belMij}>
                 <input name="voornaam" placeholder="Je naam" required autoComplete="name" aria-label="Je naam" />
                 <input name="telefoon" type="tel" placeholder="Je telefoonnummer" required autoComplete="tel" aria-label="Je telefoonnummer" />
                 <button type="submit" className="do-knop do-knop-g" disabled={belStatus === "sending"}>
-                  {belStatus === "sending" ? <Loader2 size={17} className="zk-spin" /> : <Phone size={17} />}Bel mij terug
+                  {belStatus === "sending" ? <Loader2 size={17} className="zk-spin" /> : <CalendarCheck size={17} />}Vraag gratis inspectie aan
                 </button>
                 {belStatus === "error" && <p className="dc-bel-of" role="alert">Er ging iets mis. Bel ons gerust even.</p>}
               </form>
@@ -207,6 +190,10 @@ export default function HydrofugePage() {
               );
             })}
           </div>
+          <div className="dc-knoppen dc-knoppen-midden">
+            <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken mijn richtprijs<ChevronRight size={17} /></Link>
+            <button type="button" className="do-knop do-knop-licht" onClick={() => setBezoekOpen(true)}><CalendarCheck size={17} />Plan een gratis plaatsbezoek</button>
+          </div>
         </div>
       </section>
 
@@ -229,6 +216,10 @@ export default function HydrofugePage() {
                 <BeforeAfterSlider beforeSrc={r.voor} afterSrc={r.na} borderRadius="0" aspectRatio="4/3" />
               </div>
             ))}
+          </div>
+          <div className="dc-knoppen dc-knoppen-midden">
+            <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken mijn richtprijs<ChevronRight size={17} /></Link>
+            <button type="button" className="do-knop do-knop-licht" onClick={() => setBezoekOpen(true)}><CalendarCheck size={17} />Plan een gratis plaatsbezoek</button>
           </div>
         </div>
       </section>
@@ -284,7 +275,7 @@ export default function HydrofugePage() {
             </div>
             <div className="dc-eind-media">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="dc-eind-foto mp-eind-foto" src="/images/hydrofuge-poster.jpg" alt="Water parelt af van een dakpan na een MOS-PLUS-behandeling" loading="lazy" decoding="async" />
+              <img className="dc-eind-foto" src="/images/dak-antraciet-bestelwagen.webp" alt="Verzorgd dak van bovenaf gezien" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
