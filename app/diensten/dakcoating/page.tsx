@@ -21,6 +21,12 @@ const stappen = [
   { titel: "Controle en afwerking", tekst: "We verwijderen alle beschermingsmaterialen en controleren het volledige dak, zodat alles netjes wordt achtergelaten." },
 ];
 
+const redenen = [
+  { titel: "Mos en zon tasten je pannen jaar na jaar aan", tekst: "Mos wortelt in de pan zelf en uv‑straling breekt de toplaag af. Hoe langer je wacht, hoe meer vocht je pannen opnemen, en hoe duurder het werk wordt.", img: "/images/waarom-1-mos.webp" },
+  { titel: "Onbeschermde pannen barsten bij vorst", tekst: "Is de toplaag versleten, dan trekt er water in de pan. Bij vorst zet dat water uit, net als in asfalt. Zo ontstaan barsten en kans op lekken.", img: "/images/waarom-2-barst.webp" },
+  { titel: "Een behandeling stelt een nieuw dak jaren uit", tekst: "Op tijd reinigen en coaten geeft je dak zijn bescherming en uitstraling terug. Dat is een stuk goedkoper dan pannen vervangen of een nieuw dak leggen.", img: "/images/waarom-3-behandeling.webp" },
+];
+
 const info: { q: string; a: string; cta?: boolean }[] = [
   { q: "Wat is een dakcoating?", a: "Bij een dakcoating krijgen je dakpannen een nieuwe, dichte beschermlaag. Een onbehandeld dak neemt water op. In de winter bevriest dat water, zet het uit en beschadigt het de pannen van binnenuit. Zo worden pannen poreus, krijgt mos vat en kan je dak op termijn gaan lekken.\n\nMet een coating loopt het water af in plaats van in de pan te trekken. Je dak blijft langer proper, kan beter tegen vorst en ziet er jaren als nieuw uit." },
   { q: "Waarom is dat nodig in België?", a: "In België regent het vaak en schommelt de temperatuur in de winter rond het vriespunt. Je pannen worden telkens nat, bevriezen en ontdooien weer. Net dat maakt ze na verloop van tijd poreus.\n\nEen coating beschermt je dak precies daartegen: het water krijgt geen kans meer om in de pan te trekken." },
@@ -75,6 +81,17 @@ const COATING_CSS = `
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero::after { display: none; }
+  .dc-nu-kop { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+  .dc-nu-kop .do-p { margin-top: 14px; }
+  .dc-nu { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .dc-nu-kaart { overflow: hidden; border-radius: 16px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); transition: transform .25s ease, box-shadow .25s ease; }
+  .dc-nu-kaart:hover { transform: translateY(-4px); box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 26px 50px -28px rgba(30,51,36,0.45); }
+  .dc-nu-kaart img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .dc-nu-tekst { display: flex; gap: 16px; padding: 24px 26px 28px; }
+  .dc-nu-nr { flex-shrink: 0; padding-top: 3px; font: 700 13px var(--font-montserrat), system-ui, sans-serif; color: #9BCB6C; }
+  .dc-nu-tekst h3 { margin: 0 0 10px; font: 800 18px/1.3 var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.015em; color: #1A1A1A; text-wrap: balance; }
+  .dc-nu-tekst p { margin: 0; font: 400 15px/1.65 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
+  @media (max-width: 960px) { .dc-nu { grid-template-columns: minmax(0, 1fr); max-width: 520px; margin: 0 auto; } }
   .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
   .dc-hero .do-hero-tekst { max-width: 720px; }
   .dc-h1 { margin-bottom: 26px; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1.1; }
@@ -242,6 +259,28 @@ export default function DakcoatingPage() {
             <Link className="do-knop do-knop-d" href="/#calculator">Bereken je richtprijs<ChevronRight size={16} /></Link>
             <a className="dc-bel-tel" href="tel:+32468352869"><Phone size={15} />+32 468 35 28 69</a>
           </aside>
+        </div>
+      </section>
+
+      {/* Waarom nu */}
+      <section className="do-sectie do-zacht">
+        <div className="do-wrap">
+          <div className="dc-nu-kop">
+            <h2 className="do-h2">Waarom je dak <span>nu</span> laten behandelen?</h2>
+            <p className="do-p">Drie redenen waarom wachten je meer kost dan nu iets doen.</p>
+          </div>
+          <div className="dc-nu">
+            {redenen.map((r, i) => (
+              <article key={r.titel} className="dc-nu-kaart">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={r.img} alt="" loading="lazy" decoding="async" width={800} height={540} />
+                <div className="dc-nu-tekst">
+                  <span className="dc-nu-nr">{String(i + 1).padStart(2, "0")}</span>
+                  <div><h3>{r.titel}</h3><p>{r.tekst}</p></div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
