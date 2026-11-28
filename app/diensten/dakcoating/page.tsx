@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, CalendarCheck, CheckCircle2, ChevronDown, ChevronRight, Download, Loader2, Palette, Phone } from "lucide-react";
+import { AlertTriangle, CalendarCheck, Check, ChevronDown, ChevronRight, Download, Loader2, Palette, Phone } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -83,7 +83,13 @@ const COATING_CSS = `
 
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
-  .dc-hero-vink { list-style: none; margin: -12px 0 30px; padding: 0; display: grid; gap: 10px; }
+  .dc-hero .do-oog { margin-top: 12px; margin-bottom: 18px; }
+  .dc-h1 { max-width: 640px; margin-bottom: 26px; font-size: clamp(2rem, 3.3vw, 2.85rem); line-height: 1.12; }
+  .dc-h1 mark { position: relative; z-index: 0; background: none; color: #FFFFFF; white-space: nowrap; }
+  .dc-h1 mark::after { content: ""; position: absolute; z-index: -1; left: -4px; right: -4px; bottom: 0.06em; height: 0.42em; border-radius: 3px; background: #9BCB6C; opacity: 0.75; }
+  .dc-hero .do-p { margin-bottom: 30px; }
+  .dc-hero .do-hero-knoppen { margin-bottom: 40px; }
+  .dc-hero-vink { list-style: none; margin: 0 0 36px; padding: 0; display: grid; gap: 14px; }
   .dc-hero-vink li { display: flex; align-items: center; gap: 10px; font-size: 15.5px; color: rgba(255,255,255,0.85); font-family: var(--font-inter), system-ui, sans-serif; }
   .dc-hero-vink i { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; flex-shrink: 0; }
 
@@ -172,7 +178,7 @@ export default function DakcoatingPage() {
   const [openStap, setOpenStap] = useState<number | null>(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [bezoekOpen, setBezoekOpen] = useState(false);
-  const [openInfo, setOpenInfo] = useState<number | null>(0);
+  const [openInfo, setOpenInfo] = useState<number | null>(null);
   const [belStatus, setBelStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   async function belMij(e: React.FormEvent<HTMLFormElement>) {
@@ -195,19 +201,19 @@ export default function DakcoatingPage() {
       <style>{DIENST_CSS + COATING_CSS}</style>
 
       {/* Hero */}
-      <section className="do-hero">
+      <section className="do-hero dc-hero">
         <video src="/videos/Dakcoating.mp4" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
         <div className="do-wrap">
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-MAX</p>
-            <p className="do-oog">MOS-MAX · Dakcoating</p>
-            <h1 className="do-h1">Je dak weer als nieuw, <span>en jaren langer mee.</span></h1>
-            <p className="do-p">MOS-MAX is onze dakcoating: een professionele beschermlaag op je bestaande pannen. Je dak krijgt een nieuw leven en betere bescherming, voor een fractie van de prijs van een nieuw dak.</p>
+            <p className="do-oog">Vergeet je zorgen over je dak</p>
+            <h1 className="do-h1 dc-h1">MOS-MAX is de dakcoating die je dak <mark>tot 15 jaar langer</mark> laat meegaan.</h1>
+            <p className="do-p">MOS-MAX is onze dakcoating: een professionele coating die over je dakpannen wordt aangebracht en je dak nieuw leven en betere bescherming geeft, voor een fractie van de prijs van een nieuw dak.</p>
             <ul className="dc-hero-vink">
-              <li><i><CheckCircle2 size={14} strokeWidth={3} /></i>Geen dakvervanging nodig</li>
-              <li><i><CheckCircle2 size={14} strokeWidth={3} /></i>Je dak ziet er weer als nieuw uit</li>
-              <li><i><CheckCircle2 size={14} strokeWidth={3} /></i>Tot 10 jaar garantie op de hechting</li>
+              <li><i><Check size={14} strokeWidth={3.2} /></i>Je stelt een nieuw dak uit, of vermijdt het helemaal</li>
+              <li><i><Check size={14} strokeWidth={3.2} /></i>Je dak ziet er weer als nieuw uit, en gaat jaren mee</li>
+              <li><i><Check size={14} strokeWidth={3.2} /></i>Je bespaart duizenden euro&apos;s</li>
             </ul>
             <div className="do-hero-knoppen">
               <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je prijs in 60 seconden<ChevronRight size={17} /></Link>
@@ -217,6 +223,9 @@ export default function DakcoatingPage() {
           </div>
         </div>
       </section>
+
+      {/* Werkgebied */}
+      <WerkgebiedCheck />
 
       {/* Uitleg + terugbelkaart */}
       <section className="do-sectie do-wit">
@@ -363,11 +372,9 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* Werkgebied */}
-      <WerkgebiedCheck />
 
       {/* FAQ */}
-      <section className="do-sectie do-zacht">
+      <section className="do-sectie do-wit">
         <div className="do-wrap">
           <div className="do-kop">
             <div>
