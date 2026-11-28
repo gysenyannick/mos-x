@@ -1,15 +1,20 @@
 import { Check, X } from "lucide-react";
 
 const rijen = [
-  { ja: "Richtprijs binnen 60 seconden", jaSub: "Bereken online meteen wat je dak ongeveer kost. Geen weken wachten om een prijs te kennen.", nee: "Weken wachten op een offerte, zonder idee van een richtprijs." },
-  { ja: "Snel en flexibel ingepland", jaSub: "Ook in het hoogseizoen ben je binnen maximaal 2 weken aan de beurt.", nee: "Lange wachtlijsten, niet alleen in het seizoen." },
-  { ja: "Prijsvaste offerte", jaSub: "Offerte = factuur. Geen meerwerk of verrassingen achteraf.", nee: "De prijs wijzigt achteraf door meerwerk." },
-  { ja: "Tot 10 jaar garantie op de coating", jaSub: "Met een schriftelijk garantiebewijs, zwart op wit. Zo weet je precies waar je op kan rekenen.", nee: "Weinig of geen garantie." },
-  { ja: "Dakwerkers, geen schoonmakers", jaSub: "We kennen het vak: hoe je veilig over een dak loopt, wat je pannen nodig hebben en hoe je iets herstelt.", nee: "Schoonmaakfirma's en glazenwassers zonder dakkennis." },
-  { ja: "Kleine herstellingen inbegrepen", jaSub: "Een losse pan of een kleine reparatie doen we meteen mee, zodat je dak weer in topconditie is.", nee: "Voor een kleine herstelling bel je een tweede firma." },
-  { ja: "VCA-gecertificeerd", jaSub: "We werken veilig op hoogte, met de juiste uitrusting en opleiding.", nee: "Geen veiligheidsattest, geen ervaring met werken op hoogte." },
-  { ja: "Eén vast aanspreekpunt", jaSub: "Geen onderaannemers of tussenpersonen. Direct contact via WhatsApp.", nee: "Een keten van onderaannemers en tussenpersonen." },
+  { ja: "Richtprijs binnen 60 seconden", jaSub: "Bereken online meteen wat je dak ongeveer kost.|Meteen online je richtprijs.", nee: "Weken wachten, zonder idee van een prijs.|Weken wachten op een prijs." },
+  { ja: "Snel en flexibel ingepland", jaSub: "Ook in het hoogseizoen binnen maximaal 2 weken.|Ook in het hoogseizoen, max. 2 weken.", nee: "Lange wachtlijsten, ook buiten het seizoen.|Lange wachtlijsten." },
+  { ja: "Prijsvaste offerte", jaSub: "Offerte = factuur. Geen meerwerk achteraf.", nee: "De prijs wijzigt achteraf door meerwerk." },
+  { ja: "Tot 10 jaar garantie op de coating", jaSub: "Schriftelijk garantiebewijs, zwart op wit.", nee: "Weinig of geen garantie." },
+  { ja: "Dakwerkers, geen schoonmakers", jaSub: "We kennen het vak en kunnen ook herstellen.", nee: "Schoonmakers zonder dakkennis." },
+  { ja: "Kleine herstellingen inbegrepen", jaSub: "Een losse pan of kleine reparatie doen we meteen mee.|Losse pan of kleine reparatie: inbegrepen.", nee: "Voor herstellingen bel je een tweede firma.|Herstellingen? Bel een tweede firma." },
+  { ja: "VCA-gecertificeerd", jaSub: "Veilig werken op hoogte, met de juiste uitrusting.|Veilig werken op hoogte.", nee: "Geen veiligheidsattest voor werken op hoogte.|Geen veiligheidsattest." },
+  { ja: "Eén vast aanspreekpunt", jaSub: "Geen tussenpersonen. Direct contact via WhatsApp.|Direct contact via WhatsApp.", nee: "Onderaannemers en tussenpersonen." },
 ];
+
+function T({ t }: { t: string }) {
+  const [l, k] = t.split("|");
+  return k ? <><span className="vg-l">{l}</span><span className="vg-k">{k}</span></> : <>{l}</>;
+}
 
 /** Homepage: vergelijking MOS-X tegenover een gewone dakreiniger (twee panelen met VS). */
 export default function SiteVergelijking() {
@@ -31,7 +36,7 @@ export default function SiteVergelijking() {
         .vg-rechts { position: relative; isolation: isolate; overflow: hidden; border-radius: 22px; background: #0B0F0C; border-top: 4px solid #9BCB6C;
           box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 40px 80px -36px rgba(11,15,12,0.65); }
 
-        .vg-rij { display: flex; align-items: center; gap: 14px; min-height: 92px; padding: 0 28px; border-bottom: 1px solid #E5E7EB; }
+        .vg-rij { display: flex; align-items: center; gap: 14px; min-height: 78px; padding: 0 28px; border-bottom: 1px solid #E5E7EB; }
         .vg-rij:last-child { border-bottom: 0; }
         .vg-rechts .vg-rij { border-bottom-color: rgba(255,255,255,0.08); padding: 0 32px; }
         .vg-hoofd { min-height: 86px !important; }
@@ -45,15 +50,29 @@ export default function SiteVergelijking() {
         .vg-nee { background: #FFFFFF; color: #A3A79E; border: 1px solid #E5E7EB; }
         .vg-tekst { min-width: 0; }
         .vg-tekst b { display: block; font: 700 15.5px/1.3 var(--font-montserrat), system-ui, sans-serif; color: #FFFFFF; white-space: nowrap; }
-        .vg-tekst small { display: block; margin-top: 3px; font: 400 13.5px/1.4 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.66); max-width: 520px; }
-        .vg-nee-tekst { font: 400 14.5px/1.4 var(--font-inter), system-ui, sans-serif; color: #545454; }
+        .vg-tekst small { display: block; margin-top: 3px; font: 400 13.5px/1.4 var(--font-inter), system-ui, sans-serif; color: rgba(255,255,255,0.66); white-space: nowrap; }
+        .vg-nee-tekst { font: 400 14.5px/1.4 var(--font-inter), system-ui, sans-serif; color: #545454; white-space: nowrap; }
 
         .vg-vs { position: absolute; z-index: 3; top: 50%; left: calc(41% - 30px); transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%;
           display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; border: 4px solid #FFFFFF;
           font: 800 17px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.02em; box-shadow: 0 10px 24px -8px rgba(122,181,78,0.8); }
 
-        @media (max-width: 1080px) {
-          .vg-tekst b, .vg-tekst small, .vg-nee-tekst { white-space: normal; }
+        .vg-k { display: none; }
+        @media (max-width: 1080px) and (min-width: 861px) {
+          .vg-tekst small, .vg-nee-tekst { font-size: 12.5px; }
+          .vg-tekst b { font-size: 14px; }
+        }
+        @media (max-width: 640px) {
+          .vg-l { display: none; } .vg-k { display: inline; }
+          .vg-tekst small { font-size: 12.5px !important; }
+          .vg-nee-tekst { font-size: 13px !important; }
+          .vg-tekst b { font-size: 14px !important; }
+        }
+        @media (max-width: 380px) {
+          .vg-rij { padding-left: 14px !important; padding-right: 10px !important; gap: 10px; }
+          .vg-tekst small { font-size: 11.5px !important; }
+          .vg-nee-tekst { font-size: 12px !important; }
+          .vg-tekst b { font-size: 13.5px !important; }
         }
         @media (max-width: 860px) {
           .vg-sectie { padding: 72px 14px; }
@@ -85,7 +104,7 @@ export default function SiteVergelijking() {
           <div className="vg-paneel vg-links" aria-label="Andere firma">
             <div className="vg-rij vg-hoofd"><span className="vg-nee" aria-hidden="true"><X size={14} strokeWidth={2.8} /></span><b>Andere firma</b></div>
             {rijen.map((r) => (
-              <div key={r.nee} className="vg-rij"><span className="vg-nee" aria-hidden="true"><X size={14} strokeWidth={2.8} /></span><span className="vg-nee-tekst">{r.nee}</span></div>
+              <div key={r.nee} className="vg-rij"><span className="vg-nee" aria-hidden="true"><X size={14} strokeWidth={2.8} /></span><span className="vg-nee-tekst"><T t={r.nee} /></span></div>
             ))}
           </div>
 
@@ -96,7 +115,7 @@ export default function SiteVergelijking() {
             {rijen.map((r) => (
               <div key={r.ja} className="vg-rij">
                 <span className="vg-ja" aria-hidden="true"><Check size={15} strokeWidth={3} /></span>
-                <div className="vg-tekst"><b>{r.ja}</b><small>{r.jaSub}</small></div>
+                <div className="vg-tekst"><b>{r.ja}</b><small><T t={r.jaSub} /></small></div>
               </div>
             ))}
           </div>
