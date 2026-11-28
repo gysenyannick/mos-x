@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CalendarCheck, Check, ChevronDown, ChevronRight, Loader2, Phone } from "lucide-react";
+import { CalendarCheck, Check, ChevronDown, ChevronRight, CloudRain, Droplets, Layers, Leaf, Loader2, Phone, ShieldCheck, Sparkles, Wrench } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -13,14 +13,22 @@ import SiteReviews from "@/components/site-reviews";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 import { COATING_CSS } from "@/components/coating-stijl";
 
-const voordelen: { q: string; a: React.ReactNode }[] = [
-  { q: "Geen los mos meer op je oprit", a: <p>Bij regen en wind waaien mosbolletjes van je dak op je oprit en terras. Na een ontmossing hoef je die niet meer telkens op te ruimen.</p> },
-  { q: "Lege, vrije dakgoten", a: <p>Het mos in je dakgoten komt van je dak. Is je dak mosvrij, dan raken je goten niet meer verstopt en loopt het regenwater vlot weg.</p> },
-  { q: "Minder vochtproblemen", a: <p>Mos werkt als een spons. Het houdt water vast en kruipt tussen je pannen, waardoor er water onder kan lopen. Zonder mos blijft je dak droog.</p> },
-  { q: "Je dak gaat langer mee", a: <p>Mos houdt je pannen voortdurend nat. Bij vorst zet dat water uit en barsten je pannen. Een mosvrij dak droogt sneller op en gaat jaren langer mee.</p> },
-  { q: "Is enkel reinigen genoeg?", a: (<>
-    <p>Een dakreiniging haalt mos, algen en vuil weg, maar bouwt de beschermlaag die over de jaren versleten is niet opnieuw op. Daarom behandelen we elk dak na het reinigen met een antimosmiddel, zodat het mos minder snel terugkomt.</p>
-    <p>Betonpannen enkel reinigen zonder ze daarna te behandelen, doen we nooit. Daarmee verkort je de levensduur van de pan. Wil je meer bescherming, dan is <Link href="/diensten/hydrofuge">MOS-PLUS</Link> een goede keuze voor nieuwere daken, en <Link href="/diensten/dakcoating">MOS-MAX</Link> voor oudere daken die nog stevig zijn.</p>
+const voordelen = [
+  { Icoon: Leaf, titel: "Geen los mos meer op je oprit", tekst: "Bij regen en wind waaien mosbolletjes van je dak op je oprit en terras. Na een dakreiniging hoef je die niet meer telkens op te ruimen." },
+  { Icoon: Droplets, titel: "Lege, vrije dakgoten", tekst: "Het mos in je dakgoten komt van je dak. Is je dak mosvrij, dan raken je goten niet meer verstopt en loopt het regenwater vlot weg." },
+  { Icoon: CloudRain, titel: "Minder vochtproblemen", tekst: "Mos werkt als een spons. Het houdt water vast en kruipt tussen je pannen, waardoor er water onder kan lopen. Zonder mos blijft je dak droog." },
+  { Icoon: ShieldCheck, titel: "Je dak gaat langer mee", tekst: "Mos houdt je pannen voortdurend nat. Bij vorst zet dat water uit en barsten je pannen. Een mosvrij dak droogt sneller op en gaat jaren langer mee." },
+  { Icoon: Sparkles, titel: "Een frisse uitstraling", tekst: "Een proper dak geeft je hele woning een verzorgde look. Dat valt meteen op in de straat en verhoogt de waarde van je woning als je ooit verkoopt." },
+];
+
+const uitleg: { q: string; a: React.ReactNode }[] = [
+  { q: "Waarom altijd een nabehandeling?", a: (<>
+    <p>Een dakreiniging haalt mos, algen en vuil weg, maar bouwt de beschermlaag die over de jaren versleten is niet opnieuw op. Zonder nabehandeling komt het mos sneller terug, en op betonpannen verkort enkel reinigen zelfs de levensduur van de pan.</p>
+    <p>Daarom doen we na elke reiniging een nabehandeling, afgestemd op je dak.</p>
+  </>) },
+  { q: "Welke nabehandeling past bij jouw dak?", a: (<>
+    <p>Bij keramische pannen en leien volstaat meestal een antimosbehandeling. Heb je een nieuwer dak in goede staat, dan is <Link href="/diensten/hydrofuge">MOS-PLUS</Link> een goede keuze: je pannen worden waterafstotend en houden hun originele kleur. Is je dak ouder maar nog stevig, dan geeft <Link href="/diensten/dakcoating">MOS-MAX</Link> het een volledig nieuwe beschermlaag.</p>
+    <p>Bij het plaatsbezoek zeggen we je eerlijk wat je dak nodig heeft, en niet wat het duurste is.</p>
   </>) },
   { q: "En hoge druk dan?", a: (<>
     <p>We stemmen de reiniging altijd af op het materiaal, de leeftijd en de staat van je dak. Met te hoge druk spuit je de toplaag van je pannen weg en duw je water onder het dak. Daarom werken we met aangepaste druk, de juiste spuitkop en een vuilfrees die ook de moeilijkste hoekjes bereikt.</p>
@@ -36,11 +44,11 @@ const stappen = [
   { titel: "Alles netjes achtergelaten", tekst: "We maken muren, terras en dakgoten netjes op, zodat je meteen kan genieten van een volledig verzorgd resultaat." },
 ];
 
-const daktypes: { naam: string; tekst: React.ReactNode }[] = [
-  { naam: "Keramische pannen", tekst: <>Gebakken pannen zijn heel duurzaam en kunnen goed tegen een reiniging. Hier volstaat een grondige dakreiniging met een antimosbehandeling meestal.</> },
-  { naam: "Betonpannen", tekst: <>Hier ligt het anders. De beschermlaag slijt over de jaren en een reiniging alleen geeft geen nieuwe bescherming. Daarom behandelen we betonpannen altijd na het reinigen, met antimos, <Link href="/diensten/hydrofuge">MOS-PLUS</Link> of <Link href="/diensten/dakcoating">MOS-MAX</Link>.</> },
-  { naam: "Leien en kunstleien", tekst: <>Leien reinigen we voorzichtig met lage druk, zodat ze niet beschadigen. Kunstleien behandelen we daarna altijd tegen mos.</> },
-  { naam: "Metalen daken", tekst: <>Staal en plaat kunnen goed tegen een reiniging. Een grondige wasbeurt is hier op zich al goed onderhoud.</> },
+const daktypes: { naam: string; Icoon: React.ComponentType<{ size?: number }>; tekst: React.ReactNode }[] = [
+  { naam: "Keramische pannen", Icoon: Layers, tekst: <>Gebakken pannen kunnen goed tegen een reiniging. Een antimosbehandeling achteraf volstaat meestal.</> },
+  { naam: "Betonpannen", Icoon: ShieldCheck, tekst: <>De beschermlaag slijt met de jaren. Daarom behandelen we ze altijd na: antimos, <Link href="/diensten/hydrofuge">MOS-PLUS</Link> of <Link href="/diensten/dakcoating">MOS-MAX</Link>.</> },
+  { naam: "Leien en kunstleien", Icoon: Sparkles, tekst: <>We reinigen voorzichtig met lage druk, zodat ze niet beschadigen, en behandelen ze daarna tegen mos.</> },
+  { naam: "Metalen daken", Icoon: Wrench, tekst: <>Staal en plaat kunnen goed tegen een reiniging. Een grondige wasbeurt is hier al goed onderhoud.</> },
 ];
 
 const misverstanden: { q: string; a: string }[] = [
@@ -70,18 +78,23 @@ const faqs: { q: string; a: string; cta?: boolean }[] = [
 ];
 
 const REINIG_CSS = `
-  .dr-acc a, .dr-types a { color: #1A1A1A; font-weight: 500; text-decoration: none; background: linear-gradient(#9BCB6C, #9BCB6C) 0 100% / 100% 2px no-repeat; transition: color .15s ease; }
+  .dr-acc a, .dr-types a, .dr-lijst a { color: #1A1A1A; font-weight: 500; text-decoration: none; background: linear-gradient(#9BCB6C, #9BCB6C) 0 100% / 100% 2px no-repeat; transition: color .15s ease; }
   .dr-acc a:hover, .dr-types a:hover { color: #7AB54E; }
   .dr-acc a:focus-visible, .dr-types a:focus-visible { outline: 2px solid #9BCB6C; outline-offset: 2px; border-radius: 2px; }
   .dr-types { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 72px; align-items: center; }
   .dr-types .do-p + .do-p { margin-top: 14px; }
-  .dr-lijst { margin: 0; padding: 0; list-style: none; display: grid; gap: 26px; }
-  .dr-lijst li { display: flex; gap: 14px; }
-  .dr-lijst i { flex: none; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; display: grid; place-items: center; background: #9BCB6C; color: #FFFFFF; }
-  .dr-lijst p { margin: 0; font: 400 15.5px/1.7 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
-  .dr-lijst b { display: block; margin-bottom: 2px; font: 700 16px var(--font-montserrat), system-ui, sans-serif; color: #1A1A1A; }
+  .dr-lijst { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .dr-lijst li { padding: 22px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E5E7EB; box-shadow: 0 2px 16px rgba(0,0,0,0.07); transition: border-color .2s ease, transform .2s ease; }
+  .dr-lijst li:hover { border-color: #CFE5B8; transform: translateY(-2px); }
+  .dr-lijst i { width: 42px; height: 42px; margin-bottom: 14px; border-radius: 12px; display: grid; place-items: center; background: #F2F8EC; color: #7AB54E; }
+  .dr-lijst b { display: block; margin-bottom: 6px; font: 800 16px var(--font-montserrat), system-ui, sans-serif; letter-spacing: -0.01em; color: #1A1A1A; }
+  .dr-lijst p { margin: 0; font: 400 14.5px/1.65 var(--font-inter), system-ui, sans-serif; color: #545454; text-wrap: pretty; }
+  @media (max-width: 560px) { .dr-lijst { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 960px) { .dr-types { grid-template-columns: minmax(0, 1fr); gap: 36px; } }
-  @media (max-width: 640px) { .dc-hero .dc-h1 { font-size: 8.6vw; } }
+  .dr-h1 { font-size: clamp(2rem, 3.5vw, 3.1rem); }
+  .do-waarom .do-h2 { font-size: clamp(1.6rem, 2.5vw, 2.15rem); }
+  @media (min-width: 961px) { .do-waarom .do-h2 span { white-space: nowrap; } }
+  @media (max-width: 640px) { .dc-hero .dr-h1 { font-size: 7.2vw; } }
 `;
 
 function WhatsAppIcoon() {
@@ -103,6 +116,7 @@ function Knoppen({ open }: { open: () => void }) {
 
 export default function DakontmossingPage() {
   const [openVoordeel, setOpenVoordeel] = useState<number | null>(null);
+  const [openUitleg, setOpenUitleg] = useState<number | null>(null);
   const [openStap, setOpenStap] = useState<number | null>(null);
   const [openMv, setOpenMv] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -135,13 +149,13 @@ export default function DakontmossingPage() {
           <div className="do-hero-tekst">
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />Dakreiniging</p>
-            <p className="do-oog">Dakreiniging · Dakontmossen</p>
-            <h1 className="do-h1 dc-h1"><b>Mos weg,</b> <b><em>je dak weer proper.</em></b></h1>
-            <p className="do-p">Een dakreiniging haalt mos, algen en korstmos weg, en je dak ziet er meteen weer verzorgd uit. Maar we zijn eerlijk: we reinigen nooit zonder je dak daarna te behandelen, want enkel reinigen verkort de levensduur van je pannen. Daarom bekijken we je dak voor we iets aanraden.</p>
+            <p className="do-oog">Dakreiniging</p>
+            <h1 className="do-h1 dc-h1 dr-h1"><b>Geef je dak opnieuw</b> <b><em>een verzorgde uitstraling.</em></b></h1>
+            <p className="do-p">Een dakreiniging haalt mos, algen en korstmos weg, en je dak ziet er meteen weer verzorgd uit. Na elke reiniging doen we altijd een nabehandeling: een antimosbehandeling, MOS&#8209;PLUS of een MOS&#8209;MAX&#8209;dakcoating, afgestemd op je dak.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Werkwijze aangepast aan het materiaal en de staat van je dak</li>
               <li><i><Check size={14} strokeWidth={3.2} /></i>Vaste prijs na een gratis plaatsbezoek</li>
-              <li><i><Check size={14} strokeWidth={3.2} /></i>Antimosbehandeling altijd inbegrepen</li>
+              <li><i><Check size={14} strokeWidth={3.2} /></i>Altijd een nabehandeling, afgestemd op je dak</li>
             </ul>
             <div className="do-hero-knoppen">
               <Link className="do-knop do-knop-g mx-glow" href="/#calculator">Bereken je prijs in 60 seconden<ChevronRight size={17} /></Link>
@@ -155,19 +169,49 @@ export default function DakontmossingPage() {
       {/* Werkgebied */}
       <WerkgebiedCheck />
 
-      {/* Waarom + inspectiekaart */}
+      {/* Voordelen */}
       <section className="do-sectie do-wit">
-        <div className="do-wrap dc-info">
+        <div className="do-wrap do-waarom">
+          <div className="do-slider">
+            <BeforeAfterSlider beforeSrc="/images/Before slider 2.0.png" afterSrc="/images/After slide 2.0.png" borderRadius="0" aspectRatio="4/3" />
+          </div>
           <div>
-            <p className="do-oog">Waarom ontmossen?</p>
-            <h2 className="do-h2">Is een dakreiniging <span>echt de moeite?</span></h2>
-            <p className="do-p" style={{ marginTop: 16 }}>Mos en vuil houden vocht vast en laten je dak sneller verouderen. Een proper dak geeft je woning meteen een verzorgde uitstraling, en voorkomt problemen later.</p>
-            <div className="dc-acc dr-acc">
-              {voordelen.map((f, i) => {
+            <p className="do-oog">Waarom je dak reinigen?</p>
+            <h2 className="do-h2">Voorkom problemen. <span>Geniet van een verzorgd dak.</span></h2>
+            <ul className="vd-acc">
+              {voordelen.map(({ Icoon, titel, tekst }, i) => {
                 const open = openVoordeel === i;
                 return (
+                  <li key={titel} className={open ? "open" : undefined}>
+                    <button type="button" aria-expanded={open} aria-controls={`voordeel-${i}`} onClick={() => setOpenVoordeel(open ? null : i)}>
+                      <i><Icoon size={20} color="#9BCB6C" /></i>
+                      <span>{titel}</span>
+                      <ChevronDown className="vd-pijl" size={18} aria-hidden="true" />
+                    </button>
+                    <div className="vd-tekst" id={`voordeel-${i}`}>
+                      <div><p>{tekst}</p></div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Uitleg + inspectiekaart */}
+      <section className="do-sectie do-zacht">
+        <div className="do-wrap dc-info">
+          <div>
+            <p className="do-oog">Eerlijk advies</p>
+            <h2 className="do-h2">Reinigen alleen is <span>niet genoeg.</span></h2>
+            <p className="do-p" style={{ marginTop: 16 }}>Een reiniging maakt je dak proper, de nabehandeling houdt het zo. Daarom kijken we eerst naar je dak, en raden we pas daarna iets aan.</p>
+            <div className="dc-acc dr-acc">
+              {uitleg.map((f, i) => {
+                const open = openUitleg === i;
+                return (
                   <div key={f.q} className={open ? "dc-acc-item open" : "dc-acc-item"}>
-                    <button type="button" aria-expanded={open} onClick={() => setOpenVoordeel(open ? null : i)}>
+                    <button type="button" aria-expanded={open} onClick={() => setOpenUitleg(open ? null : i)}>
                       {f.q}
                       <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
                     </button>
@@ -208,7 +252,7 @@ export default function DakontmossingPage() {
           <img className="dc-mw-foto" src="/images/IMG_5900.JPEG" alt="Vakman van MOS-X reinigt een dak, veilig gezekerd met harnas" loading="lazy" decoding="async" style={{ objectPosition: "30% 30%" }} />
           <div className="dc-mw-kader">
             <p className="do-oog">Onze werkwijze</p>
-            <h2 className="do-h2 dc-mw-titel">Zo ontmossen we <span>jouw dak.</span></h2>
+            <h2 className="do-h2 dc-mw-titel">Zo reinigen we <span>jouw dak.</span></h2>
             <p className="do-p dc-mx-intro">Van de controle vooraf tot het opruimen achteraf. We doen het werk zelf, zonder onderaannemers, en laten alles netjes achter.</p>
             <div className="do-stappen">
               {stappen.map((s, i) => {
@@ -243,10 +287,11 @@ export default function DakontmossingPage() {
             <p className="do-p">Wil je weten wat het kost voor je beslist? <Link href="/#calculator">Bereken je richtprijs</Link>, of begin met een <Link href="/#dakcontrole">gratis dakcontrole</Link>.</p>
           </div>
           <ul className="dr-lijst">
-            {daktypes.map((t) => (
-              <li key={t.naam}>
-                <i><Check size={14} strokeWidth={3.2} /></i>
-                <p><b>{t.naam}</b>{t.tekst}</p>
+            {daktypes.map(({ naam, Icoon, tekst }) => (
+              <li key={naam}>
+                <i><Icoon size={20} /></i>
+                <b>{naam}</b>
+                <p>{tekst}</p>
               </li>
             ))}
           </ul>
@@ -343,7 +388,7 @@ export default function DakontmossingPage() {
               <p className="dc-eind-p">Bereken online meteen je richtprijs. Gratis en vrijblijvend.</p>
               <ul className="dc-eind-lijst">
                 <li><Check size={15} strokeWidth={3} aria-hidden="true" />Vaste prijs, geen verrassingen</li>
-                <li><Check size={15} strokeWidth={3} aria-hidden="true" />Antimosbehandeling inbegrepen</li>
+                <li><Check size={15} strokeWidth={3} aria-hidden="true" />Altijd een nabehandeling</li>
                 <li><Check size={15} strokeWidth={3} aria-hidden="true" />Gratis plaatsbezoek en advies</li>
               </ul>
               <div className="dc-eind-knoppen">
