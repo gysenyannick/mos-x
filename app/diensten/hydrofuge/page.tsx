@@ -56,7 +56,7 @@ const PLUS_CSS = `
   .mp-video-label { position: absolute; top: 0; left: 0; right: 0; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 12px 16px;
     background: linear-gradient(180deg, rgba(11,15,12,0.85), rgba(11,15,12,0)); font: 700 11px var(--font-montserrat), system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #FFFFFF; }
   .mp-video-label i { width: 8px; height: 8px; border-radius: 50%; background: #9BCB6C; box-shadow: 0 0 0 4px rgba(155,203,108,0.25); }
-  @media (max-width: 640px) { .mp-hero .dc-h1 { font-size: 7.4vw; } }
+  @media (max-width: 640px) { .mp-hero .dc-h1 { font-size: 8.4vw; } }
   @media (max-width: 960px) {
     .mp-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
     .mp-video { justify-self: center; max-width: 340px; }
@@ -103,8 +103,8 @@ export default function HydrofugePage() {
             <BackLink href="/#diensten" dark />
             <p className="do-kruimel"><Link href="/">Home</Link><ChevronRight size={13} color="#9BCB6C" /><Link href="/#diensten">Diensten</Link><ChevronRight size={13} color="#9BCB6C" />MOS-PLUS</p>
             <p className="do-oog">MOS-PLUS · Hydrofuge</p>
-            <h1 className="do-h1 dc-h1"><b>Hydrofuge voor daken</b> <b><em>die nog fris zijn.</em></b></h1>
-            <p className="do-p">MOS-PLUS is onze hydrofuge voor nieuwere daken die enkel een opfrisbeurt nodig hebben. We verwijderen mos en algen en brengen een kleurloos middel aan dat diep in de pan trekt en ze waterafstotend maakt. Je dak verandert niet van uitzicht, dus ook ideaal voor meerkleurige pannen.</p>
+            <h1 className="do-h1 dc-h1"><b>Bescherm je dak</b> <b><em>nu het nog kan.</em></b></h1>
+            <p className="do-p">MOS-PLUS is onze hydrofuge voor daken die nog in goede staat zijn en niet te oud. We verwijderen mos en algen en brengen een kleurloos middel aan dat diep in de pan trekt en ze waterafstotend maakt. Je dak verandert niet van uitzicht, dus ook ideaal voor meerkleurige pannen.</p>
             <ul className="dc-hero-vink">
               <li><i><Check size={14} strokeWidth={3.2} /></i>Gaat 5 à 7 jaar mee op daken in goede staat</li>
               <li><i><Check size={14} strokeWidth={3.2} /></i>Dakreiniging inbegrepen in de prijs</li>
