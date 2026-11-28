@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Droplets, Shield, CalendarCheck, ChevronRight, Umbrella } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, ChevronRight } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
@@ -10,6 +10,7 @@ const services = [
   {
     id: "dak-reinigen",
     title: "Dakreiniging",
+    pakket: "MOS-PRO",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "Dakreiniging",
     href: "/diensten/dakontmossing",
@@ -20,21 +21,6 @@ const services = [
     Icon: Droplets,
     desc: "Verwijder mos en aanslag. Geef je dak zijn verzorgde uitstraling terug.",
     link: "Ontdek dakreiniging",
-  },
-  {
-    id: "hydrofuge",
-    title: "Hydrofuge",
-    pakket: "MOS-PRO",
-    imgSubtitle: "Waterafstotende bescherming.",
-    badge: "Hydrofuge",
-    href: "/contact",
-    img: "/images/hydrofuge-poster.jpg",
-    video: "/videos/hydrofuge.mp4",
-    videoEinde: 0,
-    videoPosition: "center 45%",
-    Icon: Umbrella,
-    desc: "Een onzichtbare, waterafstotende laag. Regen parelt af en mos krijgt minder kans.",
-    link: "Ontdek MOS-PRO",
   },
   {
     id: "dak-coaten",
@@ -141,7 +127,6 @@ function ServiceCard({ s, isActive, onMount }: { s: typeof services[0]; isActive
         <div className="absolute bottom-0 left-0 right-0 z-10 service-card-tekst" style={{ padding: "24px" }}>
           <style>{`
             .sv-titel-p { font-size: 22px !important; }
-            @media (min-width: 1280px) { .sv-titel-p { font-size: 19px !important; } }
             .sv-titel { display: flex; flex-direction: column; gap: 4px; }
             .sv-dienst { font: 700 11.5px var(--font-montserrat), system-ui, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: #9BCB6C; }
           `}</style>
@@ -343,8 +328,8 @@ export default function SiteServices() {
           </p>
         </div>
 
-        {/* 4 diensten: 2 kolommen op tablet, 4 op computer */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10 services-grid">
+        {/* 3-col grid */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-10 services-grid">
           {services.map((s) => (
             <ServiceCard key={s.id} s={s} isActive={activeCardId === s.id} onMount={registerCard} />
           ))}
