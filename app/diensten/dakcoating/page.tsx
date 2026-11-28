@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, CalendarCheck, Check, ChevronDown, ChevronRight, Download, Loader2, Palette, Phone } from "lucide-react";
+import { CalendarCheck, Check, ChevronDown, ChevronRight, Loader2, Phone } from "lucide-react";
 import BackLink from "@/components/back-link";
 import PageLayout from "@/components/page-layout";
 import BeforeAfterSlider from "@/components/before-after-slider";
@@ -10,8 +10,8 @@ import HeroVertrouwen from "@/components/hero-vertrouwen";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import GoogleScore from "@/components/google-score";
 import WerkgebiedCheck from "@/components/werkgebied-check";
+import SiteDakkleurBanner from "@/components/site-dakkleur-banner";
 import { DIENST_CSS } from "@/components/dienst-stijl";
-import { DAKKLEUREN } from "@/lib/dakkleuren";
 
 const methode = [
   { titel: "Grondige reiniging en voorbereiding", tekst: "Mos, algen en losse deeltjes worden volledig verwijderd. Hier gaan de meeste slechte behandelingen mis." },
@@ -34,11 +34,6 @@ const info: { q: string; a: string; cta?: boolean }[] = [
   { q: "Hoe pakken we het aan?", a: "We starten altijd met een grondige controle van je dak: de pannen, de nokken en de goten. Is je dak geschikt, dan reinigen we het eerst onder aangepaste druk, herstellen we kleine schade en brengen we daarna twee lagen coating aan.\n\nDe juiste druk, het juiste materiaal en een goede voorbereiding maken het verschil tussen een coating die jaren meegaat en een die na een paar seizoenen afbladert. Heeft je dak enkel een opfrisbeurt nodig? Dan volstaat soms een dakreiniging (MOS-PRO). We raden altijd aan wat echt nodig is, niet het duurste." },
   { q: "Wat kost een dakcoating?", a: "De prijs hangt af van de oppervlakte van je dak, de helling, de bereikbaarheid en hoeveel mos er eerst weg moet. Na het plaatsbezoek krijg je een vaste prijs: offerte = factuur, geen uurloon en geen meerwerk achteraf.\n\nWil je nu al weten in welke orde van grootte je moet denken? Bereken je richtprijs in 60 seconden.", cta: true },
   { q: "Dakcoating of een nieuw dak?", a: "Een nieuw dak kost al snel een veelvoud van een coating, met afbraak, containers en weken werk. Zijn je pannen nog stevig en is het onderdak in orde, dan geeft een coating je dak een tweede leven voor een fractie van de prijs.\n\nBovendien spaar je het milieu: geen nieuwe materialen, geen transport en geen berg bouwafval." },
-];
-
-const geschikt = [
-  { label: "Betonpannen", img: "/images/Betonpannen.jpg" },
-  { label: "Kunstleien", img: "/images/Kunstleien.jfif" },
 ];
 
 const resultaten = [
@@ -67,21 +62,12 @@ const COATING_CSS = `
   .dc-kaart li svg { flex: none; margin-top: 2px; }
   .dc-kaart:not(.goed) li { color: #545454; }
 
-  .dc-kleur { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
-  .dc-stalen { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin: 28px 0; }
-  .dc-staal { display: grid; justify-items: center; gap: 8px; font-size: 13px; color: #545454; font-family: var(--font-inter), system-ui, sans-serif; }
-  .dc-staal i { width: 100%; max-width: 54px; aspect-ratio: 1; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 4px 10px -4px rgba(0,0,0,0.35); }
-  .dc-merk { font-size: 14px; color: #8E8E89; font-family: var(--font-inter), system-ui, sans-serif; }
-  .dc-merk b { color: #1A1A1A; }
-  .dc-geschikt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .dc-geschikt .do-type { aspect-ratio: 4 / 5; }
-  .dc-knoppen { display: flex; gap: 10px; flex-wrap: wrap; }
-  .dc-knop-l { background: #FFFFFF; color: #1A1A1A; border: 1px solid #CFE5B8; }
-  .dc-knop-l:hover { background: #F2F8EC; border-color: #9BCB6C; }
 
   .zk-spin { animation: dc-spin 1s linear infinite; }
   @keyframes dc-spin { to { transform: rotate(360deg); } }
   .dc-hero::after { display: none; }
+  .dc-dkb .dkb-buiten { padding-top: 88px !important; }
+  @media (max-width: 767px) { .dc-dkb .dkb-buiten { padding-top: 56px !important; } }
   .dc-mw { padding: 0 !important; }
   .dc-mw-foto { position: absolute; top: 0; bottom: 0; left: 0; width: 44%; height: 100%; object-fit: cover; z-index: 0; }
   .dc-mw-grid { display: grid; grid-template-columns: 44% minmax(0, 1fr); max-width: none; padding: 0; }
@@ -97,7 +83,7 @@ const COATING_CSS = `
   .dc-mx-intro { margin-top: 16px; max-width: 560px; color: rgba(255,255,255,0.75) !important; }
     background: linear-gradient(90deg, rgba(11,15,12,0.82) 0%, rgba(11,15,12,0.7) 50%, rgba(11,15,12,0.45) 100%), url("/images/yannick-op-dak-srgb.JPEG") center 40% / cover no-repeat, #0B0F0C; }
   .dc-nu-kop { text-align: center; max-width: 720px; margin: 0 auto 48px; }
-  .dc-nu-kop .do-p { margin-top: 14px; }
+  .dc-nu-kop .do-p { margin: 14px auto 0; text-align: center; }
   .dc-nu-kop { max-width: none; }
   .dc-nu-titel { white-space: nowrap; font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
   @media (max-width: 760px) { .dc-nu-titel { white-space: normal; font-size: clamp(1.45rem, 6.4vw, 1.75rem); text-wrap: balance; } }
@@ -189,7 +175,7 @@ export default function DakcoatingPage() {
   const [bezoekOpen, setBezoekOpen] = useState(false);
   const [openInfo, setOpenInfo] = useState<number | null>(null);
   const [openNu, setOpenNu] = useState<number | null>(null);
-  const [openStap, setOpenStap] = useState<number | null>(0);
+  const [openStap, setOpenStap] = useState<number | null>(null);
   const [belStatus, setBelStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
   async function belMij(e: React.FormEvent<HTMLFormElement>) {
@@ -287,6 +273,35 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
+      {/* Werkwijze: de MOS-MAX-methode */}
+      <section className="do-donker dc-mw">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="dc-mw-foto" src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" />
+        <div className="do-wrap dc-mw-grid">
+          <div className="dc-mw-kader">
+            <p className="do-oog">Onze werkwijze: de MOS-MAX-methode</p>
+            <h2 className="do-h2 dc-mw-titel">Zo werkt de <span>MOS&#8209;MAX&#8209;methode.</span></h2>
+            <p className="do-p dc-mx-intro">De meeste slechte dakbehandelingen gaan mis door de voorbereiding, de producten, het aanbrengen of het weer. Daarom volgt MOS&#8209;MAX op elk dak dezelfde werkwijze.</p>
+            <div className="do-stappen">
+              {methode.map((s, i) => {
+                const open = openStap === i;
+                return (
+                  <div key={s.titel} className={open ? "do-stap open" : "do-stap"}>
+                    <button type="button" aria-expanded={open} onClick={() => setOpenStap(open ? null : i)}>
+                      <span className="do-stap-nr">{String(i + 1).padStart(2, "0")}</span>
+                      {s.titel}
+                      <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
+                    </button>
+                    <div className="do-stap-tekst"><div><p>{s.tekst}</p></div></div>
+                  </div>
+                );
+              })}
+            </div>
+            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
+          </div>
+        </div>
+      </section>
+
       {/* Waarom nu */}
       <section className="do-sectie do-zacht">
         <div className="do-wrap">
@@ -311,63 +326,8 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* Werkwijze: de MOS-MAX-methode */}
-      <section className="do-donker dc-mw">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="dc-mw-foto" src="/images/IMG_4581 achteraanzicht coating.JPEG" alt="Dak na een dakcoating door MOS-X, van bovenaf gezien" />
-        <div className="do-wrap dc-mw-grid">
-          <div className="dc-mw-kader">
-            <p className="do-oog">Onze werkwijze</p>
-            <h2 className="do-h2 dc-mw-titel">Zo werkt de <span>MOS&#8209;MAX&#8209;methode.</span></h2>
-            <p className="do-p dc-mx-intro">De meeste slechte dakbehandelingen gaan mis door de voorbereiding, de producten, het aanbrengen of het weer. Daarom volgt MOS&#8209;MAX op elk dak dezelfde werkwijze.</p>
-            <div className="do-stappen">
-              {methode.map((s, i) => {
-                const open = openStap === i;
-                return (
-                  <div key={s.titel} className={open ? "do-stap open" : "do-stap"}>
-                    <button type="button" aria-expanded={open} onClick={() => setOpenStap(open ? null : i)}>
-                      <span className="do-stap-nr">{String(i + 1).padStart(2, "0")}</span>
-                      {s.titel}
-                      <ChevronDown size={20} className="do-pijl" aria-hidden="true" />
-                    </button>
-                    <div className="do-stap-tekst"><div><p>{s.tekst}</p></div></div>
-                  </div>
-                );
-              })}
-            </div>
-            <button type="button" className="do-knop do-knop-g mx-glow" onClick={() => setBezoekOpen(true)}><CalendarCheck size={18} />Plan een gratis plaatsbezoek</button>
-          </div>
-        </div>
-      </section>
-
-      {/* Kleuren en geschikte daken */}
-      <section className="do-sectie do-wit">
-        <div className="do-wrap dc-kleur">
-          <div>
-            <p className="do-oog">Kleuren</p>
-            <h2 className="do-h2">Kies de kleur <span style={{ display: "block" }}>die bij je woning past.</span></h2>
-            <div className="dc-stalen">
-              {DAKKLEUREN.map((k) => <span key={k.id} className="dc-staal"><i style={{ background: k.hex }} />{k.naam}</span>)}
-            </div>
-            <p className="dc-merk" style={{ marginBottom: 28 }}>De kleuren op je scherm zijn een benadering. Tijdens het plaatsbezoek tonen we je de echte stalen.</p>
-            <div className="dc-knoppen">
-              <Link className="do-knop do-knop-g mx-glow" href="/#dakkleur"><Palette size={18} />Zie je dak in een nieuwe kleur</Link>
-            </div>
-          </div>
-          <div>
-            <div className="dc-geschikt">
-              {geschikt.map((t) => <div key={t.label} className="do-type"><img src={t.img} alt={t.label} loading="lazy" /><span>{t.label}</span></div>)}
-            </div>
-            <div className="do-asbest">
-              <div>
-                <i><AlertTriangle size={20} color="#9BCB6C" /></i>
-                <span><b>Voor betonpannen en kunstleien</b><small>Oudere leien kunnen asbest bevatten. Check het met onze gratis checklist.</small></span>
-              </div>
-              <a className="do-knop do-knop-g" style={{ height: 46 }} href="/downloads/MOS-X-asbestchecklist.pdf" download><Download size={17} />Download de checklist</a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Dakkleur-tool */}
+      <div className="dc-dkb"><SiteDakkleurBanner /></div>
 
       {/* Resultaten */}
       <section className="do-sectie do-zacht">
