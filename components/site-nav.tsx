@@ -10,7 +10,7 @@ import { BtnPress } from "@/components/btn-press";
 const diensten = [
   { label: "Dakontmossen",  href: "/diensten/dakontmossing" },
   { label: "Dakcoaten",     href: "/diensten/dakcoating" },
-  { label: "Onderhoudsplan", href: "/diensten/onderhoudsplan" },
+  { label: "MOS-CARE onderhoudsplan", href: "/diensten/onderhoudsplan" },
 ];
 
 const b2b = [
@@ -27,7 +27,7 @@ const links = [
 const mobieleDiensten = [
   { label: "Dakontmossen",  sub: "", href: "/diensten/dakontmossing", Icoon: Droplets },
   { label: "Dakcoaten",     sub: "", href: "/diensten/dakcoating",    Icoon: Paintbrush },
-  { label: "Onderhoudsplan", sub: "",                                href: "/diensten/onderhoudsplan",  Icoon: CalendarCheck },
+  { label: "MOS-CARE onderhoudsplan", sub: "",                                href: "/diensten/onderhoudsplan",  Icoon: CalendarCheck },
 ];
 
 const mobieleLinks = [

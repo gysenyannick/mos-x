@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Droplets, Shield, CalendarCheck, ChevronRight } from "lucide-react";
+import { Droplets, Shield, CalendarCheck, ChevronRight, Umbrella } from "lucide-react";
 import { BtnPress } from "@/components/btn-press";
 import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 
@@ -10,7 +10,6 @@ const services = [
   {
     id: "dak-reinigen",
     title: "Dakreiniging",
-    pakket: "MOS-PRO",
     imgSubtitle: "Verwijderen van mos, algen en vuil.",
     badge: "Dakreiniging",
     href: "/diensten/dakontmossing",
@@ -21,6 +20,21 @@ const services = [
     Icon: Droplets,
     desc: "Verwijder mos en aanslag. Geef je dak zijn verzorgde uitstraling terug.",
     link: "Ontdek dakreiniging",
+  },
+  {
+    id: "hydrofuge",
+    title: "Hydrofuge",
+    pakket: "MOS-PRO",
+    imgSubtitle: "Waterafstotende bescherming.",
+    badge: "Hydrofuge",
+    href: "/contact",
+    img: "/images/hydrofuge-poster.jpg",
+    video: "/videos/hydrofuge.mp4",
+    videoEinde: 0,
+    videoPosition: "center 45%",
+    Icon: Umbrella,
+    desc: "Een onzichtbare, waterafstotende laag. Regen parelt af en mos krijgt minder kans.",
+    link: "Ontdek MOS-PRO",
   },
   {
     id: "dak-coaten",
@@ -35,19 +49,6 @@ const services = [
     Icon: Shield,
     desc: "Geef je dak een nieuwe uitstraling met een beschermende coating.",
     link: "Ontdek dakcoating",
-  },
-  {
-    id: "dakabonnement",
-    title: "Onderhoudsplan",
-    pakket: "MOS-CARE",
-    imgSubtitle: "Jaarlijkse controle en onderhoud.",
-    badge: "Onderhoudsplan",
-    href: "/diensten/onderhoudsplan",
-    img: "/images/onderhoudsplan-gezin.webp",
-    video: null,
-    Icon: CalendarCheck,
-    desc: "Wij volgen je dak op en helpen het jarenlang verzorgd te houden.",
-    link: "Ontdek het onderhoudsplan",
   },
 ];
 
