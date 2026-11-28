@@ -15,17 +15,17 @@ import { COATING_CSS } from "@/components/coating-stijl";
 
 
 const info: { q: string; a: React.ReactNode }[] = [
-  { q: "Zo werkt hydrofuge op je dakpannen", a: (<>
-    <p>Betonpannen zijn poreus. Na verloop van tijd slijt de toplaag en begint de pan water op te nemen in plaats van het te laten aflopen. Een vochtige pan is een voedingsbodem voor mos, algen en korstmos, en in de winter bevriest het water en zet het uit in de poriën. Net die vorst breekt de pan uiteindelijk af. Hydrofuge legt een waterafstotende laag in de bovenste millimeters van de pan, zodat het water afparelt en de poriën de hele winter droog blijven.</p>
-    <p>Het werk start altijd met een grondige <Link href="/diensten/dakontmossing">dakreiniging</Link>, waarbij we mos, vuil en losse deeltjes met lage druk verwijderen. Daarna brengen we de hydrofuge aan op een volledig droge pan, bij voorkeur in twee lagen op de meest blootgestelde delen. Je dak houdt zijn originele kleur. Twijfel je wat je dak echt nodig heeft? Begin dan met een <Link href="/#dakcontrole">gratis dakcontrole</Link>.</p>
+  { q: "Zo werkt het impregneren van dakpannen", a: (<>
+    <p>Betonpannen zijn poreus. Na verloop van tijd slijt de toplaag en begint de pan water op te nemen in plaats van het te laten aflopen. Een vochtige pan is een voedingsbodem voor mos, algen en korstmos, en in de winter bevriest het water en zet het uit in de poriën. Het is die vorst die de pan uiteindelijk voorgoed afbreekt. Impregneren legt een waterafstotende laag in de bovenste millimeters van de pan, zodat het water afparelt en de poriën de hele winter droog blijven.</p>
+    <p>Het werk start altijd met een grondige <Link href="/diensten/dakontmossing">dakreiniging</Link>, waarbij we mos, vuil en losse deeltjes met lage druk verwijderen. Daarna brengen we de impregnatie aan op een volledig droge pan, bij voorkeur in twee lagen op de meest blootgestelde delen. Het dak behoudt zijn originele kleur, en je krijgt geen nieuw oppervlak om je zorgen over te maken. Twijfel je wat je dak echt nodig heeft, begin dan met een <Link href="/#dakcontrole">gratis dakcontrole</Link>.</p>
   </>) },
-  { q: "Wanneer kies je beter iets anders?", a: (<>
-    <p>We zeggen vaker nee dan mensen denken. Hydrofuge gaat ervan uit dat de pan nog een stevig oppervlak heeft. Brokkelt het oppervlak af tussen je vingers, dan heeft de behandeling weinig zin, want dan is er geen stevig oppervlak meer om in te trekken. Hetzelfde geldt voor daken met veel gebarsten pannen, een slecht onderdak of zichtbare lekken. Daar helpt geen enkele behandeling, en dan weet je dat beter meteen.</p>
-    <p>Is je dak ouder maar nog stevig, dan is <Link href="/diensten/dakcoating">een MOS-MAX-dakcoating</Link> meestal de betere keuze. Die bouwt een volledig nieuw oppervlak op en gaat een stuk langer mee. Heb je enkel mos op een verder nieuw dak, dan is MOS-PLUS ideaal. Het mos moet sowieso eerst weg, en daarna moet de pan geïmpregneerd worden, anders blijven de poriën open.</p>
+  { q: "Wanneer je beter iets anders kiest dan MOS-PLUS", a: (<>
+    <p>We zeggen vaker nee dan mensen denken. Het impregneren van dakpannen gaat ervan uit dat de pan nog een stevig oppervlak heeft. Brokkelt het oppervlak af tussen je vingers, dan heeft de behandeling weinig zin, want dan is er geen stevig oppervlak meer om aan te hechten. Hetzelfde geldt voor daken met veel gebarsten pannen, een slecht onderdak of zichtbare lekken. Daar helpt geen enkele behandeling, en dan weet je dat beter meteen.</p>
+    <p>Is je dak ouder maar nog structureel gezond, dan is <Link href="/diensten/dakcoating">een MOS-MAX-dakcoating</Link> meestal de betere keuze. Die bouwt een volledig nieuw oppervlak op en gaat een stuk langer mee. Heb je enkel mos op een verder nieuw dak, dan kan MOS-PLUS volstaan. Het mos moet sowieso eerst weg, en daarna moet de pan geïmpregneerd worden, anders blijven de poriën open. Hoe vocht en vorst bouwmaterialen na verloop van tijd afbreken, is goed gedocumenteerd, en die kennis is de basis voor hoe we elk dak beoordelen.</p>
   </>) },
-  { q: "Prijs, levensduur en wat het waard is", a: (<>
-    <p>De prijs van MOS-PLUS hangt af van de staat van je dak, de helling, de bereikbaarheid en hoeveel mos er eerst weg moet. De dakreiniging zit altijd inbegrepen. MOS-PLUS kost minder dan een MOS-MAX-coating op hetzelfde dak, en een nieuw dak kost al snel een veelvoud daarvan. Zolang de structuur gezond is, is er weinig reden om een dak te vervangen dat er gewoon wat moe uitziet.</p>
-    <p>Je <Link href="/#calculator">richtprijs bereken je in 60 seconden</Link>, en na het plaatsbezoek krijg je een vaste prijs.</p>
+  { q: "Prijs, levensduur en wat het echt waard is", a: (<>
+    <p>De prijs van MOS-PLUS hangt af van de staat van je dak, de helling, de bereikbaarheid en hoeveel mos er weg moet. De dakreiniging zit altijd in de prijs. MOS-PLUS kost minder dan een MOS-MAX-coating op hetzelfde dak. Een nieuw dak kost daarentegen al snel een veelvoud.</p>
+    <p>Zolang de structuur gezond is, is er weinig reden om een dak te vervangen dat er gewoon wat moe uitziet. Je <Link href="/#calculator">richtprijs bereken je in 60 seconden</Link>, en na het plaatsbezoek krijg je een vaste prijs.</p>
   </>) },
 ];
 
@@ -130,8 +130,8 @@ export default function HydrofugePage() {
         <div className="do-wrap dc-info">
           <div>
             <p className="do-oog">Over de behandeling</p>
-            <h2 className="do-h2">Wanneer loont hydrofuge, <span>en wanneer niet?</span></h2>
-            <p className="do-p" style={{ marginTop: 16 }}>MOS-PLUS is de keuze als je dak vijf tot tien jaar oud is en de beschermlaag van de fabriek op de pan nog intact is. De behandeling maakt geen nieuw oppervlak, ze maakt het oppervlak dat er al is waterafstotend. Ze is ook tijdelijk: binnen vijf à zeven jaar verdwijnt de impregnatie uit de pan. Je krijgt 5 jaar garantie op de werking.</p>
+            <h2 className="do-h2">Wanneer loont impregneren, <span>en wanneer is het zonde?</span></h2>
+            <p className="do-p" style={{ marginTop: 16 }}>MOS-PLUS is de keuze als je dak vijf tot tien jaar oud is en de beschermende fabriekslaag op de pan nog intact is. De behandeling maakt geen nieuw oppervlak, ze maakt het oppervlak dat er al is waterafstotend. Ze is ook tijdelijk: binnen vijf à zeven jaar verdwijnt de impregnatie uit de pan. Hieronder lees je wat de behandeling doet, voor wie ze geschikt is en wat ze kost. Je krijgt 5 jaar garantie op de werking.</p>
             <div className="dc-acc">
               {info.map((f, i) => {
                 const open = openInfo === i;
