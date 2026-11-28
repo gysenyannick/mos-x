@@ -11,6 +11,7 @@ import { PlaatsbezoekModal } from "@/components/plaatsbezoek-modal";
 import GoogleScore from "@/components/google-score";
 import WerkgebiedCheck from "@/components/werkgebied-check";
 import SiteDakkleurBanner from "@/components/site-dakkleur-banner";
+import SiteReviews from "@/components/site-reviews";
 import { DIENST_CSS } from "@/components/dienst-stijl";
 
 const methode = [
@@ -357,30 +358,8 @@ export default function DakcoatingPage() {
       {/* Dakkleur-tool */}
       <div className="dc-dkb"><SiteDakkleurBanner /></div>
 
-      {/* Resultaten */}
-      <section className="do-sectie do-zacht">
-        <div className="do-wrap">
-          <div className="do-kop">
-            <div>
-              <p className="do-oog">Voor en na</p>
-              <h2 className="do-h2">Onze <span>resultaten.</span></h2>
-            </div>
-            <Link className="do-knop do-knop-licht" href="/realisaties">Bekijk alle realisaties<ChevronRight size={17} /></Link>
-          </div>
-          <div className="do-resultaten">
-            {resultaten.map((r) => (
-              <article key={r.voor} className="do-resultaat">
-                <BeforeAfterSlider beforeSrc={r.voor} afterSrc={r.na} borderRadius="0" aspectRatio="4/3" />
-                <div><b>{r.titel}</b><small>{r.info}</small></div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
       {/* Misverstanden */}
-      <section className="do-sectie do-wit">
+      <section className="do-sectie do-zacht">
         <div className="do-wrap">
           <div className="dc-mv-kop">
             <p className="do-oog">Veelgehoorde misverstanden</p>
@@ -403,8 +382,32 @@ export default function DakcoatingPage() {
         </div>
       </section>
 
-      {/* FAQ */}
+      {/* Reviews */}
+      <SiteReviews />
+
+      {/* Resultaten */}
       <section className="do-sectie do-zacht">
+        <div className="do-wrap">
+          <div className="do-kop">
+            <div>
+              <p className="do-oog">Voor en na</p>
+              <h2 className="do-h2">Onze <span>resultaten.</span></h2>
+            </div>
+            <Link className="do-knop do-knop-licht" href="/realisaties">Bekijk alle realisaties<ChevronRight size={17} /></Link>
+          </div>
+          <div className="do-resultaten">
+            {resultaten.map((r) => (
+              <article key={r.voor} className="do-resultaat">
+                <BeforeAfterSlider beforeSrc={r.voor} afterSrc={r.na} borderRadius="0" aspectRatio="4/3" />
+                <div><b>{r.titel}</b><small>{r.info}</small></div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="do-sectie do-wit">
         <div className="do-wrap">
           <div className="do-kop">
             <div>
@@ -439,7 +442,7 @@ export default function DakcoatingPage() {
       </section>
 
       {/* Afsluiter */}
-      <section className="do-sectie do-zacht" style={{ paddingTop: 0 }}>
+      <section className="do-sectie do-wit" style={{ paddingTop: 0 }}>
         <div className="do-wrap">
           <div className="do-cta">
             <div>

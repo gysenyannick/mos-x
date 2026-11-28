@@ -33,7 +33,7 @@ const services = [
     videoEinde: 0,
     videoPosition: "center 100%",
     Icon: Umbrella,
-    desc: "Een opfrisbeurt voor nieuwere daken van 5 à 7 jaar. Regen parelt af en mos krijgt minder kans.",
+    desc: "Een onzichtbare, waterafstotende laag. Regen parelt af en mos krijgt minder kans.",
     link: "Ontdek MOS-PRO",
   },
   {

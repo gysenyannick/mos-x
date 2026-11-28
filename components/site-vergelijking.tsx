@@ -97,7 +97,7 @@ export default function SiteVergelijking() {
         <div className="vg-kop">
           <p className="vg-oog">Het verschil</p>
           <h2 id="vg-titel" className="vg-titel">Een dakspecialist, <span>geen schoonmaakfirma.</span></h2>
-          <p className="vg-sub">Zie het verschil met een gewone dakreiniger.</p>
+          <p className="vg-sub">Zo verschillen we van een gewone schoonmaakfirma.</p>
         </div>
 
         <div className="vg-duo">
